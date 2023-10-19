@@ -1,0 +1,11 @@
+@font-face {
+    font-family: 'Nunito';
+    src: url("./fonts/Nunito-Bold.ttf");
+}
+
+.root {
+    -fx-background-color: #000;
+    -fx-text-fill: #fff;
+    -fx-font-size: 16px;
+    -fx-font-family: "Nunito";
+}

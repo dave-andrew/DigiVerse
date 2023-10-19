@@ -1,0 +1,26 @@
+@font-face {
+    font-family: "Nunito";
+    src: url("./fonts/Nunito-Bold.ttf");
+}
+
+.root {
+    -fx-background-color: #fff;
+    -fx-text-fill: #000;
+    -fx-font-size: 16px;
+    -fx-font-family: "Nunito";
+}
+
+.primary-button {
+    -fx-background-color: #4DCAFF;
+    -fx-padding: 7px 35px;
+}
+
+.primary-button:hover {
+    -fx-background-color: #4DCAFF;
+    -fx-cursor: hand;
+}
+
+.link-button {
+    -fx-background-color: transparent;
+    -fx-padding: 7px 35px;
+}
