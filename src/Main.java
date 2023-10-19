@@ -1,4 +1,5 @@
 import controller.AuthController;
+import helper.ScreenManager;
 import helper.ThemeManager;
 import javafx.animation.PauseTransition;
 import javafx.application.Application;
@@ -23,7 +24,7 @@ public class Main extends Application {
         authController = new AuthController();
 
         borderPane = new BorderPane();
-        scene = new Scene(borderPane, 1200, 700);
+        scene = new Scene(borderPane, ScreenManager.SCREEN_WIDTH, ScreenManager.SCREEN_HEIGHT);
         ThemeManager.getTheme(scene);
 
         return scene;

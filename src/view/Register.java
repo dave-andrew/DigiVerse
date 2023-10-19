@@ -109,7 +109,7 @@ public class Register {
 
         BorderPane.setAlignment(vbox, Pos.CENTER_RIGHT);
 
-        scene = new Scene(borderPane, 1200, 700);
+        scene = new Scene(borderPane, ScreenManager.SCREEN_WIDTH, ScreenManager.SCREEN_HEIGHT);
         ThemeManager.getTheme(scene);
         return scene;
     }

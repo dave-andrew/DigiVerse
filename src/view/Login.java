@@ -1,6 +1,7 @@
 package view;
 
 import controller.AuthController;
+import helper.ScreenManager;
 import helper.ThemeManager;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
@@ -9,6 +10,7 @@ import javafx.scene.control.*;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.BorderPane;
+import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
 import javafx.scene.text.Font;
 import javafx.stage.Stage;
@@ -61,6 +63,10 @@ public class Login {
         rememberMe.setScaleX(0.6);
         rememberMe.setScaleY(0.6);
 
+        image = new Image("file:resources/image/auth_image2.png");
+
+        loginImage = new ImageView(image);
+
         vbox = new VBox(10);
     }
 
@@ -85,7 +91,17 @@ public class Login {
 
         borderPane.setRight(vbox);
 
-        scene = new Scene(borderPane, 1200, 700);
+        StackPane imagePane = new StackPane();
+        imagePane.setPrefSize(400, ScreenManager.SCREEN_HEIGHT);
+
+        loginImage.setFitWidth(450);
+        loginImage.setFitHeight(ScreenManager.SCREEN_HEIGHT);
+
+        imagePane.getChildren().add(loginImage);
+
+        borderPane.setLeft(imagePane);
+
+        scene = new Scene(borderPane, ScreenManager.SCREEN_WIDTH, ScreenManager.SCREEN_HEIGHT);
         ThemeManager.getTheme(scene);
 
         return scene;
