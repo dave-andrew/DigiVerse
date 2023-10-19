@@ -140,7 +140,7 @@ public class Register {
 
         ThemeManager.getTheme(scene);
         stage.setScene(scene);
-        stage.setTitle("DVibes - Register");
+        stage.setTitle("DigiVerse - Register");
 
     }
 

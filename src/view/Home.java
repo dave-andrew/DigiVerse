@@ -47,6 +47,7 @@ public class Home {
         scene = setLayout();
 
         stage.setScene(scene);
+        stage.setTitle("DigiVerse - Home");
 
     }
 

@@ -133,6 +133,6 @@ public class Login {
         actions(stage);
 
         stage.setScene(scene);
-        stage.setTitle("DVibes - Login");
+        stage.setTitle("DigiVerse - Login");
     }
 }
