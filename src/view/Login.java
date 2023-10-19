@@ -100,7 +100,7 @@ public class Login {
             String message = authController.checkLogin(email, password, remember);
             System.out.println(message);
             if(message.equals("Login Success!")) {
-//                new Home(stage);
+                new Home(stage);
             }
         });
 

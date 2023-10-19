@@ -1,5 +1,6 @@
 package database;
 
+import helper.DateManager;
 import model.User;
 
 import java.sql.PreparedStatement;
@@ -60,17 +61,19 @@ public class AuthQuery {
     }
 
     public boolean rememberMe(User user) {
-        String query = "INSERT INTO authcheck VALUES (?, ?)";
+        String query = "INSERT INTO authcheck VALUES (?, ?, ?)";
+
+        String computerName = System.getenv("COMPUTERNAME");
 
         LocalDateTime now = LocalDateTime.now();
         now = now.plusDays(1);
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
-        String formattedDate = now.format(formatter);
+        String formattedDate = DateManager.formatDate(now);
 
         PreparedStatement ps = connect.prepareStatement(query);
         try {
-            ps.setString(1, user.getId());
-            ps.setString(2, formattedDate);
+            ps.setString(1, computerName);
+            ps.setString(2, user.getId());
+            ps.setString(3, formattedDate);
 
             int rows = ps.executeUpdate();
 
@@ -81,6 +84,45 @@ public class AuthQuery {
             }
         } catch (SQLException e) {
             throw new RuntimeException(e);
+        }
+    }
+
+    public boolean checkAuth() {
+        LocalDateTime now = LocalDateTime.now();
+
+        String query = "SELECT * FROM authcheck WHERE DeviceName = ?";
+
+        String computerName = System.getenv("COMPUTERNAME");
+
+        try (PreparedStatement ps = connect.prepareStatement(query)) {
+            ps.setString(1, computerName);
+
+            try (ResultSet rs = ps.executeQuery()) {
+                if (rs.next()) {
+                    LocalDateTime expiredDate = DateManager.parseDate(rs.getString("expired"));
+                    if (now.isAfter(expiredDate)) {
+                        deleteAuthData(computerName);
+                        return false;
+                    } else {
+                        return true;
+                    }
+                } else {
+                    return false;
+                }
+            }
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    private void deleteAuthData(String deviceName) {
+        String deleteQuery = "DELETE FROM authcheck WHERE DeviceName = ?";
+
+        try (PreparedStatement deleteStatement = connect.prepareStatement(deleteQuery)) {
+            deleteStatement.setString(1, deviceName);
+            deleteStatement.executeUpdate();
+        } catch (SQLException e) {
+            throw new RuntimeException("Error while deleting expired data: " + e.getMessage());
         }
     }
 

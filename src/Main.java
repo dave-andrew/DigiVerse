@@ -1,27 +1,28 @@
-// Press Shift twice to open the Search Everywhere dialog and type `show whitespaces`,
-// then press Enter. You can now see whitespace characters in your code.
-
+import controller.AuthController;
 import helper.ThemeManager;
+import javafx.animation.PauseTransition;
 import javafx.application.Application;
+import javafx.application.Platform;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
-import javafx.scene.control.Label;
 import javafx.scene.layout.BorderPane;
 import javafx.stage.Stage;
-import view.Register;
+import javafx.util.Duration;
+import view.Home;
+import view.Login;
 
 public class Main extends Application {
+
+    private AuthController authController;
 
     private Scene scene;
     private Button button;
     private BorderPane borderPane;
 
     private Scene initialize() {
-        button = new Button();
-        button.setText("Click me!");
-//        Label lbl = new Label("Testing");
+        authController = new AuthController();
+
         borderPane = new BorderPane();
-        borderPane.setCenter(button);
         scene = new Scene(borderPane, 1200, 700);
         ThemeManager.getTheme(scene);
 
@@ -33,9 +34,17 @@ public class Main extends Application {
         scene = initialize();
         primaryStage.setScene(scene);
 
-        button.setOnAction(e -> {
-            new Register(primaryStage);
+        PauseTransition delay = new PauseTransition(Duration.seconds(2));
+
+        delay.setOnFinished(event -> {
+            if(authController.checkAuth()){
+                Platform.runLater(() -> new Home(primaryStage));
+            } else {
+                Platform.runLater(() -> new Login(primaryStage));
+            }
         });
+
+        delay.play();
 
         primaryStage.setTitle("DVibes");
         primaryStage.show();

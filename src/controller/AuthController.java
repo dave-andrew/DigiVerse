@@ -44,4 +44,8 @@ public class AuthController {
         }
     }
 
+    public boolean checkAuth() {
+        return authQuery.checkAuth();
+    }
+
 }
