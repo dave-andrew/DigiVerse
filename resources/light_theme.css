@@ -10,6 +10,11 @@
     -fx-font-family: "Nunito";
 }
 
+.auth-layout {
+    -fx-background-color: transparent;
+    -fx-padding: 0 100 0 0;
+}
+
 .primary-button {
     -fx-background-color: #4DCAFF;
     -fx-padding: 7px 35px;
@@ -23,4 +28,12 @@
 .link-button {
     -fx-background-color: transparent;
     -fx-padding: 7px 35px;
+}
+
+.small-checkbox .box {
+    -fx-min-width: 12px;
+    -fx-min-height: 12px;
+}
+.small-checkbox .label {
+    -fx-font-size: 11px;
 }
