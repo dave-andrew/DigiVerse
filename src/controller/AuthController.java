@@ -1,10 +1,15 @@
 package controller;
 
+import database.AuthQuery;
 import model.User;
 
 public class AuthController {
 
+    private AuthQuery authQuery;
 
+    public AuthController() {
+        this.authQuery = new AuthQuery();
+    }
 
     public String checkRegister(String username, String email, String pass, String confirmPass, int age) {
         if(username.isEmpty() || email.isEmpty() || pass.isEmpty() || confirmPass.isEmpty()) {
@@ -17,7 +22,7 @@ public class AuthController {
             return "Age must be greater than 17!";
         } else {
             User user = new User(username, email, pass, age);
-
+            authQuery.register(user);
             return "Register Success!";
         }
     }
