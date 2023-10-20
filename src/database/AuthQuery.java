@@ -18,7 +18,7 @@ public class AuthQuery {
     }
 
     public boolean register(User user) {
-        String query = "INSERT INTO msuser VALUES (?, ?, ?, ?, ?)";
+        String query = "INSERT INTO msuser VALUES (?, ?, ?, ?, ?, NULL)";
 
         PreparedStatement ps = connect.prepareStatement(query);
         try {
@@ -50,7 +50,7 @@ public class AuthQuery {
 
             try(ResultSet rs = ps.executeQuery()) {
                 if(rs.next()) {
-                    return new User(rs.getString("UserID"), rs.getString("UserName"), rs.getString("UserEmail"), rs.getString("UserPassword"), rs.getInt("UserAge"));
+                    return new User(rs.getString("UserID"), rs.getString("UserName"), rs.getString("UserEmail"), rs.getString("UserPassword"), rs.getInt("UserAge"), rs.getBlob("UserProfile"));
                 } else {
                     return null;
                 }

@@ -1,6 +1,7 @@
 package controller;
 
 import database.AuthQuery;
+import model.LoggedUser;
 import model.User;
 
 public class AuthController {
@@ -32,6 +33,7 @@ public class AuthController {
             return "Please fill all the fields!";
         } else {
             User user = authQuery.login(email, pass);
+            LoggedUser.getInstance(user);
 
             if(remember) {
                 authQuery.rememberMe(user);

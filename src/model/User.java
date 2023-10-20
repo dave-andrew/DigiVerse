@@ -1,5 +1,10 @@
 package model;
 
+import javafx.scene.image.Image;
+
+import java.io.InputStream;
+import java.sql.Blob;
+import java.sql.SQLException;
 import java.util.UUID;
 
 public class User {
@@ -9,6 +14,24 @@ public class User {
     private String email;
     private String password;
     private int age;
+    private Image profile;
+    private Blob blobProfile;
+
+    public User(String id, String username, String email, String password, int age, Blob profile) {
+        this.id = id;
+        this.username = username;
+        this.email = email;
+        this.password = password;
+        this.age = age;
+
+        try {
+            this.blobProfile = profile;
+            InputStream in = profile.getBinaryStream();
+            this.profile = new Image(in);
+        } catch(SQLException e) {
+            throw new RuntimeException(e);
+        }
+    }
 
     public User(String username, String email, String password, int age) {
         this.id = UUID.randomUUID().toString();
@@ -61,5 +84,21 @@ public class User {
 
     public String getId() {
         return id;
+    }
+
+    public Image getProfile() {
+        return profile;
+    }
+
+    public void setProfile(Image profile) {
+        this.profile = profile;
+    }
+
+    public Blob getBlobProfile() {
+        return blobProfile;
+    }
+
+    public void setBlobProfile(Blob blobProfile) {
+        this.blobProfile = blobProfile;
     }
 }

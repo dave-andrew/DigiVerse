@@ -37,3 +37,21 @@
 .small-checkbox .label {
     -fx-font-size: 11px;
 }
+
+.side-nav {
+    -fx-padding: 30px 60px 30px 30px;
+    -fx-border-color: transparent #E5E5E5 transparent transparent;
+    -fx-border-width: 0 2px 0 0;
+}
+
+.nav-bar {
+    -fx-background-color: transparent;
+    -fx-padding: 15px 30px 15px 30px;
+    -fx-border-color: transparent transparent #E5E5E5 transparent;
+    -fx-border-width: 0 0 2px 0;
+}
+
+.title {
+    -fx-font-size: 20px;
+    -fx-font-weight: bold;
+}
