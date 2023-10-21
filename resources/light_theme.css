@@ -5,9 +5,12 @@
 
 .root {
     -fx-background-color: #fff;
-    -fx-text-fill: #000;
     -fx-font-size: 16px;
     -fx-font-family: "Nunito";
+}
+
+.text {
+    -fx-fill: #36454F;
 }
 
 .auth-layout {
@@ -21,8 +24,30 @@
 }
 
 .primary-button:hover {
-    -fx-background-color: #4DCAFF;
+    -fx-background-color: #4DDAFF;
     -fx-cursor: hand;
+}
+
+.primary-button:pressed {
+    -fx-background-color: #4DCAFF;
+}
+
+.secondary-button {
+    -fx-background-color: #FFFFFF;
+    -fx-padding: 7px 35px;
+    -fx-border-color: #4DCAFF;
+    -fx-border-width: 1px;
+    -fx-background-radius: 5px;
+    -fx-border-radius: 5px;
+}
+
+.secondary-button:hover {
+    -fx-background-color: #FAFAFA;
+    -fx-cursor: hand;
+}
+
+.secondary-button:pressed {
+    -fx-background-color: #D4D4D4;
 }
 
 .link-button {
@@ -58,10 +83,41 @@
 }
 
 .card-background {
+    -fx-padding: 20px;
     -fx-background-color: #fff;
     -fx-background-radius: 10px;
     -fx-border-radius: 10px;
     -fx-border-color: #000;
     -fx-border-width: 1px;
     -fx-cursor: hand;
+}
+
+.card-background:hover {
+    -fx-background-color: #F5F5F5;
+}
+
+.card-background:pressed {
+    -fx-background-color: #E5E5E5;
+}
+
+.image-button {
+    -fx-background-color: transparent;
+    -fx-background-radius: 100px;
+    -fx-cursor: hand;
+}
+
+.image-button:hover {
+    -fx-background-color: #F5F5F5;
+}
+
+.image-button:pressed {
+    -fx-background-color: #E5E5E5;
+}
+
+.container {
+    -fx-padding: 10px;
+    -fx-border-color: #36454F;
+    -fx-border-width: 1px;
+    -fx-max-width: 400px;
+    -fx-border-radius: 10px;
 }

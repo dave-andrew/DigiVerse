@@ -41,6 +41,7 @@ public class Home {
     private StackPane mainPane;
     private ScrollPane scrollPane;
 
+    private Button plusBtn, userBtn;
 
     private VBox sideBar;
 
@@ -60,7 +61,7 @@ public class Home {
         hbox.setAlignment(Pos.CENTER_LEFT);
         return hbox;
     }
-    GridPane classGrid;
+    private GridPane classGrid;
 
     private void fetchClass() {
         classGrid = new GridPane();
@@ -98,9 +99,6 @@ public class Home {
         fetchClass();
 
 
-//        Label test = new Label("Hello World");
-//        mainPane.getChildren().add(test);
-
         Label right = new Label("Ini Right");
         mainPane.getChildren().add(right);
         StackPane.setAlignment(right, Pos.TOP_RIGHT);
@@ -135,13 +133,21 @@ public class Home {
         userImg.setFitHeight(40);
         userImg.setPreserveRatio(true);
 
+        plusBtn = new Button();
+        plusBtn.setGraphic(plus);
+        plusBtn.getStyleClass().add("image-button");
+
+        userBtn = new Button();
+        userBtn.setGraphic(userImg);
+        userBtn.getStyleClass().add("image-button");
+
         title = new Label("DigiVerse");
         title.getStyleClass().add("title");
 
         leftNav.getChildren().addAll(icon, title);
         leftNav.setAlignment(Pos.CENTER_LEFT);
 
-        rightNav.getChildren().addAll(plus, userImg);
+        rightNav.getChildren().addAll(plusBtn, userBtn);
         rightNav.setAlignment(Pos.CENTER_RIGHT);
 
         sideBar = new VBox(10);
@@ -184,7 +190,7 @@ public class Home {
     }
 
     private void actions(Stage stage) {
-        plus.setOnMousePressed(e -> {
+        plusBtn.setOnMousePressed(e -> {
             new CreateClass(stage);
         });
     }

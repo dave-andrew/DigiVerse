@@ -1,6 +1,7 @@
 package database;
 
 import helper.DateManager;
+import model.LoggedUser;
 import model.User;
 
 import java.sql.PreparedStatement;
@@ -90,7 +91,7 @@ public class AuthQuery {
     public boolean checkAuth() {
         LocalDateTime now = LocalDateTime.now();
 
-        String query = "SELECT * FROM authcheck WHERE DeviceName = ?";
+        String query = "SELECT * FROM authcheck AS a JOIN msuser AS u ON a.UserID = u.UserID WHERE a.DeviceName = ?";
 
         String computerName = System.getenv("COMPUTERNAME");
 
@@ -104,6 +105,8 @@ public class AuthQuery {
                         deleteAuthData(computerName);
                         return false;
                     } else {
+                        User user = new User(rs.getString("UserID"), rs.getString("UserName"), rs.getString("UserEmail"), rs.getString("UserPassword"), rs.getInt("UserAge"), rs.getBlob("UserProfile"));
+                        LoggedUser.getInstance(user);
                         return true;
                     }
                 } else {
