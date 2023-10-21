@@ -7,9 +7,12 @@ import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
+import javafx.scene.control.ScrollPane;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.input.ScrollEvent;
 import javafx.scene.layout.*;
+import javafx.scene.text.Font;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
@@ -36,6 +39,7 @@ public class Home {
 
 
     private StackPane mainPane;
+    private ScrollPane scrollPane;
 
 
     private VBox sideBar;
@@ -46,37 +50,39 @@ public class Home {
         Image image = new Image(imagePath);
         ImageView icon = new ImageView(image);
 
-        icon.setFitWidth(17);
+        icon.setFitWidth(25);
         icon.setPreserveRatio(true);
 
         Label lbl = new Label(label);
+        lbl.setStyle("-fx-font-size: 16px;");
 
         hbox.getChildren().addAll(icon, lbl);
         hbox.setAlignment(Pos.CENTER_LEFT);
         return hbox;
     }
+    GridPane classGrid;
 
     private void fetchClass() {
-        GridPane classGrid = new GridPane();
-        StackPane sp = ClassCard.createCard("Hello", "World");
-        StackPane sp2 = ClassCard.createCard("Hello", "World");
-        StackPane sp3 = ClassCard.createCard("Hello", "World");
-        StackPane sp4 = ClassCard.createCard("Hello", "World");
-        StackPane sp5 = ClassCard.createCard("Hello", "World");
-        StackPane sp6 = ClassCard.createCard("Hello", "World");
+        classGrid = new GridPane();
+        StackPane sp = new ClassCard("Hello", "World");
+        StackPane sp2 = new ClassCard("Hello", "World");
+        StackPane sp3 = new ClassCard("Hello", "World");
+        StackPane sp4 = new ClassCard("Hello", "World");
+        StackPane sp5 = new ClassCard("Hello", "World");
+        StackPane sp6 = new ClassCard("Hello", "World");
 
-        classGrid.add(sp, 0, 0);
-        classGrid.add(sp2, 1, 0);
-        classGrid.add(sp3, 2, 0);
-        classGrid.add(sp4, 3, 0);
-        classGrid.add(sp5, 4, 0);
-        classGrid.add(sp6, 0, 1);
+        classGrid.add(sp, 0, 1);
+        classGrid.add(sp2, 0, 2);
+        classGrid.add(sp3, 0, 3);
+        classGrid.add(sp4, 0, 4);
+        classGrid.add(sp5, 0, 5);
+        classGrid.add(sp6, 0, 6);
 
         classGrid.setPadding(new Insets(20));
         classGrid.setHgap(20);
         classGrid.setVgap(20);
 
-        mainPane.getChildren().add(classGrid);
+        scrollPane.setContent(classGrid);
     }
 
     private void initialize() {
@@ -85,6 +91,8 @@ public class Home {
 
         borderPane = new BorderPane();
         mainPane = new StackPane();
+        scrollPane = new ScrollPane();
+        mainPane.getChildren().add(scrollPane);
 
 
         fetchClass();
@@ -144,6 +152,17 @@ public class Home {
     }
 
     private Scene setLayout() {
+        scrollPane.setHbarPolicy(ScrollPane.ScrollBarPolicy.NEVER);
+        scrollPane.setVbarPolicy(ScrollPane.ScrollBarPolicy.ALWAYS);
+
+        scrollPane.setPannable(true);
+
+        final double SPEED = 0.5;
+        scrollPane.getContent().setOnScroll(scrollEvent -> {
+            double deltaY = scrollEvent.getDeltaY() * SPEED;
+            scrollPane.setVvalue(scrollPane.getVvalue() - deltaY);
+        });
+
 
         sideBar.getChildren().addAll(homeSideNav, calenderSideNav);
         sideBar.getStyleClass().add("side-nav");
@@ -164,9 +183,9 @@ public class Home {
         return scene;
     }
 
-    private void actions() {
-        plus.setOnMouseClicked(e -> {
-
+    private void actions(Stage stage) {
+        plus.setOnMousePressed(e -> {
+            new CreateClass(stage);
         });
     }
 
@@ -174,7 +193,7 @@ public class Home {
 
         initialize();
         scene = setLayout();
-        actions();
+        actions(stage);
 
         stage.setScene(scene);
         stage.setTitle("DigiVerse - Home");

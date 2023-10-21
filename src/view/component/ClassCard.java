@@ -4,12 +4,11 @@ import javafx.scene.control.Label;
 import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
 
-public class ClassCard {
+public class ClassCard extends StackPane {
 
-    public static StackPane createCard(String className, String classCode) {
-        StackPane card = new StackPane();
-        card.setPrefSize(250, 250);
-        card.getStyleClass().add("card-background");
+    public ClassCard(String className, String classCode) {
+        this.setPrefSize(250, 250);
+        this.getStyleClass().add("card-background");
 
         VBox cardContent = new VBox(10);
 
@@ -18,9 +17,8 @@ public class ClassCard {
 
         cardContent.getChildren().addAll(classNameLbl, classCodeLbl);
 
-        card.getChildren().add(cardContent);
+        this.getChildren().add(cardContent);
 
-        return card;
     }
 
 }
