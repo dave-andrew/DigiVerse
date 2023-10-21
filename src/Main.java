@@ -1,5 +1,6 @@
 import controller.AuthController;
 import helper.ScreenManager;
+import helper.StageManager;
 import helper.ThemeManager;
 import javafx.animation.PauseTransition;
 import javafx.application.Application;
@@ -31,7 +32,8 @@ public class Main extends Application {
     }
 
     @Override
-    public void start(Stage primaryStage) throws Exception {
+    public void start(Stage stage) throws Exception {
+        Stage primaryStage = StageManager.getInstance();
         scene = initialize();
         primaryStage.setScene(scene);
 

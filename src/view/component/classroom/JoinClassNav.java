@@ -1,4 +1,4 @@
-package view.component;
+package view.component.classroom;
 
 import javafx.geometry.Pos;
 import javafx.scene.control.Button;

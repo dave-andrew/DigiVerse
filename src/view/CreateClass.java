@@ -7,7 +7,6 @@ import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
-import javafx.scene.control.ScrollPane;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.BorderPane;
@@ -15,7 +14,8 @@ import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 import model.LoggedUser;
-import view.component.JoinClassNav;
+import view.component.classroom.CreateClassForm;
+import view.component.classroom.JoinClassNav;
 
 public class CreateClass {
 
@@ -32,6 +32,8 @@ public class CreateClass {
     private Label userInfoLbl, userNameLbl, userEmailLbl;
     private ImageView userImg;
     private Button changeAccountBtn;
+    private VBox classFormBox;
+
 
     private void initialize(Stage stage) {
         loggedUser = LoggedUser.getInstance();
@@ -67,12 +69,15 @@ public class CreateClass {
         userInfoBox.getChildren().addAll(userInfoLbl, userHbox);
         userInfoBox.setAlignment(Pos.TOP_CENTER);
         userInfoBox.getStyleClass().add("container");
+
+        classFormBox = new CreateClassForm();
+        classFormBox.getStyleClass().add("container");
     }
 
     private Scene setLayout() {
         mainVbox.setPadding(new Insets(20, 20, 20, 20));
 
-        mainVbox.getChildren().add(userInfoBox);
+        mainVbox.getChildren().addAll(userInfoBox, classFormBox);
         mainVbox.setAlignment(Pos.TOP_CENTER);
 
         borderPane.setTop(topBar);

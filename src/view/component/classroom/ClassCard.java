@@ -1,4 +1,4 @@
-package view.component;
+package view.component.classroom;
 
 import javafx.scene.control.Label;
 import javafx.scene.layout.StackPane;
