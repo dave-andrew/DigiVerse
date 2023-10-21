@@ -25,9 +25,11 @@ public class User {
         this.age = age;
 
         try {
-            this.blobProfile = profile;
-            InputStream in = profile.getBinaryStream();
-            this.profile = new Image(in);
+            if(profile != null) {
+                this.blobProfile = profile;
+                InputStream in = profile.getBinaryStream();
+                this.profile = new Image(in);
+            }
         } catch(SQLException e) {
             throw new RuntimeException(e);
         }

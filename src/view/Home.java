@@ -14,6 +14,8 @@ import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
 import model.LoggedUser;
+import view.component.ClassCard;
+import view.component.GridClass;
 
 
 public class Home {
@@ -54,15 +56,42 @@ public class Home {
         return hbox;
     }
 
+    private void fetchClass() {
+        GridPane classGrid = new GridPane();
+        StackPane sp = ClassCard.createCard("Hello", "World");
+        StackPane sp2 = ClassCard.createCard("Hello", "World");
+        StackPane sp3 = ClassCard.createCard("Hello", "World");
+        StackPane sp4 = ClassCard.createCard("Hello", "World");
+        StackPane sp5 = ClassCard.createCard("Hello", "World");
+        StackPane sp6 = ClassCard.createCard("Hello", "World");
+
+        classGrid.add(sp, 0, 0);
+        classGrid.add(sp2, 1, 0);
+        classGrid.add(sp3, 2, 0);
+        classGrid.add(sp4, 3, 0);
+        classGrid.add(sp5, 4, 0);
+        classGrid.add(sp6, 0, 1);
+
+        classGrid.setPadding(new Insets(20));
+        classGrid.setHgap(20);
+        classGrid.setVgap(20);
+
+        mainPane.getChildren().add(classGrid);
+    }
 
     private void initialize() {
+
         loggedUser = LoggedUser.getInstance();
 
         borderPane = new BorderPane();
         mainPane = new StackPane();
 
-        Label test = new Label("Hello World");
-        mainPane.getChildren().add(test);
+
+        fetchClass();
+
+
+//        Label test = new Label("Hello World");
+//        mainPane.getChildren().add(test);
 
         Label right = new Label("Ini Right");
         mainPane.getChildren().add(right);
@@ -136,15 +165,15 @@ public class Home {
     }
 
     private void actions() {
+        plus.setOnMouseClicked(e -> {
 
+        });
     }
 
     public Home(Stage stage) {
 
         initialize();
-
         scene = setLayout();
-
         actions();
 
         stage.setScene(scene);

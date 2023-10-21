@@ -25,8 +25,10 @@ public class LoggedUser extends User{
         super(id, username, email, password, age, profile);
 
         try {
-            InputStream in = profile.getBinaryStream();
-            this.profileImage = new Image(in);
+            if(profile != null){
+                InputStream in = profile.getBinaryStream();
+                this.profileImage = new Image(in);
+            }
         } catch (Exception e) {
             throw new RuntimeException(e);
         }
