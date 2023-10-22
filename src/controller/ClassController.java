@@ -22,4 +22,17 @@ public class ClassController {
         }
     }
 
+    public String checkJoinClass(String groupCode) {
+        if(groupCode.isEmpty()) {
+            return "Please fill the group code!";
+        } else {
+            Classroom classroom = classQuery.joinClass(groupCode);
+            if(classroom == null) {
+                return "Group code not found!";
+            } else {
+                return "Join Class Success!";
+            }
+        }
+    }
+
 }

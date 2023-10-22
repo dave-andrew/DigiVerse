@@ -1,5 +1,6 @@
 package view;
 
+import controller.ClassController;
 import helper.ScreenManager;
 import helper.ThemeManager;
 import javafx.geometry.Insets;
@@ -17,19 +18,23 @@ import view.component.classroom.JoinClassNav;
 
 public class JoinClass {
 
+    private ClassController classController;
+
     private Scene scene;
     private BorderPane borderPane;
 
     private VBox mainVbox;
-    private HBox topBar;
+    private JoinClassNav topBar;
 
     private VBox userInfoBox;
-    private VBox classFormBox;
+    private GroupCodeForm classFormBox;
     private VBox joinInfo;
     private Label joinInfoSub, lbl1, lbl2;
     private VBox joinInfoList;
 
     private void initialize(Stage stage) {
+
+        classController = new ClassController();
 
         borderPane = new BorderPane();
         mainVbox = new VBox(20);
@@ -73,12 +78,20 @@ public class JoinClass {
         return scene;
     }
 
+    public void actions() {
+        topBar.getJoinBtn().setOnMouseClicked(e -> {
+            classController.checkJoinClass(classFormBox.getGroupCode());
+        });
+    }
+
     public JoinClass(Stage stage) {
 
         initialize(stage);
+        actions();
 
         scene = setLayout();
 
         stage.setScene(scene);
     }
+
 }

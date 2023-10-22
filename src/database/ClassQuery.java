@@ -4,6 +4,7 @@ import model.Classroom;
 import model.LoggedUser;
 
 import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import java.util.ArrayList;
 
 public class ClassQuery {
@@ -65,16 +66,26 @@ public class ClassQuery {
         return classrooms;
     }
 
-    public void joinClass(String classCode) {
+    public Classroom joinClass(String classCode) {
+        String checkGroupClassCode = "SELECT * FROM msclass WHERE ClassCode = ?";
         String query = "INSERT INTO class_member VALUES (?, ?, ?)";
 
+        PreparedStatement checkGroupCode = connect.prepareStatement(checkGroupClassCode);
         PreparedStatement ps = connect.prepareStatement(query);
         try {
-            ps.setString(1, classCode);
+            checkGroupCode.setString(1, classCode);
+            ResultSet rs = checkGroupCode.executeQuery();
+            if(!rs.next()){
+                return null;
+            }
+
+            ps.setString(1, rs.getString("ClassID"));
             ps.setString(2, loggedUser.getId());
             ps.setString(3, "Student");
 
             ps.executeUpdate();
+
+            return new Classroom(rs.getString("ClassID"), rs.getString("ClassName"), rs.getString("ClassDesc"), rs.getString("ClassCode"), rs.getString("ClassSubject"));
         } catch (Exception e) {
             throw new RuntimeException(e);
         }

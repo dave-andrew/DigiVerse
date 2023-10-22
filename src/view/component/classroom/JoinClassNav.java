@@ -1,5 +1,7 @@
 package view.component.classroom;
 
+import controller.ClassController;
+import helper.StageManager;
 import javafx.geometry.Pos;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
@@ -12,6 +14,8 @@ import view.Home;
 
 public class JoinClassNav extends HBox {
 
+    private ClassController classController;
+
     private HBox leftNav;
     private Image closeImg;
     private ImageView close;
@@ -20,6 +24,8 @@ public class JoinClassNav extends HBox {
     private Button closeBtn;
 
     private void initialize() {
+        classController = new ClassController();
+
         leftNav = new HBox(20);
 
         closeImg = new Image("file:resources/icons/close.png");
@@ -49,20 +55,21 @@ public class JoinClassNav extends HBox {
         this.getChildren().addAll(leftNav, joinBtn);
     }
 
-    private void actions(Stage stage) {
+    public void actions() {
+        Stage stage = StageManager.getInstance();
         closeBtn.setOnMouseClicked(e -> {
             new Home(stage);
-        });
-
-        joinBtn.setOnAction(e -> {
-            System.out.println("Join");
         });
     }
 
     public JoinClassNav(Stage stage) {
         initialize();
-        actions(stage);
+        actions();
         this.getStyleClass().add("nav-bar");
+    }
+
+    public Button getJoinBtn() {
+        return joinBtn;
     }
 
 }

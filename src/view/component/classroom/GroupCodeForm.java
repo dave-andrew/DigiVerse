@@ -24,4 +24,8 @@ public class GroupCodeForm extends VBox {
 
     }
 
+    public String getGroupCode() {
+        return groupCodeField.getText();
+    }
+
 }
