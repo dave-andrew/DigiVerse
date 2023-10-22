@@ -7,7 +7,7 @@ import javafx.scene.layout.VBox;
 public class ClassCard extends StackPane {
 
     public ClassCard(String className, String classCode) {
-        this.setPrefSize(250, 250);
+        this.setPrefSize(300, 250);
         this.getStyleClass().add("card-background");
 
         VBox cardContent = new VBox(10);

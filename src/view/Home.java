@@ -5,9 +5,7 @@ import helper.ThemeManager;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
-import javafx.scene.control.Button;
-import javafx.scene.control.Label;
-import javafx.scene.control.ScrollPane;
+import javafx.scene.control.*;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.*;
@@ -22,6 +20,7 @@ public class Home {
 
     private Scene scene;
     private BorderPane borderPane;
+    private GridPane classGrid;
 
     private HBox navBar, homeSideNav, calenderSideNav;
 
@@ -40,6 +39,9 @@ public class Home {
 
     private VBox sideBar;
 
+    private ContextMenu plusMenu;
+    private MenuItem createClass, joinClass;
+
     private HBox sideNavItem(String imagePath, String label) {
         HBox hbox = new HBox(30);
 
@@ -56,7 +58,6 @@ public class Home {
         hbox.setAlignment(Pos.CENTER_LEFT);
         return hbox;
     }
-    private GridPane classGrid;
 
     private void fetchClass() {
         classGrid = new GridPane();
@@ -67,12 +68,12 @@ public class Home {
         StackPane sp5 = new ClassCard("Hello", "World");
         StackPane sp6 = new ClassCard("Hello", "World");
 
-        classGrid.add(sp, 0, 1);
-        classGrid.add(sp2, 0, 2);
-        classGrid.add(sp3, 0, 3);
-        classGrid.add(sp4, 0, 4);
-        classGrid.add(sp5, 0, 5);
-        classGrid.add(sp6, 0, 6);
+        classGrid.add(sp, 0, 0);
+        classGrid.add(sp2, 1, 0);
+        classGrid.add(sp3, 2, 0);
+        classGrid.add(sp4, 3, 0);
+        classGrid.add(sp5, 0, 1);
+        classGrid.add(sp6, 1, 1);
 
         classGrid.setPadding(new Insets(20));
         classGrid.setHgap(20);
@@ -90,9 +91,7 @@ public class Home {
         scrollPane = new ScrollPane();
         mainPane.getChildren().add(scrollPane);
 
-
         fetchClass();
-
 
         Label right = new Label("Ini Right");
         mainPane.getChildren().add(right);
@@ -113,6 +112,14 @@ public class Home {
         plus.setFitWidth(20);
         plus.setFitHeight(20);
         plus.setPreserveRatio(true);
+
+        plusMenu = new ContextMenu();
+
+        createClass = new MenuItem("Create Class");
+        joinClass = new MenuItem("Join Class");
+
+        plusMenu.getItems().addAll(createClass, joinClass);
+
 
         if (loggedUser != null) {
             Image userImage = loggedUser.getProfileImage();
@@ -185,9 +192,19 @@ public class Home {
     }
 
     private void actions(Stage stage) {
-        plusBtn.setOnMousePressed(e -> {
+
+        plusBtn.setOnMouseClicked(e -> {
+            plusMenu.show(plusBtn, e.getScreenX(), e.getScreenY());
+        });
+
+        createClass.setOnAction(e -> {
             new CreateClass(stage);
         });
+
+        joinClass.setOnAction(e -> {
+            new JoinClass(stage);
+        });
+
     }
 
     public Home(Stage stage) {
