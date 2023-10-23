@@ -65,7 +65,7 @@ public class Home {
         classGrid = new ClassroomList();
         scrollPane.setContent(classGrid);
 
-        classGrid.setPadding(new Insets(20, 20, 20, 20));
+        mainPane.getChildren().add(scrollPane);
     }
 
     private void initialize() {
@@ -77,7 +77,8 @@ public class Home {
         scrollPane = new ScrollPane();
         mainPane.getChildren().add(scrollPane);
 
-        fetchClass();
+        classGrid = new ClassroomList();
+        scrollPane.setContent(classGrid);
 
         Label right = new Label("Ini Right");
         mainPane.getChildren().add(right);
@@ -150,9 +151,10 @@ public class Home {
 
     private Scene setLayout() {
         scrollPane.setHbarPolicy(ScrollPane.ScrollBarPolicy.NEVER);
-        scrollPane.setVbarPolicy(ScrollPane.ScrollBarPolicy.ALWAYS);
+        scrollPane.setVbarPolicy(ScrollPane.ScrollBarPolicy.AS_NEEDED);
 
         scrollPane.setPannable(true);
+        scrollPane.setStyle("-fx-background-color: white;");
 
 
         sideBar.getChildren().addAll(homeSideNav, calenderSideNav);
@@ -189,12 +191,15 @@ public class Home {
         });
 
         homeSideNav.setOnMouseClicked(e -> {
+            mainPane.getChildren().clear();
             fetchClass();
         });
 
         calenderSideNav.setOnMouseClicked(e -> {
+            mainPane.getChildren().clear();
             VBox calendar = new Calendar();
-            scrollPane.setContent(calendar);
+            calendar.setAlignment(Pos.TOP_CENTER);
+            mainPane.getChildren().add(calendar);
         });
 
     }

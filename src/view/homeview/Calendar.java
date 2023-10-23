@@ -2,12 +2,12 @@ package view.homeview;
 
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
+import javafx.scene.control.Button;
 import javafx.scene.control.Label;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.scene.layout.*;
-import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
-import javafx.scene.text.Text;
-import javafx.scene.text.TextAlignment;
 
 import java.time.LocalDateTime;
 import java.time.YearMonth;
@@ -19,6 +19,9 @@ public class Calendar extends VBox {
     private GridPane calendarGrid;
     private Label monthLbl;
 
+    private HBox calendarHeader;
+    private Button prevMonthBtn, nextMonthBtn;
+
     public Calendar() {
         init();
         createCalendarLayout();
@@ -26,18 +29,53 @@ public class Calendar extends VBox {
 
     private void init() {
         date = LocalDateTime.now();
+
+        calendarHeader = new HBox(50);
+
         calendarGrid = new GridPane();
+
         monthLbl = new Label(date.getMonth() + " " + date.getYear());
+
         monthLbl.setAlignment(Pos.TOP_CENTER);
         monthLbl.setFont(Font.font(16));
 
-        // Adjust the grid's properties
-//        calendarGrid.setHgap(5);
-//        calendarGrid.setVgap(5);
+        Image leftArrow = new Image("file:resources/icons/left-nav.png");
+        ImageView leftArrowView = new ImageView(leftArrow);
+        leftArrowView.setFitWidth(20);
+        leftArrowView.setPreserveRatio(true);
+        prevMonthBtn = new Button();
+        prevMonthBtn.setGraphic(leftArrowView);
+        prevMonthBtn.setAlignment(Pos.TOP_CENTER);
+        prevMonthBtn.setStyle("-fx-background-color: transparent; -fx-border-color: transparent; -fx-border-width: 0;-fx-cursor: hand");
+
+        Image rightArrow = new Image("file:resources/icons/right-nav.png");
+        ImageView rightArrowView = new ImageView(rightArrow);
+        rightArrowView.setFitWidth(20);
+        rightArrowView.setPreserveRatio(true);
+        nextMonthBtn = new Button();
+        nextMonthBtn.setGraphic(rightArrowView);
+        nextMonthBtn.setAlignment(Pos.TOP_CENTER);
+        nextMonthBtn.setStyle("-fx-background-color: transparent; -fx-border-color: transparent; -fx-border-width: 0;-fx-cursor: hand");
+
+        calendarHeader.getChildren().addAll(prevMonthBtn, monthLbl, nextMonthBtn);
+        calendarHeader.setAlignment(Pos.TOP_CENTER);
+        calendarHeader.setPadding(new Insets(20, 0, 50, 0));
+
         calendarGrid.setAlignment(Pos.CENTER);
+
+        prevMonthBtn.setOnAction(e -> {
+            date = date.minusMonths(1); // Move to the previous month
+            updateCalendar();
+        });
+
+        nextMonthBtn.setOnAction(e -> {
+            date = date.plusMonths(1); // Move to the next month
+            updateCalendar();
+        });
     }
 
     private void createCalendarLayout() {
+        calendarGrid.getChildren().clear();
         String[] daysOfWeek = {"Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"};
         for (int i = 0; i < 7; i++) {
             Label dayLabel = new Label(daysOfWeek[i]);
@@ -45,7 +83,7 @@ public class Calendar extends VBox {
             calendarGrid.add(dayLabel, i, 0);
         }
 
-        YearMonth yearMonth = YearMonth.of(date.getYear(), date.getMonthValue() - 1);
+        YearMonth yearMonth = YearMonth.of(date.getYear(), date.getMonthValue());
         int daysInMonth = yearMonth.lengthOfMonth();
         int dayOfWeek = yearMonth.atDay(1).getDayOfWeek().getValue();
 
@@ -74,8 +112,15 @@ public class Calendar extends VBox {
             }
         }
 
-        this.getChildren().add(monthLbl);
+        this.getChildren().add(calendarHeader);
         this.getChildren().add(calendarGrid);
         this.setAlignment(Pos.TOP_CENTER);
     }
+
+    private void updateCalendar() {
+        monthLbl.setText(date.getMonth() + " " + date.getYear());
+
+        createCalendarLayout();
+    }
+
 }
