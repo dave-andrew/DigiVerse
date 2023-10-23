@@ -121,3 +121,20 @@
     -fx-max-width: 600px;
     -fx-border-radius: 10px;
 }
+
+.context-menu {
+    -fx-background-color: #fff;
+    -fx-border-radius: 10px;
+}
+
+.context-menu .item {
+    -fx-padding: 15px 25px;
+}
+
+.context-menu .item:hover {
+    -fx-background-color: #F5F5F5;
+}
+
+.context-menu .item:pressed {
+    -fx-background-color: #E5E5E5;
+}

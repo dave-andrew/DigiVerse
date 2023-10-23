@@ -12,6 +12,8 @@ import javafx.scene.layout.*;
 import javafx.stage.Stage;
 import model.LoggedUser;
 import view.component.classroom.ClassCard;
+import view.homeview.Calendar;
+import view.homeview.ClassroomList;
 
 
 public class Home {
@@ -60,26 +62,10 @@ public class Home {
     }
 
     private void fetchClass() {
-        classGrid = new GridPane();
-        StackPane sp = new ClassCard("Hello", "World");
-        StackPane sp2 = new ClassCard("Hello", "World");
-        StackPane sp3 = new ClassCard("Hello", "World");
-        StackPane sp4 = new ClassCard("Hello", "World");
-        StackPane sp5 = new ClassCard("Hello", "World");
-        StackPane sp6 = new ClassCard("Hello", "World");
-
-        classGrid.add(sp, 0, 0);
-        classGrid.add(sp2, 1, 0);
-        classGrid.add(sp3, 2, 0);
-        classGrid.add(sp4, 3, 0);
-        classGrid.add(sp5, 0, 1);
-        classGrid.add(sp6, 1, 1);
-
-        classGrid.setPadding(new Insets(20));
-        classGrid.setHgap(20);
-        classGrid.setVgap(20);
-
+        classGrid = new ClassroomList();
         scrollPane.setContent(classGrid);
+
+        classGrid.setPadding(new Insets(20, 20, 20, 20));
     }
 
     private void initialize() {
@@ -114,9 +100,12 @@ public class Home {
         plus.setPreserveRatio(true);
 
         plusMenu = new ContextMenu();
+        plusMenu.getStyleClass().add("context-menu");
 
         createClass = new MenuItem("Create Class");
+        createClass.getStyleClass().add("item");
         joinClass = new MenuItem("Join Class");
+        joinClass.getStyleClass().add("item");
 
         plusMenu.getItems().addAll(createClass, joinClass);
 
@@ -165,12 +154,6 @@ public class Home {
 
         scrollPane.setPannable(true);
 
-        final double SPEED = 0.5;
-        scrollPane.getContent().setOnScroll(scrollEvent -> {
-            double deltaY = scrollEvent.getDeltaY() * SPEED;
-            scrollPane.setVvalue(scrollPane.getVvalue() - deltaY);
-        });
-
 
         sideBar.getChildren().addAll(homeSideNav, calenderSideNav);
         sideBar.getStyleClass().add("side-nav");
@@ -194,7 +177,7 @@ public class Home {
     private void actions(Stage stage) {
 
         plusBtn.setOnMouseClicked(e -> {
-            plusMenu.show(plusBtn, e.getScreenX(), e.getScreenY());
+            plusMenu.show(plusBtn, e.getScreenX() - 150, e.getScreenY());
         });
 
         createClass.setOnAction(e -> {
@@ -203,6 +186,15 @@ public class Home {
 
         joinClass.setOnAction(e -> {
             new JoinClass(stage);
+        });
+
+        homeSideNav.setOnMouseClicked(e -> {
+            fetchClass();
+        });
+
+        calenderSideNav.setOnMouseClicked(e -> {
+            VBox calendar = new Calendar();
+            scrollPane.setContent(calendar);
         });
 
     }
