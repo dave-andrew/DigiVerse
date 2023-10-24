@@ -59,17 +59,17 @@ public class Calendar extends VBox {
 
         calendarHeader.getChildren().addAll(prevMonthBtn, monthLbl, nextMonthBtn);
         calendarHeader.setAlignment(Pos.TOP_CENTER);
-        calendarHeader.setPadding(new Insets(20, 0, 50, 0));
+        calendarHeader.setPadding(new Insets(20, 0, 20, 0));
 
         calendarGrid.setAlignment(Pos.CENTER);
 
         prevMonthBtn.setOnAction(e -> {
-            date = date.minusMonths(1); // Move to the previous month
+            date = date.minusMonths(1);
             updateCalendar();
         });
 
         nextMonthBtn.setOnAction(e -> {
-            date = date.plusMonths(1); // Move to the next month
+            date = date.plusMonths(1);
             updateCalendar();
         });
     }

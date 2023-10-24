@@ -1,26 +1,39 @@
 package view.homeview;
 
+import controller.AuthController;
+import controller.ClassController;
 import javafx.geometry.Insets;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.StackPane;
+import model.Classroom;
 import view.component.classroom.ClassCard;
+
+import java.util.ArrayList;
 
 public class ClassroomList extends GridPane {
 
-    public ClassroomList() {
-        StackPane sp = new ClassCard("Hello", "World");
-        StackPane sp2 = new ClassCard("Hello", "World");
-        StackPane sp3 = new ClassCard("Hello", "World");
-        StackPane sp4 = new ClassCard("Hello", "World");
-        StackPane sp5 = new ClassCard("Hello", "World");
-        StackPane sp6 = new ClassCard("Hello", "World");
+    private ClassController classController;
+    private int index = 0;
+    private void init() {
+        classController = new ClassController();
+    }
 
-        this.add(sp, 0, 0);
-        this.add(sp2, 1, 0);
-        this.add(sp3, 2, 0);
-        this.add(sp4, 3, 0);
-        this.add(sp5, 0, 1);
-        this.add(sp6, 1, 1);
+    public ClassroomList() {
+
+        init();
+
+        ArrayList<Classroom> classroomList = classController.getUserClassroom();
+
+        for (Classroom classroom : classroomList) {
+            StackPane sp = new ClassCard(classroom.getClassName(), classroom.getClassDesc());
+
+            sp.setOnMouseClicked(e -> {
+                new ClassroomDetail(classroom);
+            });
+
+            this.add(sp, index % 4, index / 4);
+            index++;
+        }
 
         this.setPadding(new Insets(20));
         this.setHgap(20);

@@ -3,6 +3,8 @@ package controller;
 import database.ClassQuery;
 import model.Classroom;
 
+import java.util.ArrayList;
+
 public class ClassController {
 
     private ClassQuery classQuery;
@@ -33,6 +35,10 @@ public class ClassController {
                 return "Join Class Success!";
             }
         }
+    }
+
+    public ArrayList<Classroom> getUserClassroom() {
+        return classQuery.getUserClassrooom();
     }
 
 }
