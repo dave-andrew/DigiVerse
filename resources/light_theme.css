@@ -138,3 +138,20 @@
 .context-menu .item:pressed {
     -fx-background-color: #E5E5E5;
 }
+
+.nav-button {
+    -fx-background-color: transparent;
+    -fx-min-width: 90px;
+    -fx-cursor: hand;
+}
+
+.nav-button.active {
+    -fx-border-color: transparent transparent #000000 transparent;
+    -fx-border-width: 0 0 2px 0;
+}
+
+.class-nav {
+    -fx-background-color: transparent;
+    -fx-border-color: transparent transparent #E5E5E5 transparent;
+    -fx-border-width: 0 0 2px 0;
+}

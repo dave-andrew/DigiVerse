@@ -62,7 +62,7 @@ public class Home {
     }
 
     private void fetchClass() {
-        classGrid = new ClassroomList();
+        classGrid = new ClassroomList(mainPane);
         scrollPane.setContent(classGrid);
 
         mainPane.getChildren().add(scrollPane);
@@ -77,7 +77,7 @@ public class Home {
         scrollPane = new ScrollPane();
         mainPane.getChildren().add(scrollPane);
 
-        classGrid = new ClassroomList();
+        classGrid = new ClassroomList(mainPane);
         scrollPane.setContent(classGrid);
 
         Label right = new Label("Ini Right");
