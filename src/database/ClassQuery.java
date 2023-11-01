@@ -19,7 +19,7 @@ public class ClassQuery {
 
     public void createClass(Classroom classroom) {
 
-        String query = "INSERT INTO msclass VALUES (?, ?, ?, ?, ?)";
+        String query = "INSERT INTO msclass VALUES (?, ?, ?, ?, ?, NULL)";
         String query2 = "INSERT INTO class_member VALUES (?, ?, ?)";
 
         PreparedStatement ps = connect.prepareStatement(query);
@@ -56,7 +56,7 @@ public class ClassQuery {
 
             try(var rs = ps.executeQuery()) {
                 while(rs.next()) {
-                    classrooms.add(new Classroom(rs.getString("ClassID"), rs.getString("ClassName"), rs.getString("ClassDesc"), rs.getString("ClassCode"), rs.getString("ClassSubject")));
+                    classrooms.add(new Classroom(rs.getString("ClassID"), rs.getString("ClassName"), rs.getString("ClassDesc"), rs.getString("ClassCode"), rs.getString("ClassSubject"), rs.getBlob("ClassImage")));
                 }
             }
         } catch (Exception e) {
@@ -85,7 +85,7 @@ public class ClassQuery {
 
             ps.executeUpdate();
 
-            return new Classroom(rs.getString("ClassID"), rs.getString("ClassName"), rs.getString("ClassDesc"), rs.getString("ClassCode"), rs.getString("ClassSubject"));
+            return new Classroom(rs.getString("ClassID"), rs.getString("ClassName"), rs.getString("ClassDesc"), rs.getString("ClassCode"), rs.getString("ClassSubject"), rs.getBlob("ClassImage"));
         } catch (Exception e) {
             throw new RuntimeException(e);
         }

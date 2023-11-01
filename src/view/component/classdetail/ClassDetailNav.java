@@ -14,6 +14,7 @@ public class ClassDetailNav extends HBox {
     void init(){
         forum = new Button("Forum");
         forum.getStyleClass().add("nav-button");
+        forum.getStyleClass().add("active");
 
         task = new Button("Task");
         task.getStyleClass().add("nav-button");
