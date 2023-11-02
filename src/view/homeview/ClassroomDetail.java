@@ -18,16 +18,15 @@ public class ClassroomDetail extends BorderPane {
         topBar = new ClassDetailNav("Teacher");
 
         topBar.getStyleClass().add("nav-bar");
-
-        ScrollPane test = new ClassForum();
+        ScrollPane test = new ClassForum(classroom);
 
         this.setTop(topBar);
         this.setCenter(test);
     }
 
     public ClassroomDetail(Classroom classroom) {
-        init();
-
         this.classroom = classroom;
+
+        init();
     }
 }

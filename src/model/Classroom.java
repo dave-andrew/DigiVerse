@@ -68,4 +68,12 @@ public class Classroom {
     public void setClassSubject(String classSubject) {
         this.classSubject = classSubject;
     }
+
+    public Blob getClassImage() {
+        return classImage;
+    }
+
+    public void setClassImage(Blob classImage) {
+        this.classImage = classImage;
+    }
 }

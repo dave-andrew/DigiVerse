@@ -165,3 +165,10 @@
     -fx-border-color: transparent transparent #E5E5E5 transparent;
     -fx-border-width: 0 0 2px 0;
 }
+
+.class-banner {
+    -fx-border-radius: 10px;
+    -fx-min-width: 1000px;
+    -fx-min-height: 250px;
+    -fx-background-color: #000000;
+}
