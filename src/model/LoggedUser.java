@@ -1,5 +1,6 @@
 package model;
 
+import helper.ImageManager;
 import javafx.scene.image.Image;
 
 import java.io.InputStream;
@@ -24,13 +25,8 @@ public class LoggedUser extends User{
     private LoggedUser(String id, String username, String email, String password, int age, Blob profile) {
         super(id, username, email, password, age, profile);
 
-        try {
-            if(profile != null){
-                InputStream in = profile.getBinaryStream();
-                this.profileImage = new Image(in);
-            }
-        } catch (Exception e) {
-            throw new RuntimeException(e);
+        if(profile != null){
+            this.profileImage = ImageManager.convertBlobImage(profile);
         }
     }
 

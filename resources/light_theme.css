@@ -129,6 +129,24 @@
     -fx-border-color: #36454F;
     -fx-border-width: 1px;
     -fx-max-width: 600px;
+    -fx-min-width: 600px;
+    -fx-border-radius: 10px;
+}
+
+.small-container {
+    -fx-padding: 10px 20px;
+    -fx-border-color: #36454F;
+    -fx-border-width: 1px;
+    -fx-max-width: 300px;
+    -fx-min-width: 300px;
+    -fx-min-height: auto;
+    -fx-max-height: auto;
+    -fx-border-radius: 10px;
+}
+
+.border {
+    -fx-border-color: #36454F;
+    -fx-border-width: 1px;
     -fx-border-radius: 10px;
 }
 
@@ -170,5 +188,14 @@
     -fx-border-radius: 10px;
     -fx-min-width: 1000px;
     -fx-min-height: 250px;
+    -fx-background-color: #000000;
+}
+
+.profile {
+    -fx-border-radius: 100px;
+    -fx-min-width: 50px;
+    -fx-min-height: 50px;
+    -fx-max-width: 50px;
+    -fx-max-height: 50px;
     -fx-background-color: #000000;
 }

@@ -11,6 +11,8 @@ import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
 import model.Classroom;
+import view.component.classdetail.component.LeftContent;
+import view.component.classdetail.component.RightContent;
 
 public class ClassForum extends ScrollPane {
 
@@ -23,20 +25,28 @@ public class ClassForum extends ScrollPane {
     private ImageView classBanner;
     private Label className, classDesc;
 
+
+    HBox forumHBox;
+    LeftContent leftContent;
+    RightContent rightContent;
+
+
+
     private void setLayout() {
-        forumContent.setAlignment(Pos.CENTER);
 
         HBox.setHgrow(forumStack, Priority.ALWAYS);
         forumContainer.setAlignment(Pos.CENTER);
 
         forumContainer.setMinWidth(1300);
 
-        forumContent.getChildren().add(forumStack);
+        forumContent.getChildren().addAll(forumStack, forumHBox);
+        HBox.setHgrow(forumHBox, Priority.ALWAYS);
+
         forumContainer.getChildren().add(forumContent);
     }
 
     private void init() {
-        forumContent = new VBox();
+        forumContent = new VBox(20);
 
         forumStack = new StackPane();
 
@@ -44,8 +54,9 @@ public class ClassForum extends ScrollPane {
 
         Rectangle blueBackground = new Rectangle(1000, 250);
         blueBackground.setFill(Color.BLUE);
-        blueBackground.setArcWidth(15);
-        blueBackground.setArcHeight(15);
+        blueBackground.setArcWidth(20);
+        blueBackground.setArcHeight(20);
+        blueBackground.isSmooth();
 
         classBanner = new ImageView();
 
@@ -65,15 +76,27 @@ public class ClassForum extends ScrollPane {
             labelsVBox.setAlignment(Pos.TOP_CENTER);
             forumStack.getChildren().add(labelsVBox);
         } else {
-            className = new Label("TESsTTTTTT");
+            className = new Label(classroom.getClassName());
             className.setStyle("-fx-text-fill: white");
-            classDesc = new Label("fdjsajlfhdsjklfhjkdsahfjkds");
+            classDesc = new Label(classroom.getClassDesc());
             classDesc.setStyle("-fx-text-fill: white");
 
             VBox labelsVBox = new VBox(className, classDesc);
             labelsVBox.setPadding(new Insets(20, 20, 20, 20));
             forumStack.getChildren().add(labelsVBox);
+
+            forumHBox = new HBox(20);
+//            forumHBox.setStyle("-fx-background-color: #f5f5f5");
+
+            leftContent = new LeftContent("Teacher", this.classroom);
+
+            rightContent = new RightContent();
+            HBox.setHgrow(rightContent, Priority.ALWAYS);
+
+            forumHBox.getChildren().addAll(leftContent, rightContent);
+//            forumContent.setStyle("-fx-background-color: #000000");
         }
+
     }
 
     public ClassForum(Classroom classroom) {
