@@ -1,8 +1,10 @@
 package database;
 
 import helper.DateManager;
+import helper.StageManager;
 import model.LoggedUser;
 import model.User;
+import view.OfflineGame;
 
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -88,7 +90,7 @@ public class AuthQuery {
         }
     }
 
-    public boolean checkAuth() {
+    public String checkAuth() {
         LocalDateTime now = LocalDateTime.now();
 
         String query = "SELECT * FROM authcheck AS a JOIN msuser AS u ON a.UserID = u.UserID WHERE a.DeviceName = ?";
@@ -96,25 +98,30 @@ public class AuthQuery {
         String computerName = System.getenv("COMPUTERNAME");
 
         try (PreparedStatement ps = connect.prepareStatement(query)) {
-            ps.setString(1, computerName);
+            if(ps != null){
+                ps.setString(1, computerName);
+            }else {
+                return "error";
+            }
 
             try (ResultSet rs = ps.executeQuery()) {
                 if (rs.next()) {
                     LocalDateTime expiredDate = DateManager.parseDate(rs.getString("expired"));
                     if (now.isAfter(expiredDate)) {
                         deleteAuthData(computerName);
-                        return false;
+                        return "false";
                     } else {
                         User user = new User(rs.getString("UserID"), rs.getString("UserName"), rs.getString("UserEmail"), rs.getString("UserPassword"), rs.getInt("UserAge"), rs.getBlob("UserProfile"));
                         LoggedUser.getInstance(user);
-                        return true;
+                        return "true";
                     }
                 } else {
-                    return false;
+                    return "false";
                 }
             }
         } catch (SQLException e) {
-            throw new RuntimeException(e);
+//            throw new RuntimeException(e);
+            return "error";
         }
     }
 

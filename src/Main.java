@@ -12,6 +12,7 @@ import javafx.stage.Stage;
 import javafx.util.Duration;
 import view.Home;
 import view.Login;
+import view.OfflineGame;
 
 public class Main extends Application {
 
@@ -40,10 +41,13 @@ public class Main extends Application {
         PauseTransition delay = new PauseTransition(Duration.seconds(2));
 
         delay.setOnFinished(event -> {
-            if(authController.checkAuth()){
+            String message = authController.checkAuth();
+            if(message.equals("true")){
                 Platform.runLater(() -> new Home(primaryStage));
-            } else {
+            } else if(message.equals("false")) {
                 Platform.runLater(() -> new Login(primaryStage));
+            } else {
+                Platform.runLater(() -> new OfflineGame(primaryStage));
             }
         });
 

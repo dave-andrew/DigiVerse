@@ -1,4 +1,7 @@
 package database;
+import helper.StageManager;
+import view.OfflineGame;
+
 import java.sql.*;
 /**
 * <strong>
@@ -39,10 +42,10 @@ public final class Connect {
             con = DriverManager.getConnection(CONECTION, USERNAME, PASSWORD);  
             st = con.createStatement(); 
         } catch(Exception e) {
-        	e.printStackTrace();
+//        	e.printStackTrace()
         	System.out.println("Failed to connect the database, the system is terminated!");
-        	System.exit(0);
-        }  
+//        	System.exit(0);
+        }
     }
     
 	/**
@@ -58,11 +61,6 @@ public final class Connect {
 		return connect = (connect == null) ? new Connect() : connect;
     }
 
-    /**
-	* This method is used for SELECT SQL statements.
-	* @param String This is the query statement
-	* @return ResultSet This returns result data from the database
-	*/
     public static ResultSet executeQuery(String query) {
         ResultSet rs = null;
     	try {
@@ -73,10 +71,6 @@ public final class Connect {
         return rs;
     }
 
-	/**
-	* This method is used for INSERT, UPDATE, or DELETE SQL statements.
-	* @param String This is the query statement
-	*/
     public void executeUpdate(String query) {
     	try {
 			st.executeUpdate(query);
@@ -84,18 +78,17 @@ public final class Connect {
 			e.printStackTrace();
 		}
     }
-    
-	/**
-	* This method is used for SELECT, INSERT, UPDATE, or DELETE SQL statements using prepare statement.
-	* @param String This is the query statement
-	*/
+
     public PreparedStatement prepareStatement(String query) {
-    	PreparedStatement ps = null;
-    	try {
-			ps = con.prepareStatement(query);
-		} catch (Exception e) {
-			e.printStackTrace();
+    	if(con != null){
+			PreparedStatement ps = null;
+			try {
+				ps = con.prepareStatement(query);
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+			return ps;
 		}
-    	return ps;
+		return null;
     }
 }
