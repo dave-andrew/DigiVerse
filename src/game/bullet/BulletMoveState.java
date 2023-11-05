@@ -25,26 +25,35 @@ public class BulletMoveState extends BulletBaseState {
 
         double diagonalSpeed = bullet.getSpeed() / Math.sqrt(2);
 
-        if (direction.equals("right")) {
-            velX = bullet.getSpeed();
-        } else if (direction.equals("left")) {
-            velX = -bullet.getSpeed();
-        } else if (direction.equals("up")) {
-            velY = -bullet.getSpeed();
-        } else if (direction.equals("down")) {
-            velY = bullet.getSpeed();
-        } else if (direction.equals("up-right")) {
-            velX = diagonalSpeed;
-            velY = -diagonalSpeed;
-        } else if (direction.equals("up-left")) {
-            velX = -diagonalSpeed;
-            velY = -diagonalSpeed;
-        } else if (direction.equals("down-right")) {
-            velX = diagonalSpeed;
-            velY = diagonalSpeed;
-        } else if (direction.equals("down-left")) {
-            velX = -diagonalSpeed;
-            velY = diagonalSpeed;
+        switch (direction) {
+            case "right":
+                velX = bullet.getSpeed();
+                break;
+            case "left":
+                velX = -bullet.getSpeed();
+                break;
+            case "up":
+                velY = -bullet.getSpeed();
+                break;
+            case "down":
+                velY = bullet.getSpeed();
+                break;
+            case "up-right":
+                velX = diagonalSpeed;
+                velY = -diagonalSpeed;
+                break;
+            case "up-left":
+                velX = -diagonalSpeed;
+                velY = -diagonalSpeed;
+                break;
+            case "down-right":
+                velX = diagonalSpeed;
+                velY = diagonalSpeed;
+                break;
+            case "down-left":
+                velX = -diagonalSpeed;
+                velY = diagonalSpeed;
+                break;
         }
 
         bullet.setPosX(bullet.getPosX() + velX * deltaTime);

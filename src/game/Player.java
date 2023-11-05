@@ -1,9 +1,6 @@
 package game;
 
-import game.player.PlayerBaseState;
-import game.player.PlayerShootState;
-import game.player.PlayerStandState;
-import game.player.PlayerWalkState;
+import game.player.*;
 import helper.ImageManager;
 import helper.ScreenManager;
 import javafx.scene.image.Image;
@@ -31,6 +28,7 @@ public class Player extends ImageView {
     private final ArrayList<Image> rightSprites;
     private final ArrayList<Image> upSprites;
     private final ArrayList<Image> downSprites;
+    private final ArrayList<Image> diedSprites;
 
 //    Player Control
     private KeyCode lastdir = KeyCode.S;
@@ -41,6 +39,8 @@ public class Player extends ImageView {
     public PlayerStandState standState;
     public PlayerWalkState walkState;
     public PlayerShootState shootState;
+    public PlayerDeadState deadState;
+    public PlayerRespawnState respawnState;
 
     private Image sprite;
 
@@ -59,12 +59,15 @@ public class Player extends ImageView {
         rightSprites = ImageManager.importPlayerSprites("right");
         upSprites = ImageManager.importPlayerSprites("up");
         downSprites = ImageManager.importPlayerSprites("down");
+        diedSprites = ImageManager.importDeadSprites("died");
 
         this.standState = new PlayerStandState(this);
         this.walkState = new PlayerWalkState(this);
         this.shootState = new PlayerShootState(this);
+        this.deadState = new PlayerDeadState(this);
+        this.respawnState = new PlayerRespawnState(this);
 
-        this.currentState = standState;
+        this.currentState = this.deadState;
 
         this.sprite = new Image("file:resources/game/player/down-1.png");
         this.setImage(this.sprite);
@@ -155,5 +158,9 @@ public class Player extends ImageView {
 
     public void setSprite(Image sprite) {
         this.sprite = sprite;
+    }
+
+    public ArrayList<Image> getDiedSprites() {
+        return diedSprites;
     }
 }

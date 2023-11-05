@@ -39,4 +39,12 @@ public class ImageManager {
         return sprites;
     }
 
+    public static ArrayList<Image> importDeadSprites(String baseString) {
+        ArrayList<Image> sprites = new ArrayList<>();
+        for (int i = 1; i <= 5; i++) {
+            sprites.add(new Image("file:resources/game/died/" + baseString + "-" + i + ".png"));
+        }
+        return sprites;
+    }
+
 }
