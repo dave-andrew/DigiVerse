@@ -9,7 +9,7 @@ import javafx.scene.layout.Pane;
 public class PlayerShootState extends PlayerBaseState {
     private int frame = 0;
     private double lastTimeFrame = 0;
-    private double bulletCooldown = 3;
+    private double bulletCooldown;
     private double timeSinceLastBullet = 0;
     private boolean canSpawnBullet = true;
 
@@ -19,7 +19,7 @@ public class PlayerShootState extends PlayerBaseState {
 
     @Override
     public void onEnterState() {
-
+        this.bulletCooldown = player.getShootcd();
     }
 
     @Override

@@ -47,4 +47,12 @@ public class ImageManager {
         return sprites;
     }
 
+    public static ArrayList<Image> importEnemySprites(String baseString) {
+        ArrayList<Image> sprites = new ArrayList<>();
+        for (int i = 1; i <= 2; i++) {
+            sprites.add(new Image("file:resources/game/enemy/" + baseString + "-" + i + ".png"));
+        }
+        return sprites;
+    }
+
 }

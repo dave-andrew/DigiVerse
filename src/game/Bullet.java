@@ -25,7 +25,7 @@ public class Bullet extends ImageView {
     private long lastTimeFrame = 0;
 
     public Bullet(Pane root, double posX, double posY, String direction) {
-        this.speed = 8;
+        this.speed = 10;
         this.posX = posX;
         this.posY = posY;
 

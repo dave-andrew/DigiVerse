@@ -15,6 +15,7 @@ public class Player extends ImageView {
 
     private int lives;
     private double speed;
+    private double shootcd;
 
     //    Player Movement
     private double velocityX = 0.0;
@@ -29,9 +30,6 @@ public class Player extends ImageView {
     private final ArrayList<Image> upSprites;
     private final ArrayList<Image> downSprites;
     private final ArrayList<Image> diedSprites;
-
-//    Player Control
-    private KeyCode lastdir = KeyCode.S;
 
 
 //    Player States
@@ -54,6 +52,7 @@ public class Player extends ImageView {
     private Player() {
         this.lives = 3;
         this.speed = 10;
+        this.shootcd = 5;
 
         leftSprites = ImageManager.importPlayerSprites("left");
         rightSprites = ImageManager.importPlayerSprites("right");
@@ -162,5 +161,13 @@ public class Player extends ImageView {
 
     public ArrayList<Image> getDiedSprites() {
         return diedSprites;
+    }
+
+    public double getShootcd() {
+        return shootcd;
+    }
+
+    public void setShootcd(double shootcd) {
+        this.shootcd = shootcd;
     }
 }
