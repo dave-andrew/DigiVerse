@@ -47,7 +47,7 @@ public class Bullet extends ImageView {
                 if (lastTimeFrame == 0) {
                     lastTimeFrame = now;
                 } else if(currentState instanceof BulletStopState) {
-                    root.getChildren().remove(this);
+                    root.getChildren().remove(Bullet.this);
                     this.stop();
                 }
 
