@@ -3,6 +3,7 @@ package game.player;
 import game.Player;
 import helper.InputManager;
 import javafx.scene.input.KeyCode;
+import javafx.scene.layout.Pane;
 
 public class PlayerWalkState extends PlayerBaseState {
 
@@ -19,7 +20,8 @@ public class PlayerWalkState extends PlayerBaseState {
     }
 
     @Override
-    public void onUpdate(double deltaTime) {
+    public void onUpdate(double deltaTime, Pane root) {
+
         this.lastTimeFrame += deltaTime;
 
         if (lastTimeFrame > 3) {
