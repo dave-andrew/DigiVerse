@@ -1,6 +1,7 @@
 package view;
 
 import game.Bullet;
+import game.Enemy;
 import game.Player;
 import helper.InputManager;
 import helper.ScreenManager;
@@ -25,6 +26,8 @@ public class OfflineGame {
     Pane root;
     private InputManager inputManager;
 
+    private ArrayList<Enemy> enemyList = new ArrayList<>();
+
     private long lastTimeFrame = 0;
     public OfflineGame(Stage stage) {
         root = new Pane();
@@ -46,6 +49,11 @@ public class OfflineGame {
                 player.getState().onUpdate(deltaTime, root);
 
                 lastTimeFrame = now;
+
+                if(InputManager.getPressedKeys().contains(KeyCode.SPACE)) {
+                    enemySpawner();
+                    System.out.println(enemyList);
+                }
             }
         };
 
@@ -57,4 +65,13 @@ public class OfflineGame {
 
 
     }
+
+    private void enemySpawner() {
+        Random random = new Random();
+        double randomX = random.nextDouble() * ScreenManager.SCREEN_WIDTH;
+        double randomY = random.nextDouble() * ScreenManager.SCREEN_HEIGHT;
+        Enemy enemy = new Enemy(root, randomX, randomY, player);
+        enemyList.add(enemy);
+    }
+
 }

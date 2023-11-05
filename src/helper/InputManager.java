@@ -36,7 +36,7 @@ public class InputManager {
 
     private void handlePlayerInput(Scene scene) {
         KeyCode[] allowedKeys = { KeyCode.A, KeyCode.S, KeyCode.D, KeyCode.W, KeyCode.UP, KeyCode.DOWN, KeyCode.LEFT,
-                KeyCode.RIGHT };
+                KeyCode.RIGHT, KeyCode.SPACE };
         List<KeyCode> allowedKeysList = Arrays.asList(allowedKeys);
 
         scene.setOnKeyPressed(e -> {
