@@ -5,6 +5,7 @@ import javafx.scene.image.Image;
 import java.io.ByteArrayInputStream;
 import java.sql.Blob;
 import java.sql.SQLException;
+import java.util.ArrayList;
 
 public class ImageManager {
 
@@ -20,6 +21,22 @@ public class ImageManager {
             e.printStackTrace();
         }
         return null;
+    }
+
+    public static ArrayList<Image> importPlayerSprites(String baseString) {
+        ArrayList<Image> sprites = new ArrayList<>();
+        for (int i = 1; i <= 4; i++) {
+            sprites.add(new Image("file:resources/game/player/" + baseString + "-" + i + ".png"));
+        }
+        return sprites;
+    }
+
+    public static ArrayList<Image> importSprites(String baseString) {
+        ArrayList<Image> sprites = new ArrayList<>();
+        for (int i = 1; i <= 4; i++) {
+            sprites.add(new Image("file:resources/game/" + baseString + "-" + i + ".png"));
+        }
+        return sprites;
     }
 
 }

@@ -3,9 +3,13 @@ package game;
 import game.player.PlayerBaseState;
 import game.player.PlayerStandState;
 import game.player.PlayerWalkState;
+import helper.ImageManager;
+import helper.ScreenManager;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.KeyCode;
+
+import java.util.ArrayList;
 
 public class Player extends ImageView {
 
@@ -18,8 +22,15 @@ public class Player extends ImageView {
     private double velocityX = 0.0;
     private double velocityY = 0.0;
 
-    private double posX = 100;
-    private double posY = 100;
+    private double posX = ScreenManager.SCREEN_WIDTH / 2;
+    private double posY = ScreenManager.SCREEN_HEIGHT / 2;
+
+//    Player Sprites
+    private final ArrayList<Image> leftSprites;
+    private final ArrayList<Image> rightSprites;
+    private final ArrayList<Image> upSprites;
+    private final ArrayList<Image> downSprites;
+
 //    Player Control
     private KeyCode lastdir = KeyCode.S;
 
@@ -31,8 +42,6 @@ public class Player extends ImageView {
 
     private Image sprite;
 
-
-//    Singleton design pattern
     public static Player getInstance() {
         if(instance == null) {
             instance = new Player();
@@ -44,13 +53,21 @@ public class Player extends ImageView {
         this.lives = 3;
         this.speed = 4;
 
+        leftSprites = ImageManager.importPlayerSprites("left");
+        rightSprites = ImageManager.importPlayerSprites("right");
+        upSprites = ImageManager.importPlayerSprites("up");
+        downSprites = ImageManager.importPlayerSprites("down");
+
         this.standState = new PlayerStandState(this);
         this.walkState = new PlayerWalkState(this);
 
         this.currentState = standState;
 
-        this.sprite = new Image("file:resources/icons/user.png");
+        this.sprite = new Image("file:resources/game/player/down-1.png");
         this.setImage(this.sprite);
+
+        this.setScaleX(2);
+        this.setScaleY(2);
     }
 
     public void changeState(PlayerBaseState playerState){
@@ -111,5 +128,29 @@ public class Player extends ImageView {
 
     public void setVelocityY(double velocityY) {
         this.velocityY = velocityY;
+    }
+
+    public ArrayList<Image> getLeftSprites() {
+        return leftSprites;
+    }
+
+    public ArrayList<Image> getRightSprites() {
+        return rightSprites;
+    }
+
+    public ArrayList<Image> getUpSprites() {
+        return upSprites;
+    }
+
+    public ArrayList<Image> getDownSprites() {
+        return downSprites;
+    }
+
+    public Image getSprite() {
+        return sprite;
+    }
+
+    public void setSprite(Image sprite) {
+        this.sprite = sprite;
     }
 }

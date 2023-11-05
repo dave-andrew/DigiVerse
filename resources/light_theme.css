@@ -139,8 +139,6 @@
     -fx-border-width: 1px;
     -fx-max-width: 300px;
     -fx-min-width: 300px;
-    -fx-min-height: auto;
-    -fx-max-height: auto;
     -fx-border-radius: 10px;
 }
 

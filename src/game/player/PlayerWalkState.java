@@ -18,9 +18,27 @@ public class PlayerWalkState extends PlayerBaseState {
     @Override
     public void onUpdate() {
 
-        if (InputManager.getPressedKeys().isEmpty()) {
+        if(InputManager.getPressedKeys().isEmpty()) {
             player.changeState(player.standState);
             return;
+        } else if(player.getVelocityX() == 0 && player.getVelocityY() != 0) {
+            if(player.getVelocityY() > 0) {
+                player.setSprite(player.getDownSprites().get(0));
+            } else {
+                player.setSprite(player.getUpSprites().get(0));
+            }
+        } else if(player.getVelocityX() != 0 && player.getVelocityY() == 0) {
+            if(player.getVelocityX() > 0) {
+                player.setSprite(player.getRightSprites().get(0));
+            } else {
+                player.setSprite(player.getLeftSprites().get(0));
+            }
+        } else {
+            if(player.getVelocityX() > 0) {
+                player.setSprite(player.getRightSprites().get(0));
+            } else {
+                player.setSprite(player.getLeftSprites().get(0));
+            }
         }
 
         if (InputManager.getPressedKeys().contains(KeyCode.D)) {
@@ -46,5 +64,7 @@ public class PlayerWalkState extends PlayerBaseState {
 
         player.setX(player.getPosX());
         player.setY(player.getPosY());
+
+        player.setImage(player.getSprite());
     }
 }
