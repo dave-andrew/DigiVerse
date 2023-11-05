@@ -23,6 +23,8 @@ public class OfflineGame {
     Pane root;
     private InputManager inputManager;
 
+    private long lastTimeFrame = 0;
+
     public OfflineGame(Stage stage) {
         root = new Pane();
         Scene scene = new Scene(root, ScreenManager.SCREEN_WIDTH, ScreenManager.SCREEN_HEIGHT);
@@ -41,8 +43,10 @@ public class OfflineGame {
         AnimationTimer timer = new AnimationTimer() {
             @Override
             public void handle(long now) {
-                player.getState().onUpdate();
+                double deltaTime = (double) (now - lastTimeFrame) / 50_000_000;
+                player.getState().onUpdate(deltaTime);
 //                System.out.println(player.getState());
+                lastTimeFrame = now;
             }
         };
         timer.start();

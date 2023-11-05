@@ -4,18 +4,18 @@ import game.Player;
 import helper.InputManager;
 import javafx.scene.input.KeyCode;
 
-public class PlayerWalkState extends PlayerBaseState {
+public class PlayerShootState extends PlayerBaseState{
 
     private int frame = 0;
     private double lastTimeFrame = 0;
 
-    public PlayerWalkState(Player player) {
+    public PlayerShootState(Player player) {
         super(player);
     }
 
     @Override
     public void onEnterState() {
-        System.out.println("Walk State");
+
     }
 
     @Override
@@ -33,12 +33,6 @@ public class PlayerWalkState extends PlayerBaseState {
         double speed = player.getSpeed();
         double velocityX = 0;
         double velocityY = 0;
-
-        if(InputManager.getPressedKeys().contains(KeyCode.UP) || InputManager.getPressedKeys().contains(KeyCode.DOWN) ||
-            InputManager.getPressedKeys().contains(KeyCode.RIGHT) || InputManager.getPressedKeys().contains(KeyCode.LEFT)){
-            player.changeState(player.shootState);
-            return;
-        }
 
         if (InputManager.getPressedKeys().contains(KeyCode.D)) {
             velocityX += speed;
@@ -60,31 +54,24 @@ public class PlayerWalkState extends PlayerBaseState {
             velocityY = (velocityY / length) * speed;
         }
 
-        player.setVelocityX(velocityX);
-        player.setVelocityY(velocityY);
-
-        if (InputManager.getPressedKeys().isEmpty()) {
+        if(InputManager.getPressedKeys().contains(KeyCode.RIGHT)){
+            player.setSprite(player.getRightSprites().get(frame));
+        } else if(InputManager.getPressedKeys().contains(KeyCode.LEFT)){
+            player.setSprite(player.getLeftSprites().get(frame));
+        } else if(InputManager.getPressedKeys().contains(KeyCode.UP)){
+            player.setSprite(player.getUpSprites().get(frame));
+        } else if(InputManager.getPressedKeys().contains(KeyCode.DOWN)){
+            player.setSprite(player.getDownSprites().get(frame));
+        } else if(InputManager.getPressedKeys().isEmpty()){
             player.changeState(player.standState);
             return;
-        } else if (player.getVelocityX() == 0 && player.getVelocityY() != 0) {
-            if (player.getVelocityY() > 0) {
-                player.setSprite(player.getDownSprites().get(frame));
-            } else {
-                player.setSprite(player.getUpSprites().get(frame));
-            }
-        } else if (player.getVelocityX() != 0 && player.getVelocityY() == 0) {
-            if (player.getVelocityX() > 0) {
-                player.setSprite(player.getRightSprites().get(frame));
-            } else {
-                player.setSprite(player.getLeftSprites().get(frame));
-            }
-        } else {
-            if (player.getVelocityX() > 0) {
-                player.setSprite(player.getRightSprites().get(frame));
-            } else {
-                player.setSprite(player.getLeftSprites().get(frame));
-            }
+        } else if(!InputManager.getPressedKeys().isEmpty()){
+            player.changeState(player.walkState);
+            return;
         }
+
+        player.setVelocityX(velocityX);
+        player.setVelocityY(velocityY);
 
         player.setPosX(player.getPosX() + player.getVelocityX() * deltaTime);
         player.setPosY(player.getPosY() + player.getVelocityY() * deltaTime);

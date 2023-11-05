@@ -12,5 +12,5 @@ public abstract class PlayerBaseState {
 
     public abstract void onEnterState();
 
-    public abstract void onUpdate();
+    public abstract void onUpdate(double deltaTime);
 }

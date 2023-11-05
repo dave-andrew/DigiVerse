@@ -18,10 +18,9 @@ public class PlayerStandState extends PlayerBaseState {
     }
 
     @Override
-    public void onUpdate() {
+    public void onUpdate(double deltaTime) {
         ArrayList<KeyCode> pressedKeys = InputManager.getPressedKeys();
         if(!pressedKeys.isEmpty()){
-            System.out.println("TEsttt");
             player.changeState(player.walkState);
         }
     }

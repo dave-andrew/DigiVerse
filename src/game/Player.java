@@ -1,6 +1,7 @@
 package game;
 
 import game.player.PlayerBaseState;
+import game.player.PlayerShootState;
 import game.player.PlayerStandState;
 import game.player.PlayerWalkState;
 import helper.ImageManager;
@@ -39,6 +40,7 @@ public class Player extends ImageView {
     private PlayerBaseState currentState;
     public PlayerStandState standState;
     public PlayerWalkState walkState;
+    public PlayerShootState shootState;
 
     private Image sprite;
 
@@ -51,7 +53,7 @@ public class Player extends ImageView {
 
     private Player() {
         this.lives = 3;
-        this.speed = 4;
+        this.speed = 10;
 
         leftSprites = ImageManager.importPlayerSprites("left");
         rightSprites = ImageManager.importPlayerSprites("right");
@@ -60,6 +62,7 @@ public class Player extends ImageView {
 
         this.standState = new PlayerStandState(this);
         this.walkState = new PlayerWalkState(this);
+        this.shootState = new PlayerShootState(this);
 
         this.currentState = standState;
 
