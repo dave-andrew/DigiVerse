@@ -70,7 +70,7 @@ public class OfflineGame {
         Random random = new Random();
         double randomX = random.nextDouble() * ScreenManager.SCREEN_WIDTH;
         double randomY = random.nextDouble() * ScreenManager.SCREEN_HEIGHT;
-        Enemy enemy = new Enemy(root, randomX, randomY, player);
+        Enemy enemy = new Enemy(root, randomX, randomY, player, "soldier");
         enemyList.add(enemy);
     }
 

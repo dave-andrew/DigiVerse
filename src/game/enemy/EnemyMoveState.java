@@ -47,15 +47,13 @@ public class EnemyMoveState extends EnemyBaseState {
 
             double moveSpeed = enemy.getSpeed();
 
-            // Update the enemy's position based on the direction vector and speed
             enemy.setPosX(enemy.getPosX() + deltaX * moveSpeed * deltaTime);
             enemy.setPosY(enemy.getPosY() + deltaY * moveSpeed * deltaTime);
 
             enemy.setX(enemy.getPosX());
             enemy.setY(enemy.getPosY());
 
-            System.out.println("Enemy: " + enemy.getPosX() + ", " + enemy.getPosY());
-
+            enemy.setSprite(enemy.getSpriteList().get(frame));
             enemy.setImage(enemy.getSprite());
         }
     }

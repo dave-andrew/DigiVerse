@@ -3,11 +3,14 @@ package game;
 import game.enemy.EnemyBaseState;
 import game.enemy.EnemyDeadState;
 import game.enemy.EnemyMoveState;
+import helper.Collider;
 import helper.ImageManager;
 import javafx.animation.AnimationTimer;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.Pane;
+
+import java.util.ArrayList;
 
 public class Enemy extends ImageView {
 
@@ -16,6 +19,8 @@ public class Enemy extends ImageView {
     private double posX;
     private double posY;
 
+    private Collider collider;
+
     private double speed;
     private Image sprite;
 
@@ -23,11 +28,17 @@ public class Enemy extends ImageView {
     public EnemyMoveState moveState;
     public EnemyDeadState deadState;
 
+    private ArrayList<Image> spriteList;
+
     private long lastTimeFrame = 0;
 
-    public Enemy(Pane root, double posX, double posY, Player player) {
+    public Enemy(Pane root, double posX, double posY, Player player, String type) {
 
         this.player = player;
+
+        initSprite(type);
+
+        this.collider = new Collider(posX);
 
         this.posX = posX;
         this.posY = posY;
@@ -57,6 +68,8 @@ public class Enemy extends ImageView {
 
                 currentState.onUpdate(deltaTime);
 
+                collider.setCollider(posX);
+
                 lastTimeFrame = now;
             }
         };
@@ -68,6 +81,12 @@ public class Enemy extends ImageView {
 
         this.setScaleX(2);
         this.setScaleY(2);
+    }
+
+    private void initSprite(String type) {
+        if(type.equals("soldier")) {
+            this.spriteList = ImageManager.importEnemySprites("soldier");
+        }
     }
 
     public void changeState(EnemyBaseState state) {
@@ -109,5 +128,9 @@ public class Enemy extends ImageView {
 
     public void setPosY(double posY) {
         this.posY = posY;
+    }
+
+    public ArrayList<Image> getSpriteList() {
+        return spriteList;
     }
 }
