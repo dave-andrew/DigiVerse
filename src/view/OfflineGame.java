@@ -1,24 +1,22 @@
 package view;
 
-import game.Bullet;
 import game.Enemy;
 import game.Player;
 import helper.InputManager;
 import helper.ScreenManager;
 import javafx.animation.AnimationTimer;
+import javafx.scene.media.Media;
+import javafx.scene.media.MediaPlayer;
 import javafx.stage.Stage;
 import javafx.scene.Scene;
 import javafx.scene.layout.Pane;
-import javafx.scene.paint.Color;
-import javafx.scene.shape.Circle;
-import javafx.scene.image.Image;
-import javafx.scene.image.ImageView;
 
-import java.sql.SQLOutput;
+import java.io.File;
 import java.util.ArrayList;
 import java.util.Random;
 
 import javafx.scene.input.KeyCode;
+import javafx.util.Duration;
 
 public class OfflineGame {
 
@@ -30,6 +28,7 @@ public class OfflineGame {
 
     private long lastTimeFrame = 0;
     public OfflineGame(Stage stage) {
+
         root = new Pane();
         Scene scene = new Scene(root, ScreenManager.SCREEN_WIDTH, ScreenManager.SCREEN_HEIGHT);
 
@@ -63,7 +62,16 @@ public class OfflineGame {
         stage.setScene(scene);
         stage.setTitle("Offline Game");
 
-
+        File file = new File("resources/game/soundFX/backsound.wav");
+        Media media = new Media(file.toURI().toString());
+        MediaPlayer mediaPlayer = new MediaPlayer(media);
+        mediaPlayer.play();
+        mediaPlayer.setOnEndOfMedia(new Runnable() {
+            @Override
+            public void run() {
+                mediaPlayer.seek(Duration.ZERO);
+            }
+        });
     }
 
     private void enemySpawner() {
