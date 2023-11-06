@@ -5,6 +5,10 @@ import game.Player;
 import helper.InputManager;
 import javafx.scene.input.KeyCode;
 import javafx.scene.layout.Pane;
+import javafx.scene.media.Media;
+import javafx.scene.media.MediaPlayer;
+
+import java.io.File;
 
 public class PlayerShootState extends PlayerBaseState {
     private int frame = 0;
@@ -163,6 +167,11 @@ public class PlayerShootState extends PlayerBaseState {
 
     private void spawnBullet(Pane root, String direction) {
         if (canSpawnBullet) {
+
+            File file = new File("resources/game/soundFX/gunshot.wav");
+            Media media = new Media(file.toURI().toString());
+            MediaPlayer mediaPlayer = new MediaPlayer(media);
+            mediaPlayer.play();
 
             double posX = player.getPosX();
             double posY = player.getPosY();
