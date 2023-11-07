@@ -36,7 +36,6 @@ public class EnemyDeadState extends EnemyBaseState {
 
         if (frame == 1200) {
             enemy.changeState(enemy.despawnState);
-            removeDropItems();
         }
 
         if (lastTimeFrame > 2) {
@@ -60,24 +59,24 @@ public class EnemyDeadState extends EnemyBaseState {
         int randomNumber = random.nextInt(10);
 
         if (randomNumber < 2) {
-            DropItem newDropItem = new Coin5(enemy.getRoot(), enemy.getPosX(), enemy.getPosY());
+            DropItem newDropItem = new Coin5(enemy, enemy.getPosX(), enemy.getPosY());
             itemManager.addDropItem(newDropItem);
             dropItems.add(newDropItem);
         } else if (randomNumber < 4) {
-            DropItem newDropItem = new Coin1(enemy.getRoot(), enemy.getPosX(), enemy.getPosY());
+            DropItem newDropItem = new Coin1(enemy, enemy.getPosX(), enemy.getPosY());
             itemManager.addDropItem(newDropItem);
             dropItems.add(newDropItem);
         }
     }
-
-    private void removeDropItems() {
-        Iterator<DropItem> iterator = dropItems.iterator();
-        while (iterator.hasNext()) {
-            DropItem dropItem = iterator.next();
-            enemy.getRoot().getChildren().remove(dropItem);
-            itemManager.removeItem(dropItem);
-            iterator.remove();
-        }
-    }
+//
+//    private void removeDropItems() {
+//        Iterator<DropItem> iterator = dropItems.iterator();
+//        while (iterator.hasNext()) {
+//            DropItem dropItem = iterator.next();
+//            enemy.getRoot().getChildren().remove(dropItem);
+//            itemManager.removeItem(dropItem);
+//            iterator.remove();
+//        }
+//    }
 
 }

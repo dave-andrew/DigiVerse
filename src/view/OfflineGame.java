@@ -23,6 +23,7 @@ import javafx.scene.layout.Pane;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.Iterator;
+import java.util.List;
 import java.util.Random;
 
 import javafx.scene.input.KeyCode;
@@ -83,7 +84,7 @@ public class OfflineGame {
         playerUpdate(deltaTime);
         updateBullets(deltaTime);
         checkCollisions(deltaTime);
-        checkItemCollision(deltaTime);
+        checkItemCollision();
         lastTimeFrame = now;
         root.getChildren().add(player);
     }
@@ -171,20 +172,13 @@ public class OfflineGame {
         enemyList.add(enemy);
     }
 
-    private void checkItemCollision(double deltaTime) {
-        Iterator<DropItem> dropItemIterator = itemManager.getItemList().iterator();
-        while (dropItemIterator.hasNext()) {
-            DropItem dropItem = dropItemIterator.next();
-            if (dropItem.getCollider().collidesWith(player.getCollider())) {
-                root.getChildren().remove(dropItem);
-                dropItemIterator.remove();
-                if (dropItem instanceof Coin1) {
-                    player.setScore(player.getScore() + 1);
-                } else if (dropItem instanceof Coin5) {
-                    player.setScore(player.getScore() + 5);
-                }
-            }
+    private void checkItemCollision() {
+        List<DropItem> itemListCopy = new ArrayList<>(itemManager.getItemList());
+
+        for (DropItem dropItem : itemListCopy) {
+            dropItem.getState().onEnterState();
         }
-        System.out.println(player.getScore());
+
+//        System.out.println(player.getScore());
     }
 }
