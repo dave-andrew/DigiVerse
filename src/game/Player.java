@@ -57,7 +57,7 @@ public class Player extends ImageView {
         this.speed = 10;
         this.shootcd = 5;
 
-        this.collider = new Collider(posX);
+        this.collider = new Collider(posX, posY);
 
         leftSprites = ImageManager.importPlayerSprites("left");
         rightSprites = ImageManager.importPlayerSprites("right");

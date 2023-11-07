@@ -6,18 +6,18 @@ public class Collider {
     private double width;
     private double height;
 
-    public Collider(double pivot) {
-        this.x = pivot;
-        this.y = pivot;
-        this.width = pivot + 32;
-        this.height = pivot + 32;
+    public Collider(double pivotX, double pivotY) {
+        this.x = pivotX;
+        this.y = pivotY;
+        this.width = 32;
+        this.height = 32;
     }
 
-    public void setCollider(double pivot) {
-        this.x = pivot;
-        this.y = pivot;
-        this.width = pivot + 32;
-        this.height = pivot + 32;
+    public void setCollider(double pivotX, double pivotY) {
+        this.x = pivotX;
+        this.y = pivotY;
+        this.width = 32;
+        this.height = 32;
     }
 
     public double getX() {

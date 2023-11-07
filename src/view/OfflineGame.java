@@ -2,6 +2,8 @@ package view;
 
 import game.Enemy;
 import game.Player;
+import game.player.PlayerRespawnState;
+import game.player.PlayerStandState;
 import helper.ImageManager;
 import helper.InputManager;
 import helper.ScreenManager;
@@ -29,9 +31,10 @@ public class OfflineGame {
 
     private ArrayList<Enemy> enemyList = new ArrayList<>();
 
-    private ArrayList<Image>  groundSprites = new ArrayList<>();
+    private ArrayList<Image>  groundSprites;
 
     private long lastTimeFrame = 0;
+    private boolean deadPause = false;
     public OfflineGame(Stage stage) {
 
         root = new Pane();
@@ -55,13 +58,40 @@ public class OfflineGame {
 
                 player.getState().onUpdate(deltaTime, root);
 
-                player.getCollider().setCollider(player.getPosX());
+                player.getCollider().setCollider(player.getPosX(), player.getPosY());
 
                 lastTimeFrame = now;
 
                 if(InputManager.getPressedKeys().contains(KeyCode.SPACE)) {
                     enemySpawner();
-                    System.out.println(enemyList);
+                }
+
+//                for (int i = 0; i < enemyList.size(); i++) {
+//                    for (int j = 0; j < enemyList.size(); j++) {
+//                        if (i != j) {
+//                            if(enemyList.get(i).getCollider().collidesWith(enemyList.get(j).getCollider())) {
+//                                System.out.println(enemyList.get(i) + " collided with " + enemyList.get(j));
+//                            }
+//                        }
+//                    }
+//                }
+
+                if(player.getState() instanceof PlayerStandState) {
+                    deadPause = false;
+                }
+
+                if(!deadPause) {
+                    for (Enemy enemy : enemyList) {
+
+                        if(enemy.getCollider().collidesWith(player.getCollider())) {
+                            deadPause = true;
+                            player.changeState(player.deadState);
+                        }
+
+                        enemy.getState().onUpdate(deltaTime);
+                        enemy.getCollider().setCollider(enemy.getPosX(), enemy.getPosY());
+
+                    }
                 }
             }
         };

@@ -38,7 +38,7 @@ public class Enemy extends ImageView {
 
         initSprite(type);
 
-        this.collider = new Collider(posX);
+        this.collider = new Collider(posX, posY);
 
         this.posX = posX;
         this.posY = posY;
@@ -54,27 +54,27 @@ public class Enemy extends ImageView {
 
         this.currentState = this.moveState;
 
-        AnimationTimer run = new AnimationTimer() {
-            @Override
-            public void handle(long now) {
-                if(lastTimeFrame == 0) {
-                    lastTimeFrame = now;
-                } else if(currentState instanceof EnemyDeadState) {
-                    root.getChildren().remove(Enemy.this);
-                    this.stop();
-                }
-
-                double deltaTime = (double) (now - lastTimeFrame) / 50_000_000;
-
-                currentState.onUpdate(deltaTime);
-
-                collider.setCollider(posX);
-
-                lastTimeFrame = now;
-            }
-        };
-
-        run.start();
+//        AnimationTimer run = new AnimationTimer() {
+//            @Override
+//            public void handle(long now) {
+//                if(lastTimeFrame == 0) {
+//                    lastTimeFrame = now;
+//                } else if(currentState instanceof EnemyDeadState) {
+//                    root.getChildren().remove(Enemy.this);
+//                    this.stop();
+//                }
+//
+//                double deltaTime = (double) (now - lastTimeFrame) / 50_000_000;
+//
+//                currentState.onUpdate(deltaTime);
+//
+//                collider.setCollider(posX);
+//
+//                lastTimeFrame = now;
+//            }
+//        };
+//
+//        run.start();
 
         this.setImage(sprite);
         root.getChildren().add(this);
@@ -132,5 +132,13 @@ public class Enemy extends ImageView {
 
     public ArrayList<Image> getSpriteList() {
         return spriteList;
+    }
+
+    public Collider getCollider() {
+        return this.collider;
+    }
+
+    public EnemyBaseState getState() {
+        return this.currentState;
     }
 }
