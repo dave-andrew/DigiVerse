@@ -199,6 +199,7 @@ public class PlayerShootState extends PlayerBaseState {
             }
 
             Bullet newBullet = new Bullet(root, posX, posY, direction);
+            bulletManager.addBulletList(newBullet);
 
 //            Keknya bakal tetep harus di store di arraylist supaya bisa cek collision ntar
 

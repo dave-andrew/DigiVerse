@@ -3,6 +3,7 @@ package game.player;
 import game.Bullet;
 import game.Player;
 import game.bullet.BulletStopState;
+import helper.BulletManager;
 import javafx.scene.layout.Pane;
 
 import java.util.ArrayList;
@@ -11,6 +12,7 @@ import java.util.Iterator;
 public abstract class PlayerBaseState {
 
     protected Player player;
+    protected BulletManager bulletManager = BulletManager.getInstance();
 
     public PlayerBaseState(Player player) {
         this.player = player;

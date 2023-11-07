@@ -1,9 +1,13 @@
 package view;
 
+import game.Bullet;
 import game.Enemy;
 import game.Player;
+import game.enemy.EnemyDeadState;
+import game.enemy.EnemyDespawnState;
 import game.player.PlayerRespawnState;
 import game.player.PlayerStandState;
+import helper.BulletManager;
 import helper.ImageManager;
 import helper.InputManager;
 import helper.ScreenManager;
@@ -35,6 +39,8 @@ public class OfflineGame {
 
     private long lastTimeFrame = 0;
     private boolean deadPause = false;
+
+    private BulletManager bulletManager = BulletManager.getInstance();
     public OfflineGame(Stage stage) {
 
         root = new Pane();
@@ -49,15 +55,13 @@ public class OfflineGame {
         groundSprites = ImageManager.importGroundSprites("tile");
         setupBackground();
 
-        root.getChildren().add(player);
-
         AnimationTimer timer = new AnimationTimer() {
             @Override
             public void handle(long now) {
+                root.getChildren().remove(player);
                 double deltaTime = (double) (now - lastTimeFrame) / 50_000_000;
 
                 player.getState().onUpdate(deltaTime, root);
-
                 player.getCollider().setCollider(player.getPosX(), player.getPosY());
 
                 lastTimeFrame = now;
@@ -66,24 +70,56 @@ public class OfflineGame {
                     enemySpawner();
                 }
 
-//                for (int i = 0; i < enemyList.size(); i++) {
-//                    for (int j = 0; j < enemyList.size(); j++) {
-//                        if (i != j) {
-//                            if(enemyList.get(i).getCollider().collidesWith(enemyList.get(j).getCollider())) {
-//                                System.out.println(enemyList.get(i) + " collided with " + enemyList.get(j));
-//                            }
-//                        }
-//                    }
-//                }
-
                 if(player.getState() instanceof PlayerStandState) {
                     deadPause = false;
+                }
+
+                ArrayList<Bullet> bulletList = new ArrayList<>();
+
+                for(Bullet bullet : bulletManager.getBulletList()) {
+
+                    if(bullet.getPosX() < 0 || bullet.getPosX() > ScreenManager.SCREEN_WIDTH ||
+                            bullet.getPosY() < 0 || bullet.getPosY() > ScreenManager.SCREEN_HEIGHT) {
+                        bullet.changeState(bullet.stopState);
+                        root.getChildren().remove(bullet);
+
+                        bulletList.add(bullet);
+                    }
+
+                    bullet.getState().onUpdate(deltaTime, bullet.getDirection());
+                    bullet.getCollider().setCollider(bullet.getPosX(), bullet.getPosY());
                 }
 
                 if(!deadPause) {
                     for (Enemy enemy : enemyList) {
 
-                        if(enemy.getCollider().collidesWith(player.getCollider())) {
+                        if(enemy.getState() instanceof EnemyDespawnState) {
+                            root.getChildren().remove(enemy);
+                            enemyList.remove(enemy);
+                            continue;
+                        }
+
+
+
+                        for (Bullet bullet : bulletManager.getBulletList()) {
+                            if(bullet.getCollider().collidesWith(enemy.getCollider()) && !(enemy.getState() instanceof EnemyDeadState)) {
+                                bullet.changeState(bullet.stopState);
+                                root.getChildren().remove(bullet);
+
+                                enemy.changeState(enemy.deadState);
+                                bulletList.add(bullet);
+                            } else if(bullet.getPosX() < 0 || bullet.getPosX() > ScreenManager.SCREEN_WIDTH ||
+                                    bullet.getPosY() < 0 || bullet.getPosY() > ScreenManager.SCREEN_HEIGHT) {
+                                bullet.changeState(bullet.stopState);
+                                root.getChildren().remove(bullet);
+
+                                bulletList.add(bullet);
+                            }
+                        }
+
+                        bulletManager.removeAllBullet(bulletList);
+
+                        if(enemy.getCollider().collidesWith(player.getCollider()) && !(enemy.getState() instanceof EnemyDeadState)) {
                             deadPause = true;
                             player.changeState(player.deadState);
                         }
@@ -93,6 +129,7 @@ public class OfflineGame {
 
                     }
                 }
+                root.getChildren().add(player);
             }
         };
 

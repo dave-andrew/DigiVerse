@@ -59,11 +59,11 @@ public class Player extends ImageView {
 
         this.collider = new Collider(posX, posY);
 
-        leftSprites = ImageManager.importPlayerSprites("left");
-        rightSprites = ImageManager.importPlayerSprites("right");
-        upSprites = ImageManager.importPlayerSprites("up");
-        downSprites = ImageManager.importPlayerSprites("down");
-        diedSprites = ImageManager.importDeadSprites("died");
+        this.leftSprites = ImageManager.importPlayerSprites("left");
+        this.rightSprites = ImageManager.importPlayerSprites("right");
+        this.upSprites = ImageManager.importPlayerSprites("up");
+        this.downSprites = ImageManager.importPlayerSprites("down");
+        this.diedSprites = ImageManager.importDeadSprites("died");
 
         this.standState = new PlayerStandState(this);
         this.walkState = new PlayerWalkState(this);

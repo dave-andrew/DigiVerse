@@ -2,6 +2,7 @@ package game;
 
 import game.enemy.EnemyBaseState;
 import game.enemy.EnemyDeadState;
+import game.enemy.EnemyDespawnState;
 import game.enemy.EnemyMoveState;
 import helper.Collider;
 import helper.ImageManager;
@@ -27,10 +28,13 @@ public class Enemy extends ImageView {
     private EnemyBaseState currentState;
     public EnemyMoveState moveState;
     public EnemyDeadState deadState;
+    public EnemyDespawnState despawnState;
 
     private ArrayList<Image> spriteList;
 
     private long lastTimeFrame = 0;
+
+    private final ArrayList<Image> diedSprites;
 
     public Enemy(Pane root, double posX, double posY, Player player, String type) {
 
@@ -39,6 +43,9 @@ public class Enemy extends ImageView {
         initSprite(type);
 
         this.collider = new Collider(posX, posY);
+
+        this.diedSprites = ImageManager.importEnemyDiedSprites();
+        System.out.println(diedSprites.size());
 
         this.posX = posX;
         this.posY = posY;
@@ -51,6 +58,7 @@ public class Enemy extends ImageView {
 
         this.moveState = new EnemyMoveState(this);
         this.deadState = new EnemyDeadState(this);
+        this.despawnState = new EnemyDespawnState(this);
 
         this.currentState = this.moveState;
 
@@ -81,6 +89,10 @@ public class Enemy extends ImageView {
 
         this.setScaleX(2);
         this.setScaleY(2);
+    }
+
+    public ArrayList<Image> getDiedSprites() {
+        return this.diedSprites;
     }
 
     private void initSprite(String type) {
