@@ -6,7 +6,7 @@ public class Collider {
     private double width;
     private double height;
 
-    public Collider(double pivotX, double pivotY) {
+    public Collider(double pivotX, double pivotY, double width) {
         this.x = pivotX;
         this.y = pivotY;
         this.width = 32;

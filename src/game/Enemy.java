@@ -42,8 +42,6 @@ public class Enemy extends ImageView {
 
         initSprite(type);
 
-        this.collider = new Collider(posX, posY);
-
         this.diedSprites = ImageManager.importEnemyDiedSprites();
         System.out.println(diedSprites.size());
 
@@ -56,33 +54,13 @@ public class Enemy extends ImageView {
         this.speed = 3;
         this.sprite = new Image("file:resources/game/enemy/soldier-1.png");
 
+        this.collider = new Collider(posX, posY, sprite.getWidth());
+
         this.moveState = new EnemyMoveState(this);
         this.deadState = new EnemyDeadState(this);
         this.despawnState = new EnemyDespawnState(this);
 
         this.currentState = this.moveState;
-
-//        AnimationTimer run = new AnimationTimer() {
-//            @Override
-//            public void handle(long now) {
-//                if(lastTimeFrame == 0) {
-//                    lastTimeFrame = now;
-//                } else if(currentState instanceof EnemyDeadState) {
-//                    root.getChildren().remove(Enemy.this);
-//                    this.stop();
-//                }
-//
-//                double deltaTime = (double) (now - lastTimeFrame) / 50_000_000;
-//
-//                currentState.onUpdate(deltaTime);
-//
-//                collider.setCollider(posX);
-//
-//                lastTimeFrame = now;
-//            }
-//        };
-//
-//        run.start();
 
         this.setImage(sprite);
         root.getChildren().add(this);

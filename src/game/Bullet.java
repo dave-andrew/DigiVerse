@@ -36,8 +36,6 @@ public class Bullet extends ImageView {
         this.posX = posX;
         this.posY = posY;
 
-        this.collider = new Collider(posX, posY);
-
         this.direction = direction;
 
         this.moveState = new BulletMoveState(this);
@@ -47,6 +45,8 @@ public class Bullet extends ImageView {
 
         this.sprite = new Image("file:resources/game/bullet.png");
         this.setImage(sprite);
+
+        this.collider = new Collider(posX, posY, sprite.getWidth());
 
         root.getChildren().add(this);
         this.setX(posX);
