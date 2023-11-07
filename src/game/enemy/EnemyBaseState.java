@@ -1,10 +1,12 @@
 package game.enemy;
 
 import game.Enemy;
+import helper.ItemManager;
 
 public abstract class EnemyBaseState {
 
     protected Enemy enemy;
+    protected final ItemManager itemManager = ItemManager.getInstance();
 
     public EnemyBaseState(Enemy enemy) {
         this.enemy = enemy;

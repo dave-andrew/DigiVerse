@@ -6,6 +6,7 @@ import game.enemy.EnemyDespawnState;
 import game.enemy.EnemyMoveState;
 import helper.Collider;
 import helper.ImageManager;
+import helper.ItemManager;
 import javafx.animation.AnimationTimer;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
@@ -36,9 +37,13 @@ public class Enemy extends ImageView {
 
     private final ArrayList<Image> diedSprites;
 
+    private final Pane root;
+
     public Enemy(Pane root, double posX, double posY, Player player, String type) {
 
         this.player = player;
+
+        this.root = root;
 
         initSprite(type);
 
@@ -130,5 +135,9 @@ public class Enemy extends ImageView {
 
     public EnemyBaseState getState() {
         return this.currentState;
+    }
+
+    public Pane getRoot() {
+        return root;
     }
 }

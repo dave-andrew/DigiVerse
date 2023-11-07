@@ -17,6 +17,7 @@ public class Player extends ImageView {
     private int lives;
     private double speed;
     private double shootcd;
+    private int score;
 
     private Collider collider;
 
@@ -56,6 +57,7 @@ public class Player extends ImageView {
         this.lives = 3;
         this.speed = 10;
         this.shootcd = 5;
+        this.score = 0;
 
         this.leftSprites = ImageManager.importPlayerSprites("left");
         this.rightSprites = ImageManager.importPlayerSprites("right");
@@ -178,5 +180,13 @@ public class Player extends ImageView {
 
     public Collider getCollider() {
         return collider;
+    }
+
+    public int getScore() {
+        return score;
+    }
+
+    public void setScore(int score) {
+        this.score = score;
     }
 }

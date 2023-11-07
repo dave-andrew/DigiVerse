@@ -29,9 +29,4 @@ public class BulletManager {
     public void addBulletList(Bullet newBullet) {
         this.bulletList.add(newBullet);
     }
-    public void removeAllBullet(ArrayList<Bullet> bullet) {
-        for (Bullet b : bullet) {
-            this.bulletList.remove(bulletList.indexOf(b));
-        }
-    }
 }
