@@ -2,9 +2,12 @@ package view;
 
 import game.Enemy;
 import game.Player;
+import helper.ImageManager;
 import helper.InputManager;
 import helper.ScreenManager;
 import javafx.animation.AnimationTimer;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.scene.media.Media;
 import javafx.scene.media.MediaPlayer;
 import javafx.stage.Stage;
@@ -26,6 +29,8 @@ public class OfflineGame {
 
     private ArrayList<Enemy> enemyList = new ArrayList<>();
 
+    private ArrayList<Image>  groundSprites = new ArrayList<>();
+
     private long lastTimeFrame = 0;
     public OfflineGame(Stage stage) {
 
@@ -38,6 +43,9 @@ public class OfflineGame {
         player.setX(player.getPosX());
         player.setY(player.getPosY());
 
+        groundSprites = ImageManager.importGroundSprites("tile");
+        setupBackground();
+
         root.getChildren().add(player);
 
         AnimationTimer timer = new AnimationTimer() {
@@ -47,6 +55,8 @@ public class OfflineGame {
 
                 player.getState().onUpdate(deltaTime, root);
 
+                player.getCollider().setCollider(player.getPosX());
+
                 lastTimeFrame = now;
 
                 if(InputManager.getPressedKeys().contains(KeyCode.SPACE)) {
@@ -55,7 +65,6 @@ public class OfflineGame {
                 }
             }
         };
-
 
         timer.start();
 
@@ -72,6 +81,22 @@ public class OfflineGame {
                 mediaPlayer.seek(Duration.ZERO);
             }
         });
+    }
+
+    private void setupBackground() {
+        for (int i = 0; i < ScreenManager.SCREEN_WIDTH; i += 32) {
+            for (int j = 0; j < ScreenManager.SCREEN_HEIGHT; j += 32) {
+                Image groundSprite = groundSprites.get(new Random().nextInt(groundSprites.size()));
+                ImageView tile = new ImageView(groundSprite);
+                tile.setScaleX(2);
+                tile.setScaleY(2);
+
+                tile.setX(i);
+                tile.setY(j);
+
+                root.getChildren().add(tile);
+            }
+        }
     }
 
     private void enemySpawner() {

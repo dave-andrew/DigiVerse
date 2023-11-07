@@ -1,6 +1,7 @@
 package game;
 
 import game.player.*;
+import helper.Collider;
 import helper.ImageManager;
 import helper.ScreenManager;
 import javafx.scene.image.Image;
@@ -16,6 +17,8 @@ public class Player extends ImageView {
     private int lives;
     private double speed;
     private double shootcd;
+
+    private Collider collider;
 
     //    Player Movement
     private double velocityX = 0.0;
@@ -53,6 +56,8 @@ public class Player extends ImageView {
         this.lives = 3;
         this.speed = 10;
         this.shootcd = 5;
+
+        this.collider = new Collider(posX);
 
         leftSprites = ImageManager.importPlayerSprites("left");
         rightSprites = ImageManager.importPlayerSprites("right");
@@ -169,5 +174,9 @@ public class Player extends ImageView {
 
     public void setShootcd(double shootcd) {
         this.shootcd = shootcd;
+    }
+
+    public Collider getCollider() {
+        return collider;
     }
 }

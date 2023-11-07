@@ -55,4 +55,12 @@ public class ImageManager {
         return sprites;
     }
 
+    public static ArrayList<Image> importGroundSprites(String baseString) {
+        ArrayList<Image> sprites = new ArrayList<>();
+        for (int i = 1; i <= 3; i++) {
+            sprites.add(new Image("file:resources/game/ground/" + baseString + "-" + i + ".png"));
+        }
+        return sprites;
+    }
+
 }
