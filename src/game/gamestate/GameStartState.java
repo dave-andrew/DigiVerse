@@ -22,13 +22,14 @@ public class GameStartState extends GameBaseState{
         guiView = new ImageView(gui);
         this.game.getRoot().getChildren().add(guiView);
 
-        guiView.setX(ScreenManager.SCREEN_WIDTH / 2 - ((gui.getWidth()) / 2));
-        guiView.setY(ScreenManager.SCREEN_HEIGHT / 2 - ((gui.getHeight()) / 2));
+        double screenWidth = ScreenManager.SCREEN_WIDTH;
+        double screenHeight = ScreenManager.SCREEN_HEIGHT;
 
         guiView.setScaleX(3);
         guiView.setScaleY(3);
 
-
+        guiView.setX(screenWidth / 2 - gui.getWidth() * 3 / 2);
+        guiView.setY(screenHeight / 2 - gui.getHeight() * 3 / 2);
     }
 
     @Override

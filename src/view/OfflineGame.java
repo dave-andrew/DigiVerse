@@ -107,7 +107,7 @@ public class OfflineGame {
     }
 
     public void updateGame(long now) {
-        root.getChildren().remove(player);
+        clearPane();
 
         double deltaTime = (double) (now - lastTimeFrame) / 50_000_000;
         playerUpdate(deltaTime);
@@ -115,9 +115,19 @@ public class OfflineGame {
         checkCollisions(deltaTime);
         checkItemCollision();
         lastTimeFrame = now;
+
         root.getChildren().add(player);
+
+        setUpGui();
     }
 
+    public void setUpGui() {
+
+    }
+
+    public void clearPane() {
+        root.getChildren().remove(player);
+    }
 
     private void playerUpdate(double deltaTime) {
         if(!isPaused) {
