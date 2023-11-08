@@ -1,5 +1,6 @@
 package view;
 
+import com.sun.media.jfxmedia.MediaError;
 import game.Bullet;
 import game.Enemy;
 import game.Player;
@@ -17,6 +18,7 @@ import javafx.scene.control.Label;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.media.Media;
+import javafx.scene.media.MediaException;
 import javafx.scene.media.MediaPlayer;
 import javafx.stage.Stage;
 import javafx.scene.Scene;
@@ -85,6 +87,7 @@ public class OfflineGame {
     }
 
     private boolean isPaused = false;
+    private MediaPlayer mediaPlayer;
 
     private void setupGameLoop() {
         AnimationTimer timer = new AnimationTimer() {
@@ -104,9 +107,16 @@ public class OfflineGame {
     private void setupAudio() {
         File file = new File("resources/game/soundFX/backsound.wav");
         Media media = new Media(file.toURI().toString());
-        MediaPlayer mediaPlayer = new MediaPlayer(media);
+        mediaPlayer = new MediaPlayer(media);
+        mediaPlayer.setVolume(0.5);
         mediaPlayer.play();
-        mediaPlayer.setOnEndOfMedia(() -> mediaPlayer.seek(Duration.ZERO));
+
+        mediaPlayer.setOnEndOfMedia(new Runnable() {
+            @Override
+            public void run() {
+                mediaPlayer.seek(Duration.ZERO);
+            }
+        });
     }
 
     public void updateGame(long now) {
