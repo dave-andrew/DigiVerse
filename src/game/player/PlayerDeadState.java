@@ -23,8 +23,14 @@ public class PlayerDeadState extends PlayerBaseState{
     public void onUpdate(double deltaTime, Pane root) {
         this.lastTimeFrame += deltaTime;
 
+        if(player.getLives() == -1 && frame == 200) {
+            player.changeState(player.noLiveState);
+            return;
+        }
+
         if(frame == 200) {
             player.changeState(player.respawnState);
+            return;
         }
 
         if (lastTimeFrame > 2) {

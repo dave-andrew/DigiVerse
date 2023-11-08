@@ -7,10 +7,7 @@ import game.Player;
 import game.dropitem.DropItem;
 import game.enemy.EnemyDeadState;
 import game.enemy.EnemyDespawnState;
-import game.gamestate.GameBaseState;
-import game.gamestate.GamePauseState;
-import game.gamestate.GamePlayState;
-import game.gamestate.GameStartState;
+import game.gamestate.*;
 import game.player.PlayerStandState;
 import helper.*;
 import javafx.animation.AnimationTimer;
@@ -51,6 +48,7 @@ public class OfflineGame {
     public GameStartState startState;
     public GamePlayState playState;
     public GamePauseState pauseState;
+    public GameOverState overState;
 
     public OfflineGame(Stage stage) {
         initialize(stage);
@@ -66,6 +64,7 @@ public class OfflineGame {
         this.startState = new GameStartState(this);
         this.playState = new GamePlayState(this);
         this.pauseState = new GamePauseState(this);
+        this.overState = new GameOverState(this);
 
         inputManager = InputManager.getInstance(scene);
 

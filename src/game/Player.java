@@ -43,6 +43,7 @@ public class Player extends ImageView {
     public PlayerShootState shootState;
     public PlayerDeadState deadState;
     public PlayerRespawnState respawnState;
+    public PlayerNoLiveState noLiveState;
 
     private Image sprite;
 
@@ -70,6 +71,7 @@ public class Player extends ImageView {
         this.shootState = new PlayerShootState(this);
         this.deadState = new PlayerDeadState(this);
         this.respawnState = new PlayerRespawnState(this);
+        this.noLiveState = new PlayerNoLiveState(this);
 
         this.currentState = this.deadState;
 
