@@ -162,7 +162,12 @@ public class OfflineGame {
         root.getChildren().add(health);
 
         healthText = new Label();
-        healthText.setText(Integer.toString(player.getLives()));
+        if(player.getLives() < 0) {
+            this.mediaPlayer.stop();
+            healthText.setText("0");
+        } else {
+            healthText.setText(Integer.toString(player.getLives()));
+        }
         healthText.setScaleX(2);
         healthText.setScaleY(2);
         healthText.setLayoutX(50);
