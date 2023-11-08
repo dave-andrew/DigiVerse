@@ -73,7 +73,7 @@ public class Player extends ImageView {
         this.respawnState = new PlayerRespawnState(this);
         this.noLiveState = new PlayerNoLiveState(this);
 
-        this.currentState = this.deadState;
+        this.currentState = this.standState;
 
         this.sprite = new Image("file:resources/game/player/down-1.png");
         this.setImage(this.sprite);

@@ -1,9 +1,12 @@
 package game.gamestate;
 
+import helper.InputManager;
 import helper.ScreenManager;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.input.KeyCode;
 import view.OfflineGame;
+
 
 public class GameOverState extends GameBaseState {
 
@@ -28,6 +31,10 @@ public class GameOverState extends GameBaseState {
 
     @Override
     public void onUpdate(long now) {
-
+        if(InputManager.getPressedKeys().contains(KeyCode.SPACE)) {
+            game.getRoot().getChildren().remove(guiView);
+            game.cleanUp();
+            game.changeState(game.startState);
+        }
     }
 }

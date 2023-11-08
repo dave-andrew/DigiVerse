@@ -18,6 +18,7 @@ public class GameStartState extends GameBaseState{
 
     @Override
     public void onEnterState() {
+
         Image gui = ImageManager.importGUI("start-banner");
         guiView = new ImageView(gui);
         this.game.getRoot().getChildren().add(guiView);
@@ -30,6 +31,7 @@ public class GameStartState extends GameBaseState{
 
         guiView.setX(screenWidth / 2 - gui.getWidth() * 3 / 2);
         guiView.setY(screenHeight / 2 - gui.getHeight() * 3 / 2);
+
     }
 
     @Override

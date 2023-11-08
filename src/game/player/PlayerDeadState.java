@@ -11,25 +11,16 @@ public class PlayerDeadState extends PlayerBaseState{
 
     private double lastTimeFrame = 0;
     private int frame = 0;
-    private MediaPlayer mediaPlayer;
 
     public PlayerDeadState(Player player) {
         super(player);
-
-        File file = new File("resources/game/soundFX/death.wav");
-        Media media = new Media(file.toURI().toString());
-        this.mediaPlayer = new MediaPlayer(media);
     }
 
     @Override
     public void onEnterState() {
-        player.setLives(player.getLives() - 1);
+        this.player.setLives(player.getLives() - 1);
         this.frame = 0;
         this.lastTimeFrame = 0;
-
-        if(player.getLives() == -1) {
-            this.mediaPlayer.play();
-        }
     }
 
     @Override

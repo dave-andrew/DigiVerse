@@ -8,6 +8,7 @@ import game.dropitem.DropItem;
 import game.enemy.EnemyDeadState;
 import game.enemy.EnemyDespawnState;
 import game.gamestate.*;
+import game.player.PlayerNoLiveState;
 import game.player.PlayerStandState;
 import helper.*;
 import javafx.animation.AnimationTimer;
@@ -32,6 +33,10 @@ import javafx.util.Duration;
 
 public class OfflineGame {
 
+    private Stage stage;
+
+    private AnimationTimer timer;
+
     private Player player;
     private Pane root;
     private Scene scene;
@@ -51,45 +56,53 @@ public class OfflineGame {
     public GameOverState overState;
 
     public OfflineGame(Stage stage) {
-        initialize(stage);
-        setupGameLoop();
-        setupAudio();
-    }
-
-    private void initialize(Stage stage) {
-        root = new Pane();
+        this.stage = stage;
+        this.root = new Pane();
 
         this.scene = new Scene(root, ScreenManager.SCREEN_WIDTH, ScreenManager.SCREEN_HEIGHT);
+        inputManager = InputManager.getInstance(scene);
+
+        player = Player.getInstance();
+        player.setX(ScreenManager.SCREEN_WIDTH / 2);
+        player.setY(ScreenManager.SCREEN_HEIGHT / 2);
+
+        groundSprites = ImageManager.importGroundSprites("tile");
 
         this.startState = new GameStartState(this);
         this.playState = new GamePlayState(this);
         this.pauseState = new GamePauseState(this);
         this.overState = new GameOverState(this);
 
-        inputManager = InputManager.getInstance(scene);
-
-        player = Player.getInstance();
-        player.setX(player.getPosX());
-        player.setY(player.getPosY());
-
-        groundSprites = ImageManager.importGroundSprites("tile");
-
-        setupBackground();
+        initialize(stage);
+        setupGameLoop();
+        setupAudio();
 
         this.currentState = this.startState;
         this.currentState.onEnterState();
 
         stage.setScene(scene);
         stage.setTitle("Offline Game");
+    }
+
+    private void initialize(Stage stage) {
+
+        setupBackground();
+
+        setUpGui();
+    }
+
+    public void reinitialize() {
+        setupBackground();
 
         setUpGui();
     }
 
     private boolean isPaused = false;
     private MediaPlayer mediaPlayer;
+    private MediaPlayer death = new MediaPlayer(new Media(new File("resources/game/soundFX/death.wav").toURI().toString()));
 
     private void setupGameLoop() {
-        AnimationTimer timer = new AnimationTimer() {
+        this.timer = new AnimationTimer() {
             @Override
             public void handle(long now) {
                 if(currentState instanceof GamePauseState) {
@@ -100,7 +113,7 @@ public class OfflineGame {
                 currentState.onUpdate(now);
             }
         };
-        timer.start();
+        this.timer.start();
     }
 
     private void setupAudio() {
@@ -279,6 +292,30 @@ public class OfflineGame {
         }
 
 //        System.out.println(player.getScore());
+    }
+
+    public void cleanUp() {
+        root.getChildren().clear();
+
+        player.setLives(3);
+        player.setScore(0);
+        player.changeState(player.respawnState);
+
+        mediaPlayer.stop();
+        mediaPlayer.dispose();
+
+        root.getChildren().removeAll(enemyList);
+        root.getChildren().removeAll(bulletManager.getBulletList());
+
+        enemyList.clear();
+        bulletManager.getBulletList().clear();
+        itemManager.getItemList().clear();
+
+        this.timer.stop();
+
+        reinitialize();
+        setupGameLoop();
+        setupAudio();
     }
 
     public Scene getScene() {
