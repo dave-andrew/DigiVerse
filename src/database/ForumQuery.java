@@ -1,5 +1,7 @@
 package database;
 
+import helper.StageManager;
+import helper.Toast;
 import model.Classroom;
 import model.Forum;
 import model.LoggedUser;
@@ -45,6 +47,28 @@ public class ForumQuery {
         }
 
         return forumList;
+    }
+
+    public Forum createForum(Forum forum) {
+        String query = "INSERT INTO msforum VALUES (?, ?, ?, ?, ?)";
+
+        PreparedStatement ps = connect.prepareStatement(query);
+        try {
+            assert ps != null;
+            ps.setString(1, forum.getId());
+            ps.setString(2, forum.getText());
+            ps.setString(3, forum.getUserid());
+            ps.setString(4, forum.getClassid());
+            ps.setString(5, forum.getCreatedAt());
+
+            ps.executeUpdate();
+
+            Toast.makeText(StageManager.getInstance(), "Forum created!", 2000, 500, 500);
+
+            return forum;
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
     }
 
 }

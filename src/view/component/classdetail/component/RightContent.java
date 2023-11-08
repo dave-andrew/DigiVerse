@@ -1,5 +1,6 @@
 package view.component.classdetail.component;
 
+import controller.ForumController;
 import javafx.event.EventHandler;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
@@ -13,14 +14,17 @@ import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Priority;
 import javafx.scene.layout.VBox;
+import model.Classroom;
 import model.LoggedUser;
 
 public class RightContent extends VBox {
 
     private TextField postInput;
+    private ForumController forumController;
+    private Classroom classroom;
 
     private void init() {
-
+        this.forumController = new ForumController();
     }
 
     private void setLayout() {
@@ -64,7 +68,8 @@ public class RightContent extends VBox {
                 @Override
                 public void handle(KeyEvent event) {
                     if (event.getCode() == KeyCode.ENTER) {
-                        System.out.println("Enter key pressed. Text entered: " + postInput.getText());
+                        forumController.createForum(postInput.getText(), classroom.getClassId());
+                        postInput.clear();
                     }
                 }
             });
@@ -83,7 +88,8 @@ public class RightContent extends VBox {
         return container;
     }
 
-    public RightContent() {
+    public RightContent(Classroom classroom) {
+        this.classroom = classroom;
         init();
         setLayout();
 

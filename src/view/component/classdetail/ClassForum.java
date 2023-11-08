@@ -1,5 +1,6 @@
 package view.component.classdetail;
 
+import controller.ForumController;
 import helper.ImageManager;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
@@ -91,7 +92,7 @@ public class ClassForum extends ScrollPane {
             leftContent = new LeftContent("Teacher", this.classroom);
             leftContentContainer.getChildren().add(leftContent);
 
-            rightContent = new RightContent();
+            rightContent = new RightContent(classroom);
             HBox.setHgrow(rightContent, Priority.ALWAYS);
 
             forumHBox.getChildren().addAll(leftContentContainer, rightContent);
