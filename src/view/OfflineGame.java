@@ -3,12 +3,13 @@ package view;
 import game.Bullet;
 import game.Enemy;
 import game.Player;
-import game.dropitem.Coin1;
-import game.dropitem.Coin5;
 import game.dropitem.DropItem;
 import game.enemy.EnemyDeadState;
 import game.enemy.EnemyDespawnState;
-import game.player.PlayerRespawnState;
+import game.gamestate.GameBaseState;
+import game.gamestate.GamePauseState;
+import game.gamestate.GamePlayState;
+import game.gamestate.GameStartState;
 import game.player.PlayerStandState;
 import helper.*;
 import javafx.animation.AnimationTimer;
@@ -33,13 +34,20 @@ public class OfflineGame {
 
     private Player player;
     private Pane root;
+    private Scene scene;
     private InputManager inputManager;
-    private ArrayList<Enemy> enemyList = new ArrayList<>();
+    private final ArrayList<Enemy> enemyList = new ArrayList<>();
     private ArrayList<Image> groundSprites;
     private long lastTimeFrame = 0;
     private boolean deadPause = false;
     private final BulletManager bulletManager = BulletManager.getInstance();
     private final ItemManager itemManager = ItemManager.getInstance();
+
+//  Game State
+    private GameBaseState currentState;
+    public GameStartState startState;
+    public GamePlayState playState;
+    public GamePauseState pauseState;
 
     public OfflineGame(Stage stage) {
         initialize(stage);
@@ -49,22 +57,42 @@ public class OfflineGame {
 
     private void initialize(Stage stage) {
         root = new Pane();
-        Scene scene = new Scene(root, ScreenManager.SCREEN_WIDTH, ScreenManager.SCREEN_HEIGHT);
+
+        this.scene = new Scene(root, ScreenManager.SCREEN_WIDTH, ScreenManager.SCREEN_HEIGHT);
+
+        this.startState = new GameStartState(this);
+        this.playState = new GamePlayState(this);
+        this.pauseState = new GamePauseState(this);
+
         inputManager = InputManager.getInstance(scene);
+
         player = Player.getInstance();
         player.setX(player.getPosX());
         player.setY(player.getPosY());
+
         groundSprites = ImageManager.importGroundSprites("tile");
+
         setupBackground();
+
+        this.currentState = this.startState;
+        this.currentState.onEnterState();
+
         stage.setScene(scene);
         stage.setTitle("Offline Game");
     }
+
+    private boolean isPaused = false;
 
     private void setupGameLoop() {
         AnimationTimer timer = new AnimationTimer() {
             @Override
             public void handle(long now) {
-                updateGame(now);
+                if(currentState instanceof GamePauseState) {
+                    isPaused = true;
+                } else {
+                    isPaused = false;
+                }
+                currentState.onUpdate(now);
             }
         };
         timer.start();
@@ -78,8 +106,9 @@ public class OfflineGame {
         mediaPlayer.setOnEndOfMedia(() -> mediaPlayer.seek(Duration.ZERO));
     }
 
-    private void updateGame(long now) {
+    public void updateGame(long now) {
         root.getChildren().remove(player);
+
         double deltaTime = (double) (now - lastTimeFrame) / 50_000_000;
         playerUpdate(deltaTime);
         updateBullets(deltaTime);
@@ -89,34 +118,39 @@ public class OfflineGame {
         root.getChildren().add(player);
     }
 
+
     private void playerUpdate(double deltaTime) {
-        player.getState().onUpdate(deltaTime, root);
-        player.getCollider().setCollider(player.getPosX(), player.getPosY());
-        if (InputManager.getPressedKeys().contains(KeyCode.SPACE)) {
-            enemySpawner();
-        }
-        if (player.getState() instanceof PlayerStandState) {
-            deadPause = false;
+        if(!isPaused) {
+            player.getState().onUpdate(deltaTime, root);
+            player.getCollider().setCollider(player.getPosX(), player.getPosY());
+            if (InputManager.getPressedKeys().contains(KeyCode.SPACE)) {
+                enemySpawner();
+            }
+            if (player.getState() instanceof PlayerStandState) {
+                deadPause = false;
+            }
         }
     }
 
     private void updateBullets(double deltaTime) {
-        Iterator<Bullet> bulletIterator = bulletManager.getBulletList().iterator();
-        while (bulletIterator.hasNext()) {
-            Bullet bullet = bulletIterator.next();
-            if (bullet.getPosX() < 0 || bullet.getPosX() > ScreenManager.SCREEN_WIDTH ||
-                    bullet.getPosY() < 0 || bullet.getPosY() > ScreenManager.SCREEN_HEIGHT) {
-                bullet.changeState(bullet.stopState);
-                root.getChildren().remove(bullet);
-                bulletIterator.remove();
+        if(!isPaused) {
+            Iterator<Bullet> bulletIterator = bulletManager.getBulletList().iterator();
+            while (bulletIterator.hasNext()) {
+                Bullet bullet = bulletIterator.next();
+                if (bullet.getPosX() < 0 || bullet.getPosX() > ScreenManager.SCREEN_WIDTH ||
+                        bullet.getPosY() < 0 || bullet.getPosY() > ScreenManager.SCREEN_HEIGHT) {
+                    bullet.changeState(bullet.stopState);
+                    root.getChildren().remove(bullet);
+                    bulletIterator.remove();
+                }
+                bullet.getState().onUpdate(deltaTime, bullet.getDirection());
+                bullet.getCollider().setCollider(bullet.getPosX(), bullet.getPosY());
             }
-            bullet.getState().onUpdate(deltaTime, bullet.getDirection());
-            bullet.getCollider().setCollider(bullet.getPosX(), bullet.getPosY());
         }
     }
 
     private void checkCollisions(double deltaTime) {
-        if (!deadPause) {
+        if (!deadPause && !isPaused) {
             Iterator<Enemy> enemyIterator = enemyList.iterator();
             while (enemyIterator.hasNext()) {
                 Enemy enemy = enemyIterator.next();
@@ -144,7 +178,7 @@ public class OfflineGame {
                     deadPause = true;
                     player.changeState(player.deadState);
                 }
-                enemy.getState().onUpdate(deltaTime);
+                enemy.getState().onUpdate(deltaTime, this);
                 enemy.getCollider().setCollider(enemy.getPosX(), enemy.getPosY());
             }
         }
@@ -180,5 +214,26 @@ public class OfflineGame {
         }
 
 //        System.out.println(player.getScore());
+    }
+
+    public Scene getScene() {
+        return scene;
+    }
+
+    public Pane getRoot() {
+        return root;
+    }
+
+    public GameBaseState getState() {
+        return currentState;
+    }
+
+    public Player getPlayer() {
+        return this.player;
+    }
+
+    public void changeState(GameBaseState newState) {
+        this.currentState = newState;
+        this.currentState.onEnterState();
     }
 }

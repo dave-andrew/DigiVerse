@@ -1,6 +1,7 @@
 package game.enemy;
 
 import game.Enemy;
+import view.OfflineGame;
 
 public class EnemyDespawnState extends EnemyBaseState {
 
@@ -15,7 +16,7 @@ public class EnemyDespawnState extends EnemyBaseState {
     }
 
     @Override
-    public void onUpdate(double deltaTime) {
+    public void onUpdate(double deltaTime, OfflineGame game) {
 
     }
 }

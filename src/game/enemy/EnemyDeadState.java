@@ -5,6 +5,7 @@ import game.dropitem.Coin1;
 import game.dropitem.Coin5;
 import game.dropitem.DropItem;
 import helper.ItemManager;
+import view.OfflineGame;
 
 import java.util.ArrayList;
 import java.util.Iterator;
@@ -31,7 +32,7 @@ public class EnemyDeadState extends EnemyBaseState {
     }
 
     @Override
-    public void onUpdate(double deltaTime) {
+    public void onUpdate(double deltaTime, OfflineGame game) {
         this.lastTimeFrame += deltaTime;
 
         if (frame == 1200) {

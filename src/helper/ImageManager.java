@@ -93,4 +93,8 @@ public class ImageManager {
         return longSpriteExtract(image, 6);
     }
 
+    public static Image importGUI(String baseString) {
+        return new Image("file:resources/game/gui/" + baseString + ".png");
+    }
+
 }

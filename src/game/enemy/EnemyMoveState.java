@@ -1,6 +1,8 @@
 package game.enemy;
 
 import game.Enemy;
+import game.gamestate.GamePauseState;
+import view.OfflineGame;
 
 public class EnemyMoveState extends EnemyBaseState {
 
@@ -17,7 +19,9 @@ public class EnemyMoveState extends EnemyBaseState {
     }
 
     @Override
-    public void onUpdate(double deltaTime) {
+    public void onUpdate(double deltaTime, OfflineGame game) {
+
+        System.out.println(deltaTime);
 
         this.lastTimeFrame += deltaTime;
 
@@ -30,7 +34,7 @@ public class EnemyMoveState extends EnemyBaseState {
             this.frame = 0;
         }
 
-        if (enemy.getPlayer() != null) {
+        if (enemy.getPlayer() != null && !(game.getState() instanceof GamePauseState)) {
             double destX = enemy.getPlayer().getPosX();
             double destY = enemy.getPlayer().getPosY();
 
