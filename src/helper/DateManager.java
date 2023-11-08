@@ -15,4 +15,8 @@ public class DateManager {
         return LocalDateTime.parse(dateStr, formatter);
     }
 
+    public static String getNow() {
+    	return formatDate(LocalDateTime.now());
+    }
+
 }

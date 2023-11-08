@@ -30,8 +30,6 @@ public class ClassForum extends ScrollPane {
     LeftContent leftContent;
     RightContent rightContent;
 
-
-
     private void setLayout() {
 
         HBox.setHgrow(forumStack, Priority.ALWAYS);

@@ -4,6 +4,7 @@ import javafx.scene.control.Label;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Priority;
 import javafx.scene.layout.VBox;
+import javafx.scene.text.Font;
 import model.Classroom;
 
 public class LeftContent extends HBox {
@@ -23,6 +24,7 @@ public class LeftContent extends HBox {
         if (role.equals("Teacher")) {
             classCodeTitle = new Label("Class Code:");
             classCode = new Label(classroom.getClassCode());
+            classCode.getStyleClass().add("title");
 
             container.getChildren().addAll(classCodeTitle, classCode);
         }
