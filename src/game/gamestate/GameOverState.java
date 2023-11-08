@@ -13,6 +13,10 @@ public class GameOverState extends GameBaseState {
         super(game);
 
         this.guiView = new ImageView(new Image("file:resources/game/gui/game-over.png"));
+
+        this.guiView.setScaleX(0.75);
+        this.guiView.setScaleY(0.75);
+
         this.guiView.setX(ScreenManager.SCREEN_WIDTH / 2 - this.guiView.getImage().getWidth() / 2);
         this.guiView.setY(ScreenManager.SCREEN_HEIGHT / 2 - this.guiView.getImage().getHeight() / 2);
     }
