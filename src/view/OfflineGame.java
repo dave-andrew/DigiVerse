@@ -13,6 +13,7 @@ import game.gamestate.GameStartState;
 import game.player.PlayerStandState;
 import helper.*;
 import javafx.animation.AnimationTimer;
+import javafx.scene.control.Label;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.media.Media;
@@ -79,6 +80,8 @@ public class OfflineGame {
 
         stage.setScene(scene);
         stage.setTitle("Offline Game");
+
+        setUpGui();
     }
 
     private boolean isPaused = false;
@@ -121,12 +124,50 @@ public class OfflineGame {
         setUpGui();
     }
 
-    public void setUpGui() {
+    private ImageView score;
+    private Label scoreText;
+    private ImageView health;
+    private Label healthText;
 
+    public void setUpGui() {
+        score = new ImageView(new Image("file:resources/game/items/coin1.png"));
+        score.setScaleX(2);
+        score.setScaleY(2);
+        score.setX(10);
+        score.setY(10);
+        root.getChildren().add(score);
+
+        scoreText = new Label();
+        scoreText.setText(Integer.toString(player.getScore()));
+        scoreText.setScaleX(2);
+        scoreText.setScaleY(2);
+        scoreText.setLayoutX(50);
+        scoreText.setLayoutY(10);
+        root.getChildren().add(scoreText);
+
+        health = new ImageView(ImageManager.importGUI("health-icon"));
+        health.setScaleX(2);
+        health.setScaleY(2);
+        health.setX(10);
+        health.setY(50);
+        root.getChildren().add(health);
+
+        healthText = new Label();
+        healthText.setText(Integer.toString(player.getLives()));
+        healthText.setScaleX(2);
+        healthText.setScaleY(2);
+        healthText.setLayoutX(50);
+        healthText.setLayoutY(50);
+        root.getChildren().add(healthText);
     }
 
     public void clearPane() {
         root.getChildren().remove(player);
+
+        root.getChildren().remove(score);
+        root.getChildren().remove(scoreText);
+        root.getChildren().remove(health);
+        root.getChildren().remove(healthText);
     }
 
     private void playerUpdate(double deltaTime) {
