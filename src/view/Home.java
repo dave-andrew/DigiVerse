@@ -45,7 +45,7 @@ public class Home {
     private MenuItem createClass, joinClass;
 
     private HBox sideNavItem(String imagePath, String label) {
-        HBox hbox = new HBox(30);
+        HBox hbox = new HBox(10);
 
         Image image = new Image(imagePath);
         ImageView icon = new ImageView(image);
@@ -142,11 +142,13 @@ public class Home {
         rightNav.getChildren().addAll(plusBtn, userBtn);
         rightNav.setAlignment(Pos.CENTER_RIGHT);
 
-        sideBar = new VBox(10);
+        sideBar = new VBox();
 
         homeSideNav = sideNavItem("file:resources/icons/home.png", "Home");
+        homeSideNav.getStyleClass().add("side-nav-item");
 
         calenderSideNav = sideNavItem("file:resources/icons/calendar.png", "Calendar");
+        calenderSideNav.getStyleClass().add("side-nav-item");
     }
 
     private Scene setLayout() {

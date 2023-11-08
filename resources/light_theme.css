@@ -25,12 +25,12 @@
 
 .auth-layout {
     -fx-background-color: transparent;
-    -fx-padding: 0 100 0 0;
+    -fx-padding: 0 5% 0 0; /* Adjust padding for responsiveness */
 }
 
 .primary-button {
     -fx-background-color: #4DCAFF;
-    -fx-padding: 7px 35px;
+    -fx-padding: 7px 5%; /* Adjust padding for responsiveness */
 }
 
 .primary-button:hover {
@@ -44,7 +44,7 @@
 
 .secondary-button {
     -fx-background-color: #FFFFFF;
-    -fx-padding: 7px 35px;
+    -fx-padding: 7px 5%; /* Adjust padding for responsiveness */
     -fx-border-color: #4DCAFF;
     -fx-border-width: 1px;
     -fx-background-radius: 5px;
@@ -62,7 +62,7 @@
 
 .link-button {
     -fx-background-color: transparent;
-    -fx-padding: 7px 35px;
+    -fx-padding: 7px 5%; /* Adjust padding for responsiveness */
 }
 
 .small-checkbox .box {
@@ -75,14 +75,27 @@
 }
 
 .side-nav {
-    -fx-padding: 30px 60px 30px 30px;
+    -fx-padding: 20% 0 20% 0;
     -fx-border-color: transparent #E5E5E5 transparent transparent;
     -fx-border-width: 0 2px 0 0;
 }
 
+.side-nav-item {
+    -fx-padding: 15px 50px;
+    -fx-cursor: hand;
+}
+
+.side-nav-item:hover {
+    -fx-background-color: #F5F5F5;
+}
+
+.side-nav-item:pressed {
+    -fx-background-color: #E5E5E5;
+}
+
 .nav-bar {
     -fx-background-color: transparent;
-    -fx-padding: 15px 30px 15px 30px;
+    -fx-padding: 10px 40px 10px 40px;
     -fx-border-color: transparent transparent #E5E5E5 transparent;
     -fx-border-width: 0 0 2px 0;
 }
@@ -125,20 +138,21 @@
 }
 
 .container {
-    -fx-padding: 30px;
+    -fx-padding: 3%;
     -fx-border-color: #36454F;
     -fx-border-width: 1px;
-    -fx-max-width: 600px;
-    -fx-min-width: 600px;
+    -fx-max-width: 100%; /* Allow container to be 100% width */
+    -fx-min-width: 300px;
     -fx-border-radius: 10px;
 }
 
 .small-container {
-    -fx-padding: 10px 20px;
+    -fx-padding: 2% 5%; /* Adjust padding for responsiveness */
     -fx-border-color: #36454F;
     -fx-border-width: 1px;
-    -fx-max-width: 300px;
+    -fx-max-width: 100%; /* Allow container to be 100% width */
     -fx-min-width: 300px;
+    -fx-max-height: 75px;
     -fx-border-radius: 10px;
 }
 
@@ -184,7 +198,7 @@
 
 .class-banner {
     -fx-border-radius: 10px;
-    -fx-min-width: 1000px;
+    -fx-min-width: 100%;
     -fx-min-height: 250px;
     -fx-background-color: #000000;
 }

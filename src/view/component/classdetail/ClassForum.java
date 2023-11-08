@@ -67,6 +67,7 @@ public class ClassForum extends ScrollPane {
             classBanner.setImage(classImage);
             forumStack.getChildren().add(classBanner);
         }
+
         classBanner.getStyleClass().add("class-banner");
 
         if (classroom == null) {
@@ -88,12 +89,14 @@ public class ClassForum extends ScrollPane {
             forumHBox = new HBox(20);
 //            forumHBox.setStyle("-fx-background-color: #f5f5f5");
 
+            HBox leftContentContainer = new HBox();
             leftContent = new LeftContent("Teacher", this.classroom);
+            leftContentContainer.getChildren().add(leftContent);
 
             rightContent = new RightContent();
             HBox.setHgrow(rightContent, Priority.ALWAYS);
 
-            forumHBox.getChildren().addAll(leftContent, rightContent);
+            forumHBox.getChildren().addAll(leftContentContainer, rightContent);
 //            forumContent.setStyle("-fx-background-color: #000000");
         }
 

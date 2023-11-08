@@ -8,6 +8,7 @@ import javafx.scene.control.TextField;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.HBox;
+import javafx.scene.layout.Priority;
 import javafx.scene.layout.VBox;
 import model.LoggedUser;
 
@@ -55,6 +56,8 @@ public class RightContent extends VBox {
             postInput.setPromptText("What's on your mind " + LoggedUser.getInstance().getUsername() + "?");
 
             container.getChildren().add(postInput);
+
+            HBox.setHgrow(postInput, Priority.ALWAYS);
 
         } else if(type.equals("display")) {
             container.getChildren().add(profileImage);
