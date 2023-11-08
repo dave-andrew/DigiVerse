@@ -5,8 +5,11 @@ import game.dropitem.Coin1;
 import game.dropitem.Coin5;
 import game.dropitem.DropItem;
 import helper.ItemManager;
+import javafx.scene.media.Media;
+import javafx.scene.media.MediaPlayer;
 import view.OfflineGame;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
@@ -20,14 +23,20 @@ public class EnemyDeadState extends EnemyBaseState {
     private List<DropItem> dropItems = new ArrayList<>();
     private final ItemManager itemManager = ItemManager.getInstance();
 
+    private MediaPlayer mediaPlayer;
+
     public EnemyDeadState(Enemy enemy) {
         super(enemy);
+
+        File dieSFX = new File("resources/game/soundFX/enemy-dead.wav");
+        this.mediaPlayer = new MediaPlayer(new Media(dieSFX.toURI().toString()));
     }
 
     @Override
     public void onEnterState() {
         this.lastTimeFrame = 0;
         this.frame = 0;
+        this.mediaPlayer.play();
         createDropItems();
     }
 
