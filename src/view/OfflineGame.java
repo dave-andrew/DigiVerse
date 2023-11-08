@@ -99,7 +99,6 @@ public class OfflineGame {
 
     private boolean isPaused = false;
     private MediaPlayer mediaPlayer;
-    private MediaPlayer death = new MediaPlayer(new Media(new File("resources/game/soundFX/death.wav").toURI().toString()));
 
     private void setupGameLoop() {
         this.timer = new AnimationTimer() {
