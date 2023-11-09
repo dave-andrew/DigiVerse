@@ -21,6 +21,23 @@
     -fx-border-color: transparent;
 }
 
+.split-pane > .split-pane-divider {
+    -fx-padding: 0;
+    -fx-background-color: transparent;
+    -fx-background-insets: 0;
+    -fx-shape: null;
+}
+
+.split-pane:horizontal > .split-pane-divider {
+    -fx-background-color: transparent;
+    -fx-pref-width: 40;
+}
+
+.split-pane:vertical > .split-pane-divider {
+    -fx-background-color: transparent;
+    -fx-pref-height: 2;
+}
+
 /* ============================== */
 
 .auth-layout {
@@ -210,4 +227,14 @@
     -fx-max-width: 50px;
     -fx-max-height: 50px;
     -fx-background-color: #000000;
+}
+
+.profile:hover {
+    -fx-cursor: hand;
+}
+
+.border {
+    -fx-border-color: #36454F;
+    -fx-border-width: 1px;
+    -fx-border-radius: 10px;
 }

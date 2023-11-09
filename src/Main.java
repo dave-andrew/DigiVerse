@@ -11,6 +11,7 @@ import javafx.scene.control.Button;
 import javafx.scene.layout.BorderPane;
 import javafx.stage.Stage;
 import javafx.util.Duration;
+import model.LoggedUser;
 import view.Home;
 import view.Login;
 import view.OfflineGame;
@@ -44,7 +45,7 @@ public class Main extends Application {
         delay.setOnFinished(event -> {
             String message = authController.checkAuth();
             if(message.equals("true")){
-                Toast.makeText(primaryStage, "Welcome back!dfsafdsafdsafdsafdsa", 2000, 500, 500);
+                Toast.makeText(primaryStage, "Welcome back, "+ LoggedUser.getInstance().getUsername() +"!", 2000, 500, 500);
                 Platform.runLater(() -> new Home(primaryStage));
             } else if(message.equals("false")) {
                 Platform.runLater(() -> new Login(primaryStage));
@@ -55,7 +56,8 @@ public class Main extends Application {
 
         delay.play();
 
-        primaryStage.setTitle("DVibes");
+        primaryStage.setTitle("DigiVerse");
+        primaryStage.setResizable(false);
         primaryStage.show();
     }
 

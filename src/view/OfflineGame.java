@@ -81,7 +81,7 @@ public class OfflineGame {
         this.currentState.onEnterState();
 
         stage.setScene(scene);
-        stage.setTitle("Offline Game");
+        stage.setTitle("DigiVerse - Prairie King");
     }
 
     private void initialize(Stage stage) {
