@@ -3,8 +3,12 @@ package helper;
 import javafx.animation.KeyFrame;
 import javafx.animation.KeyValue;
 import javafx.animation.Timeline;
+import javafx.geometry.Insets;
 import javafx.scene.Scene;
+import javafx.scene.effect.DropShadow;
+import javafx.scene.layout.Priority;
 import javafx.scene.layout.StackPane;
+import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
 import javafx.scene.text.Text;
@@ -14,19 +18,29 @@ import javafx.util.Duration;
 
 public final class Toast
 {
-    public static void makeText(Stage ownerStage, String toastMsg, int toastDelay, int fadeInDelay, int fadeOutDelay)
-    {
-        Stage toastStage=new Stage();
+    public static void makeText(Stage ownerStage, String toastMsg, int toastDelay, int fadeInDelay, int fadeOutDelay) {
+        Stage toastStage = new Stage();
         toastStage.initOwner(ownerStage);
         toastStage.setResizable(false);
         toastStage.initStyle(StageStyle.TRANSPARENT);
 
-        Text text = new Text(toastMsg);
-        text.setFont(Font.font("Verdana", 40));
-        text.setFill(Color.RED);
+        toastStage.setX(ScreenManager.SCREEN_WIDTH / 2 - 130);
+        toastStage.setY(0);
 
-        StackPane root = new StackPane(text);
-        root.setStyle("-fx-background-radius: 20; -fx-background-color: rgba(0, 0, 0, 0.2); -fx-padding: 50px;");
+        Text text = new Text(toastMsg);
+        text.setFont(Font.font("Verdana", 18));
+        text.setFill(Color.BLACK);
+
+        VBox box = new VBox(text);
+        VBox.setVgrow(box, Priority.NEVER);
+        box.setStyle("-fx-background-radius: 5px; -fx-background-color: rgba(255, 255, 255, 1); -fx-padding: 10px 30px; -fx-min-width: 210px; -fx-effect: dropshadow(gaussian, grey, 15.0, 0.5, 0, 0);");
+
+        VBox spacer = new VBox();
+        VBox.setVgrow(spacer, Priority.ALWAYS);
+
+        StackPane root = new StackPane(box, spacer);
+        root.setPadding(new Insets(40));
+        root.setStyle("-fx-background-color: transparent;");
         root.setOpacity(0);
 
         Scene scene = new Scene(root);
@@ -35,22 +49,17 @@ public final class Toast
         toastStage.show();
 
         Timeline fadeInTimeline = new Timeline();
-        KeyFrame fadeInKey1 = new KeyFrame(Duration.millis(fadeInDelay), new KeyValue (toastStage.getScene().getRoot().opacityProperty(), 1));
+        KeyFrame fadeInKey1 = new KeyFrame(Duration.millis(fadeInDelay), new KeyValue(toastStage.getScene().getRoot().opacityProperty(), 1));
         fadeInTimeline.getKeyFrames().add(fadeInKey1);
-        fadeInTimeline.setOnFinished((ae) ->
-        {
+        fadeInTimeline.setOnFinished((ae) -> {
             new Thread(() -> {
-                try
-                {
+                try {
                     Thread.sleep(toastDelay);
-                }
-                catch (InterruptedException e)
-                {
-                    // TODO Auto-generated catch block
+                } catch (InterruptedException e) {
                     e.printStackTrace();
                 }
                 Timeline fadeOutTimeline = new Timeline();
-                KeyFrame fadeOutKey1 = new KeyFrame(Duration.millis(fadeOutDelay), new KeyValue (toastStage.getScene().getRoot().opacityProperty(), 0));
+                KeyFrame fadeOutKey1 = new KeyFrame(Duration.millis(fadeOutDelay), new KeyValue(toastStage.getScene().getRoot().opacityProperty(), 0));
                 fadeOutTimeline.getKeyFrames().add(fadeOutKey1);
                 fadeOutTimeline.setOnFinished((aeb) -> toastStage.close());
                 fadeOutTimeline.play();

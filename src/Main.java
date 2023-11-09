@@ -2,6 +2,7 @@ import controller.AuthController;
 import helper.ScreenManager;
 import helper.StageManager;
 import helper.ThemeManager;
+import helper.Toast;
 import javafx.animation.PauseTransition;
 import javafx.application.Application;
 import javafx.application.Platform;
@@ -43,6 +44,7 @@ public class Main extends Application {
         delay.setOnFinished(event -> {
             String message = authController.checkAuth();
             if(message.equals("true")){
+                Toast.makeText(primaryStage, "Welcome back!dfsafdsafdsafdsafdsa", 2000, 500, 500);
                 Platform.runLater(() -> new Home(primaryStage));
             } else if(message.equals("false")) {
                 Platform.runLater(() -> new Login(primaryStage));
