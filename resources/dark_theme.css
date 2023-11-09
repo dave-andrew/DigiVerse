@@ -1,11 +1,216 @@
 @font-face {
-    font-family: 'Nunito';
+    font-family: "Nunito";
     src: url("./fonts/Nunito-Bold.ttf");
 }
 
+/* DEFAULT CSS */
+
 .root {
-    -fx-background-color: #000;
-    -fx-text-fill: #fff;
+    -fx-background-color: #1a1a1a; /* Dark background color */
     -fx-font-size: 16px;
     -fx-font-family: "Nunito";
+    -fx-fill: #ffffff; /* Light text color */
+}
+
+.text {
+    -fx-fill: #ffffff; /* Light text color */
+}
+
+.scroll-pane {
+    -fx-background-color: transparent;
+    -fx-background: transparent;
+    -fx-border-color: transparent;
+}
+
+/* ============================== */
+
+.auth-layout {
+    -fx-background-color: transparent;
+    -fx-padding: 0 20px 0 0;
+}
+
+.primary-button {
+    -fx-background-color: #4DCAFF;
+    -fx-padding: 7px 30px;
+}
+
+.primary-button:hover {
+    -fx-background-color: #4DDAFF;
+    -fx-cursor: hand;
+}
+
+.primary-button:pressed {
+    -fx-background-color: #4DCAFF;
+}
+
+.secondary-button {
+    -fx-background-color: #1a1a1a; /* Dark background color */
+    -fx-padding: 7px 30px;
+    -fx-border-color: #4DCAFF;
+    -fx-border-width: 1px;
+    -fx-background-radius: 5px;
+    -fx-border-radius: 5px;
+}
+
+.secondary-button:hover {
+    -fx-background-color: #2a2a2a; /* Slightly lighter dark background color */
+    -fx-cursor: hand;
+}
+
+.secondary-button:pressed {
+    -fx-background-color: #0f0f0f; /* Even darker background color */
+}
+
+.link-button {
+    -fx-background-color: transparent;
+    -fx-padding: 7px 30px;
+}
+
+.small-checkbox .box {
+    -fx-min-width: 12px;
+    -fx-min-height: 12px;
+}
+
+.small-checkbox .label {
+    -fx-font-size: 11px;
+}
+
+.side-nav {
+    -fx-padding: 20% 0 20% 0;
+    -fx-border-color: transparent #E5E5E5 transparent transparent;
+    -fx-border-width: 0 2px 0 0;
+}
+
+.side-nav-item {
+    -fx-padding: 15px 50px;
+    -fx-cursor: hand;
+}
+
+.side-nav-item:hover {
+    -fx-background-color: #2a2a2a; /* Slightly lighter dark background color */
+}
+
+.side-nav-item:pressed {
+    -fx-background-color: #0f0f0f; /* Even darker background color */
+}
+
+.nav-bar {
+    -fx-background-color: transparent;
+    -fx-padding: 10px 40px 10px 40px;
+    -fx-border-color: transparent transparent #E5E5E5 transparent;
+    -fx-border-width: 0 0 2px 0;
+}
+
+.title {
+    -fx-font-size: 20px;
+    -fx-font-weight: bold;
+    -fx-fill: #ffffff; /* Light text color */
+}
+
+.card-background {
+    -fx-padding: 20px;
+    -fx-background-color: #1a1a1a; /* Dark background color */
+    -fx-background-radius: 10px;
+    -fx-border-radius: 10px;
+    -fx-border-color: #000;
+    -fx-border-width: 1px;
+    -fx-cursor: hand;
+}
+
+.card-background:hover {
+    -fx-background-color: #2a2a2a; /* Slightly lighter dark background color */
+}
+
+.card-background:pressed {
+    -fx-background-color: #0f0f0f; /* Even darker background color */
+}
+
+.image-button {
+    -fx-background-color: transparent;
+    -fx-background-radius: 100px;
+    -fx-cursor: hand;
+}
+
+.image-button:hover {
+    -fx-background-color: #2a2a2a; /* Slightly lighter dark background color */
+}
+
+.image-button:pressed {
+    -fx-background-color: #0f0f0f; /* Even darker background color */
+}
+
+.container {
+    -fx-padding: 20px 50px;
+    -fx-border-color: #36454F;
+    -fx-border-width: 1px;
+    -fx-max-width: 100%;
+    -fx-min-width: 800px;
+    -fx-border-radius: 10px;
+}
+
+.small-container {
+    -fx-padding: 20px 50px;
+    -fx-border-color: #36454F;
+    -fx-border-width: 1px;
+    -fx-max-width: 100%;
+    -fx-min-width: 300px;
+    -fx-max-height: 75px;
+    -fx-border-radius: 10px;
+}
+
+.border {
+    -fx-border-color: #36454F;
+    -fx-border-width: 1px;
+    -fx-border-radius: 10px;
+}
+
+.context-menu {
+    -fx-background-color: #1a1a1a; /* Dark background color */
+    -fx-border-radius: 10px;
+}
+
+.context-menu .item {
+    -fx-padding: 15px 25px;
+    -fx-fill: #ffffff; /* Light text color */
+}
+
+.context-menu .item:hover {
+    -fx-background-color: #2a2a2a; /* Slightly lighter dark background color */
+}
+
+.context-menu .item:pressed {
+    -fx-background-color: #0f0f0f; /* Even darker background color */
+}
+
+.nav-button {
+    -fx-background-color: transparent;
+    -fx-min-width: 90px;
+    -fx-cursor: hand;
+}
+
+.nav-button.active {
+    -fx-border-color: transparent transparent #ffffff transparent; /* White border for active state */
+    -fx-border-width: 0 0 2px 0;
+}
+
+.class-nav {
+    -fx-background-color: transparent;
+    -fx-border-color: transparent transparent #E5E5E5 transparent;
+    -fx-border-width: 0 0 2px 0;
+}
+
+.class-banner {
+    -fx-border-radius: 10px;
+    -fx-min-width: 100%;
+    -fx-min-height: 250px;
+    -fx-background-color: #000000;
+}
+
+.profile {
+    -fx-border-radius: 100px;
+    -fx-min-width: 50px;
+    -fx-min-height: 50px;
+    -fx-max-width: 50px;
+    -fx-max-height: 50px;
+    -fx-background-color: #000000;
 }

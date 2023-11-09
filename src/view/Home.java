@@ -74,6 +74,8 @@ public class Home {
 
         borderPane = new BorderPane();
         mainPane = new StackPane();
+//        mainPane.getStyleClass().add("bg-primary");
+
         scrollPane = new ScrollPane();
         mainPane.getChildren().add(scrollPane);
 
@@ -82,6 +84,7 @@ public class Home {
 
         Label right = new Label("Ini Right");
         mainPane.getChildren().add(right);
+
         StackPane.setAlignment(right, Pos.TOP_RIGHT);
 
         navBar = new HBox();
@@ -156,7 +159,6 @@ public class Home {
         scrollPane.setVbarPolicy(ScrollPane.ScrollBarPolicy.AS_NEEDED);
 
         scrollPane.setPannable(true);
-        scrollPane.setStyle("-fx-background-color: white;");
 
 
         sideBar.getChildren().addAll(homeSideNav, calenderSideNav);
@@ -171,6 +173,8 @@ public class Home {
         borderPane.setTop(navBar);
         borderPane.setLeft(sideBar);
         borderPane.setCenter(mainPane);
+
+//        borderPane.getStyleClass().add("bg-secondary");
 
         scene = new Scene(borderPane, ScreenManager.SCREEN_WIDTH, ScreenManager.SCREEN_HEIGHT);
         ThemeManager.getTheme(scene);
