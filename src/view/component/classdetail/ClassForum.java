@@ -15,9 +15,7 @@ import model.Classroom;
 import view.component.classdetail.component.LeftContent;
 import view.component.classdetail.component.RightContent;
 
-public class ClassForum extends ScrollPane {
-
-    private Classroom classroom;
+public class ClassForum extends ClassBase {
 
     private HBox forumContainer;
     private VBox forumContent;
@@ -44,7 +42,8 @@ public class ClassForum extends ScrollPane {
         forumContainer.getChildren().add(forumContent);
     }
 
-    private void init() {
+    @Override
+    public void init() {
         forumContent = new VBox(20);
 
         forumStack = new StackPane();
@@ -102,7 +101,7 @@ public class ClassForum extends ScrollPane {
     }
 
     public ClassForum(Classroom classroom) {
-        this.classroom = classroom;
+        super(classroom);
 
         init();
         setLayout();
