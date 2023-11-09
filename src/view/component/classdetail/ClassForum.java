@@ -8,6 +8,8 @@ import javafx.scene.control.Label;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.input.Clipboard;
+import javafx.scene.input.ClipboardContent;
 import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
@@ -78,7 +80,7 @@ public class ClassForum extends ClassBase {
             className = new Label(classroom.getClassName());
             className.setStyle("-fx-text-fill: white");
             classDesc = new Label(classroom.getClassDesc());
-            classDesc.setStyle("-fx-text-fill: white");
+            classDesc.setStyle("-fx-text-fill: white;");
 
             VBox labelsVBox = new VBox(className, classDesc);
             labelsVBox.setPadding(new Insets(20, 20, 20, 20));

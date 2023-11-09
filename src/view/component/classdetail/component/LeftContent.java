@@ -1,6 +1,8 @@
 package view.component.classdetail.component;
 
 import javafx.scene.control.Label;
+import javafx.scene.input.Clipboard;
+import javafx.scene.input.ClipboardContent;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Priority;
 import javafx.scene.layout.VBox;
@@ -25,6 +27,13 @@ public class LeftContent extends HBox {
             classCodeTitle = new Label("Class Code:");
             classCode = new Label(classroom.getClassCode());
             classCode.getStyleClass().add("title");
+
+            classCode.setOnMouseClicked(e -> {
+                Clipboard clipboard = Clipboard.getSystemClipboard();
+                ClipboardContent content = new ClipboardContent();
+                content.putString(classCode.getText());
+                clipboard.setContent(content);
+            });
 
             container.getChildren().addAll(classCodeTitle, classCode);
         }
