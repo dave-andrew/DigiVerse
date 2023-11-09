@@ -64,7 +64,7 @@ public class ForumQuery {
 
             ps.executeUpdate();
 
-            Toast.makeText(StageManager.getInstance(), "Forum Successful!", 2000, 500, 500);
+            Toast.makeText(StageManager.getInstance(), "Forum Posted!", 2000, 500, 500);
 
             return forum;
         } catch (Exception e) {
