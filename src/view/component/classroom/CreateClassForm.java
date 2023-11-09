@@ -2,7 +2,7 @@ package view.component.classroom;
 
 import controller.ClassController;
 import helper.StageManager;
-import helper.ToastManager;
+import helper.Toast;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.control.Button;
@@ -79,7 +79,7 @@ public class CreateClassForm extends VBox {
             String classSubject = classSubjectField.getValue();
 
             String message = classController.checkCreateClass(className, classDesc, classCode, classSubject);
-            ToastManager.showMessage(stackPane, message);
+            Toast.makeText((Stage) stackPane.getScene().getWindow(), message, 2000, 500, 500);
 
             new Home(StageManager.getInstance());
         });
