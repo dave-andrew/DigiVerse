@@ -22,12 +22,13 @@ public class ForumQuery {
 
     public ArrayList<Forum> getClassroomForum(String classid) {
         ArrayList<Forum> forumList = new ArrayList<>();
-        String query = "SELECT " +
-                "ForumID, ForumText, msforum.UserID, UserName, UserEmail, UserAge, UserProfile, msforum.ClassID, ClassName, ClassDesc, ClassCode, ClassSubject, ClassImage " +
-                "FROM msforum WHERE ClassID = ?" +
-                "JOIN msuser ON msforum.UserID = msuser.UserID" +
-                "JOIN msclass ON msforum.ClassID = msclass.ClassID" +
-                "ORDER BY ForumCreatedAt DESC";
+        String query = "SELECT\n" +
+                "    ForumID, ForumText, msforum.UserID, UserName, UserEmail, UserAge, UserProfile, msforum.ClassID, ClassName, ClassDesc, ClassCode, ClassSubject, ClassImage, CreatedAt\n" +
+                "FROM msforum\n" +
+                "JOIN msuser ON msforum.UserID = msuser.UserID\n" +
+                "JOIN msclass ON msforum.ClassID = msclass.ClassID\n" +
+                "WHERE msforum.ClassID = ?\n" +
+                "ORDER BY CreatedAt DESC";
 
         PreparedStatement ps = connect.prepareStatement(query);
         try {
@@ -39,7 +40,7 @@ public class ForumQuery {
                     User user = new User(rs.getString("UserID"), rs.getString("UserName"), rs.getString("UserEmail"), "", rs.getInt("UserAge"), rs.getBlob("UserProfile"));
                     Classroom classroom = new Classroom(rs.getString("ClassID"), rs.getString("ClassName"), rs.getString("ClassDesc"), rs.getString("ClassCode"), rs.getString("ClassSubject"), rs.getBlob("ClassImage"));
 
-                    forumList.add(new Forum(rs.getString("ForumID"), rs.getString("ForumText"), rs.getString("UserID"), user, rs.getString("ClassID"), classroom, rs.getString("ForumCreatedAt")));
+                    forumList.add(new Forum(rs.getString("ForumID"), rs.getString("ForumText"), rs.getString("UserID"), user, rs.getString("ClassID"), classroom, rs.getString("CreatedAt")));
                 }
             }
         } catch (Exception e) {
@@ -63,7 +64,7 @@ public class ForumQuery {
 
             ps.executeUpdate();
 
-            Toast.makeText(StageManager.getInstance(), "Forum created!", 2000, 500, 500);
+            Toast.makeText(StageManager.getInstance(), "Forum Successful!", 2000, 500, 500);
 
             return forum;
         } catch (Exception e) {

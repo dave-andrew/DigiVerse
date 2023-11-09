@@ -4,6 +4,8 @@ import database.ForumQuery;
 import model.Forum;
 import model.LoggedUser;
 
+import java.util.ArrayList;
+
 public class ForumController {
 
     private ForumQuery forumQuery;
@@ -18,6 +20,10 @@ public class ForumController {
         Forum newForum = new Forum(text, loggedUser.getId(), classid);
 
         return forumQuery.createForum(newForum);
+    }
+
+    public ArrayList<Forum> getClassroomForum(String classid) {
+        return forumQuery.getClassroomForum(classid);
     }
 
 }

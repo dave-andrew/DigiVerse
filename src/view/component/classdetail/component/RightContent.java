@@ -15,7 +15,11 @@ import javafx.scene.layout.HBox;
 import javafx.scene.layout.Priority;
 import javafx.scene.layout.VBox;
 import model.Classroom;
+import model.Forum;
 import model.LoggedUser;
+
+import java.util.Collections;
+import java.util.List;
 
 public class RightContent extends VBox {
 
@@ -28,18 +32,16 @@ public class RightContent extends VBox {
     }
 
     private void setLayout() {
-        this.getChildren().add(Container("post"));
-        this.getChildren().add(Container("display"));
-        this.getChildren().add(Container("display"));
-        this.getChildren().add(Container("display"));
-        this.getChildren().add(Container("display"));
-        this.getChildren().add(Container("display"));
-        this.getChildren().add(Container("display"));
-        this.getChildren().add(Container("display"));
-        this.getChildren().add(Container("display"));
+        this.getChildren().add(Container("post", ""));
+
+        List<Forum> forumList = this.forumController.getClassroomForum(classroom.getClassId());
+
+        for (Forum forum : forumList) {
+            this.getChildren().add(Container("display", forum.getText()));
+        }
     }
 
-    private HBox Container(String type) {
+    private HBox Container(String type, String text) {
         HBox container = new HBox(5);
         container.getStyleClass().add("border");
         container.setPadding(new Insets(10, 10, 10, 10));
@@ -68,7 +70,8 @@ public class RightContent extends VBox {
                 @Override
                 public void handle(KeyEvent event) {
                     if (event.getCode() == KeyCode.ENTER) {
-                        forumController.createForum(postInput.getText(), classroom.getClassId());
+                        Forum forum = forumController.createForum(postInput.getText(), classroom.getClassId());
+                        getChildren().add(1, Container("display", forum.getText()));
                         postInput.clear();
                     }
                 }
@@ -79,7 +82,7 @@ public class RightContent extends VBox {
         } else if(type.equals("display")) {
             container.getChildren().add(profileImage);
 
-            Label label = new Label("Gtw isi postnya pokoknya");
+            Label label = new Label(text);
             container.getChildren().add(label);
         }
 
