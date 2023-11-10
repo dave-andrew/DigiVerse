@@ -57,6 +57,7 @@ public class AddTask extends BorderPane {
         this.root = new BorderPane();
         this.root.setTop(navBar());
         this.root.setRight(rightBar());
+        this.root.setCenter(center());
 
         dialogScene = new Scene(root, ScreenManager.SCREEN_WIDTH, ScreenManager.SCREEN_HEIGHT);
         dialogStage.setScene(dialogScene);
@@ -65,6 +66,35 @@ public class AddTask extends BorderPane {
 
         dialogStage.setTitle("Add Task");
         dialogStage.showAndWait();
+    }
+
+    private VBox center() {
+        HBox center = new HBox();
+        center.setAlignment(Pos.CENTER);
+
+        VBox container = new VBox(center);
+        container.setAlignment(Pos.CENTER);
+
+        VBox content = new VBox(5);
+
+        Label title = new Label("Task Title");
+        TextField titleField = new TextField();
+
+        Label description = new Label("Task Description");
+        TextArea descriptionField = new TextArea();
+        VBox.setMargin(description, new Insets(30, 0, 0, 0));
+
+        VBox addFile = new VBox();
+
+        Label addFileBtn = new Label();
+        VBox.setMargin(addFileBtn, new Insets(100, 0, 0, 0));
+
+        container.getChildren().add(addFileBtn);
+
+        content.getChildren().addAll(title, titleField, description, descriptionField);
+        center.getChildren().addAll(content, addFile);
+
+        return container;
     }
 
     private HBox navBar() {
@@ -81,7 +111,7 @@ public class AddTask extends BorderPane {
         closeBtn.setGraphic(close);
         closeBtn.getStyleClass().add("image-button");
 
-        title = new Label("Add Task");
+        title = new Label("Create New Task");
         title.getStyleClass().add("title");
 
         joinBtn = new Button("Add Task");
