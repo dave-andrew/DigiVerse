@@ -1,7 +1,6 @@
 package view.component.classroom;
 
 import controller.ClassController;
-import helper.StageManager;
 import javafx.geometry.Pos;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
@@ -10,7 +9,6 @@ import javafx.scene.image.ImageView;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Priority;
 import javafx.stage.Stage;
-import view.Home;
 
 public class JoinClassNav extends HBox {
 
@@ -47,7 +45,6 @@ public class JoinClassNav extends HBox {
         HBox.setHgrow(title, Priority.ALWAYS);
         HBox.setHgrow(joinBtn, Priority.NEVER);
 
-
         leftNav.getChildren().addAll(closeBtn, title);
         leftNav.setAlignment(Pos.CENTER_LEFT);
         HBox.setHgrow(leftNav, Priority.ALWAYS);
@@ -56,9 +53,9 @@ public class JoinClassNav extends HBox {
     }
 
     public void actions() {
-        Stage stage = StageManager.getInstance();
         closeBtn.setOnMouseClicked(e -> {
-            new Home(stage);
+            Stage currentStage = (Stage) getScene().getWindow();
+            currentStage.close();
         });
     }
 
@@ -71,5 +68,4 @@ public class JoinClassNav extends HBox {
     public Button getJoinBtn() {
         return joinBtn;
     }
-
 }

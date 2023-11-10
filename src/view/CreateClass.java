@@ -12,7 +12,9 @@ import javafx.scene.image.ImageView;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
+import javafx.stage.Modality;
 import javafx.stage.Stage;
+import javafx.stage.StageStyle;
 import model.LoggedUser;
 import view.component.ChangeAccountBox;
 import view.component.classroom.CreateClassForm;
@@ -28,11 +30,21 @@ public class CreateClass {
     private VBox userInfoBox;
     private VBox classFormBox;
 
+    public CreateClass(Stage stage) {
+        initialize(stage);
+        setLayout();
+        showAndWait();
+    }
 
-    private void initialize(Stage stage) {
+    private void initialize(Stage ownerStage) {
+        Stage dialogStage = new Stage();
+        dialogStage.initModality(Modality.APPLICATION_MODAL);
+        dialogStage.initOwner(ownerStage);
+//        dialogStage.initStyle(StageStyle.TRANSPARENT);
+
         borderPane = new BorderPane();
         mainVbox = new VBox(20);
-        topBar = new CreateClassNav(stage);
+        topBar = new CreateClassNav(dialogStage);
 
         userInfoBox = new ChangeAccountBox();
         userInfoBox.setAlignment(Pos.TOP_CENTER);
@@ -40,9 +52,12 @@ public class CreateClass {
 
         classFormBox = new CreateClassForm();
         classFormBox.getStyleClass().add("container");
+
+        dialogStage.setScene(new Scene(borderPane, ScreenManager.SCREEN_WIDTH, ScreenManager.SCREEN_HEIGHT));
+        ThemeManager.getTheme(dialogStage.getScene());
     }
 
-    private Scene setLayout() {
+    private void setLayout() {
         mainVbox.setPadding(new Insets(20, 20, 20, 20));
 
         mainVbox.getChildren().addAll(userInfoBox, classFormBox);
@@ -50,19 +65,11 @@ public class CreateClass {
 
         borderPane.setTop(topBar);
         borderPane.setCenter(mainVbox);
-
-        scene = new Scene(borderPane, ScreenManager.SCREEN_WIDTH, ScreenManager.SCREEN_HEIGHT);
-        ThemeManager.getTheme(scene);
-        return scene;
     }
 
-    public CreateClass(Stage stage) {
-
-        initialize(stage);
-
-        scene = setLayout();
-
-        stage.setScene(scene);
+    private void showAndWait() {
+        Stage dialogStage = (Stage) borderPane.getScene().getWindow();
+        dialogStage.setTitle("Create Class");
+        dialogStage.showAndWait();
     }
-
 }

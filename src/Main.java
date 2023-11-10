@@ -10,6 +10,7 @@ import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.layout.BorderPane;
 import javafx.stage.Stage;
+import javafx.stage.StageStyle;
 import javafx.util.Duration;
 import model.LoggedUser;
 import view.Home;
@@ -59,6 +60,7 @@ public class Main extends Application {
 
         primaryStage.setTitle("DigiVerse");
         primaryStage.setResizable(false);
+        stage.initStyle(StageStyle.UTILITY);
         primaryStage.show();
     }
 

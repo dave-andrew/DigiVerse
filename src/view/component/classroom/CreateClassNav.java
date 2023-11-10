@@ -51,12 +51,9 @@ public class CreateClassNav extends HBox {
 
     private void actions(Stage stage) {
         closeBtn.setOnMouseClicked(e -> {
-            new Home(stage);
+            Stage createClassStage = (Stage) getScene().getWindow();
+            createClassStage.close();
         });
-
-//        joinBtn.setOnAction(e -> {
-//            System.out.println("Create");
-//        });
     }
 
     public CreateClassNav(Stage stage) {

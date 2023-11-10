@@ -7,11 +7,11 @@ import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.control.Label;
-import javafx.scene.control.ListView;
 import javafx.scene.layout.BorderPane;
-import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
+import javafx.stage.Modality;
 import javafx.stage.Stage;
+import javafx.stage.StageStyle;
 import view.component.ChangeAccountBox;
 import view.component.classroom.GroupCodeForm;
 import view.component.classroom.JoinClassNav;
@@ -32,8 +32,22 @@ public class JoinClass {
     private Label joinInfoSub, lbl1, lbl2;
     private VBox joinInfoList;
 
-    private void initialize(Stage stage) {
+    public JoinClass(Stage ownerStage) {
+        initialize(ownerStage);
+        setLayout();
+        setActions();
 
+        Stage dialogStage = new Stage();
+        dialogStage.initModality(Modality.APPLICATION_MODAL);
+        dialogStage.initOwner(ownerStage);
+//        dialogStage.initStyle(StageStyle.TRANSPARENT);
+        dialogStage.setScene(scene);
+
+        dialogStage.setTitle("Join Class");
+        dialogStage.showAndWait();
+    }
+
+    private void initialize(Stage stage) {
         classController = new ClassController();
 
         borderPane = new BorderPane();
@@ -54,17 +68,16 @@ public class JoinClass {
 
         joinInfoList = new VBox(2);
 
-        lbl1 = new Label("• Use authorized account");
+        lbl1 = new Label("• Use an authorized account");
         lbl2 = new Label("• Use a maximum of 10 letters of group code.");
 
         joinInfoList.getChildren().addAll(lbl1, lbl2);
 
         joinInfo.getChildren().addAll(joinInfoSub, joinInfoList);
         joinInfo.getStyleClass().add("container");
-
     }
 
-    private Scene setLayout() {
+    private void setLayout() {
         mainVbox.setPadding(new Insets(20, 20, 20, 20));
 
         mainVbox.getChildren().addAll(userInfoBox, classFormBox, joinInfo);
@@ -75,23 +88,11 @@ public class JoinClass {
 
         scene = new Scene(borderPane, ScreenManager.SCREEN_WIDTH, ScreenManager.SCREEN_HEIGHT);
         ThemeManager.getTheme(scene);
-        return scene;
     }
 
-    public void actions() {
+    private void setActions() {
         topBar.getJoinBtn().setOnMouseClicked(e -> {
             classController.checkJoinClass(classFormBox.getGroupCode());
         });
     }
-
-    public JoinClass(Stage stage) {
-
-        initialize(stage);
-        actions();
-
-        scene = setLayout();
-
-        stage.setScene(scene);
-    }
-
 }
