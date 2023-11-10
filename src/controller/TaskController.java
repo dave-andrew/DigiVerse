@@ -6,6 +6,8 @@ import helper.Toast;
 import model.LoggedUser;
 import model.Task;
 
+import java.util.ArrayList;
+
 public class TaskController {
 
     private TaskQuery taskQuery;
@@ -24,6 +26,10 @@ public class TaskController {
         Task newTask = new Task(LoggedUser.getInstance().getId(), LoggedUser.getInstance(), title, description, deadlineAt, scored);
 
         return this.taskQuery.createTask(newTask, classid);
+    }
+
+    public ArrayList<Task> getClassroomTask(String classid) {
+        return taskQuery.getClassroomTask(classid);
     }
 
 }

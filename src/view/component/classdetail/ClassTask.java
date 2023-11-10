@@ -1,5 +1,6 @@
 package view.component.classdetail;
 
+import controller.TaskController;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
@@ -10,9 +11,12 @@ import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 import model.Classroom;
+import model.Task;
 import view.AddTask;
 
 public class ClassTask extends ClassBase {
+
+    private TaskController taskController;
 
     private HBox container;
     private VBox taskContainer, taskListContainer;
@@ -28,6 +32,7 @@ public class ClassTask extends ClassBase {
     @Override
     public void init() {
         this.container = new HBox();
+        this.taskController = new TaskController();
 
         this.taskContainer = new VBox();
         this.taskContainer.setAlignment(Pos.TOP_CENTER);
@@ -39,10 +44,6 @@ public class ClassTask extends ClassBase {
         this.taskListContainer.setMaxWidth(700);
         VBox.setMargin(addTaskBtn, new Insets(0, 0, 40, 0));
 
-        Label title = new Label("Task List:");
-        title.getStyleClass().add("title");
-
-        this.taskListContainer.getChildren().add(title);
         this.taskListContainer.setAlignment(Pos.TOP_LEFT);
 
         this.taskContainer.getChildren().addAll(addTaskBtn, taskListContainer);
@@ -50,6 +51,8 @@ public class ClassTask extends ClassBase {
         this.container.getChildren().add(taskContainer);
 
         this.taskContainer.prefWidthProperty().bind(this.widthProperty());
+
+        fetchTask();
 
         this.setContent(container);
     }
@@ -61,5 +64,18 @@ public class ClassTask extends ClassBase {
 
             new AddTask(stage, this.classroom);
         });
+    }
+
+    private void fetchTask() {
+        this.taskListContainer.getChildren().clear();
+
+        Label title = new Label("Task List");
+        this.taskListContainer.getChildren().add(title);
+
+        title.getStyleClass().add("title");
+        for (Task task : this.taskController.getClassroomTask(classroom.getClassId())) {
+            System.out.println(task.getTitle());
+//            this.taskListContainer.getChildren().add();
+        }
     }
 }
