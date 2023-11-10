@@ -2,6 +2,8 @@ package controller;
 
 import database.ClassQuery;
 import model.Classroom;
+import model.ClassroomMember;
+import model.User;
 
 import java.util.ArrayList;
 
@@ -39,5 +41,9 @@ public class ClassController {
 
     public ArrayList<Classroom> getUserClassroom() {
         return classQuery.getUserClassrooom();
+    }
+
+    public ArrayList<ClassroomMember> getClassMember(String classCode) {
+        return classQuery.getClassMember(classCode);
     }
 }

@@ -1,5 +1,6 @@
 package view.component.classdetail;
 
+import controller.ClassController;
 import javafx.geometry.Insets;
 import javafx.scene.control.Label;
 import javafx.scene.control.ScrollPane;
@@ -7,9 +8,14 @@ import javafx.scene.control.SplitPane;
 import javafx.scene.layout.Priority;
 import javafx.scene.layout.VBox;
 import model.Classroom;
+import model.ClassroomMember;
+import view.component.classdetail.component.ClassMemberItem;
+
+import java.util.ArrayList;
 
 public class ClassMember extends ClassBase {
 
+    private ClassController classController;
     private SplitPane outerContainer;
     private VBox teacherContainer, studentContainer;
     private Label teacherTitle, studentTitle;
@@ -18,10 +24,14 @@ public class ClassMember extends ClassBase {
         super(classroom);
 
         init();
+        fetchClassMember();
     }
 
     @Override
     public void init() {
+        this.classController = new ClassController();
+
+
         SplitPane container = new SplitPane();
         container.setStyle("-fx-background-color: transparent;");
 
@@ -47,8 +57,6 @@ public class ClassMember extends ClassBase {
         teacherContainer.getChildren().add(teacherTitle);
         teacherContainer.getStyleClass().add("border");
 
-        teacherContainer.getChildren().add(new Label("Teacher 1"));
-
         studentContainer.getChildren().add(studentTitle);
         studentContainer.getStyleClass().add("border");
 
@@ -65,6 +73,16 @@ public class ClassMember extends ClassBase {
         container.setPadding(new Insets(10, 40, 10, 40));
 
         this.setContent(container);
+    }
+
+    private void fetchClassMember() {
+        classController.getClassMember(classroom.getClassId()).forEach(classroomMember -> {
+            if(classroomMember.getRole().equals("Teacher")) {
+                teacherContainer.getChildren().add(new ClassMemberItem(classroomMember));
+            } else {
+                studentContainer.getChildren().add(new ClassMemberItem(classroomMember));
+            }
+        });
     }
 
 }
