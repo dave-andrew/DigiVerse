@@ -38,6 +38,24 @@
     -fx-pref-height: 2;
 }
 
+.spinner .text-field {
+    -fx-background-color: #F5F5F5;
+    -fx-border-color: #E5E5E5;
+    -fx-border-width: 1;
+}
+
+.check-box {
+    -fx-font-size: 14px;
+}
+
+.check-box > .box {
+    -fx-shape: "M 0 0 8 0 8 8 0 8 Z";
+    -fx-padding: 4px;
+    -fx-background-color: #ffffff;
+    -fx-border-color: #E5E5E5;
+    -fx-border-width: 1px;
+}
+
 /* ============================== */
 
 .auth-layout {
@@ -92,9 +110,9 @@
 }
 
 .side-nav {
-    -fx-padding: 20% 0 20% 0;
-    -fx-border-color: transparent #E5E5E5 transparent transparent;
-    -fx-border-width: 0 1px 0 0;
+    -fx-border-color: transparent #E5E5E5 transparent #E5E5E5;
+    -fx-border-width: 0 1px 0 1px;
+    -fx-padding: 0;
 }
 
 .side-nav-item {

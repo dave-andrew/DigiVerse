@@ -12,8 +12,6 @@ import javafx.stage.Stage;
 
 public class JoinClassNav extends HBox {
 
-    private ClassController classController;
-
     private HBox leftNav;
     private Image closeImg;
     private ImageView close;
@@ -22,8 +20,6 @@ public class JoinClassNav extends HBox {
     private Button closeBtn;
 
     private void initialize() {
-        classController = new ClassController();
-
         leftNav = new HBox(20);
 
         closeImg = new Image("file:resources/icons/close.png");
