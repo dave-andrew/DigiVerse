@@ -91,11 +91,10 @@ public class Home {
         leftNav = new HBox(15);
         rightNav = new HBox(25);
 
-        iconImg = new Image("file:resources/icons/calendar.png");
+        iconImg = new Image("file:resources/icons/logo.png");
         icon = new ImageView(iconImg);
-        icon.setFitWidth(40);
         icon.setFitHeight(40);
-        icon.setPreserveRatio(false);
+        icon.setPreserveRatio(true);
 
         plusImg = new Image("file:resources/icons/plus.png");
         plus = new ImageView(plusImg);
@@ -136,10 +135,7 @@ public class Home {
         userBtn.setGraphic(userImg);
         userBtn.getStyleClass().add("image-button");
 
-        title = new Label("DigiVerse");
-        title.getStyleClass().add("title");
-
-        leftNav.getChildren().addAll(icon, title);
+        leftNav.getChildren().add(icon);
         leftNav.setAlignment(Pos.CENTER_LEFT);
 
         rightNav.getChildren().addAll(plusBtn, userBtn);

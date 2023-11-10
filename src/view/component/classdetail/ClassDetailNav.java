@@ -85,10 +85,10 @@ public class ClassDetailNav extends HBox {
         init();
         actions();
 
+        this.getChildren().addAll(forum, task, member, score);
+
         if(role.equals("Student")){
-            this.getChildren().addAll(forum, task, member);
-        } else if(role.equals("Teacher")){
-            this.getChildren().addAll(forum, task, member, score);
+            this.score.setVisible(false);
         }
     }
 
