@@ -83,7 +83,7 @@ public final class Toast
 
         VBox box = new VBox(text);
         VBox.setVgrow(box, Priority.NEVER);
-        box.setStyle("-fx-background-radius: 5px; -fx-background-color: rgba(255, 255, 255, 1); -fx-padding: 10px 30px; -fx-min-width: 210px; -fx-effect: dropshadow(gaussian, grey, 15.0, 0.5, 0, 0);");
+        box.setStyle("-fx-background-radius: 5px; -fx-background-color: rgba(255, 255, 255, 1); -fx-padding: 10px 30px; -fx-min-width: 210px; -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.2), 10, 0, 0, 0)");
 
         VBox spacer = new VBox();
         VBox.setVgrow(spacer, Priority.ALWAYS);

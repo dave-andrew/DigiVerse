@@ -13,6 +13,9 @@ import javafx.stage.Stage;
 import model.Classroom;
 import model.Task;
 import view.AddTask;
+import view.component.classdetail.component.TaskItem;
+
+import java.util.ArrayList;
 
 public class ClassTask extends ClassBase {
 
@@ -69,13 +72,28 @@ public class ClassTask extends ClassBase {
     private void fetchTask() {
         this.taskListContainer.getChildren().clear();
 
-        Label title = new Label("Task List");
+        Label title = new Label("Task List:");
         this.taskListContainer.getChildren().add(title);
 
+        VBox.setMargin(title, new Insets(0, 0, 20, 0));
+
         title.getStyleClass().add("title");
-        for (Task task : this.taskController.getClassroomTask(classroom.getClassId())) {
-            System.out.println(task.getTitle());
-//            this.taskListContainer.getChildren().add();
+
+        ArrayList<Task> tasks = this.taskController.getClassroomTask(this.classroom.getClassId());
+
+        if(tasks.isEmpty()) {
+            Label empty = new Label("No task yet! Chill dulu gak sih?");
+            empty.getStyleClass().add("empty");
+
+            HBox centerBox = new HBox(empty);
+            centerBox.setAlignment(Pos.CENTER);
+
+            this.taskListContainer.getChildren().add(centerBox);
+            return;
+        }
+
+        for (Task task : tasks) {
+            this.taskListContainer.getChildren().add(new TaskItem(task));
         }
     }
 }
