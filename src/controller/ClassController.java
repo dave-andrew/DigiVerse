@@ -42,8 +42,4 @@ public class ClassController {
     public ArrayList<Classroom> getUserClassroom() {
         return classQuery.getUserClassrooom();
     }
-
-    public ArrayList<ClassroomMember> getClassMember(String classCode) {
-        return classQuery.getClassMember(classCode);
-    }
 }

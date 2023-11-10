@@ -1,6 +1,8 @@
 package view.component.classdetail.component;
 
 import helper.ImageManager;
+import javafx.geometry.Insets;
+import javafx.geometry.Pos;
 import javafx.scene.control.Label;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
@@ -19,17 +21,20 @@ public class ClassMemberItem extends HBox {
         if(user.getBlobProfile() != null) {
             profileImg = ImageManager.convertBlobImage(user.getBlobProfile());
         } else {
-            profileImg = new Image("file:resources/images/profile.png");
+            profileImg = new Image("file:resources/icons/user.png");
         }
 
         VBox userBox = new VBox();
+        userBox.setAlignment(Pos.CENTER_LEFT);
+        userBox.setPadding(new Insets(0, 0, 0, 10));
 
         Label userNameLbl = new Label(user.getUsername());
-        Label userEmailLbl = new Label(user.getEmail());
 
-        userBox.getChildren().addAll(userNameLbl, userEmailLbl);
+        userBox.getChildren().addAll(userNameLbl);
 
         this.profile = new ImageView(profileImg);
+        this.profile.setFitWidth(40);
+        this.profile.setPreserveRatio(true);
         this.getChildren().add(profile);
         this.getChildren().add(userBox);
 

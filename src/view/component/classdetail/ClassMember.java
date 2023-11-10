@@ -1,21 +1,19 @@
 package view.component.classdetail;
 
 import controller.ClassController;
+import controller.MemberController;
 import javafx.geometry.Insets;
 import javafx.scene.control.Label;
-import javafx.scene.control.ScrollPane;
 import javafx.scene.control.SplitPane;
-import javafx.scene.layout.Priority;
 import javafx.scene.layout.VBox;
 import model.Classroom;
-import model.ClassroomMember;
 import view.component.classdetail.component.ClassMemberItem;
 
-import java.util.ArrayList;
+import java.util.concurrent.atomic.AtomicBoolean;
 
 public class ClassMember extends ClassBase {
 
-    private ClassController classController;
+    private MemberController memberController;
     private SplitPane outerContainer;
     private VBox teacherContainer, studentContainer;
     private Label teacherTitle, studentTitle;
@@ -29,7 +27,7 @@ public class ClassMember extends ClassBase {
 
     @Override
     public void init() {
-        this.classController = new ClassController();
+        this.memberController = new MemberController();
 
 
         SplitPane container = new SplitPane();
@@ -76,13 +74,21 @@ public class ClassMember extends ClassBase {
     }
 
     private void fetchClassMember() {
-        classController.getClassMember(classroom.getClassId()).forEach(classroomMember -> {
-            if(classroomMember.getRole().equals("Teacher")) {
+        AtomicBoolean hasStudents = new AtomicBoolean(false);
+
+        memberController.getClassMember(classroom.getClassId()).forEach(classroomMember -> {
+            if (classroomMember.getRole().equals("Teacher")) {
                 teacherContainer.getChildren().add(new ClassMemberItem(classroomMember));
             } else {
                 studentContainer.getChildren().add(new ClassMemberItem(classroomMember));
+                hasStudents.set(true);
             }
         });
+
+        if (!hasStudents.get()) {
+            Label noStudentsLabel = new Label("No students yet to teach!");
+            studentContainer.getChildren().add(noStudentsLabel);
+        }
     }
 
 }
