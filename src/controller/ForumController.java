@@ -1,6 +1,8 @@
 package controller;
 
 import database.ForumQuery;
+import helper.StageManager;
+import helper.Toast;
 import model.Forum;
 import model.LoggedUser;
 
@@ -17,6 +19,12 @@ public class ForumController {
     }
 
     public Forum createForum(String text, String classid) {
+
+        if(text.isEmpty()) {
+            Toast.makeError(StageManager.getInstance(), "Please fill all the fields!", 2000, 500, 500);
+            return null;
+        }
+
         Forum newForum = new Forum(text, loggedUser.getId(), classid);
 
         return forumQuery.createForum(newForum);

@@ -1,8 +1,13 @@
 package view;
 
+import controller.TaskController;
+import helper.DateManager;
 import helper.ScreenManager;
 import helper.ThemeManager;
 import javafx.geometry.Insets;
+import model.Forum;
+import model.LoggedUser;
+import model.Task;
 import view.component.TimeSpinner;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
@@ -19,6 +24,7 @@ import javafx.util.StringConverter;
 import model.Classroom;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
 
@@ -26,6 +32,7 @@ public class AddTask extends BorderPane {
 
     private Classroom classroom;
     private Stage stage;
+    private TaskController taskController;
 
     private Stage dialogStage;
     private Scene dialogScene;
@@ -40,10 +47,17 @@ public class AddTask extends BorderPane {
     private Button joinBtn;
     private Button closeBtn;
 
+//  CENTER FORM
+    private TextField titleField;
+    private TextArea descriptionField;
+    private CheckBox scored;
+    private DatePicker datePicker;
+    private TimeSpinner timeSpinner;
 
     public AddTask(Stage stage, Classroom classroom) {
         this.classroom = classroom;
         this.stage = stage;
+        this.taskController = new TaskController();
         init();
 
     }
@@ -78,10 +92,10 @@ public class AddTask extends BorderPane {
         VBox content = new VBox(5);
 
         Label title = new Label("Task Title");
-        TextField titleField = new TextField();
+        this.titleField = new TextField();
 
         Label description = new Label("Task Description");
-        TextArea descriptionField = new TextArea();
+        this.descriptionField = new TextArea();
         VBox.setMargin(description, new Insets(30, 0, 0, 0));
 
         VBox addFile = new VBox();
@@ -128,17 +142,33 @@ public class AddTask extends BorderPane {
             this.dialogStage.close();
         });
 
+        joinBtn.setOnAction(e -> {
+            submitForm();
+        });
+
         container.getChildren().addAll(leftNav, joinBtn);
         container.getStyleClass().add("nav-bar");
 
         return container;
     }
 
+    private void submitForm() {
+        String title = this.titleField.getText();
+        String description = this.descriptionField.getText();
+        LocalDate deadline = this.datePicker.getValue();
+        LocalTime time = this.timeSpinner.getValue();
+        boolean scored = this.scored.isSelected();
+
+        String deadlineAt = DateManager.formatDate(deadline, time);
+
+        this.taskController.createTask(title, description, deadlineAt, scored, classroom.getClassId());
+    }
+
     private VBox rightBar() {
         VBox rightBar = new VBox();
         VBox dateTimeContainer = new VBox();
         Label dateTimeLabel = new Label("Deadline");
-        DatePicker datePicker = new DatePicker();
+        this.datePicker = new DatePicker();
 
         // Set the default value of the DatePicker to today
         datePicker.setValue(LocalDate.now());
@@ -157,7 +187,7 @@ public class AddTask extends BorderPane {
             }
         });
 
-        TimeSpinner timeSpinner = new TimeSpinner();
+        this.timeSpinner = new TimeSpinner();
         timeSpinner.getValueFactory().setValue(LocalTime.of(23, 59, 59));
 
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("hh:mm:ss a");
@@ -175,7 +205,7 @@ public class AddTask extends BorderPane {
         dateTimeContainer.getChildren().addAll(dateTimeBox);
 
         Label scoreLabel = new Label("Scored");
-        CheckBox scored = new CheckBox();
+        this.scored = new CheckBox();
         scored.setSelected(false);
 
         VBox scoreBox = new VBox();

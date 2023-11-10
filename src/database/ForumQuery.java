@@ -23,11 +23,12 @@ public class ForumQuery {
     public ArrayList<Forum> getClassroomForum(String classid) {
         ArrayList<Forum> forumList = new ArrayList<>();
         String query = "SELECT\n" +
-                "    ForumID, ForumText, msforum.UserID, UserName, UserEmail, UserAge, UserProfile, msforum.ClassID, ClassName, ClassDesc, ClassCode, ClassSubject, ClassImage, CreatedAt\n" +
-                "FROM msforum\n" +
-                "JOIN msuser ON msforum.UserID = msuser.UserID\n" +
-                "JOIN msclass ON msforum.ClassID = msclass.ClassID\n" +
-                "WHERE msforum.ClassID = ?\n" +
+                "    class_forum.ForumID, ForumText, class_forum.UserID, UserName, UserEmail, UserAge, UserProfile, class_forum.ClassID, ClassName, ClassDesc, ClassCode, ClassSubject, ClassImage, CreatedAt\n" +
+                "FROM class_forum\n" +
+                "JOIN msclass ON class_forum.ClassID = msclass.ClassID\n" +
+                "JOIN msuser ON class_forum.UserID = msuser.UserID\n" +
+                "JOIN msforum ON class_forum.ForumID = msforum.ForumID\n" +
+                "WHERE class_forum.ClassID = ?\n" +
                 "ORDER BY CreatedAt DESC";
 
         PreparedStatement ps = connect.prepareStatement(query);
@@ -51,18 +52,25 @@ public class ForumQuery {
     }
 
     public Forum createForum(Forum forum) {
-        String query = "INSERT INTO msforum VALUES (?, ?, ?, ?, ?)";
+        String query = "INSERT INTO msforum VALUES (?, ?, ?)";
+        String query2 = "INSERT INTO class_forum VALUES (?, ?, ?)";
 
         PreparedStatement ps = connect.prepareStatement(query);
+        PreparedStatement ps2 = connect.prepareStatement(query2);
         try {
             assert ps != null;
             ps.setString(1, forum.getId());
             ps.setString(2, forum.getText());
-            ps.setString(3, forum.getUserid());
-            ps.setString(4, forum.getClassid());
-            ps.setString(5, forum.getCreatedAt());
+            ps.setString(3, forum.getCreatedAt());
 
             ps.executeUpdate();
+
+            assert ps2 != null;
+            ps2.setString(1, forum.getClassid());
+            ps2.setString(2, forum.getId());
+            ps2.setString(3, forum.getUserid());
+
+            ps2.executeUpdate();
 
             Toast.makeText(StageManager.getInstance(), "Forum Posted!", 2000, 500, 500);
 
