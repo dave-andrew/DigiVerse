@@ -6,13 +6,14 @@ import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
-import javafx.scene.control.ScrollPane;
 import javafx.scene.layout.HBox;
+import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 import model.Classroom;
 import model.Task;
-import view.AddTask;
+import view.homeview.AddTask;
+import view.homeview.TaskDetail;
 import view.component.classdetail.component.TaskItem;
 
 import java.util.ArrayList;
@@ -20,14 +21,16 @@ import java.util.ArrayList;
 public class ClassTask extends ClassBase {
 
     private TaskController taskController;
+    private StackPane mainPane;
 
     private HBox container;
     private VBox taskContainer, taskListContainer;
 
     private Button addTaskBtn;
 
-    public ClassTask(Classroom classroom) {
+    public ClassTask(Classroom classroom, StackPane mainPane) {
         super(classroom);
+        this.mainPane = mainPane;
 
         actions();
     }
@@ -93,7 +96,13 @@ public class ClassTask extends ClassBase {
         }
 
         for (Task task : tasks) {
-            this.taskListContainer.getChildren().add(new TaskItem(task));
+            TaskItem taskItem = new TaskItem(task);
+            this.taskListContainer.getChildren().add(taskItem);
+
+            taskItem.setOnMouseClicked(e -> {
+                mainPane.getChildren().clear();
+                mainPane.getChildren().add(new TaskDetail(task));
+            });
         }
     }
 }

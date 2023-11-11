@@ -33,7 +33,7 @@ public class ClassroomList extends GridPane {
 
             sp.setOnMouseClicked(e -> {
                 String userRole = new MemberController().getRole(classroom.getClassId());
-                BorderPane classDetail = new ClassroomDetail(classroom, userRole);
+                BorderPane classDetail = new ClassroomDetail(classroom, userRole, mainPane);
 
                 mainPane.getChildren().clear();
                 mainPane.getChildren().add(classDetail);

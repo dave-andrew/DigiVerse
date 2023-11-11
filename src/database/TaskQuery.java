@@ -29,8 +29,8 @@ public class TaskQuery {
             ps.setString(2, task.getUserid());
             ps.setString(3, task.getTitle());
             ps.setString(4, task.getDescription());
-            ps.setString(5, task.getDeadlineAt());
-            ps.setString(6, task.getCreatedAt());
+            ps.setString(5, task.getCreatedAt());
+            ps.setString(6, task.getDeadlineAt());
             ps.setBoolean(7, task.isScored());
 
             ps.executeUpdate();

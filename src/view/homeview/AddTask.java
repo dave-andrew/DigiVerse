@@ -1,4 +1,4 @@
-package view;
+package view.homeview;
 
 import controller.TaskController;
 import helper.DateManager;

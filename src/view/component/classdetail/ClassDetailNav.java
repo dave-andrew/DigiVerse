@@ -37,7 +37,7 @@ public class ClassDetailNav extends HBox {
         this.classForum = new ClassForum(parent.getClassroom());
         this.classMember = new ClassMember(parent.getClassroom());
         this.classScore = new ClassScore(parent.getClassroom());
-        this.classTask = new ClassTask(parent.getClassroom());
+        this.classTask = new ClassTask(parent.getClassroom(), parent.getMainPane());
 
         this.parent.setCenter(classForum);
     }

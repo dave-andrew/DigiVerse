@@ -45,7 +45,6 @@ public class Main extends Application {
 
         delay.setOnFinished(event -> {
             String message = authController.checkAuth();
-            System.out.println(message);
             if(message.equals("true")){
                 Toast.makeText(primaryStage, "Welcome back, "+ LoggedUser.getInstance().getUsername() +"!", 2000, 500, 500);
                 Platform.runLater(() -> new Home(primaryStage));
