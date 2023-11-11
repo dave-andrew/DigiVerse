@@ -124,6 +124,7 @@ public class TaskDetail extends HBox {
 
     private void setSideContent() {
         VBox submitContainer = new VBox();
+        VBox.setVgrow(submitContainer, Priority.NEVER);
 
         Label submitTitle = new Label("Submit Task");
         submitTitle.getStyleClass().add("title");
@@ -141,10 +142,21 @@ public class TaskDetail extends HBox {
         Button submitBtn = new Button("+ Upload File");
         submitBtn.getStyleClass().add("primary-button");
         submitBtn.setPrefSize(300, 40);
+        VBox.setMargin(submitBtn, new Insets(30, 0, 0, 0));
 
-        submitContainer.getChildren().addAll(submitStatusContainer, submitBtn);
+        Button markAsDoneBtn = new Button("Mark as Done");
+        markAsDoneBtn.getStyleClass().add("secondary-button");
+        markAsDoneBtn.setPrefSize(300, 40);
+        VBox.setMargin(markAsDoneBtn, new Insets(10, 0, 0, 0));
 
-        sideContent.getChildren().add(submitContainer);
-        sideContent.setAlignment(Pos.BASELINE_RIGHT);
+        submitContainer.getChildren().addAll(submitStatusContainer, submitBtn, markAsDoneBtn);
+
+        VBox spacerVert = new VBox();
+        VBox.setVgrow(spacer, Priority.ALWAYS);
+
+        sideContent.getChildren().addAll(submitContainer, spacerVert);
+        sideContent.setAlignment(Pos.TOP_CENTER);
+
+        submitContainer.getStyleClass().add("card");
     }
 }
