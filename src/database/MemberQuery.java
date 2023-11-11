@@ -59,7 +59,6 @@ public class MemberQuery {
         } catch (Exception e) {
             throw new RuntimeException(e);
         }
-        System.out.println("User Role: " + role);
         return role;
     }
 
