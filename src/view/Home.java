@@ -31,6 +31,7 @@ public class Home {
 
     private Image iconImg, plusImg;
     private ImageView icon, plus, userImg;
+    private Button iconBtn;
 
     private Label title;
 
@@ -83,10 +84,10 @@ public class Home {
         classGrid = new ClassroomList(mainPane);
         scrollPane.setContent(classGrid);
 
-        Label right = new Label("Ini Right");
-        mainPane.getChildren().add(right);
+//        Label right = new Label("Ini Right");
+//        mainPane.getChildren().add(right);
 
-        StackPane.setAlignment(right, Pos.TOP_RIGHT);
+//        StackPane.setAlignment(right, Pos.TOP_RIGHT);
 
         navBar = new HBox();
         leftNav = new HBox(15);
@@ -94,8 +95,11 @@ public class Home {
 
         iconImg = new Image("file:resources/icons/logo.png");
         icon = new ImageView(iconImg);
+        iconBtn = new Button();
+        iconBtn.setGraphic(icon);
         icon.setFitHeight(40);
         icon.setPreserveRatio(true);
+        iconBtn.setStyle("-fx-cursor: hand;-fx-background-color: transparent; -fx-border-color: transparent; -fx-border-width: 0;");
 
         plusImg = new Image("file:resources/icons/plus.png");
         plus = new ImageView(plusImg);
@@ -136,7 +140,7 @@ public class Home {
         userBtn.setGraphic(userImg);
         userBtn.getStyleClass().add("image-button");
 
-        leftNav.getChildren().add(icon);
+        leftNav.getChildren().add(iconBtn);
         leftNav.setAlignment(Pos.CENTER_LEFT);
 
         rightNav.getChildren().addAll(plusBtn, userBtn);
@@ -203,6 +207,11 @@ public class Home {
             VBox calendar = new Calendar();
             calendar.setAlignment(Pos.TOP_CENTER);
             mainPane.getChildren().add(calendar);
+        });
+
+        iconBtn.setOnMouseClicked(e -> {
+            mainPane.getChildren().clear();
+            fetchClass();
         });
 
     }
