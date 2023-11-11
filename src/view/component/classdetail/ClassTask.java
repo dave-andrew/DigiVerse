@@ -80,6 +80,7 @@ public class ClassTask extends ClassBase {
                 Stage stage = (Stage) scene.getWindow();
 
                 new AddTask(stage, this.classroom);
+                fetchTask();
             });
         }
     }
