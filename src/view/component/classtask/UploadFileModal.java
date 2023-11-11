@@ -1,5 +1,6 @@
 package view.component.classtask;
 
+import controller.FileController;
 import helper.StageManager;
 import helper.ThemeManager;
 import javafx.geometry.Insets;
@@ -27,11 +28,15 @@ import java.util.List;
 
 public class UploadFileModal {
     private Scene scene;
+    private String taskid;
+    private FileController fileController;
 
     private VBox mainVbox;
     private List<File> uploadedFiles = new ArrayList<>();
 
-    public UploadFileModal() {
+    public UploadFileModal(String taskid) {
+        this.taskid = taskid;
+        this.fileController = new FileController();
         initialize();
         setLayout();
         showAndWait();
@@ -104,7 +109,7 @@ public class UploadFileModal {
         VBox.setMargin(mainVbox, new Insets(0, 0, 20, 0));
 
         uploadBtn.setOnMouseClicked(e -> {
-
+            this.fileController.uploadTaskAnswer(uploadedFiles, taskid);
         });
 
         uploadBtn.getStyleClass().add("primary-button");

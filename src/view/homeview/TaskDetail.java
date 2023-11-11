@@ -169,7 +169,7 @@ public class TaskDetail extends HBox {
 
     private void actions() {
         this.submitBtn.setOnAction(e -> {
-            new UploadFileModal();
+            new UploadFileModal(task.getId());
         });
     }
 }
