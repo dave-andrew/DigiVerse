@@ -3,11 +3,13 @@ package view.homeview.task;
 import javafx.scene.control.Button;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
+import model.Classroom;
 import model.Task;
 
 public class TaskBase extends BorderPane {
 
     private Task task;
+    private Classroom classroom;
     private String userRole;
 
     private Button taskButton, answer;
@@ -15,12 +17,13 @@ public class TaskBase extends BorderPane {
     private TaskDetail taskDetail;
     private AnswerDetail answerDetail;
 
-    public TaskBase(Task task, String userRole) {
+    public TaskBase(Task task, Classroom classroom, String userRole) {
         this.task = task;
         this.userRole = userRole;
+        this.classroom = classroom;
 
         this.taskDetail = new TaskDetail(task, userRole);
-        this.answerDetail = new AnswerDetail(task);
+        this.answerDetail = new AnswerDetail(task, classroom);
 
         init();
     }

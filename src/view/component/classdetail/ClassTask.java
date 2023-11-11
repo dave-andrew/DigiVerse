@@ -50,7 +50,7 @@ public class ClassTask extends ClassBase {
 
     public void initTask() {
         if(this.userRole.equals("Teacher")) {
-            this.addTaskBtn = new Button("Add Task");
+            this.addTaskBtn = new Button("+ Create Task");
             this.addTaskBtn.getStyleClass().add("primary-button");
 
             this.taskContainer.getChildren().add(addTaskBtn);
@@ -114,7 +114,7 @@ public class ClassTask extends ClassBase {
 
             taskItem.setOnMouseClicked(e -> {
                 mainPane.getChildren().clear();
-                mainPane.getChildren().add(new TaskBase(task, userRole));
+                mainPane.getChildren().add(new TaskBase(task, classroom, userRole));
             });
         }
     }

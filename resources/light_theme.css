@@ -276,12 +276,6 @@
     -fx-cursor: hand;
 }
 
-.border {
-    -fx-border-color: #36454F;
-    -fx-border-width: 1px;
-    -fx-border-radius: 10px;
-}
-
 .circle-bg {
     -fx-padding: 5px;
     -fx-background-color: #bd0cf2;
