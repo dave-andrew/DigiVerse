@@ -13,7 +13,7 @@ import javafx.stage.Stage;
 import model.Classroom;
 import model.Task;
 import view.homeview.AddTask;
-import view.homeview.TaskDetail;
+import view.homeview.task.TaskBase;
 import view.component.classdetail.component.TaskItem;
 
 import java.util.ArrayList;
@@ -113,7 +113,7 @@ public class ClassTask extends ClassBase {
 
             taskItem.setOnMouseClicked(e -> {
                 mainPane.getChildren().clear();
-                mainPane.getChildren().add(new TaskDetail(task));
+                mainPane.getChildren().add(new TaskBase(task, userRole));
             });
         }
     }

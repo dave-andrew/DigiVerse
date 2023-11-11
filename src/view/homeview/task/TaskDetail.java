@@ -1,4 +1,4 @@
-package view.homeview;
+package view.homeview.task;
 
 import helper.StageManager;
 import javafx.geometry.Insets;
@@ -23,11 +23,13 @@ public class TaskDetail extends HBox {
     private VBox mainContent, sideContent;
     private HBox innerMainContent;
     private Task task;
+    private String userRole;
 
     private Button submitBtn;
 
-    public TaskDetail(Task task) {
+    public TaskDetail(Task task, String userRole) {
         this.task = task;
+        this.userRole = userRole;
         init();
         setLayout();
         setSideContent();
@@ -96,7 +98,7 @@ public class TaskDetail extends HBox {
         Line line = new Line();
         line.setStroke(Color.valueOf("#E0E0E0"));
         line.endXProperty().bind(detail.widthProperty());
-        line.endXProperty().bind(innerMainContent.widthProperty().subtract(50));
+        line.endXProperty().bind(innerMainContent.widthProperty().subtract(75));
 
         VBox.setMargin(line, new Insets(20, 0, 20, 0));
 
@@ -108,7 +110,7 @@ public class TaskDetail extends HBox {
         Line line2 = new Line();
         line2.setStroke(Color.valueOf("#E0E0E0"));
         line2.endXProperty().bind(detail.widthProperty());
-        line2.endXProperty().bind(innerMainContent.widthProperty().subtract(50));
+        line2.endXProperty().bind(innerMainContent.widthProperty().subtract(75));
 
         VBox.setMargin(line2, new Insets(20, 0, 20, 0));
         detail.getChildren().add(line2);
@@ -161,8 +163,10 @@ public class TaskDetail extends HBox {
         VBox spacerVert = new VBox();
         VBox.setVgrow(spacer, Priority.ALWAYS);
 
-        sideContent.getChildren().addAll(submitContainer, spacerVert);
-        sideContent.setAlignment(Pos.TOP_CENTER);
+        if(this.userRole.equals("Student")) {
+            sideContent.getChildren().addAll(submitContainer, spacerVert);
+            sideContent.setAlignment(Pos.TOP_CENTER);
+        }
 
         submitContainer.getStyleClass().add("card");
     }
