@@ -8,15 +8,13 @@ import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
+import javafx.scene.control.ScrollPane;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.DragEvent;
 import javafx.scene.input.Dragboard;
 import javafx.scene.input.TransferMode;
-import javafx.scene.layout.BorderPane;
-import javafx.scene.layout.HBox;
-import javafx.scene.layout.Priority;
-import javafx.scene.layout.VBox;
+import javafx.scene.layout.*;
 import javafx.stage.FileChooser;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
@@ -33,6 +31,7 @@ public class UploadFileModal {
 
     private VBox mainVbox;
     private List<File> uploadedFiles = new ArrayList<>();
+    private GridPane fileGrid;
 
     public UploadFileModal(String taskid) {
         this.taskid = taskid;
@@ -110,11 +109,30 @@ public class UploadFileModal {
 
         uploadBtn.setOnMouseClicked(e -> {
             this.fileController.uploadTaskAnswer(uploadedFiles, taskid);
+            Stage stage = (Stage) mainVbox.getScene().getWindow();
+            stage.close();
         });
 
         uploadBtn.getStyleClass().add("primary-button");
 
-        mainVbox.getChildren().addAll(uploadBox, uploadBtn);
+        VBox fileContainer = new VBox();
+        fileContainer.setAlignment(Pos.CENTER_LEFT);
+
+        ScrollPane files = new ScrollPane();
+        files.setPrefHeight(200);
+        Label fileLabel = new Label("Files:");
+
+        fileContainer.getChildren().addAll(fileLabel, files);
+
+        this.fileGrid = new GridPane();
+        fileGrid.setHgap(10);
+        fileGrid.setVgap(10);
+
+        files.setContent(fileGrid);
+
+
+
+        mainVbox.getChildren().addAll(uploadBox, fileContainer, uploadBtn);
         mainVbox.setAlignment(Pos.TOP_CENTER);
         mainVbox.setPadding(new Insets(20));
     }
@@ -134,6 +152,7 @@ public class UploadFileModal {
             success = true;
             List<File> droppedFiles = db.getFiles();
             uploadedFiles.addAll(droppedFiles);
+            updateFileGrid();
         }
 
         event.setDropCompleted(success);
@@ -147,6 +166,7 @@ public class UploadFileModal {
 
         if (selectedFiles != null) {
             uploadedFiles.addAll(selectedFiles);
+            updateFileGrid();
         } else {
             System.out.println("No files selected.");
         }
@@ -156,5 +176,24 @@ public class UploadFileModal {
         Stage dialogStage = (Stage) mainVbox.getScene().getWindow();
         dialogStage.setTitle("Upload File");
         dialogStage.showAndWait();
+    }
+
+    private void updateFileGrid() {
+        fileGrid.getChildren().clear();
+
+        int columnIndex = 0;
+        int rowIndex = 0;
+
+        for (File file : uploadedFiles) {
+            Label fileNameLabel = new Label(file.getName());
+            fileGrid.add(fileNameLabel, columnIndex, rowIndex);
+
+            columnIndex++;
+
+            if (columnIndex == 3) {
+                columnIndex = 0;
+                rowIndex++;
+            }
+        }
     }
 }
