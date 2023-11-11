@@ -22,16 +22,19 @@ public class ClassTask extends ClassBase {
 
     private TaskController taskController;
     private StackPane mainPane;
+    private String userRole;
 
     private HBox container;
     private VBox taskContainer, taskListContainer;
 
     private Button addTaskBtn;
 
-    public ClassTask(Classroom classroom, StackPane mainPane) {
+    public ClassTask(Classroom classroom, StackPane mainPane, String userRole) {
         super(classroom);
         this.mainPane = mainPane;
+        this.userRole = userRole;
 
+        initTask();
         actions();
     }
 
@@ -43,16 +46,23 @@ public class ClassTask extends ClassBase {
         this.taskContainer = new VBox();
         this.taskContainer.setAlignment(Pos.TOP_CENTER);
 
-        this.addTaskBtn = new Button("+ Add Task");
-        this.addTaskBtn.getStyleClass().add("primary-button");
+    }
+
+    public void initTask() {
+        if(this.userRole.equals("Teacher")) {
+            this.addTaskBtn = new Button("Add Task");
+            this.addTaskBtn.getStyleClass().add("primary-button");
+
+            this.taskContainer.getChildren().add(addTaskBtn);
+            VBox.setMargin(addTaskBtn, new Insets(0, 0, 40, 0));
+        }
 
         this.taskListContainer = new VBox();
         this.taskListContainer.setMaxWidth(700);
-        VBox.setMargin(addTaskBtn, new Insets(0, 0, 40, 0));
 
         this.taskListContainer.setAlignment(Pos.TOP_LEFT);
 
-        this.taskContainer.getChildren().addAll(addTaskBtn, taskListContainer);
+        this.taskContainer.getChildren().add(taskListContainer);
 
         this.container.getChildren().add(taskContainer);
 
@@ -64,12 +74,14 @@ public class ClassTask extends ClassBase {
     }
 
     private void actions() {
-        this.addTaskBtn.setOnAction(e -> {
-            Scene scene = this.getScene();
-            Stage stage = (Stage) scene.getWindow();
+        if(this.userRole.equals("Teacher")) {
+            this.addTaskBtn.setOnAction(e -> {
+                Scene scene = this.getScene();
+                Stage stage = (Stage) scene.getWindow();
 
-            new AddTask(stage, this.classroom);
-        });
+                new AddTask(stage, this.classroom);
+            });
+        }
     }
 
     private void fetchTask() {

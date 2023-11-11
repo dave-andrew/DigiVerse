@@ -14,6 +14,8 @@ import view.homeview.ClassroomDetail;
 public class ClassDetailNav extends HBox {
     private Button forum, task, member, score;
 
+    private String userRole;
+
     private ClassroomDetail parent;
     private ClassForum classForum;
     private ClassMember classMember;
@@ -37,7 +39,7 @@ public class ClassDetailNav extends HBox {
         this.classForum = new ClassForum(parent.getClassroom());
         this.classMember = new ClassMember(parent.getClassroom());
         this.classScore = new ClassScore(parent.getClassroom());
-        this.classTask = new ClassTask(parent.getClassroom(), parent.getMainPane());
+        this.classTask = new ClassTask(parent.getClassroom(), parent.getMainPane(), userRole);
 
         this.parent.setCenter(classForum);
     }
@@ -81,6 +83,7 @@ public class ClassDetailNav extends HBox {
     }
     public ClassDetailNav(String role, ClassroomDetail parent) {
         this.parent = parent;
+        this.userRole = role;
 
         init();
         actions();

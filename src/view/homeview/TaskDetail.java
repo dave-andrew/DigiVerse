@@ -52,7 +52,7 @@ public class TaskDetail extends HBox {
         Label taskName = new Label(task.getTitle());
         taskName.getStyleClass().add("title");
 
-        Label postedBy = new Label("Posted by: " + task.getUser().getUsername() + " • " + task.getCreatedAt());
+        Label postedBy = new Label("Posted by :  " + task.getUser().getUsername() + " • " + task.getCreatedAt());
 
         VBox detail = new VBox();
         detail.getChildren().addAll(taskName, postedBy);
