@@ -2,6 +2,7 @@ package view.homeview;
 
 import controller.AuthController;
 import controller.ClassController;
+import controller.MemberController;
 import javafx.geometry.Insets;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.layout.BorderPane;
@@ -31,7 +32,8 @@ public class ClassroomList extends GridPane {
             StackPane sp = new ClassCard(classroom.getClassName(), classroom.getClassDesc());
 
             sp.setOnMouseClicked(e -> {
-                BorderPane classDetail = new ClassroomDetail(classroom);
+                String userRole = new MemberController().getRole(classroom.getClassId());
+                BorderPane classDetail = new ClassroomDetail(classroom, userRole);
 
                 mainPane.getChildren().clear();
                 mainPane.getChildren().add(classDetail);

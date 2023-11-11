@@ -25,7 +25,6 @@ public class Login {
     private Label emailLbl, passwordLbl;
     private TextField emailTxt;
     private PasswordField passwordTxt;
-    private Spinner<Integer> ageSpinner;
     private Button loginBtn, registerLink;
 
     private Image image;
@@ -87,8 +86,7 @@ public class Login {
 
         vbox.getChildren().addAll(subTitle, emailVbox, passwordVbox, rememberMeVbox, loginVbox);
         vbox.setAlignment(Pos.CENTER_RIGHT);
-        vbox.getStyleClass().add("auth-layout");
-
+        vbox.setPadding(new Insets(-130, 100, 0, 0));
         borderPane.setRight(vbox);
 
         StackPane imagePane = new StackPane();
@@ -115,7 +113,7 @@ public class Login {
 
             String message = authController.checkLogin(email, password, remember);
             System.out.println(message);
-            if(message.equals("Login Success!")) {
+            if (message.equals("Login Success!")) {
                 new Home(stage);
             }
         });

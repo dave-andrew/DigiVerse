@@ -16,4 +16,8 @@ public class MemberController {
         return memberQuery.getClassMember(classCode);
     }
 
+    public String getRole(String classCode) {
+        return memberQuery.getRole(classCode);
+    }
+
 }

@@ -60,6 +60,11 @@
 
 .auth-layout {
     -fx-background-color: transparent;
+    -fx-padding: 0 50px 0 0;
+}
+
+.auth-layout2 {
+    -fx-background-color: transparent;
     -fx-padding: 0 20px 0 0;
 }
 

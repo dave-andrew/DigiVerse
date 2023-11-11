@@ -12,19 +12,23 @@ import view.component.classdetail.ClassForum;
 public class ClassroomDetail extends BorderPane {
 
     private Classroom classroom;
+    private String userRole;
     private HBox topBar;
 
     private void init() {
-        topBar = new ClassDetailNav("Teacher", this);
+        if(!this.userRole.isEmpty()) {
+            topBar = new ClassDetailNav(this.userRole, this);
 
-        topBar.getStyleClass().add("nav-bar");
+            topBar.getStyleClass().add("nav-bar");
 
 
-        this.setTop(topBar);
+            this.setTop(topBar);
+        }
     }
 
-    public ClassroomDetail(Classroom classroom) {
+    public ClassroomDetail(Classroom classroom, String userRole) {
         this.classroom = classroom;
+        this.userRole = userRole;
 
         init();
     }

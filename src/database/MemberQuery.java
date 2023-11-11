@@ -1,6 +1,7 @@
 package database;
 
 import model.ClassroomMember;
+import model.LoggedUser;
 import model.User;
 
 import java.sql.PreparedStatement;
@@ -38,6 +39,28 @@ public class MemberQuery {
             throw new RuntimeException(e);
         }
         return classroomMembers;
+    }
+
+    public String getRole(String classCode) {
+        String role = "";
+
+        String query = "SELECT Role FROM class_member WHERE UserID = ? AND ClassID = ?";
+
+        try(PreparedStatement ps = connect.prepareStatement(query)) {
+            assert ps != null;
+            ps.setString(1, LoggedUser.getInstance().getId());
+            ps.setString(2, classCode);
+
+            try(var rs = ps.executeQuery()) {
+                while(rs.next()) {
+                    role = rs.getString("Role");
+                }
+            }
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
+        System.out.println("User Role: " + role);
+        return role;
     }
 
 }
