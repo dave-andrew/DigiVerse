@@ -75,7 +75,7 @@ public class UploadFileModal {
 
         Button closeBtn = new Button();
         closeBtn.setGraphic(uploadIcon);
-        closeBtn.setStyle("-fx-background-color: transparent; -fx-border-color: transparent; -fx-border-width: 0;");
+        closeBtn.setStyle("-fx-background-color: transparent; -fx-border-color: transparent; -fx-border-width: 0;-fx-cursor: hand");
 
         closeBox.getChildren().addAll(uploadLabel, spacer, closeBtn);
 
@@ -151,7 +151,15 @@ public class UploadFileModal {
         if (db.hasFiles()) {
             success = true;
             List<File> droppedFiles = db.getFiles();
-            uploadedFiles.addAll(droppedFiles);
+
+            for (File file : droppedFiles) {
+                if (!uploadedFiles.contains(file) && isFileSizeValid(file, 100)) {
+                    uploadedFiles.add(file);
+                } else {
+                    System.out.println("File already exists or exceeds 100 kilobytes: " + file.getName());
+                }
+            }
+
             updateFileGrid();
         }
 
@@ -165,11 +173,22 @@ public class UploadFileModal {
         List<File> selectedFiles = fileChooser.showOpenMultipleDialog(mainVbox.getScene().getWindow());
 
         if (selectedFiles != null) {
-            uploadedFiles.addAll(selectedFiles);
+            for (File file : selectedFiles) {
+                if (!uploadedFiles.contains(file) && isFileSizeValid(file, 100)) {
+                    uploadedFiles.add(file);
+                } else {
+                    System.out.println("File already exists or exceeds 100 kilobytes: " + file.getName());
+                }
+            }
+
             updateFileGrid();
         } else {
             System.out.println("No files selected.");
         }
+    }
+
+    private boolean isFileSizeValid(File file, long maxSizeInKb) {
+        return file.length() <= maxSizeInKb * 1024;
     }
 
     private void showAndWait() {
@@ -185,12 +204,19 @@ public class UploadFileModal {
         int rowIndex = 0;
 
         for (File file : uploadedFiles) {
-            Label fileNameLabel = new Label(file.getName());
-            fileGrid.add(fileNameLabel, columnIndex, rowIndex);
+
+            FileItem fileItem = new FileItem(file);
+
+            fileItem.getRemoveBtn().setOnMouseClicked(e -> {
+                uploadedFiles.remove(file);
+                updateFileGrid();
+            });
+
+            fileGrid.add(fileItem, columnIndex, rowIndex);
 
             columnIndex++;
 
-            if (columnIndex == 3) {
+            if (columnIndex == 2) {
                 columnIndex = 0;
                 rowIndex++;
             }

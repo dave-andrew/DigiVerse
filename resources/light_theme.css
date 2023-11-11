@@ -303,10 +303,12 @@
     -fx-background-color: rgba(0,0,0,0.5);
     -fx-border-width: 2px;
     -fx-border-color: #36454F;
+    -fx-background-color: #CACACA;
 }
 
 .upload-box {
     -fx-border-style: dashed;
     -fx-border-color: #36454F;
     -fx-border-width: 1px;
+    -fx-background-color: #CDCDCD;
 }
