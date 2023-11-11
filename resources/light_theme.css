@@ -56,6 +56,18 @@
     -fx-border-width: 1px;
 }
 
+.progress-bar {
+    -fx-accent: #3498db;
+}
+
+.progress-bar .track {
+    -fx-background-color: #ecf0f1;
+}
+
+.progress-bar .bar {
+    -fx-background-color: #3498db;
+}
+
 /* ============================== */
 
 .auth-layout {
