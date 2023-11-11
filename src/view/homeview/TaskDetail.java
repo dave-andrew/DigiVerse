@@ -1,7 +1,9 @@
 package view.homeview;
 
+import helper.StageManager;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
+import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.image.Image;
@@ -12,7 +14,9 @@ import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Line;
+import javafx.stage.Stage;
 import model.Task;
+import view.component.classtask.UploadFileModal;
 
 public class TaskDetail extends HBox {
 
@@ -20,11 +24,14 @@ public class TaskDetail extends HBox {
     private HBox innerMainContent;
     private Task task;
 
+    private Button submitBtn;
+
     public TaskDetail(Task task) {
         this.task = task;
         init();
         setLayout();
         setSideContent();
+        actions();
     }
 
     private void init() {
@@ -139,7 +146,7 @@ public class TaskDetail extends HBox {
 
         submitStatusContainer.getChildren().addAll(submitTitle, spacer, submitStatus);
 
-        Button submitBtn = new Button("+ Upload File");
+        this.submitBtn = new Button("+ Upload File");
         submitBtn.getStyleClass().add("primary-button");
         submitBtn.setPrefSize(300, 40);
         VBox.setMargin(submitBtn, new Insets(30, 0, 0, 0));
@@ -158,5 +165,11 @@ public class TaskDetail extends HBox {
         sideContent.setAlignment(Pos.TOP_CENTER);
 
         submitContainer.getStyleClass().add("card");
+    }
+
+    private void actions() {
+        this.submitBtn.setOnAction(e -> {
+            new UploadFileModal();
+        });
     }
 }

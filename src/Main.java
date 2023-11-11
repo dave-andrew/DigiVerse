@@ -61,7 +61,7 @@ public class Main extends Application {
                     protected Void call() throws Exception {
                         for (int i = 0; i <= 100; i++) {
                             updateProgress(i, 100);
-                            Thread.sleep(20);  // Adjusted sleep duration to 20 milliseconds
+                            Thread.sleep(20);
                         }
                         return null;
                     }
@@ -110,7 +110,7 @@ public class Main extends Application {
         delay.play();
 
         primaryStage.setTitle("DigiVerse");
-        primaryStage.getIcons().add(new Image("file:resources/icons/logo.png"));
+        primaryStage.getIcons().add(new Image("file:resources/icons/app_logo.png"));
         primaryStage.setResizable(false);
         stage.initStyle(StageStyle.UTILITY);
         primaryStage.show();
