@@ -2,12 +2,16 @@ package view.homeview;
 
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
+import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.HBox;
+import javafx.scene.layout.Priority;
 import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
+import javafx.scene.paint.Color;
+import javafx.scene.shape.Line;
 import model.Task;
 
 public class TaskDetail extends HBox {
@@ -20,13 +24,12 @@ public class TaskDetail extends HBox {
         this.task = task;
         init();
         setLayout();
+        setSideContent();
     }
 
     private void init() {
-
         this.mainContent = new VBox();
         this.sideContent = new VBox();
-
         this.innerMainContent = new HBox();
 
         this.setPadding(new Insets(35, 60, 35, 60));
@@ -52,7 +55,8 @@ public class TaskDetail extends HBox {
         Label taskName = new Label(task.getTitle());
         taskName.getStyleClass().add("title");
 
-        Label postedBy = new Label("Posted by :  " + task.getUser().getUsername() + " • " + task.getCreatedAt());
+        Label postedBy = new Label("Posted by: " + task.getUser().getUsername() + " • " + task.getCreatedAt());
+        VBox.setMargin(postedBy, new Insets(20, 0, 0, 0));
 
         VBox detail = new VBox();
         detail.getChildren().addAll(taskName, postedBy);
@@ -63,16 +67,84 @@ public class TaskDetail extends HBox {
         } else {
             score = new Label("Score: -");
         }
-        detail.getChildren().add(score);
+
+        Label deadline = new Label("Deadline: " + task.getDeadlineAt());
+
+        HBox scoreDeadlineBox = new HBox();
+        scoreDeadlineBox.setAlignment(Pos.CENTER_LEFT);
+
+        HBox.setHgrow(score, Priority.ALWAYS);
+        score.setAlignment(Pos.CENTER_LEFT);
+
+        HBox.setHgrow(deadline, Priority.NEVER);
+        deadline.setAlignment(Pos.CENTER_RIGHT);
+
+        HBox spacer = new HBox();
+        HBox.setHgrow(spacer, Priority.ALWAYS);
+
+        scoreDeadlineBox.getChildren().addAll(score, spacer, deadline);
+
+        detail.getChildren().add(scoreDeadlineBox);
+
+        Line line = new Line();
+        line.setStroke(Color.valueOf("#E0E0E0"));
+        line.endXProperty().bind(detail.widthProperty());
+        line.endXProperty().bind(innerMainContent.widthProperty().subtract(50));
+
+        VBox.setMargin(line, new Insets(20, 0, 20, 0));
+
+        detail.getChildren().add(line);
 
         Label taskDesc = new Label(task.getDescription());
         detail.getChildren().add(taskDesc);
 
+        Line line2 = new Line();
+        line2.setStroke(Color.valueOf("#E0E0E0"));
+        line2.endXProperty().bind(detail.widthProperty());
+        line2.endXProperty().bind(innerMainContent.widthProperty().subtract(50));
+
+        VBox.setMargin(line2, new Insets(20, 0, 20, 0));
+        detail.getChildren().add(line2);
+
         innerMainContent.getChildren().addAll(imgStack, detail);
-        innerMainContent.setAlignment(Pos.TOP_CENTER);
+        innerMainContent.setAlignment(Pos.TOP_LEFT);
+//        innerMainContent.setStyle("-fx-background-color: #F5f5f5");
+
+        scoreDeadlineBox.prefWidthProperty().bind(innerMainContent.widthProperty());
 
         mainContent.getChildren().add(innerMainContent);
+        mainContent.setAlignment(Pos.TOP_LEFT);
+        HBox.setHgrow(mainContent, Priority.ALWAYS);
+
+        HBox.setMargin(sideContent, new Insets(0, 0, 0, 50));
 
         this.getChildren().addAll(mainContent, sideContent);
+        this.prefWidthProperty().bind(this.widthProperty());
+    }
+
+    private void setSideContent() {
+        VBox submitContainer = new VBox();
+
+        Label submitTitle = new Label("Submit Task");
+        submitTitle.getStyleClass().add("title");
+
+        Label submitStatus = new Label("Not Submitted");
+
+        HBox submitStatusContainer = new HBox();
+        submitStatusContainer.setAlignment(Pos.CENTER_LEFT);
+
+        HBox spacer = new HBox();
+        HBox.setHgrow(spacer, Priority.ALWAYS);
+
+        submitStatusContainer.getChildren().addAll(submitTitle, spacer, submitStatus);
+
+        Button submitBtn = new Button("+ Upload File");
+        submitBtn.getStyleClass().add("primary-button");
+        submitBtn.setPrefSize(300, 40);
+
+        submitContainer.getChildren().addAll(submitStatusContainer, submitBtn);
+
+        sideContent.getChildren().add(submitContainer);
+        sideContent.setAlignment(Pos.BASELINE_RIGHT);
     }
 }
