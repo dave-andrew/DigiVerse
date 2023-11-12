@@ -9,6 +9,7 @@ import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.nio.file.StandardCopyOption;
 import java.util.ArrayList;
 
@@ -26,21 +27,18 @@ public class AnswerController {
 
     public void downloadAnswer(File file) {
         String userHome = System.getProperty("user.home");
-
-        String downloadsDirectoryPath = userHome + File.separator + "Downloads";
+        Path downloadsDirectoryPath = Paths.get(userHome, "Downloads");
 
         try {
-            Files.createDirectories(Path.of(downloadsDirectoryPath));
+            Files.createDirectories(downloadsDirectoryPath);
 
-            Path targetFilePath = Path.of(downloadsDirectoryPath, file.getName());
+            Path targetFilePath = downloadsDirectoryPath.resolve(file.getName()).toAbsolutePath();
 
             Files.copy(file.toPath(), targetFilePath, StandardCopyOption.REPLACE_EXISTING);
 
-            Toast.makeText(StageManager.getInstance(), "File Finished Download!", 2000, 500, 500);
-
+            Toast.makeText(StageManager.getInstance(), "File Downloaded!", 2000, 500, 500);
         } catch (IOException e) {
             e.printStackTrace();
         }
     }
-
 }
