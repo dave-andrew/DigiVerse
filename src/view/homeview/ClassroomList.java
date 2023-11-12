@@ -65,8 +65,13 @@ public class ClassroomList extends GridPane {
 
         Label lbl = new Label(classroom.getClassName());
         lbl.setStyle("-fx-font-size: 16px;");
+
         lbl.setOnMouseEntered(e -> {
-            lbl.setStyle("-fx-underline: true;");
+            lbl.setStyle("-fx-underline: true;-fx-cursor: hand;");
+        });
+
+        lbl.setOnMouseExited(e -> {
+            lbl.setStyle("-fx-underline: false;");
         });
 
         lbl.setOnMouseClicked(e -> {
