@@ -169,6 +169,13 @@ public class AnswerDetail extends HBox {
 
             fileItem.getChildren().addAll(fileName);
             fileItem.getStyleClass().add("card");
+            fileItem.setOnMouseEntered(e -> {
+                fileItem.setStyle("-fx-background-color: #f0f0f0;-fx-cursor: hand;");
+            });
+
+            fileItem.setOnMouseExited(e -> {
+                fileItem.setStyle("-fx-background-color: #fff;");
+            });
 
             fileList.add(fileItem, colIndex.get(), rowIndex.get());
 
