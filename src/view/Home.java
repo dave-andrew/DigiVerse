@@ -64,7 +64,7 @@ public class Home {
     }
 
     private void fetchClass() {
-        classGrid = new ClassroomList(mainPane);
+        classGrid = new ClassroomList(mainPane, leftNav, iconBtn);
         scrollPane.setContent(classGrid);
 
         mainPane.getChildren().add(scrollPane);
@@ -78,20 +78,12 @@ public class Home {
         mainPane = new StackPane();
 //        mainPane.getStyleClass().add("bg-primary");
 
-        scrollPane = new ScrollPane();
-        mainPane.getChildren().add(scrollPane);
-
-        classGrid = new ClassroomList(mainPane);
-        scrollPane.setContent(classGrid);
-
-//        Label right = new Label("Ini Right");
-//        mainPane.getChildren().add(right);
-
-//        StackPane.setAlignment(right, Pos.TOP_RIGHT);
-
         navBar = new HBox();
         leftNav = new HBox(15);
         rightNav = new HBox(25);
+
+        scrollPane = new ScrollPane();
+        mainPane.getChildren().add(scrollPane);
 
         iconImg = new Image("file:resources/icons/logo.png");
         icon = new ImageView(iconImg);
@@ -100,6 +92,9 @@ public class Home {
         icon.setFitHeight(40);
         icon.setPreserveRatio(true);
         iconBtn.setStyle("-fx-cursor: hand;-fx-background-color: transparent; -fx-border-color: transparent; -fx-border-width: 0;");
+
+        classGrid = new ClassroomList(mainPane, leftNav, iconBtn);
+        scrollPane.setContent(classGrid);
 
         plusImg = new Image("file:resources/icons/plus.png");
         plus = new ImageView(plusImg);
@@ -142,6 +137,8 @@ public class Home {
 
         leftNav.getChildren().add(iconBtn);
         leftNav.setAlignment(Pos.CENTER_LEFT);
+
+
 
         rightNav.getChildren().addAll(plusBtn, userBtn);
         rightNav.setAlignment(Pos.CENTER_RIGHT);
@@ -199,11 +196,15 @@ public class Home {
 
         homeSideNav.setOnMouseClicked(e -> {
             mainPane.getChildren().clear();
+            leftNav.getChildren().clear();
+            leftNav.getChildren().add(iconBtn);
             fetchClass();
         });
 
         calenderSideNav.setOnMouseClicked(e -> {
             mainPane.getChildren().clear();
+            leftNav.getChildren().clear();
+            leftNav.getChildren().add(iconBtn);
             VBox calendar = new Calendar();
             calendar.setAlignment(Pos.TOP_CENTER);
             mainPane.getChildren().add(calendar);
@@ -211,6 +212,8 @@ public class Home {
 
         iconBtn.setOnMouseClicked(e -> {
             mainPane.getChildren().clear();
+            leftNav.getChildren().clear();
+            leftNav.getChildren().add(iconBtn);
             fetchClass();
         });
 

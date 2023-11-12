@@ -4,11 +4,12 @@ import controller.AuthController;
 import controller.ClassController;
 import controller.MemberController;
 import javafx.geometry.Insets;
+import javafx.scene.control.Button;
+import javafx.scene.control.Label;
 import javafx.scene.control.ScrollPane;
-import javafx.scene.layout.BorderPane;
-import javafx.scene.layout.GridPane;
-import javafx.scene.layout.StackPane;
-import javafx.scene.layout.VBox;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
+import javafx.scene.layout.*;
 import model.Classroom;
 import view.component.classroom.ClassCard;
 
@@ -22,8 +23,13 @@ public class ClassroomList extends GridPane {
         classController = new ClassController();
     }
 
-    public ClassroomList(StackPane mainPane) {
-
+    private HBox leftNav;
+    private StackPane mainPane;
+    private Button iconBtn;
+    public ClassroomList(StackPane mainPane, HBox leftNav, Button iconBtn) {
+        this.leftNav = leftNav;
+        this.mainPane = mainPane;
+        this.iconBtn = iconBtn;
         init();
 
         ArrayList<Classroom> classroomList = classController.getUserClassroom();
@@ -34,6 +40,8 @@ public class ClassroomList extends GridPane {
             sp.setOnMouseClicked(e -> {
                 String userRole = new MemberController().getRole(classroom.getClassId());
                 BorderPane classDetail = new ClassroomDetail(classroom, userRole, mainPane);
+
+                setLeftNav(classroom);
 
                 mainPane.getChildren().clear();
                 mainPane.getChildren().add(classDetail);
@@ -46,6 +54,34 @@ public class ClassroomList extends GridPane {
         this.setPadding(new Insets(20));
         this.setHgap(20);
         this.setVgap(20);
+    }
+
+    private void setLeftNav(Classroom classroom) {
+        Image image = new Image("file:resources/icons/right-arrow.png");
+        ImageView icon = new ImageView(image);
+
+        icon.setFitWidth(25);
+        icon.setPreserveRatio(true);
+
+        Label lbl = new Label(classroom.getClassName());
+        lbl.setStyle("-fx-font-size: 16px;");
+        lbl.setOnMouseEntered(e -> {
+            lbl.setStyle("-fx-underline: true;");
+        });
+
+        lbl.setOnMouseClicked(e -> {
+            String userRole = new MemberController().getRole(classroom.getClassId());
+            BorderPane classDetail = new ClassroomDetail(classroom, userRole, mainPane);
+
+            setLeftNav(classroom);
+
+            mainPane.getChildren().clear();
+            mainPane.getChildren().add(classDetail);
+        });
+
+        this.leftNav.getChildren().clear();
+
+        this.leftNav.getChildren().addAll(iconBtn, icon, lbl);
     }
 
 }
