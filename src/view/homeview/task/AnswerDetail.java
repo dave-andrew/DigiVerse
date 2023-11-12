@@ -15,6 +15,7 @@ import javafx.scene.layout.VBox;
 import model.Classroom;
 import model.ClassroomMember;
 import model.Task;
+import view.component.classdetail.component.MemberItem;
 
 import java.util.concurrent.atomic.AtomicInteger;
 
@@ -73,46 +74,18 @@ public class AnswerDetail extends HBox {
 
         memberController.getClassMember(classroom.getClassId()).forEach(member -> {
             if(member.getRole().equals("Student")) {
-                memberList.getChildren().add(memberItem(member));
+                MemberItem memberItem = new MemberItem(member);
+                memberList.getChildren().add(memberItem);
+
+                memberItem.getStyleClass().add("task-item");
+
+                memberItem.setOnMouseClicked(e -> {
+                    fetchAnswer(member);
+                });
+
             }
         });
 
-    }
-
-
-    private Image profileImg;
-    private ImageView profile;
-
-    private HBox memberItem(ClassroomMember member) {
-        HBox memberItem = new HBox();
-
-        if(member.getUser().getBlobProfile() != null) {
-            profileImg = ImageManager.convertBlobImage(member.getUser().getBlobProfile());
-        } else {
-            profileImg = new Image("file:resources/icons/user.png");
-        }
-
-        this.profile = new ImageView(profileImg);
-        this.profile.setFitWidth(35);
-        this.profile.setPreserveRatio(true);
-
-        HBox userBox = new HBox();
-        userBox.setAlignment(Pos.CENTER_LEFT);
-        userBox.setPadding(new Insets(0, 0, 0, 10));
-
-        Label userNameLbl = new Label(member.getUser().getUsername());
-        userNameLbl.setStyle("-fx-font-size: 18px;");
-
-        userBox.getChildren().addAll(userNameLbl);
-
-        memberItem.getChildren().addAll(profile, userBox);
-        memberItem.getStyleClass().add("task-item");
-
-        memberItem.setOnMouseClicked(e -> {
-            fetchAnswer(member);
-        });
-
-        return memberItem;
     }
 
     private void fetchAnswer(ClassroomMember member) {

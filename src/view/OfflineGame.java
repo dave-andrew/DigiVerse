@@ -60,8 +60,7 @@ public class OfflineGame {
         this.root = new Pane();
 
         this.scene = new Scene(root, ScreenManager.SCREEN_WIDTH, ScreenManager.SCREEN_HEIGHT);
-        inputManager = InputManager.getInstance(scene);
-
+        System.out.println("REEEEEEEEE" + this.scene);
         player = Player.getInstance();
         player.setX(ScreenManager.SCREEN_WIDTH / 2);
         player.setY(ScreenManager.SCREEN_HEIGHT / 2);
@@ -72,6 +71,8 @@ public class OfflineGame {
         this.playState = new GamePlayState(this);
         this.pauseState = new GamePauseState(this);
         this.overState = new GameOverState(this);
+
+        this.inputManager = InputManager.getInstance(this.scene);
 
         initialize(stage);
         setupGameLoop();
@@ -119,7 +120,7 @@ public class OfflineGame {
         File file = new File("resources/game/soundFX/backsound.wav");
         Media media = new Media(file.toURI().toString());
         mediaPlayer = new MediaPlayer(media);
-        mediaPlayer.setVolume(0.5);
+        mediaPlayer.setVolume(0.1);
         mediaPlayer.play();
 
         mediaPlayer.setOnEndOfMedia(new Runnable() {

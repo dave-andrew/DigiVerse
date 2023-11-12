@@ -93,22 +93,6 @@ public class Main extends Application {
         scene = initialize();
         primaryStage.setScene(scene);
 
-        PauseTransition delay = new PauseTransition(Duration.seconds(2));
-
-        delay.setOnFinished(event -> {
-            String message = authController.checkAuth();
-            if (message.equals("true")) {
-                Toast.makeText(primaryStage, "Welcome back, " + LoggedUser.getInstance().getUsername() + "!", 2000, 500, 500);
-                Platform.runLater(() -> new Home(primaryStage));
-            } else if (message.equals("false")) {
-                Platform.runLater(() -> new Login(primaryStage));
-            } else {
-                Platform.runLater(() -> new OfflineGame(primaryStage));
-            }
-        });
-
-        delay.play();
-
         primaryStage.setTitle("DigiVerse");
         primaryStage.getIcons().add(new Image("file:resources/icons/app_logo.png"));
         primaryStage.setResizable(false);

@@ -15,13 +15,17 @@ public class InputManager {
     private static final ArrayList<KeyCode> pressedKeys = new ArrayList<>();
     private static final ArrayList<MouseButton> mouseClicks = new ArrayList<>();
 
+    private Scene scene;
+
     private InputManager(Scene scene) {
-        handlePlayerInput(scene);
+        this.scene = scene;
+        handlePlayerInput();
     }
 
-    public static InputManager getInstance(Scene scene) {
+    public static synchronized InputManager getInstance(Scene scene) {
         if (gameInput == null) {
             gameInput = new InputManager(scene);
+            System.out.println(scene);
         }
         return gameInput;
     }
@@ -34,33 +38,30 @@ public class InputManager {
         return mouseClicks;
     }
 
-    private void handlePlayerInput(Scene scene) {
+    private void handlePlayerInput() {
+        System.out.println("InputManager" + this.scene);
         KeyCode[] allowedKeys = { KeyCode.A, KeyCode.S, KeyCode.D, KeyCode.W, KeyCode.UP, KeyCode.DOWN, KeyCode.LEFT,
                 KeyCode.RIGHT, KeyCode.SPACE, KeyCode.ESCAPE };
         List<KeyCode> allowedKeysList = Arrays.asList(allowedKeys);
 
-        scene.setOnKeyPressed(e -> {
+        this.scene.setOnKeyPressed(e -> {
             KeyCode keyCode = e.getCode();
             System.out.println(keyCode);
             if (!pressedKeys.contains(keyCode) && allowedKeysList.contains(keyCode)) {
                 pressedKeys.add(keyCode);
             }
-
-            if (keyCode == KeyCode.Z) {
-
-            }
         });
 
-        scene.setOnKeyReleased(e -> {
+        this.scene.setOnKeyReleased(e -> {
             KeyCode keyCode = e.getCode();
             pressedKeys.remove(keyCode);
         });
 
-        scene.addEventHandler(MouseEvent.MOUSE_PRESSED, e -> {
+        this.scene.addEventHandler(MouseEvent.MOUSE_PRESSED, e -> {
             mouseClicks.add(e.getButton());
         });
 
-        scene.addEventHandler(MouseEvent.MOUSE_RELEASED, e -> {
+        this.scene.addEventHandler(MouseEvent.MOUSE_RELEASED, e -> {
             mouseClicks.remove(e.getButton());
         });
     }
