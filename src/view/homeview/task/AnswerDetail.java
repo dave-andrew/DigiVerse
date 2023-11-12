@@ -9,13 +9,14 @@ import javafx.scene.control.Label;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import model.Classroom;
 import model.ClassroomMember;
 import model.Task;
-import model.User;
-import view.component.classdetail.component.ClassMemberItem;
+
+import java.util.concurrent.atomic.AtomicInteger;
 
 public class AnswerDetail extends HBox {
 
@@ -56,8 +57,7 @@ public class AnswerDetail extends HBox {
         this.fileContainer = new VBox();
         this.fileContainer.setPadding(new Insets(20));
 
-        Label fileTitle = new Label("Student Answer");
-
+        Label fileTitle = new Label("Choose a student to see the answer!");
         this.fileContainer.getChildren().addAll(fileTitle);
 
         this.getChildren().addAll(memberContainer, fileContainer);
@@ -116,11 +116,75 @@ public class AnswerDetail extends HBox {
     }
 
     private void fetchAnswer(ClassroomMember member) {
+        fileContainer.getChildren().clear();
+
+        Label fileTitle = new Label("Student Answer");
+        this.fileContainer.getChildren().addAll(fileTitle);
+        VBox.setMargin(fileTitle, new Insets(0, 0, 20, 0));
+
+        GridPane fileList = new GridPane();
+        fileList.setHgap(10);  // Horizontal gap between file items
+        fileList.setVgap(10);  // Vertical gap between file items
+
+        AtomicInteger rowIndex = new AtomicInteger();
+        AtomicInteger colIndex = new AtomicInteger();
 
         answerController.getMemberAnswer(this.task.getId(), member.getUser().getId()).forEach(answer -> {
-            System.out.println(answer.getName());
+
+            HBox fileItem = new HBox();
+
+            if(answer.getName().endsWith(".pdf")) {
+                Image image = new Image("file:resources/icons/pdf.png");
+                ImageView icon = new ImageView(image);
+
+                icon.setFitWidth(25);
+                icon.setPreserveRatio(true);
+
+                fileItem.getChildren().addAll(icon);
+
+            } else if(answer.getName().endsWith(".png") || answer.getName().endsWith(".jpg") || answer.getName().endsWith(".jpeg")) {
+
+                Image image = new Image("file:resources/icons/image.png");
+                ImageView icon = new ImageView(image);
+
+                icon.setFitWidth(25);
+                icon.setPreserveRatio(true);
+
+                fileItem.getChildren().addAll(icon);
+
+            } else {
+
+                Image image = new Image("file:resources/icons/file.png");
+                ImageView icon = new ImageView(image);
+
+                icon.setFitWidth(25);
+                icon.setPreserveRatio(true);
+
+                fileItem.getChildren().addAll(icon);
+
+            }
+
+            Label fileName = new Label(answer.getName());
+            HBox.setMargin(fileName, new Insets(0, 0, 0, 10));
+
+            fileItem.getChildren().addAll(fileName);
+            fileItem.getStyleClass().add("card");
+
+            fileList.add(fileItem, colIndex.get(), rowIndex.get());
+
+            colIndex.getAndIncrement();
+
+            // Move to the next row if the current row is filled
+            if (colIndex.get() >= 3) {
+                colIndex.set(0);
+                rowIndex.getAndIncrement();
+            }
+
+            fileItem.setOnMouseClicked(e -> {
+                answerController.downloadAnswer(answer);
+            });
         });
 
+        this.fileContainer.getChildren().addAll(fileList);
     }
-
 }
