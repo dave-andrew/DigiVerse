@@ -40,7 +40,7 @@ public final class Connect {
     	try {  
             Class.forName("com.mysql.cj.jdbc.Driver");
             con = DriverManager.getConnection(CONECTION, USERNAME, PASSWORD);  
-            st = con.createStatement(); 
+            st = con.createStatement();
         } catch(Exception e) {
 //        	e.printStackTrace()
         	System.out.println("Failed to connect the database, the system is terminated!");
@@ -91,4 +91,9 @@ public final class Connect {
 		}
 		return null;
     }
+
+	public Connection getConnect() {
+		return con;
+	}
+
 }

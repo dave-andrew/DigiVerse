@@ -21,9 +21,11 @@ public class AnswerQuery {
 
         String query = "SELECT\n" +
                 "\tmsfile.FileID, FileName, FileBlob, FileType\n" +
-                "FROM task_answer\n" +
+                "FROM answer_header\n" +
+                "JOIN answer_detail\n" +
+                "ON answer_detail.AnswerID = answer_header.AnswerID\n" +
                 "JOIN msfile\n" +
-                "ON msfile.FileID = task_answer.FileID\n" +
+                "ON msfile.FileID = answer_detail.FileID\n" +
                 "WHERE TaskID = ? AND UserID = ?";
 
         try (PreparedStatement ps = con.prepareStatement(query)) {
