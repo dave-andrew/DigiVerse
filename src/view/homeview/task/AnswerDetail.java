@@ -181,7 +181,6 @@ public class AnswerDetail extends HBox {
 
             colIndex.getAndIncrement();
 
-            // Move to the next row if the current row is filled
             if (colIndex.get() >= 3) {
                 colIndex.set(0);
                 rowIndex.getAndIncrement();
