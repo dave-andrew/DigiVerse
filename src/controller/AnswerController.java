@@ -41,4 +41,24 @@ public class AnswerController {
             e.printStackTrace();
         }
     }
+
+    public void downloadAllAnswer(ArrayList<File> fileList) {
+        String userHome = System.getProperty("user.home");
+        Path downloadsDirectoryPath = Paths.get(userHome, "Downloads");
+
+        try {
+            Files.createDirectories(downloadsDirectoryPath);
+
+            for (File file : fileList) {
+                Path targetFilePath = downloadsDirectoryPath.resolve(file.getName()).toAbsolutePath();
+
+                Files.copy(file.toPath(), targetFilePath, StandardCopyOption.REPLACE_EXISTING);
+            }
+
+            Toast.makeText(StageManager.getInstance(), "Files Downloaded!", 2000, 500, 500);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
 }

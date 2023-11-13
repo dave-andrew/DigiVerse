@@ -1,5 +1,6 @@
 package view.homeview.task;
 
+import controller.AnswerController;
 import helper.StageManager;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
@@ -15,21 +16,28 @@ import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Line;
 import javafx.stage.Stage;
+import model.LoggedUser;
 import model.Task;
 import view.component.classtask.UploadFileModal;
 
+import java.io.File;
+import java.util.ArrayList;
+
 public class TaskDetail extends HBox {
+
+    private AnswerController answerController;
 
     private VBox mainContent, sideContent;
     private HBox innerMainContent;
     private Task task;
     private String userRole;
 
-    private Button submitBtn;
+    private Button submitBtn, markAsDoneBtn;
 
     public TaskDetail(Task task, String userRole) {
         this.task = task;
         this.userRole = userRole;
+        this.answerController = new AnswerController();
         init();
         setLayout();
         setSideContent();
@@ -153,7 +161,7 @@ public class TaskDetail extends HBox {
         submitBtn.setPrefSize(300, 40);
         VBox.setMargin(submitBtn, new Insets(30, 0, 0, 0));
 
-        Button markAsDoneBtn = new Button("Mark as Done");
+        this.markAsDoneBtn = new Button("Mark as Done");
         markAsDoneBtn.getStyleClass().add("secondary-button");
         markAsDoneBtn.setPrefSize(300, 40);
         VBox.setMargin(markAsDoneBtn, new Insets(10, 0, 0, 0));
@@ -169,11 +177,64 @@ public class TaskDetail extends HBox {
         }
 
         submitContainer.getStyleClass().add("card");
+
+        ArrayList<File> fileList = this.answerController.getMemberAnswer(this.task.getId(), LoggedUser.getInstance().getId());
+
+        if(!fileList.isEmpty()) {
+            submitStatus.setText("Submitted");
+
+            VBox fileContainer = new VBox();
+            fileContainer.setAlignment(Pos.CENTER_LEFT);
+            fileContainer.getStyleClass().add("card");
+
+            Label fileTitle = new Label("Your Answer: ");
+            fileContainer.getChildren().add(fileTitle);
+            VBox.setMargin(fileContainer, new Insets(30, 0, 0, 0));
+
+            Button downloadBtn = new Button("Download");
+            downloadBtn.getStyleClass().add("primary-button");
+            downloadBtn.setPrefSize(300, 40);
+            VBox.setMargin(downloadBtn, new Insets(10, 0, 0, 0));
+
+            fileContainer.getChildren().add(downloadBtn);
+
+            downloadBtn.setOnMouseClicked(e -> {
+                this.answerController.downloadAllAnswer(fileList);
+            });
+
+            sideContent.getChildren().add(fileContainer);
+        }
+
+        VBox constraintBox = new VBox();
+        constraintBox.setAlignment(Pos.CENTER_LEFT);
+        constraintBox.getStyleClass().add("card");
+
+        Label constraintTitle = new Label("Constraints: ");
+        constraintBox.getChildren().add(constraintTitle);
+
+        Label constraint1 = new Label("1. Max file size 100Kb");
+        constraint1.setStyle("-fx-font-size: 14px;");
+        VBox.setMargin(constraint1, new Insets(5, 0, 0, 0));
+
+        Label constraint2 = new Label("2. File type any.");
+        constraint2.setStyle("-fx-font-size: 14px;");
+
+        constraintBox.getChildren().addAll(constraint1, constraint2);
+
+        VBox.setMargin(constraintBox, new Insets(30, 0, 0, 0));
+
+        sideContent.getChildren().add(constraintBox);
     }
 
     private void actions() {
         this.submitBtn.setOnAction(e -> {
             new UploadFileModal(task.getId());
         });
+
+        this.markAsDoneBtn.setOnMouseClicked(e -> {
+
+        });
+
+
     }
 }
