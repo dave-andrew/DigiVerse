@@ -17,6 +17,7 @@ import model.Task;
 import view.component.classdetail.component.MemberItem;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.concurrent.atomic.AtomicInteger;
 
 public class ClassScore extends HBox {
@@ -49,7 +50,6 @@ public class ClassScore extends HBox {
         this.memberContainer = new VBox();
         this.memberContainer.setPrefWidth(500);
 
-
         this.scoreContainer = new VBox();
 
         this.memberList = new VBox();
@@ -75,8 +75,8 @@ public class ClassScore extends HBox {
             if(member.getRole().equals("Student")) {
                 HBox scoreContainer = new HBox();
                 Label score = new Label("Score: ");
-                Label scoreValue = new Label("100");
-                scoreValue.setPrefWidth(40);
+                Label scoreValue = new Label();
+                scoreValue.setPrefWidth(60);
                 scoreValue.setAlignment(Pos.CENTER_RIGHT);
                 scoreContainer.setAlignment(Pos.CENTER_RIGHT);
 
@@ -92,43 +92,70 @@ public class ClassScore extends HBox {
 
                 memberItem.getStyleClass().add("task-item");
 
-                memberItem.setOnMouseClicked(e -> {
-                    fetchAnswer(member);
-                });
+                fetchAnswer(member, scoreValue, memberItem);
 
                 this.memberList.getChildren().add(memberItem);
             }
         });
     }
 
-    private void fetchAnswer(ClassroomMember member) {
+    private void fetchAnswer(ClassroomMember member, Label memberScore, MemberItem memberItem) {
         this.scoreContainer.getChildren().clear();
 
         double score = 0;
         int taskCount = 0;
 
         ArrayList<Task> taskList = taskController.getScoredClassroomTask(classroom.getClassId());
+        HashMap<String, Integer> taskHash = new HashMap<>();
 
         for (Task task : taskList) {
 
-            HBox scoreContent = new HBox();
-
-            Label taskTitle = new Label(task.getTitle());
-
-
             Integer taskScore = this.answerController.getAnswerScore(task.getId(), member.getUser().getId());
+
+            taskHash.put(task.getTitle(), taskScore);
 
             if(taskScore != null) {
                 score += taskScore;
                 taskCount++;
             }
-
-            this.scoreContainer.getChildren().add(taskTitle);
         }
 
         score /= taskCount;
 
-        System.out.println(score);
+        memberScore.setText(String.format("%.2f", score));
+
+        double averageScore = score;
+        memberItem.setOnMouseClicked(e -> {
+            displayMemberScore(taskHash, averageScore);
+        });
+
+    }
+
+    private void displayMemberScore(HashMap<String, Integer> taskHash, double averageScore) {
+        Label scoreTitle = new Label("Student Average Score : ");
+        Label scoreValue = new Label(String.format("%.2f", averageScore));
+
+        VBox container = new VBox();
+        container.setAlignment(Pos.CENTER);
+        container.getStyleClass().add("card");
+
+        scoreValue.getStyleClass().add("title");
+
+        container.getChildren().addAll(scoreTitle, scoreValue);
+
+        this.scoreContainer.getChildren().addAll(container);
+
+        for (String taskTitle : taskHash.keySet()) {
+            Label taskTitleLbl = new Label(taskTitle);
+            Label taskScoreLbl = new Label("Score: " + taskHash.get(taskTitle).toString());
+
+            HBox taskScoreContainer = new HBox();
+            taskScoreContainer.setAlignment(Pos.CENTER_RIGHT);
+
+            taskScoreContainer.getChildren().addAll(taskTitleLbl, taskScoreLbl);
+
+            this.scoreContainer.getChildren().add(taskScoreContainer);
+        }
     }
 
 }
