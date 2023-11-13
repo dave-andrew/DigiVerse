@@ -59,6 +59,23 @@ public class TaskQuery {
                 "WHERE class_task.ClassID = ?\n" +
                 "ORDER BY DeadlineAt ASC";
 
+        return getTasks(classid, taskList, query);
+    }
+
+    public ArrayList<Task> getScoredClassroomTask(String classid) {
+        ArrayList<Task> taskList = new ArrayList<>();
+        String query = "SELECT\n" +
+                "    class_task.TaskID, TaskTitle, TaskDesc, DeadlineAt, CreatedAt, Scored, msuser.UserID, UserName, UserEmail, UserAge, UserProfile\n" +
+                "FROM class_task\n" +
+                "JOIN mstask ON class_task.TaskID = mstask.TaskID\n" +
+                "JOIN msuser ON mstask.UserID = msuser.UserID\n" +
+                "WHERE class_task.ClassID = ? AND Scored = 1\n" +
+                "ORDER BY DeadlineAt ASC";
+
+        return getTasks(classid, taskList, query);
+    }
+
+    private ArrayList<Task> getTasks(String classid, ArrayList<Task> taskList, String query) {
         PreparedStatement ps = connect.prepareStatement(query);
         try {
             assert ps != null;

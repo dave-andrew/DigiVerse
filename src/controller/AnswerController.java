@@ -25,6 +25,10 @@ public class AnswerController {
         return answerQuery.getMemberAnswer(taskid, userid);
     }
 
+    public Integer getAnswerScore(String taskid, String userid) {
+        return answerQuery.getAnswerScore(taskid, userid);
+    }
+
     public boolean checkAnswer(String taskid, String userid) {
         return answerQuery.checkAnswer(taskid, userid);
     }

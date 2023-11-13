@@ -126,4 +126,32 @@ public class AnswerQuery {
         }
     }
 
+    public Integer getAnswerScore(String taskid, String userid) {
+        String query = "SELECT SCORE FROM answer_header WHERE TaskID = ? AND UserID = ?";
+
+        try (PreparedStatement ps = con.prepareStatement(query)) {
+
+            assert ps != null;
+            ps.setString(1, taskid);
+            ps.setString(2, userid);
+
+            try (ResultSet rs = ps.executeQuery()) {
+                if (rs.next()) {
+                    Object scoreObj = rs.getObject("SCORE");
+
+                    if (scoreObj != null) {
+                        return (Integer) scoreObj;
+                    } else {
+                        return null;
+                    }
+                }
+            }
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        return null;
+    }
+
 }

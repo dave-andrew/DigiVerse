@@ -32,4 +32,7 @@ public class TaskController {
         return taskQuery.getClassroomTask(classid);
     }
 
+    public ArrayList<Task> getScoredClassroomTask(String classid) {
+        return taskQuery.getScoredClassroomTask(classid);
+    }
 }
