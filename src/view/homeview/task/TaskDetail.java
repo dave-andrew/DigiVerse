@@ -27,12 +27,14 @@ public class TaskDetail extends HBox {
 
     private AnswerController answerController;
 
-    private VBox mainContent, sideContent;
+    private VBox mainContent, sideContent, fileContainer;
     private HBox innerMainContent;
     private Task task;
     private String userRole;
 
     private Button submitBtn, markAsDoneBtn;
+    private Label submitStatus;
+    private Button downloadBtn;
 
     public TaskDetail(Task task, String userRole) {
         this.task = task;
@@ -146,7 +148,7 @@ public class TaskDetail extends HBox {
         Label submitTitle = new Label("Submit Task");
         submitTitle.getStyleClass().add("title");
 
-        Label submitStatus = new Label("Not Submitted");
+        this.submitStatus = new Label("Not Submitted");
 
         HBox submitStatusContainer = new HBox();
         submitStatusContainer.setAlignment(Pos.CENTER_LEFT);
@@ -168,41 +170,10 @@ public class TaskDetail extends HBox {
 
         submitContainer.getChildren().addAll(submitStatusContainer, submitBtn, markAsDoneBtn);
 
-        VBox spacerVert = new VBox();
-        VBox.setVgrow(spacer, Priority.ALWAYS);
-
         if(this.userRole.equals("Student")) {
-            sideContent.getChildren().addAll(submitContainer, spacerVert);
+
+            sideContent.getChildren().addAll(submitContainer);
             sideContent.setAlignment(Pos.TOP_CENTER);
-        }
-
-        submitContainer.getStyleClass().add("card");
-
-        ArrayList<File> fileList = this.answerController.getMemberAnswer(this.task.getId(), LoggedUser.getInstance().getId());
-
-        if(!fileList.isEmpty()) {
-            submitStatus.setText("Submitted");
-
-            VBox fileContainer = new VBox();
-            fileContainer.setAlignment(Pos.CENTER_LEFT);
-            fileContainer.getStyleClass().add("card");
-
-            Label fileTitle = new Label("Your Answer: ");
-            fileContainer.getChildren().add(fileTitle);
-            VBox.setMargin(fileContainer, new Insets(30, 0, 0, 0));
-
-            Button downloadBtn = new Button("Download");
-            downloadBtn.getStyleClass().add("primary-button");
-            downloadBtn.setPrefSize(300, 40);
-            VBox.setMargin(downloadBtn, new Insets(10, 0, 0, 0));
-
-            fileContainer.getChildren().add(downloadBtn);
-
-            downloadBtn.setOnMouseClicked(e -> {
-                this.answerController.downloadAllAnswer(fileList);
-            });
-
-            sideContent.getChildren().add(fileContainer);
 
 
             VBox constraintBox = new VBox();
@@ -225,17 +196,59 @@ public class TaskDetail extends HBox {
 
             sideContent.getChildren().add(constraintBox);
         }
+
+        submitContainer.getStyleClass().add("card");
+
+        this.fileContainer = new VBox();
+        fileContainer.setAlignment(Pos.CENTER_LEFT);
+        fileContainer.getStyleClass().add("card");
+
+        Label fileTitle = new Label("Your Answer: ");
+        fileContainer.getChildren().add(fileTitle);
+        VBox.setMargin(fileContainer, new Insets(30, 0, 0, 0));
+
+        this.downloadBtn = new Button("Download");
+        downloadBtn.setPrefSize(300, 40);
+        VBox.setMargin(downloadBtn, new Insets(10, 0, 0, 0));
+
+        fileContainer.getChildren().add(downloadBtn);
+
+        if(this.answerController.checkAnswer(this.task.getId(), LoggedUser.getInstance().getId())) {
+            submitStatus.setText("Submitted");
+
+            fetchAnswer();
+
+        }
+    }
+
+    private void fetchAnswer() {
+        ArrayList<File> fileList = this.answerController.getMemberAnswer(this.task.getId(), LoggedUser.getInstance().getId());
+
+        sideContent.getChildren().add(fileContainer);
+
+        if(!fileList.isEmpty()) {
+            downloadBtn.getStyleClass().add("primary-button");
+            downloadBtn.setOnMouseClicked(e -> {
+                this.answerController.downloadAllAnswer(fileList);
+            });
+        }
+
+        this.markAsDoneBtn.setOnMouseClicked(e -> {
+            if(submitStatus.getText().equals("Not Submitted")) {
+                this.answerController.markAsDone(task.getId(), LoggedUser.getInstance().getId());
+                this.submitStatus.setText("Submitted");
+                this.sideContent.getChildren().add(fileContainer);
+            } else if(submitStatus.getText().equals("Submitted") && fileList.isEmpty()) {
+                this.answerController.markUndone(task.getId(), LoggedUser.getInstance().getId());
+                this.submitStatus.setText("Not Submitted");
+                this.sideContent.getChildren().remove(fileContainer);
+            }
+        });
     }
 
     private void actions() {
         this.submitBtn.setOnAction(e -> {
-            new UploadFileModal(task.getId());
+            new UploadFileModal(task.getId(), fileContainer, sideContent, downloadBtn);
         });
-
-        this.markAsDoneBtn.setOnMouseClicked(e -> {
-
-        });
-
-
     }
 }

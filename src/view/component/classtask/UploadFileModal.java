@@ -1,5 +1,6 @@
 package view.component.classtask;
 
+import controller.AnswerController;
 import controller.FileController;
 import helper.StageManager;
 import helper.ThemeManager;
@@ -19,6 +20,7 @@ import javafx.stage.FileChooser;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
+import model.LoggedUser;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -28,14 +30,19 @@ public class UploadFileModal {
     private Scene scene;
     private String taskid;
     private FileController fileController;
+    private AnswerController answerController;
 
-    private VBox mainVbox;
+    private VBox mainVbox, fileContainer, sideContent;
     private List<File> uploadedFiles = new ArrayList<>();
     private GridPane fileGrid;
-
-    public UploadFileModal(String taskid) {
+    private Button uploadBtn, downloadBtn;
+    public UploadFileModal(String taskid, VBox fileContainer, VBox sideContent, Button downloadBtn) {
         this.taskid = taskid;
         this.fileController = new FileController();
+        this.answerController = new AnswerController();
+        this.fileContainer = fileContainer;
+        this.sideContent = sideContent;
+        this.downloadBtn = downloadBtn;
         initialize();
         setLayout();
         showAndWait();
@@ -103,12 +110,15 @@ public class UploadFileModal {
             chooseFile();
         });
 
-        Button uploadBtn = new Button("+ Upload");
+        this.uploadBtn = new Button("+ Upload");
         uploadBtn.prefWidthProperty().bind(mainVbox.widthProperty());
         VBox.setMargin(mainVbox, new Insets(0, 0, 20, 0));
 
         uploadBtn.setOnMouseClicked(e -> {
             this.fileController.uploadTaskAnswer(uploadedFiles, taskid);
+
+            fetchAnswer();
+
             Stage stage = (Stage) mainVbox.getScene().getWindow();
             stage.close();
         });
@@ -129,8 +139,6 @@ public class UploadFileModal {
         fileGrid.setVgap(10);
 
         files.setContent(fileGrid);
-
-
 
         mainVbox.getChildren().addAll(uploadBox, fileContainer, uploadBtn);
         mainVbox.setAlignment(Pos.TOP_CENTER);
@@ -222,4 +230,18 @@ public class UploadFileModal {
             }
         }
     }
+
+    private void fetchAnswer() {
+        ArrayList<File> fileList = this.answerController.getMemberAnswer(taskid, LoggedUser.getInstance().getId());
+
+        sideContent.getChildren().add(fileContainer);
+
+        if(!fileList.isEmpty()) {
+            downloadBtn.getStyleClass().add("primary-button");
+            downloadBtn.setOnMouseClicked(e -> {
+                this.answerController.downloadAllAnswer(fileList);
+            });
+        }
+    }
+
 }

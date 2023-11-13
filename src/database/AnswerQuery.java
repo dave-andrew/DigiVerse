@@ -1,11 +1,14 @@
 package database;
 
+import helper.DateManager;
+
 import java.io.*;
 import java.sql.Blob;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.UUID;
 
 public class AnswerQuery {
 
@@ -69,6 +72,58 @@ public class AnswerQuery {
         }
 
         return file;
+    }
+
+    public boolean checkAnswer(String taskid, String userid) {
+        String query = "SELECT\n" +
+                "\tAnswerID\n" +
+                "FROM answer_header\n" +
+                "WHERE TaskID = ? AND UserID = ?";
+
+        try (PreparedStatement ps = con.prepareStatement(query)) {
+
+            assert ps != null;
+            ps.setString(1, taskid);
+            ps.setString(2, userid);
+
+            try (ResultSet rs = ps.executeQuery()) {
+
+                return rs.next();
+            }
+
+        } catch (SQLException e) {
+            return false;
+        }
+    }
+
+    public void markAsDone(String taskid, String userid) {
+        String query = "INSERT INTO answer_header VALUES (?, ?, ?, NULL, ?)";
+
+        try (PreparedStatement ps = con.prepareStatement(query)) {
+            assert ps != null;
+            ps.setString(1, UUID.randomUUID().toString());
+            ps.setString(2, taskid);
+            ps.setString(3, userid);
+            ps.setString(4, DateManager.getNow());
+
+            ps.executeUpdate();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void markUndone(String taskid, String userid) {
+        String query = "DELETE FROM answer_header WHERE TaskID = ? AND UserID = ?";
+
+        try (PreparedStatement ps = con.prepareStatement(query)) {
+            assert ps != null;
+            ps.setString(1, taskid);
+            ps.setString(2, userid);
+
+            ps.executeUpdate();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
     }
 
 }

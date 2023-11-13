@@ -25,6 +25,10 @@ public class AnswerController {
         return answerQuery.getMemberAnswer(taskid, userid);
     }
 
+    public boolean checkAnswer(String taskid, String userid) {
+        return answerQuery.checkAnswer(taskid, userid);
+    }
+
     public void downloadAnswer(File file) {
         String userHome = System.getProperty("user.home");
         Path downloadsDirectoryPath = Paths.get(userHome, "Downloads");
@@ -59,6 +63,14 @@ public class AnswerController {
         } catch (IOException e) {
             e.printStackTrace();
         }
+    }
+
+    public void markAsDone(String taskid, String userid) {
+        answerQuery.markAsDone(taskid, userid);
+    }
+
+    public void markUndone(String taskid, String userid) {
+        answerQuery.markUndone(taskid, userid);
     }
 
 }
