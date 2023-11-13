@@ -203,27 +203,28 @@ public class TaskDetail extends HBox {
             });
 
             sideContent.getChildren().add(fileContainer);
+
+
+            VBox constraintBox = new VBox();
+            constraintBox.setAlignment(Pos.CENTER_LEFT);
+            constraintBox.getStyleClass().add("card");
+
+            Label constraintTitle = new Label("Constraints: ");
+            constraintBox.getChildren().add(constraintTitle);
+
+            Label constraint1 = new Label("1. Max file size 100Kb");
+            constraint1.setStyle("-fx-font-size: 14px;");
+            VBox.setMargin(constraint1, new Insets(5, 0, 0, 0));
+
+            Label constraint2 = new Label("2. File type any.");
+            constraint2.setStyle("-fx-font-size: 14px;");
+
+            constraintBox.getChildren().addAll(constraint1, constraint2);
+
+            VBox.setMargin(constraintBox, new Insets(30, 0, 0, 0));
+
+            sideContent.getChildren().add(constraintBox);
         }
-
-        VBox constraintBox = new VBox();
-        constraintBox.setAlignment(Pos.CENTER_LEFT);
-        constraintBox.getStyleClass().add("card");
-
-        Label constraintTitle = new Label("Constraints: ");
-        constraintBox.getChildren().add(constraintTitle);
-
-        Label constraint1 = new Label("1. Max file size 100Kb");
-        constraint1.setStyle("-fx-font-size: 14px;");
-        VBox.setMargin(constraint1, new Insets(5, 0, 0, 0));
-
-        Label constraint2 = new Label("2. File type any.");
-        constraint2.setStyle("-fx-font-size: 14px;");
-
-        constraintBox.getChildren().addAll(constraint1, constraint2);
-
-        VBox.setMargin(constraintBox, new Insets(30, 0, 0, 0));
-
-        sideContent.getChildren().add(constraintBox);
     }
 
     private void actions() {
