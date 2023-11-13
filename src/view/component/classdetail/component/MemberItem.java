@@ -35,10 +35,6 @@ public class MemberItem extends HBox {
         userBox.getChildren().addAll(userNameLbl);
 
         this.getChildren().addAll(profile, userBox);
-
-        this.setOnMouseClicked(e -> {
-//            fetchScoreDetail(member);
-        });
     }
 
 }
