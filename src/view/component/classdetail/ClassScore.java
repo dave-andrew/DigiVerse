@@ -72,6 +72,8 @@ public class ClassScore extends HBox {
         this.members.setContent(memberList);
         this.memberContainer.getChildren().add(members);
 
+        this.members.vbarPolicyProperty().setValue(ScrollPane.ScrollBarPolicy.NEVER);
+
         this.getChildren().addAll(memberContainer, scoreContainer);
     }
 
