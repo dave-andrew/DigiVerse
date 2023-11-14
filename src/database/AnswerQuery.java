@@ -154,4 +154,24 @@ public class AnswerQuery {
         return null;
     }
 
+    public boolean scoreAnswer(String taskid, String userid, int score) {
+        String query = "UPDATE answer_header " +
+                "JOIN mstask ON answer_header.TaskID = mstask.TaskID " +
+                "SET answer_header.Score = ? " +
+                "WHERE mstask.TaskTitle = ? AND answer_header.UserID = ?";
+
+        try (PreparedStatement ps = con.prepareStatement(query)) {
+            assert ps != null;
+            ps.setInt(1, score);
+            ps.setString(2, taskid);
+            ps.setString(3, userid);
+
+            ps.executeUpdate();
+
+            return true;
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return false;
+        }
+    }
 }

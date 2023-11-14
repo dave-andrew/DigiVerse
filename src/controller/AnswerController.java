@@ -77,4 +77,22 @@ public class AnswerController {
         answerQuery.markUndone(taskid, userid);
     }
 
+    public boolean scoreAnswer(String taskid, String userid, String score) {
+        if(score.isEmpty()) {
+            Toast.makeText(StageManager.getInstance(), "Score cannot be empty!", 2000, 500, 500);
+            return false;
+        }
+
+        if(!score.matches("[0-9]+")) {
+            Toast.makeText(StageManager.getInstance(), "Score must be a number!", 2000, 500, 500);
+            return false;
+        }
+
+        if(Integer.parseInt(score) < 0 || Integer.parseInt(score) > 100) {
+            Toast.makeText(StageManager.getInstance(), "Score must be between 0 and 100!", 2000, 500, 500);
+            return false;
+        }
+
+        return answerQuery.scoreAnswer(taskid, userid, Integer.parseInt(score));
+    }
 }
