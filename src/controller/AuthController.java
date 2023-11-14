@@ -50,4 +50,7 @@ public class AuthController {
         return authQuery.checkAuth();
     }
 
+    public void removeAuth() {
+        authQuery.deleteAuthData(System.getenv("COMPUTERNAME"));
+    }
 }

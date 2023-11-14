@@ -1,6 +1,8 @@
 package view;
 
+import controller.AuthController;
 import helper.ScreenManager;
+import helper.StageManager;
 import helper.ThemeManager;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
@@ -21,6 +23,8 @@ public class Home {
 
     private LoggedUser loggedUser;
 
+    private AuthController authController;
+
     private Scene scene;
     private BorderPane borderPane;
     private GridPane classGrid;
@@ -32,6 +36,8 @@ public class Home {
     private Image iconImg, plusImg;
     private ImageView icon, plus, userImg;
     private Button iconBtn;
+    private Image logoutImage;
+    private ImageView logoutIcon;
 
     private Label title;
 
@@ -138,10 +144,13 @@ public class Home {
         leftNav.getChildren().add(iconBtn);
         leftNav.setAlignment(Pos.CENTER_LEFT);
 
-
-
         rightNav.getChildren().addAll(plusBtn, userBtn);
         rightNav.setAlignment(Pos.CENTER_RIGHT);
+
+        this.logoutImage = new Image("file:resources/icons/logout.png");
+        this.logoutIcon = new ImageView(logoutImage);
+        this.logoutIcon.setFitWidth(20);
+        this.logoutIcon.setFitHeight(20);
 
         sideBar = new VBox();
 
@@ -158,9 +167,34 @@ public class Home {
 
         scrollPane.setPannable(true);
 
-
         sideBar.getChildren().addAll(homeSideNav, calenderSideNav);
         sideBar.getStyleClass().add("side-nav");
+
+//        Kalo mau tambah side bar item
+
+        VBox spacer = new VBox();
+        VBox.setVgrow(spacer, Priority.ALWAYS);
+
+        sideBar.getChildren().add(spacer);
+
+        HBox logOutBtn = new HBox();
+        logOutBtn.getStyleClass().add("side-nav-item");
+        logOutBtn.setAlignment(Pos.CENTER);
+
+        Label logOutLbl = new Label("Log Out");
+        logOutLbl.setStyle("-fx-font-size: 16px;-fx-text-fill: #FF0000;");
+
+        HBox.setMargin(logOutLbl, new Insets(0, 0, 0, 10));
+
+        logOutBtn.getChildren().addAll(logoutIcon, logOutLbl);
+
+        logOutBtn.setOnMouseClicked(e -> {
+            logout();
+        });
+
+        VBox.setMargin(logOutBtn, new Insets(0, 0, 40, 0));
+
+        sideBar.getChildren().add(logOutBtn);
 
         navBar.getChildren().addAll(leftNav, rightNav);
         navBar.getStyleClass().add("nav-bar");
@@ -219,7 +253,16 @@ public class Home {
 
     }
 
+    public void logout() {
+        LoggedUser.getInstance().logout();
+
+        this.authController.removeAuth();
+
+        new Login(StageManager.getInstance());
+    }
+
     public Home(Stage stage) {
+        this.authController = new AuthController();
 
         initialize();
         scene = setLayout();

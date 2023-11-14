@@ -125,7 +125,7 @@ public class AuthQuery {
         }
     }
 
-    private void deleteAuthData(String deviceName) {
+    public void deleteAuthData(String deviceName) {
         String deleteQuery = "DELETE FROM authcheck WHERE DeviceName = ?";
 
         try (PreparedStatement deleteStatement = connect.prepareStatement(deleteQuery)) {
