@@ -4,6 +4,8 @@ import database.CommentQuery;
 import model.Comment;
 import model.ForumComment;
 
+import java.util.ArrayList;
+
 public class CommentController {
 
     private CommentQuery commentQuery;
@@ -17,6 +19,10 @@ public class CommentController {
         ForumComment forumComment = new ForumComment(text, userid, forumid);
 
         return this.commentQuery.createForumComment(forumComment);
+    }
+
+    public ArrayList<ForumComment> getForumComments(String forumid) {
+        return this.commentQuery.getForumComments(forumid);
     }
 
 }

@@ -63,7 +63,7 @@ public class RightContent extends VBox {
 
         forumContainer.getChildren().add(commentContainer);
 
-        forumContainer.getChildren().add(commentSection(forum, commentContainer));
+        forumContainer.getChildren().add(commentInput(forum, commentContainer));
 
         Line line2 = new Line();
         line2.setStroke(Color.valueOf("#E0E0E0"));
@@ -77,30 +77,44 @@ public class RightContent extends VBox {
         Image arrowDown = new Image("file:resources/icons/down-arrow.png");
         ImageView arrowDownImage = new ImageView(arrowDown);
 
-        arrowDownImage.setFitWidth(20);
-        arrowDownImage.setFitHeight(20);
+        arrowDownImage.setFitWidth(8);
+        arrowDownImage.setFitHeight(8);
 
         Button dropDownBtn = new Button();
         dropDownBtn.setGraphic(arrowDownImage);
-        dropDownBtn.setStyle("-fx-background-color: transparent;-fx-border-color: none");
+        dropDownBtn.setStyle("-fx-background-color: transparent;-fx-border-color: none; -fx-cursor: hand");
+
+        dropDownBtn.prefWidthProperty().bind(forumContainer.widthProperty().subtract(50));
 
         dropDownBtn.setOnMouseClicked(e -> {
-
+            fetchForumComment(commentContainer, forum);
         });
+
+        dropDownComment.getChildren().add(dropDownBtn);
 
         forumContainer.getChildren().add(dropDownComment);
 
         forumContainer.getStyleClass().add("border");
         forumContainer.setPadding(new Insets(10, 10, 10, 10));
 
-
         return forumContainer;
     }
 
-    public HBox commentSection(Forum forum, VBox commentContainer) {
+    private void fetchForumComment(VBox commentContainer, Forum forum) {
+        commentContainer.getChildren().clear();
+
+        List<ForumComment> forumCommentList = this.commentController.getForumComments(forum.getId());
+
+        for (ForumComment forumComment : forumCommentList) {
+            HBox commentItem = new CommentItem(forumComment);
+
+            commentContainer.getChildren().add(commentItem);
+        }
+    }
+
+    public HBox commentInput(Forum forum, VBox commentContainer) {
         HBox commentSection = new HBox();
         commentSection.setPadding(new Insets(10, 10, 10, 10));
-        commentSection.setAlignment(Pos.CENTER_LEFT);
         commentSection.setSpacing(10);
 
         Image profile = new Image("file:resources/icons/user.png");
@@ -111,6 +125,7 @@ public class RightContent extends VBox {
 
         TextField commentInput = new TextField();
         commentInput.setPromptText("Write a comment...");
+        commentInput.setStyle("-fx-font-size: 14px");
         commentInput.setOnKeyPressed(new EventHandler<KeyEvent>() {
             @Override
             public void handle(KeyEvent event) {
@@ -127,6 +142,7 @@ public class RightContent extends VBox {
         HBox.setHgrow(commentInput, Priority.ALWAYS);
 
         commentSection.getChildren().addAll(profileImage, commentInput);
+        commentSection.setAlignment(Pos.TOP_CENTER);
 
         return commentSection;
     }
