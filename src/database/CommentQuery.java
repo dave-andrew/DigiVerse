@@ -46,7 +46,7 @@ public class CommentQuery {
         }
     }
 
-    public ArrayList<ForumComment> getForumComments(String forumid) {
+    public ArrayList<ForumComment> getForumComments(String forumid, int offset) {
 
         ArrayList<ForumComment> forumCommentList = new ArrayList<>();
 
@@ -62,7 +62,7 @@ public class CommentQuery {
 
             assert ps != null;
             ps.setString(1, forumid);
-            ps.setInt(2, 0);
+            ps.setInt(2, offset * 5);
 
             try(var rs = ps.executeQuery()) {
                 while(rs.next()) {

@@ -14,6 +14,9 @@ public class Forum {
     private Classroom classroom;
     private String createdAt;
 
+    private int commentCounter;
+    private boolean toggle;
+
     public Forum(String id, String text, String userid, User user, String classid, Classroom classroom, String createdAt) {
         this.id = id;
         this.text = text;
@@ -22,6 +25,8 @@ public class Forum {
         this.classid = classid;
         this.classroom = classroom;
         this.createdAt = createdAt;
+        this.commentCounter = 0;
+        this.toggle = true;
     }
 
     public Forum(String text, String userid, String classid) {
@@ -30,6 +35,8 @@ public class Forum {
         this.userid = userid;
         this.classid = classid;
         this.createdAt = DateManager.getNow();
+        this.commentCounter = 0;
+        this.toggle = true;
     }
 
 
@@ -87,5 +94,21 @@ public class Forum {
 
     public void setCreatedAt(String createdAt) {
         this.createdAt = createdAt;
+    }
+
+    public int getCommentCounter() {
+        return commentCounter;
+    }
+
+    public void setCommentCounter(int commentCounter) {
+        this.commentCounter = commentCounter;
+    }
+
+    public boolean isToggle() {
+        return toggle;
+    }
+
+    public void setToggle(boolean toggle) {
+        this.toggle = toggle;
     }
 }

@@ -40,6 +40,7 @@ public class RightContent extends VBox {
         List<Forum> forumList = this.forumController.getClassroomForum(classroom.getClassId());
 
         for (Forum forum : forumList) {
+
             VBox forumContainer = forumContainer(forum);
 
             this.getChildren().add(forumContainer);
@@ -86,8 +87,24 @@ public class RightContent extends VBox {
 
         dropDownBtn.prefWidthProperty().bind(forumContainer.widthProperty().subtract(50));
 
-        dropDownBtn.setOnMouseClicked(e -> {
+        Button loadMoreComment = new Button("Load more");
+        loadMoreComment.setStyle("-fx-background-color: transparent;-fx-border-color: none; -fx-cursor: hand");
+
+        loadMoreComment.setOnMouseClicked(e -> {
             fetchForumComment(commentContainer, forum);
+        });
+
+        dropDownBtn.setOnMouseClicked(e -> {
+            if(forum.isToggle()) {
+                fetchForumComment(commentContainer, forum);
+
+                forum.setToggle(false);
+                commentContainer.getChildren().add(loadMoreComment);
+            } else {
+                commentContainer.getChildren().clear();
+                forum.setCommentCounter(0);
+                forum.setToggle(true);
+            }
         });
 
         dropDownComment.getChildren().add(dropDownBtn);
@@ -101,15 +118,21 @@ public class RightContent extends VBox {
     }
 
     private void fetchForumComment(VBox commentContainer, Forum forum) {
-        commentContainer.getChildren().clear();
+//        commentContainer.getChildren().clear();
 
-        List<ForumComment> forumCommentList = this.commentController.getForumComments(forum.getId());
+        List<ForumComment> forumCommentList = this.commentController.getForumComments(forum.getId(), forum.getCommentCounter());
+
+        VBox commentFetched = new VBox();
 
         for (ForumComment forumComment : forumCommentList) {
             HBox commentItem = new CommentItem(forumComment);
 
-            commentContainer.getChildren().add(commentItem);
+            commentFetched.getChildren().add(0, commentItem);
         }
+
+        commentContainer.getChildren().add(0, commentFetched);
+
+        forum.setCommentCounter(forum.getCommentCounter() + 1);
     }
 
     public HBox commentInput(Forum forum, VBox commentContainer) {

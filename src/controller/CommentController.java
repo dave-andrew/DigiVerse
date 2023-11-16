@@ -21,8 +21,8 @@ public class CommentController {
         return this.commentQuery.createForumComment(forumComment);
     }
 
-    public ArrayList<ForumComment> getForumComments(String forumid) {
-        return this.commentQuery.getForumComments(forumid);
+    public ArrayList<ForumComment> getForumComments(String forumid, int offset) {
+        return this.commentQuery.getForumComments(forumid, offset);
     }
 
 }
