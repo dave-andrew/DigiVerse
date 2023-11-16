@@ -1,6 +1,7 @@
 package view.component.classdetail;
 
 import controller.ForumController;
+import controller.MemberController;
 import helper.ImageManager;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
@@ -78,9 +79,9 @@ public class ClassForum extends ClassBase {
             forumStack.getChildren().add(labelsVBox);
         } else {
             className = new Label(classroom.getClassName());
-            className.setStyle("-fx-text-fill: white");
+            className.setStyle("-fx-text-fill: white; -fx-font-size: 35px");
             classDesc = new Label(classroom.getClassDesc());
-            classDesc.setStyle("-fx-text-fill: white;");
+            classDesc.setStyle("-fx-text-fill: white; -fx-font-size: 20px");
 
             VBox labelsVBox = new VBox(className, classDesc);
             labelsVBox.setPadding(new Insets(20, 20, 20, 20));
@@ -89,12 +90,16 @@ public class ClassForum extends ClassBase {
             forumHBox = new HBox(20);
 //            forumHBox.setStyle("-fx-background-color: #f5f5f5");
 
+
+
             HBox leftContentContainer = new HBox();
-            leftContent = new LeftContent("Teacher", this.classroom);
+            String userRole = new MemberController().getRole(classroom.getClassId());
+            leftContent = new LeftContent(userRole, this.classroom);
             leftContentContainer.getChildren().add(leftContent);
 
             rightContent = new RightContent(classroom);
             HBox.setHgrow(rightContent, Priority.ALWAYS);
+            rightContent.setPadding(new Insets(0, 0, 40, 0));
 
             forumHBox.getChildren().addAll(leftContentContainer, rightContent);
 //            forumContent.setStyle("-fx-background-color: #000000");
@@ -109,5 +114,6 @@ public class ClassForum extends ClassBase {
         setLayout();
 
         this.setContent(forumContainer);
+        this.setPannable(true);
     }
 }
