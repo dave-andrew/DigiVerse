@@ -7,6 +7,7 @@ import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
+import javafx.scene.control.TextField;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.HBox;
@@ -124,6 +125,38 @@ public class TaskDetail extends HBox {
 
         VBox.setMargin(line2, new Insets(20, 0, 20, 0));
         detail.getChildren().add(line2);
+
+        VBox userComment = new VBox();
+        userComment.setAlignment(Pos.CENTER_LEFT);
+
+        Label commentTitle = new Label("Add Comment:");
+        commentTitle.getStyleClass().add("title");
+
+        userComment.getChildren().add(commentTitle);
+
+        if(userRole.equals("Student")) {
+            HBox commentInputContainer = new HBox();
+            commentInputContainer.setPadding(new Insets(10, 10, 10, 10));
+
+            ImageView userImg;
+            if(LoggedUser.getInstance().getProfileImage() == null) {
+                userImg = new ImageView(new Image("file:resources/icons/user.png"));
+
+                userImg.setFitWidth(30);
+                userImg.setFitHeight(30);
+
+            } else {
+                userImg = new ImageView(LoggedUser.getInstance().getProfileImage());
+            }
+            commentInputContainer.getChildren().add(userImg);
+
+            TextField commentInput = new TextField();
+            commentInput.setPromptText("Write your comment here...");
+
+            commentInputContainer.getChildren().add(commentInput);
+
+            detail.getChildren().add(commentInputContainer);
+        }
 
         innerMainContent.getChildren().addAll(imgStack, detail);
         innerMainContent.setAlignment(Pos.TOP_LEFT);

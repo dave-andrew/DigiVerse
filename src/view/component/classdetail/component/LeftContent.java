@@ -1,5 +1,6 @@
 package view.component.classdetail.component;
 
+import javafx.geometry.Pos;
 import javafx.scene.control.Label;
 import javafx.scene.input.Clipboard;
 import javafx.scene.input.ClipboardContent;
@@ -36,6 +37,14 @@ public class LeftContent extends HBox {
             });
 
             container.getChildren().addAll(classCodeTitle, classCode);
+        } else {
+            classCodeTitle = new Label("Ask the teacher");
+            classCode = new Label("for the class code!");
+            classCodeTitle.setStyle("-fx-font-size: 14px");
+            classCode.setStyle("-fx-font-size: 14px");
+
+            container.getChildren().addAll(classCodeTitle, classCode);
+            container.setAlignment(Pos.CENTER);
         }
 
         VBox.setVgrow(container, Priority.NEVER);
