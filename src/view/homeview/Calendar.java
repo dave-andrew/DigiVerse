@@ -142,7 +142,9 @@ public class Calendar extends VBox {
 
                         taskTitle.setOnMouseClicked(e -> {
                             this.mainPane.getChildren().clear();
-                            this.mainPane.getChildren().add(new TaskBase(task, task.getClassroom(), "Student"));
+
+                            String userRole = new MemberController().getRole(task.getClassroom().getClassId());
+                            this.mainPane.getChildren().add(new TaskBase(task, task.getClassroom(), userRole));
 
                             setLeftNav(task.getClassroom());
                         });
