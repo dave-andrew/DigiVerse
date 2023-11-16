@@ -1,6 +1,7 @@
 package view.homeview;
 
 import controller.AnswerController;
+import controller.MemberController;
 import controller.TaskController;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
@@ -11,6 +12,7 @@ import javafx.scene.image.ImageView;
 import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
+import model.Classroom;
 import model.Task;
 import view.homeview.task.TaskBase;
 import view.homeview.task.TaskDetail;
@@ -32,9 +34,13 @@ public class Calendar extends VBox {
     private Button prevMonthBtn, nextMonthBtn;
 
     private StackPane mainPane;
+    private HBox leftNav;
+    private Button iconBtn;
 
-    public Calendar(StackPane mainPane) {
+    public Calendar(StackPane mainPane, HBox leftNav, Button iconBtn) {
         this.mainPane = mainPane;
+        this.leftNav = leftNav;
+        this.iconBtn = iconBtn;
         init();
         createCalendarLayout();
     }
@@ -137,6 +143,8 @@ public class Calendar extends VBox {
                         taskTitle.setOnMouseClicked(e -> {
                             this.mainPane.getChildren().clear();
                             this.mainPane.getChildren().add(new TaskBase(task, task.getClassroom(), "Student"));
+
+                            setLeftNav(task.getClassroom());
                         });
 
                         dayPane.getChildren().add(taskTitle);
@@ -168,6 +176,39 @@ public class Calendar extends VBox {
         monthLbl.setText(date.getMonth() + " " + date.getYear());
 
         createCalendarLayout();
+    }
+
+    private void setLeftNav(Classroom classroom) {
+        Image image = new Image("file:resources/icons/right-arrow.png");
+        ImageView icon = new ImageView(image);
+
+        icon.setFitWidth(25);
+        icon.setPreserveRatio(true);
+
+        Label lbl = new Label(classroom.getClassName());
+        lbl.setStyle("-fx-font-size: 16px;");
+
+        lbl.setOnMouseEntered(e -> {
+            lbl.setStyle("-fx-underline: true;-fx-cursor: hand;");
+        });
+
+        lbl.setOnMouseExited(e -> {
+            lbl.setStyle("-fx-underline: false;");
+        });
+
+        lbl.setOnMouseClicked(e -> {
+            String userRole = new MemberController().getRole(classroom.getClassId());
+            BorderPane classDetail = new ClassroomDetail(classroom, userRole, mainPane);
+
+            setLeftNav(classroom);
+
+            mainPane.getChildren().clear();
+            mainPane.getChildren().add(classDetail);
+        });
+
+        this.leftNav.getChildren().clear();
+
+        this.leftNav.getChildren().addAll(iconBtn, icon, lbl);
     }
 
 }

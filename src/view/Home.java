@@ -239,7 +239,7 @@ public class Home {
             mainPane.getChildren().clear();
             leftNav.getChildren().clear();
             leftNav.getChildren().add(iconBtn);
-            VBox calendar = new Calendar(mainPane);
+            VBox calendar = new Calendar(mainPane, leftNav, iconBtn);
             calendar.setAlignment(Pos.TOP_CENTER);
             mainPane.getChildren().add(calendar);
         });
