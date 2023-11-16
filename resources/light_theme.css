@@ -306,3 +306,12 @@
     -fx-border-width: 1px;
     -fx-background-color: #CDCDCD;
 }
+
+.calendar-item {
+    -fx-cursor: hand;
+    -fx-font-size: 12px;
+}
+
+.calendar-item:hover {
+    -fx-underline: true;
+}

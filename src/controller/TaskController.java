@@ -35,4 +35,8 @@ public class TaskController {
     public ArrayList<Task> getScoredClassroomTask(String classid) {
         return taskQuery.getScoredClassroomTask(classid);
     }
+
+    public ArrayList<Task> fetchTaskByDate(String date) {
+        return taskQuery.fetchTaskByDate(date);
+    }
 }

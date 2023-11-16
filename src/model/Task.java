@@ -15,6 +15,8 @@ public class Task {
     private String createdAt;
     private boolean scored;
 
+    private Classroom classroom;
+
     public Task(String id, String userid, User user, String title, String description, String deadlineAt, String createdAt, boolean scored) {
         this.id = id;
         this.userid = userid;
@@ -35,6 +37,18 @@ public class Task {
         this.deadlineAt = deadlineAt;
         this.createdAt = DateManager.getNow();
         this.scored = scored;
+    }
+
+    public Task(String id, String userid, User user, String title, String description, String deadlineAt, String createdAt, boolean scored, Classroom classroom) {
+        this.id = id;
+        this.userid = userid;
+        this.user = user;
+        this.title = title;
+        this.description = description;
+        this.deadlineAt = deadlineAt;
+        this.createdAt = createdAt;
+        this.scored = scored;
+        this.classroom = classroom;
     }
 
     public String getId() {
@@ -99,5 +113,13 @@ public class Task {
 
     public void setScored(boolean scored) {
         this.scored = scored;
+    }
+
+    public Classroom getClassroom() {
+        return classroom;
+    }
+
+    public void setClassroom(Classroom classroom) {
+        this.classroom = classroom;
     }
 }

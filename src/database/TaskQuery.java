@@ -2,10 +2,13 @@ package database;
 
 import helper.StageManager;
 import helper.Toast;
+import model.Classroom;
+import model.LoggedUser;
 import model.Task;
 import model.User;
 
 import java.sql.PreparedStatement;
+import java.sql.SQLException;
 import java.util.ArrayList;
 
 public class TaskQuery {
@@ -92,6 +95,44 @@ public class TaskQuery {
             throw new RuntimeException(e);
         }
 
+        return taskList;
+    }
+
+    public ArrayList<Task> fetchTaskByDate(String date) {
+        String query = "SELECT * FROM class_task\n" +
+                "JOIN mstask ON class_task.TaskID = mstask.TaskID\n" +
+                "JOIN msuser ON mstask.UserID = msuser.UserID\n" +
+                "JOIN msclass ON msclass.ClassID = class_task.ClassID\n" +
+                "WHERE DATE(DeadlineAt) = ? AND " +
+                "class_task.ClassID IN (SELECT ClassID FROM class_member WHERE UserID = ? AND Role = ?)\n";
+
+        ArrayList<Task> taskList = new ArrayList<>();
+        try (PreparedStatement ps = connect.prepareStatement(query)) {
+
+            assert ps != null;
+            ps.setString(1, date);
+            ps.setString(2, LoggedUser.getInstance().getId());
+            ps.setString(3, "Student");
+
+            try (var rs = ps.executeQuery()) {
+                while(rs.next()) {
+
+                    Classroom classroom = new Classroom(rs.getString("ClassID"), rs.getString("ClassName"), rs.getString("ClassDesc"), rs.getString("ClassCode"), rs.getString("ClassSubject"), rs.getBlob("ClassImage"));
+                    User user = new User(rs.getString("UserID"), rs.getString("UserName"), rs.getString("UserEmail"), "", rs.getInt("UserAge"), rs.getBlob("UserProfile"));
+                    Task task = new Task(rs.getString("TaskID"), rs.getString("UserID"), user, rs.getString("TaskTitle"), rs.getString("TaskDesc"), rs.getString("DeadlineAt"), rs.getString("CreatedAt"), rs.getBoolean("Scored"), classroom);
+                    taskList.add(task);
+
+                }
+            }
+
+//            for(Task task : taskList) {
+//                System.out.println(task.getTitle());
+//            }
+
+            return taskList;
+        }catch(SQLException e) {
+            e.printStackTrace();
+        }
         return taskList;
     }
 }

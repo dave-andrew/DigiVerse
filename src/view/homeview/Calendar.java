@@ -1,5 +1,7 @@
 package view.homeview;
 
+import controller.AnswerController;
+import controller.TaskController;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.control.Button;
@@ -7,12 +9,19 @@ import javafx.scene.control.Label;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.*;
+import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
+import model.Task;
+import view.homeview.task.TaskBase;
+import view.homeview.task.TaskDetail;
 
 import java.time.LocalDateTime;
 import java.time.YearMonth;
+import java.util.ArrayList;
 
 public class Calendar extends VBox {
+
+    private TaskController taskController;
 
     private LocalDateTime date;
 
@@ -22,12 +31,17 @@ public class Calendar extends VBox {
     private HBox calendarHeader;
     private Button prevMonthBtn, nextMonthBtn;
 
-    public Calendar() {
+    private StackPane mainPane;
+
+    public Calendar(StackPane mainPane) {
+        this.mainPane = mainPane;
         init();
         createCalendarLayout();
     }
 
     private void init() {
+        this.taskController = new TaskController();
+
         date = LocalDateTime.now();
 
         calendarHeader = new HBox(50);
@@ -79,7 +93,6 @@ public class Calendar extends VBox {
         String[] daysOfWeek = {"Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"};
         for (int i = 0; i < 7; i++) {
             Label dayLabel = new Label(daysOfWeek[i]);
-            dayLabel.setStyle("-fx-font-weight: bold");
             calendarGrid.add(dayLabel, i, 0);
         }
 
@@ -95,15 +108,40 @@ public class Calendar extends VBox {
                     StackPane emptyCell = new StackPane();
                     calendarGrid.add(emptyCell, col, row);
                 } else if (day <= daysInMonth) {
-                    StackPane dayPane = new StackPane();
+                    VBox dayPane = new VBox();
                     dayPane.setStyle("-fx-border-color: #C0C0C0; -fx-border-width: 1; -fx-background-color: #FFFFFF;");
+                    dayPane.setPadding(new Insets(5));
                     Label dayText = new Label(String.valueOf(day));
                     dayPane.getChildren().add(dayText);
                     dayPane.setPrefWidth(160);
                     dayPane.setPrefHeight(110);
                     dayPane.setAlignment(Pos.TOP_LEFT);
 
-                    dayText.setStyle("-fx-font-weight: bold");
+                    ArrayList<Task> taskList = fetchTask(day, yearMonth.getMonthValue(), yearMonth.getYear());
+
+                    for(Task task : taskList) {
+                        Label taskTitle = new Label(" • " + task.getTitle());
+                        taskTitle.setWrapText(true);
+                        taskTitle.setMaxWidth(150);
+                        taskTitle.setPadding(new Insets(0, 0, 0, 5));
+                        taskTitle.getStyleClass().add("calendar-item");
+
+                        taskTitle.setOnMouseEntered(e -> {
+                            taskTitle.setTextFill(Color.web("#FFFFFF"));
+                        });
+
+                        taskTitle.setOnMouseExited(e -> {
+                            taskTitle.setTextFill(Color.web("#36454F"));
+                        });
+
+                        taskTitle.setOnMouseClicked(e -> {
+                            this.mainPane.getChildren().clear();
+                            this.mainPane.getChildren().add(new TaskBase(task, task.getClassroom(), "Student"));
+                        });
+
+                        dayPane.getChildren().add(taskTitle);
+                    }
+
                     dayText.setAlignment(Pos.TOP_CENTER);
 
                     calendarGrid.add(dayPane, col, row);
@@ -112,9 +150,18 @@ public class Calendar extends VBox {
             }
         }
 
+        this.calendarGrid.setAlignment(Pos.CENTER);
+
         this.getChildren().add(calendarHeader);
         this.getChildren().add(calendarGrid);
         this.setAlignment(Pos.TOP_CENTER);
+    }
+
+    private ArrayList<Task> fetchTask(int day, int month, int year) {
+
+        String date = year + "-" + month + "-" + day;
+
+        return this.taskController.fetchTaskByDate(date);
     }
 
     private void updateCalendar() {
