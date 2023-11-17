@@ -8,6 +8,8 @@ import model.Comment;
 
 public class CommentTextField extends HBox {
 
+    private TextField replyField;
+
     public CommentTextField(Comment comment) {
         ImageView profileImg;
 
@@ -20,13 +22,17 @@ public class CommentTextField extends HBox {
         profileImg.setFitWidth(30);
         profileImg.setFitHeight(30);
 
-        TextField replyField = new TextField();
+        this.replyField = new TextField();
         replyField.prefWidthProperty().bind(this.widthProperty().subtract(50));
 
         replyField.setPromptText("Reply to " + comment.getUser().getUsername() + "...");
 
         this.getChildren().addAll(profileImg, replyField);
         this.setSpacing(10);
+    }
+
+    public TextField getReplyField() {
+        return replyField;
     }
 
 }

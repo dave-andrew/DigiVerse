@@ -14,9 +14,12 @@ public class CommentItem extends HBox {
     private Comment comment;
 
     private Label replyBtn;
-    private HBox commentTextField;
+    private CommentTextField commentTextField;
+    private VBox replyInputContainer, replyContainer;
 
     private boolean toggle = true;
+
+    private Label loadReplyBtn;
 
     public CommentItem(Comment comment) {
         this.comment = comment;
@@ -45,18 +48,47 @@ public class CommentItem extends HBox {
         Label commentText = new Label(comment.getText());
         commentText.setWrapText(true);
 
+        HBox btnContainer = new HBox(10);
+
         this.replyBtn = new Label("Reply");
         replyBtn.getStyleClass().add("reply-button");
 
-        textContainer.getChildren().addAll(username, commentText, replyBtn);
+        this.loadReplyBtn = new Label("View Reply");
+        loadReplyBtn.getStyleClass().add("reply-button");
 
-        VBox replyInputContainer = new VBox();
+        btnContainer.getChildren().addAll(replyBtn, loadReplyBtn);
 
+        textContainer.getChildren().addAll(username, commentText, btnContainer);
+
+        this.replyInputContainer = new VBox();
+
+        textContainer.getChildren().add(replyInputContainer);
+
+        this.replyContainer = new VBox();
+
+        textContainer.getChildren().add(replyContainer);
+
+        this.setSpacing(10);
+        this.getChildren().addAll(profileImage, textContainer);
+
+        actions();
+    }
+
+    private void actions() {
         this.replyBtn.setOnMouseClicked(e -> {
 
             if(toggle) {
 
                 this.commentTextField = new CommentTextField(comment);
+
+                commentTextField.setOnKeyPressed(e2 -> {
+                    if(e2.getCode().toString().equals("ENTER")) {
+//                        Create new Comment
+//                        Add a new CommentItem
+                        System.out.println(commentTextField.getReplyField().getText());
+                        commentTextField.getReplyField().clear();
+                    }
+                });
 
                 replyInputContainer.getChildren().add(commentTextField);
 
@@ -68,18 +100,9 @@ public class CommentItem extends HBox {
             toggle = !toggle;
         });
 
-        textContainer.getChildren().add(replyInputContainer);
+        this.loadReplyBtn.setOnMouseClicked(e -> {
 
-        VBox replyContainer = new VBox();
-
-        textContainer.getChildren().add(replyContainer);
-
-        this.setSpacing(10);
-        this.getChildren().addAll(profileImage, textContainer);
-    }
-
-    public Label getReply() {
-        return replyBtn;
+        });
     }
 
 }
