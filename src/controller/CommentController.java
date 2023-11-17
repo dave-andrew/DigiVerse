@@ -33,4 +33,8 @@ public class CommentController {
         return this.commentQuery.createTaskComment(taskComment);
     }
 
+    public ArrayList<TaskComment> getTaskComments(String taskid) {
+        return this.commentQuery.getTaskComments(taskid);
+    }
+
 }

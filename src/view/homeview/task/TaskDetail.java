@@ -183,6 +183,15 @@ public class TaskDetail extends HBox {
             detail.getChildren().add(userComment);
         }
 
+        if(this.userRole.equals("Teacher")) {
+            ArrayList<TaskComment> taskCommentList = this.commentController.getTaskComments(task.getId());
+
+            for (TaskComment taskComment : taskCommentList) {
+                HBox commentItem = new CommentItem(taskComment);
+                commentListContainer.getChildren().add(commentItem);
+            }
+        }
+
         detail.getChildren().add(commentListContainer);
 
         innerMainContent.getChildren().addAll(imgStack, detail);
