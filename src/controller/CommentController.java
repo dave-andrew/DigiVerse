@@ -3,6 +3,7 @@ package controller;
 import database.CommentQuery;
 import model.Comment;
 import model.ForumComment;
+import model.LoggedUser;
 import model.TaskComment;
 
 import java.util.ArrayList;
@@ -17,7 +18,7 @@ public class CommentController {
 
     public ForumComment createForumComment(String text, String forumid, String userid) {
 
-        ForumComment forumComment = new ForumComment(text, userid, forumid);
+        ForumComment forumComment = new ForumComment(text, userid, LoggedUser.getInstance(), forumid);
 
         return this.commentQuery.createForumComment(forumComment);
     }
@@ -28,13 +29,19 @@ public class CommentController {
 
     public TaskComment createTaskComment(String text, String taskid, String userid) {
 
-        TaskComment taskComment = new TaskComment(text, userid, taskid);
+        if(text == null || text.isEmpty()) return null;
+
+        TaskComment taskComment = new TaskComment(text, userid, LoggedUser.getInstance(), taskid);
 
         return this.commentQuery.createTaskComment(taskComment);
     }
 
     public ArrayList<TaskComment> getTaskComments(String taskid) {
         return this.commentQuery.getTaskComments(taskid);
+    }
+
+    public TaskComment replyComment(String commentid, String text) {
+        return null;
     }
 
 }

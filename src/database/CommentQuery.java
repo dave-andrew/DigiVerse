@@ -17,8 +17,8 @@ public class CommentQuery {
 
     public ForumComment createForumComment(ForumComment forumComment) {
 
-        String query = "INSERT INTO mscomment VALUES (?, NULL, ?)";
-        String query2 = "INSERT INTO forum_comment VALUES (?, ?, ?, ?)";
+        String query = "INSERT INTO mscomment VALUES (?, NULL, ?, ?, ?)";
+        String query2 = "INSERT INTO forum_comment VALUES (?, ?)";
 
         try (PreparedStatement ps = con.prepareStatement(query);
             PreparedStatement ps2 = con.prepareStatement(query2)) {
@@ -26,14 +26,14 @@ public class CommentQuery {
             assert ps != null;
             ps.setString(1, forumComment.getId());
             ps.setString(2, forumComment.getText());
+            ps.setString(3, forumComment.getUserid());
+            ps.setString(4, forumComment.getCreatedAt());
 
             ps.executeUpdate();
 
             assert ps2 != null;
             ps2.setString(1, forumComment.getForumid());
             ps2.setString(2, forumComment.getId());
-            ps2.setString(3, forumComment.getUserid());
-            ps2.setString(4, forumComment.getCreatedAt());
 
             ps2.executeUpdate();
 
@@ -49,10 +49,10 @@ public class CommentQuery {
 
         String query = "SELECT * FROM forum_comment\n" +
                 "JOIN mscomment ON mscomment.CommentID = forum_comment.CommentID\n" +
-                "JOIN msuser ON msuser.UserID = forum_comment.UserID\n" +
+                "JOIN msuser ON msuser.UserID = mscomment.UserID\n" +
                 "JOIN msforum ON msforum.ForumID = forum_comment.ForumID\n" +
                 "WHERE forum_comment.ForumID = ?\n" +
-                "ORDER BY forum_comment.CreatedAt DESC\n" +
+                "ORDER BY mscomment.CreatedAt DESC\n" +
                 "LIMIT 5 OFFSET ?";
 
         try (PreparedStatement ps = con.prepareStatement(query)) {
@@ -105,8 +105,8 @@ public class CommentQuery {
 
     public TaskComment createTaskComment(TaskComment taskComment) {
 
-        String query = "INSERT INTO mscomment VALUES (?, NULL, ?)";
-        String query2 = "INSERT INTO task_comment VALUES (?, ?, ?, ?)";
+        String query = "INSERT INTO mscomment VALUES (?, NULL, ?, ?, ?)";
+        String query2 = "INSERT INTO task_comment VALUES (?, ?)";
 
         try (PreparedStatement ps = con.prepareStatement(query);
             PreparedStatement ps2 = con.prepareStatement(query2)) {
@@ -114,14 +114,14 @@ public class CommentQuery {
             assert ps != null;
             ps.setString(1, taskComment.getId());
             ps.setString(2, taskComment.getText());
+            ps.setString(3, taskComment.getUserid());
+            ps.setString(4, taskComment.getCreatedAt());
 
             ps.executeUpdate();
 
             assert ps2 != null;
             ps2.setString(1, taskComment.getTaskid());
             ps2.setString(2, taskComment.getId());
-            ps2.setString(3, taskComment.getUserid());
-            ps2.setString(4, taskComment.getCreatedAt());
 
             ps2.executeUpdate();
 
@@ -136,10 +136,10 @@ public class CommentQuery {
 
         String query = "SELECT * FROM task_comment\n" +
                 "JOIN mscomment ON mscomment.CommentID = task_comment.CommentID\n" +
-                "JOIN msuser ON msuser.UserID = task_comment.UserID\n" +
+                "JOIN msuser ON msuser.UserID = mscomment.UserID\n" +
                 "JOIN mstask ON mstask.TaskID = task_comment.TaskID\n" +
                 "WHERE task_comment.TaskID = ?\n" +
-                "ORDER BY task_comment.CreatedAt DESC";
+                "ORDER BY mscomment.CreatedAt DESC";
 
         try (PreparedStatement ps = con.prepareStatement(query)) {
 

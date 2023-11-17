@@ -7,6 +7,7 @@ import java.util.UUID;
 public class Comment {
 
     private String id;
+    private String replyid;
     private String text;
     private String userid;
     private User user;
@@ -20,13 +21,22 @@ public class Comment {
         this.createdAt = createdAt;
     }
 
-    public Comment(String text, String userid) {
+    public Comment(String text, String userid, User user) {
         this.id = UUID.randomUUID().toString();
         this.text = text;
         this.userid = userid;
+        this.user = user;
         this.createdAt = DateManager.getNow();
     }
 
+    public Comment(String replyid, String text, String userid) {
+        this.id = UUID.randomUUID().toString();
+        this.replyid = replyid;
+        this.text = text;
+        this.userid = userid;
+        this.user = user;
+        this.createdAt = DateManager.getNow();
+    }
 
     public String getId() {
         return id;

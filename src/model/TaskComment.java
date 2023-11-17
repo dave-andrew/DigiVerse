@@ -12,8 +12,8 @@ public class TaskComment extends Comment{
         this.task = task;
     }
 
-    public TaskComment(String text, String userid, String taskid) {
-        super(text, userid);
+    public TaskComment(String text, String userid, User user, String taskid) {
+        super(text, userid, user);
         this.taskid = taskid;
     }
 

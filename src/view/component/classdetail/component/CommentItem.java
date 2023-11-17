@@ -1,5 +1,6 @@
 package view.component.classdetail.component;
 
+import controller.CommentController;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.scene.image.Image;
@@ -13,6 +14,8 @@ public class CommentItem extends HBox {
 
     private Comment comment;
 
+    private CommentController commentController;
+
     private Label replyBtn;
     private CommentTextField commentTextField;
     private VBox replyInputContainer, replyContainer;
@@ -23,6 +26,7 @@ public class CommentItem extends HBox {
 
     public CommentItem(Comment comment) {
         this.comment = comment;
+        this.commentController = new CommentController();
         init();
         setLayout();
     }
@@ -86,6 +90,9 @@ public class CommentItem extends HBox {
 //                        Create new Comment
 //                        Add a new CommentItem
                         System.out.println(commentTextField.getReplyField().getText());
+
+                        commentController.replyComment(commentTextField.getReplyField().getText(), comment.getId());
+
                         commentTextField.getReplyField().clear();
                     }
                 });

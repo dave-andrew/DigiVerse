@@ -12,8 +12,8 @@ public class ForumComment extends Comment{
         this.forum = forum;
     }
 
-    public ForumComment(String text, String userid, String forumid) {
-        super(text, userid);
+    public ForumComment(String text, String userid, User user, String forumid) {
+        super(text, userid, user);
         this.forumid = forumid;
     }
 
