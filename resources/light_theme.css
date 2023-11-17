@@ -315,3 +315,10 @@
 .calendar-item:hover {
     -fx-underline: true;
 }
+
+.reply-button {
+    -fx-text-fill: #4DCAFF;
+    -fx-font-size: 12px;
+    -fx-padding: 0px 20px;
+    -fx-cursor: hand;
+}

@@ -88,7 +88,7 @@ public class TaskDetail extends HBox {
         VBox detail = new VBox();
         detail.getChildren().addAll(taskName, postedBy);
 
-        this.commentListContainer = new VBox();
+        this.commentListContainer = new VBox(10);
         this.commentListContainer.setAlignment(Pos.CENTER_LEFT);
         HBox.setHgrow(commentListContainer, Priority.ALWAYS);
 
