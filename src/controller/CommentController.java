@@ -40,6 +40,10 @@ public class CommentController {
         return this.commentQuery.getTaskComments(taskid);
     }
 
+    public ArrayList<TaskComment> getStudentTaskComments(String taskid) {
+        return this.commentQuery.getStudentTaskComments(taskid);
+    }
+
     public TaskComment replyComment(String commentid, String text) {
         return null;
     }

@@ -192,4 +192,65 @@ public class CommentQuery {
         return taskList;
     }
 
+    public ArrayList<TaskComment> getStudentTaskComments(String taskid) {
+        ArrayList<TaskComment> taskList = new ArrayList<>();
+
+        String query = "SELECT * FROM task_comment\n" +
+                "JOIN mscomment ON mscomment.CommentID = task_comment.CommentID\n" +
+                "JOIN msuser ON msuser.UserID = mscomment.UserID\n" +
+                "JOIN mstask ON mstask.TaskID = task_comment.TaskID\n" +
+                "WHERE task_comment.TaskID = ?\n" +
+                "AND (mscomment.UserID IN (SELECT UserID FROM class_member WHERE Role = 'Teacher') OR mscomment.UserID = ?)\n" +
+                "ORDER BY mscomment.CreatedAt DESC";
+
+        try (PreparedStatement ps = con.prepareStatement(query)) {
+
+            assert ps != null;
+            ps.setString(1, taskid);
+            ps.setString(2, LoggedUser.getInstance().getId());
+
+            try (var rs = ps.executeQuery()) {
+                while (rs.next()) {
+
+                    User user = new User(
+                            rs.getString("UserID"),
+                            rs.getString("Username"),
+                            rs.getString("UserEmail"),
+                            "",
+                            rs.getInt("UserAge"),
+                            rs.getBlob("UserProfile"));
+
+                    Task task = new Task(
+                            rs.getString("TaskID"),
+                            rs.getString("UserID"),
+                            user,
+                            rs.getString("TaskTitle"),
+                            rs.getString("TaskDesc"),
+                            rs.getString("DeadlineAt"),
+                            rs.getString("CreatedAt"),
+                            rs.getBoolean("Scored")
+                            );
+
+                    TaskComment taskComment = new TaskComment(
+                            rs.getString("CommentID"),
+                            rs.getString("CommentText"),
+                            rs.getString("UserID"),
+                            user,
+                            rs.getString("CreatedAt"),
+                            rs.getString("TaskID"),
+                            task
+                    );
+
+                    taskList.add(taskComment);
+
+                }
+            }
+
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+
+        return taskList;
+    }
+
 }

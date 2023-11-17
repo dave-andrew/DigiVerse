@@ -157,7 +157,12 @@ public class RightContent extends VBox {
 
                     HBox commentItem = new CommentItem(forumComment);
 
-                    commentContainer.getChildren().add(commentItem);
+                    if(commentContainer.getChildren().isEmpty()) {
+                        commentContainer.getChildren().add(commentItem);
+                    } else {
+                        commentContainer.getChildren().add(commentContainer.getChildren().size()-1, commentItem);
+                    }
+                    commentInput.clear();
                 }
             }
         });

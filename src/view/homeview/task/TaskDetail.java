@@ -195,27 +195,17 @@ public class TaskDetail extends HBox {
                 CommentItem commentItem = new CommentItem(taskComment);
                 commentContainer.getChildren().add(commentItem);
 
-//                commentItem.getReply().setOnMouseClicked(e -> {
-//                    HBox userContainer = new HBox();
-//
-//                    ImageView profileImg;
-//
-//                    if(taskComment.getUser().getProfile() == null) {
-//                        profileImg = new ImageView(new Image("file:resources/icons/user.png"));
-//                    } else {
-//                        profileImg = new ImageView(taskComment.getUser().getProfile());
-//                    }
-//
-//                    profileImg.setFitWidth(30);
-//                    profileImg.setFitHeight(30);
-//
-//                    TextField replyField = new TextField();
-//                    replyField.prefWidthProperty().bind(this.widthProperty().subtract(50));
-//
-//                    userContainer.getChildren().addAll(profileImg, replyField);
-//
-//                    commentContainer.getChildren().add(userContainer);
-//                });
+                commentListContainer.getChildren().add(commentContainer);
+            }
+        } else {
+            ArrayList<TaskComment> taskCommentList = this.commentController.getStudentTaskComments(task.getId());
+
+            for (TaskComment taskComment : taskCommentList) {
+
+                VBox commentContainer = new VBox();
+
+                CommentItem commentItem = new CommentItem(taskComment);
+                commentContainer.getChildren().add(commentItem);
 
                 commentListContainer.getChildren().add(commentContainer);
             }
