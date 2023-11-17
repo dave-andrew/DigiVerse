@@ -1,6 +1,7 @@
 package view.homeview.task;
 
 import controller.AnswerController;
+import controller.CommentController;
 import helper.StageManager;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
@@ -19,6 +20,8 @@ import javafx.scene.shape.Line;
 import javafx.stage.Stage;
 import model.LoggedUser;
 import model.Task;
+import model.TaskComment;
+import view.component.classdetail.component.CommentItem;
 import view.component.classtask.UploadFileModal;
 
 import java.io.File;
@@ -27,6 +30,7 @@ import java.util.ArrayList;
 public class TaskDetail extends HBox {
 
     private AnswerController answerController;
+    private CommentController commentController;
 
     private VBox mainContent, sideContent, fileContainer;
     private HBox innerMainContent;
@@ -37,10 +41,13 @@ public class TaskDetail extends HBox {
     private Label submitStatus;
     private Button downloadBtn;
 
+    private VBox commentListContainer;
+
     public TaskDetail(Task task, String userRole) {
         this.task = task;
         this.userRole = userRole;
         this.answerController = new AnswerController();
+        this.commentController = new CommentController();
         init();
         setLayout();
         setSideContent();
@@ -80,6 +87,10 @@ public class TaskDetail extends HBox {
 
         VBox detail = new VBox();
         detail.getChildren().addAll(taskName, postedBy);
+
+        this.commentListContainer = new VBox();
+        this.commentListContainer.setAlignment(Pos.CENTER_LEFT);
+        HBox.setHgrow(commentListContainer, Priority.ALWAYS);
 
         Label score;
         if (task.isScored()) {
@@ -135,7 +146,7 @@ public class TaskDetail extends HBox {
         userComment.getChildren().add(commentTitle);
 
         if(userRole.equals("Student")) {
-            HBox commentInputContainer = new HBox();
+            HBox commentInputContainer = new HBox(10);
             commentInputContainer.setPadding(new Insets(10, 10, 10, 10));
 
             ImageView userImg;
@@ -151,18 +162,34 @@ public class TaskDetail extends HBox {
             commentInputContainer.getChildren().add(userImg);
 
             TextField commentInput = new TextField();
+            HBox.setHgrow(commentInput, Priority.ALWAYS);
             commentInput.setPromptText("Write your comment here...");
 
             commentInputContainer.getChildren().add(commentInput);
 
-            detail.getChildren().add(commentInputContainer);
+            commentInput.setOnKeyPressed(e -> {
+                if(e.getCode().toString().equals("ENTER")) {
+                    TaskComment newTaskComment = this.commentController.createTaskComment(commentInput.getText(), task.getId(), LoggedUser.getInstance().getId());
+
+                    HBox commentItem = new CommentItem(newTaskComment);
+                    commentListContainer.getChildren().add(0, commentItem);
+
+                    commentInput.clear();
+                }
+            });
+
+            userComment.getChildren().add(commentInputContainer);
+
+            detail.getChildren().add(userComment);
         }
+
+        detail.getChildren().add(commentListContainer);
 
         innerMainContent.getChildren().addAll(imgStack, detail);
         innerMainContent.setAlignment(Pos.TOP_LEFT);
 //        innerMainContent.setStyle("-fx-background-color: #F5f5f5");
 
-        scoreDeadlineBox.prefWidthProperty().bind(innerMainContent.widthProperty());
+//        scoreDeadlineBox.prefWidthProperty().bind(innerMainContent.widthProperty());
 
         mainContent.getChildren().add(innerMainContent);
         mainContent.setAlignment(Pos.TOP_LEFT);
@@ -255,7 +282,6 @@ public class TaskDetail extends HBox {
 
             ArrayList<File> fileList = this.answerController.getMemberAnswer(this.task.getId(), LoggedUser.getInstance().getId());
 
-            // Check if fileContainer is not already a child of sideContent
             if (!sideContent.getChildren().contains(fileContainer)) {
                 sideContent.getChildren().add(fileContainer);
             }
@@ -270,7 +296,6 @@ public class TaskDetail extends HBox {
             return fileList;
         }
 
-        // If not submitted, remove fileContainer from sideContent
         sideContent.getChildren().remove(fileContainer);
         return new ArrayList<>();
     }

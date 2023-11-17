@@ -30,6 +30,8 @@ public class CommentItem extends HBox {
         profileImage.getStyleClass().add("profile");
 
         Label commentText = new Label(comment.getText());
+        commentText.prefWidthProperty().bind(this.widthProperty().subtract(50));
+        commentText.setWrapText(true);
 
         this.setSpacing(10);
         this.getChildren().addAll(profileImage, commentText);

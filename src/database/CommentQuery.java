@@ -1,9 +1,6 @@
 package database;
 
-import model.Classroom;
-import model.Forum;
-import model.ForumComment;
-import model.User;
+import model.*;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -101,6 +98,34 @@ public class CommentQuery {
 
             return forumCommentList;
 
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    public TaskComment createTaskComment(TaskComment taskComment) {
+
+        String query = "INSERT INTO mscomment VALUES (?, NULL, ?)";
+        String query2 = "INSERT INTO task_comment VALUES (?, ?, ?, ?)";
+
+        try (PreparedStatement ps = con.prepareStatement(query);
+            PreparedStatement ps2 = con.prepareStatement(query2)) {
+
+            assert ps != null;
+            ps.setString(1, taskComment.getId());
+            ps.setString(2, taskComment.getText());
+
+            ps.executeUpdate();
+
+            assert ps2 != null;
+            ps2.setString(1, taskComment.getTaskid());
+            ps2.setString(2, taskComment.getId());
+            ps2.setString(3, taskComment.getUserid());
+            ps2.setString(4, taskComment.getCreatedAt());
+
+            ps2.executeUpdate();
+
+            return taskComment;
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }

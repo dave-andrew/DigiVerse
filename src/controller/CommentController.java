@@ -3,6 +3,7 @@ package controller;
 import database.CommentQuery;
 import model.Comment;
 import model.ForumComment;
+import model.TaskComment;
 
 import java.util.ArrayList;
 
@@ -23,6 +24,13 @@ public class CommentController {
 
     public ArrayList<ForumComment> getForumComments(String forumid, int offset) {
         return this.commentQuery.getForumComments(forumid, offset);
+    }
+
+    public TaskComment createTaskComment(String text, String taskid, String userid) {
+
+        TaskComment taskComment = new TaskComment(text, userid, taskid);
+
+        return this.commentQuery.createTaskComment(taskComment);
     }
 
 }
