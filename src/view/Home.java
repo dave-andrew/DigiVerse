@@ -4,6 +4,8 @@ import controller.AuthController;
 import helper.ScreenManager;
 import helper.StageManager;
 import helper.ThemeManager;
+import javafx.animation.KeyFrame;
+import javafx.animation.Timeline;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
@@ -13,10 +15,13 @@ import javafx.scene.image.ImageView;
 import javafx.scene.layout.*;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
+import javafx.util.Duration;
 import model.LoggedUser;
 import view.component.classroom.ClassCard;
 import view.homeview.Calendar;
 import view.homeview.ClassroomList;
+
+import javax.xml.crypto.dsig.keyinfo.KeyValue;
 
 
 public class Home {
