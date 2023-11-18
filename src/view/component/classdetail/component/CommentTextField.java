@@ -5,6 +5,7 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.HBox;
 import model.Comment;
+import model.LoggedUser;
 
 public class CommentTextField extends HBox {
 
@@ -13,10 +14,10 @@ public class CommentTextField extends HBox {
     public CommentTextField(Comment comment) {
         ImageView profileImg;
 
-        if (comment.getUser().getProfile() == null) {
+        if (LoggedUser.getInstance().getProfile() == null) {
             profileImg = new ImageView(new Image("file:resources/icons/user.png"));
         } else {
-            profileImg = new ImageView(comment.getUser().getProfile());
+            profileImg = new ImageView(LoggedUser.getInstance().getProfile());
         }
 
         profileImg.setFitWidth(30);
