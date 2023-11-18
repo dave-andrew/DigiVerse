@@ -51,7 +51,7 @@ public class CommentItem extends HBox {
         textContainer.prefWidthProperty().bind(this.widthProperty().subtract(50));
 
         Label username = new Label(comment.getUser().getUsername());
-        username.setStyle("-fx-font-size: 16px");
+        username.setStyle("-fx-font-size: 12px");
 
         Label commentText = new Label(comment.getText());
         commentText.setWrapText(true);

@@ -180,7 +180,6 @@
     -fx-background-color: #fff;
     -fx-background-radius: 10px;
     -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.2), 10, 0, 0, 0);
-
 }
 
 .image-button {
@@ -208,7 +207,7 @@
 
 .small-container {
     -fx-padding: 20px 50px;
-    -fx-border-color: #36454F;
+    -fx-border-color: #e3e5e8;
     -fx-border-width: 1px;
     -fx-max-width: 100%;
     -fx-min-width: 300px;
@@ -217,7 +216,7 @@
 }
 
 .border {
-    -fx-border-color: #36454F;
+    -fx-border-color: #e3e5e8;
     -fx-border-width: 1px;
     -fx-border-radius: 10px;
 }
@@ -246,7 +245,7 @@
 }
 
 .nav-button.active {
-    -fx-border-color: transparent transparent #000000 transparent;
+    -fx-border-color: transparent transparent #377fee transparent;
     -fx-border-width: 0 0 2px 0;
 }
 
@@ -321,4 +320,25 @@
     -fx-font-size: 12px;
     -fx-padding: 0px 20px;
     -fx-cursor: hand;
+}
+
+.class-card {
+    -fx-background-color: #fff;
+    -fx-background-radius: 10px;
+    -fx-cursor: hand;
+    -fx-border-radius: 10px;
+    -fx-border-color: #e3e5e8;
+}
+
+.class-card:hover {
+    -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.2), 10, 0, 0, 0);
+}
+
+.class-card:pressed {
+    -fx-background-color: #F5F5F5;
+}
+
+.blue-bg {
+    -fx-background-radius: 10px 10px 0 0;
+    -fx-background-color: #377fee;
 }

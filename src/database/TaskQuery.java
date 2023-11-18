@@ -104,7 +104,7 @@ public class TaskQuery {
                 "JOIN msuser ON mstask.UserID = msuser.UserID\n" +
                 "JOIN msclass ON msclass.ClassID = class_task.ClassID\n" +
                 "WHERE DATE(DeadlineAt) = ? AND " +
-                "class_task.ClassID IN (SELECT ClassID FROM class_member WHERE UserID = ? AND Role = ?)\n";
+                "class_task.ClassID IN (SELECT ClassID FROM class_member WHERE UserID = ?)\n";
 
         ArrayList<Task> taskList = new ArrayList<>();
         try (PreparedStatement ps = connect.prepareStatement(query)) {
@@ -112,7 +112,6 @@ public class TaskQuery {
             assert ps != null;
             ps.setString(1, date);
             ps.setString(2, LoggedUser.getInstance().getId());
-            ps.setString(3, "Student");
 
             try (var rs = ps.executeQuery()) {
                 while(rs.next()) {

@@ -127,6 +127,7 @@ public class TaskDetail extends HBox {
         detail.getChildren().add(line);
 
         Label taskDesc = new Label(task.getDescription());
+        taskDesc.setWrapText(true);
         detail.getChildren().add(taskDesc);
 
         Line line2 = new Line();

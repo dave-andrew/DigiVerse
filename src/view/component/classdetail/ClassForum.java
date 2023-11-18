@@ -37,7 +37,7 @@ public class ClassForum extends ClassBase {
         HBox.setHgrow(forumStack, Priority.ALWAYS);
         forumContainer.setAlignment(Pos.CENTER);
 
-        forumContainer.setMinWidth(1300);
+        forumContainer.prefWidthProperty().bind(this.widthProperty());
 
         forumContent.getChildren().addAll(forumStack, forumHBox);
         HBox.setHgrow(forumHBox, Priority.ALWAYS);
@@ -50,11 +50,12 @@ public class ClassForum extends ClassBase {
         forumContent = new VBox(20);
 
         forumStack = new StackPane();
+        forumStack.prefWidthProperty().bind(forumContent.widthProperty());
 
         forumContainer = new HBox();
 
         Rectangle blueBackground = new Rectangle(1000, 250);
-        blueBackground.setFill(Color.BLUE);
+        blueBackground.setStyle("-fx-fill: #377fee");
         blueBackground.setArcWidth(20);
         blueBackground.setArcHeight(20);
         blueBackground.isSmooth();
