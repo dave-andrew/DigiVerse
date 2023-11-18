@@ -194,7 +194,7 @@ public class RightContent extends VBox {
         if(type.equals("post")) {
             container.getChildren().add(profileImage);
             postInput = new TextField();
-            postInput.setPromptText("What's on your mind " + LoggedUser.getInstance().getUsername() + "?");
+            postInput.setPromptText("What's on your mind, " + LoggedUser.getInstance().getUsername() + "?");
 
             container.getChildren().add(postInput);
 
