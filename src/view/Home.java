@@ -144,7 +144,12 @@ public class Home {
         leftNav.getChildren().add(iconBtn);
         leftNav.setAlignment(Pos.CENTER_LEFT);
 
-        rightNav.getChildren().addAll(plusBtn, userBtn);
+        ToggleButton themeSwitchButton = new ToggleButton("Toggle Theme");
+        themeSwitchButton.setOnAction(e -> {
+            ThemeManager.toggleTheme(scene);
+        });
+
+        rightNav.getChildren().addAll(themeSwitchButton, plusBtn, userBtn);
         rightNav.setAlignment(Pos.CENTER_RIGHT);
 
         this.logoutImage = new Image("file:resources/icons/logout.png");
