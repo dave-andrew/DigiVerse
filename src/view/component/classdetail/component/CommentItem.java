@@ -9,6 +9,9 @@ import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import model.Comment;
 import model.ForumComment;
+import model.TaskComment;
+
+import java.util.ArrayList;
 
 public class CommentItem extends HBox {
 
@@ -21,6 +24,7 @@ public class CommentItem extends HBox {
     private VBox replyInputContainer, replyContainer;
 
     private boolean toggle = true;
+    private boolean toggleReply = true;
 
     private Label loadReplyBtn;
 
@@ -87,7 +91,9 @@ public class CommentItem extends HBox {
 
                 commentTextField.setOnKeyPressed(e2 -> {
                     if(e2.getCode().toString().equals("ENTER")) {
-                        commentController.replyComment(commentTextField.getReplyField().getText(), comment.getId());
+                        TaskComment replyComment = commentController.replyComment(commentTextField.getReplyField().getText(), comment.getId());
+
+                        replyContainer.getChildren().add(new CommentItem(replyComment));
 
                         commentTextField.getReplyField().clear();
                     }
@@ -105,7 +111,22 @@ public class CommentItem extends HBox {
 
         this.loadReplyBtn.setOnMouseClicked(e -> {
 
+            if(toggleReply) {
+                fetchReply();
+                toggleReply = !toggleReply;
+            } else {
+                replyContainer.getChildren().clear();
+                toggleReply = !toggleReply;
+            }
         });
+    }
+
+    public void fetchReply() {
+        ArrayList<TaskComment> replyList = commentController.getReplyTaskComment(comment.getId());
+
+        for (TaskComment taskComment : replyList) {
+            replyContainer.getChildren().add(new CommentItem(taskComment));
+        }
     }
 
 }

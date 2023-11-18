@@ -275,4 +275,50 @@ public class CommentQuery {
 
     }
 
+    public ArrayList<TaskComment> getReplyTaskComment(String commentid) {
+        ArrayList<TaskComment> taskList = new ArrayList<>();
+
+        String query = "SELECT * FROM mscomment\n" +
+                "JOIN msuser ON msuser.UserID = mscomment.UserID\n" +
+                "WHERE mscomment.ReplyID = ?\n" +
+                "ORDER BY mscomment.CreatedAt DESC";
+
+        try (PreparedStatement ps = con.prepareStatement(query)) {
+
+            assert ps != null;
+            ps.setString(1, commentid);
+
+            try (var rs = ps.executeQuery()) {
+                while (rs.next()) {
+
+                    User user = new User(
+                            rs.getString("UserID"),
+                            rs.getString("Username"),
+                            rs.getString("UserEmail"),
+                            "",
+                            rs.getInt("UserAge"),
+                            rs.getBlob("UserProfile"));
+
+                    TaskComment replyTaskComment = new TaskComment(
+                            rs.getString("CommentID"),
+                            rs.getString("CommentText"),
+                            rs.getString("UserID"),
+                            user,
+                            rs.getString("CreatedAt"),
+                            rs.getString("ReplyID"),
+                            null
+                    );
+
+                    taskList.add(replyTaskComment);
+
+                }
+            }
+
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+
+        return taskList;
+    }
+
 }

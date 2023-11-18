@@ -56,4 +56,8 @@ public class CommentController {
 
     }
 
+    public ArrayList<TaskComment> getReplyTaskComment(String commentid) {
+        return this.commentQuery.getReplyTaskComment(commentid);
+    }
+
 }
