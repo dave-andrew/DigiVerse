@@ -4,7 +4,7 @@ import javafx.scene.Scene;
 
 public class ThemeManager {
 
-    private static String theme = "dark";
+    private static String theme = "light";
     public static final String LIGHT_THEME = "file:resources/light_theme.css";
     public static final String DARK_THEME = "file:resources/dark_theme.css";
 

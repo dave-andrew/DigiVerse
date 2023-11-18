@@ -33,6 +33,9 @@ public class LoggedUser extends User{
     public Image getProfileImage() {
         return profileImage;
     }
+    public void setProfileImage(Image image) {
+        this.profileImage = image;
+    }
 
     public void logout() {
         loggedUser = null;

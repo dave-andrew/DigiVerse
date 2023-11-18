@@ -1,5 +1,7 @@
 package view;
 
+import controller.UserController;
+import helper.StageManager;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.control.Button;
@@ -8,18 +10,25 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
+import javafx.stage.FileChooser;
 import model.LoggedUser;
+import model.User;
+
+import java.io.File;
 
 public class Profile extends VBox {
 
     private ImageView profile;
-    private Label name, email;
+    private Label name, email, birthday;
     private LoggedUser loggedUser;
     private HBox editContainer;
+    private UserController userController;
 
     public Profile() {
         this.loggedUser = LoggedUser.getInstance();
+        this.userController = new UserController();
         init();
+        actions();
     }
 
     private void init() {
@@ -39,7 +48,10 @@ public class Profile extends VBox {
         email = new Label(loggedUser.getEmail());
         email.getStyleClass().add("title");
 
-        this.getChildren().addAll(profile, name, email);
+        birthday = new Label(String.valueOf(loggedUser.getAge()));
+        birthday.getStyleClass().add("title");
+
+        this.getChildren().addAll(profile, name, email, birthday);
 
         VBox edit = setEditProfile();
         VBox changePassword = setChangePassword();
@@ -54,6 +66,30 @@ public class Profile extends VBox {
 
         this.prefWidthProperty().bind(this.widthProperty());
         this.setAlignment(Pos.TOP_CENTER);
+        this.setPadding(new Insets(100, 0, 0, 0));
+    }
+
+    private void actions() {
+        this.profile.setOnMouseClicked(e -> {
+            FileChooser fileChooser = new FileChooser();
+            fileChooser.setTitle("Select Profile Picture");
+            fileChooser.getExtensionFilters().addAll(
+                    new FileChooser.ExtensionFilter("Image Files", "*.png", "*.jpg", "*.jpeg")
+            );
+
+            File selectedFile = fileChooser.showOpenDialog(StageManager.getInstance());
+
+            if(selectedFile != null) {
+                Image image = new Image("file:" + selectedFile.getAbsolutePath());
+                profile.setImage(image);
+
+
+
+                this.userController.updateProfileImage(selectedFile);
+
+                loggedUser.setProfileImage(image);
+            }
+        });
     }
 
     private VBox setEditProfile() {
