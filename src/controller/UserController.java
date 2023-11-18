@@ -16,4 +16,13 @@ public class UserController {
         userQuery.updateProfileImage(file);
     }
 
+    public boolean updateProfile(String name, String email, int birthday) {
+
+        if(name.isEmpty() || email.isEmpty() || birthday == 0) {
+            return false;
+        }
+
+        return userQuery.updateProfile(name, email, birthday);
+    }
+
 }

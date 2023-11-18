@@ -6,6 +6,7 @@ import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
+import javafx.scene.control.TextField;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.HBox;
@@ -20,9 +21,14 @@ public class Profile extends VBox {
 
     private ImageView profile, profileNav;
     private Label name, email, birthday;
+    private TextField nameField, emailField, birthdayField;
     private LoggedUser loggedUser;
-    private HBox editContainer;
+    private HBox editContainer, buttonContainer;
     private UserController userController;
+
+    private VBox passwordContainer, editProfileContainer;
+
+    private Button updateProfileBtn, cancelBtn;
 
     public Profile(ImageView profileNav) {
         this.loggedUser = LoggedUser.getInstance();
@@ -33,6 +39,16 @@ public class Profile extends VBox {
     }
 
     private void init() {
+
+        this.updateProfileBtn = new Button("Update Profile");
+        this.updateProfileBtn.getStyleClass().add("primary-button");
+
+        this.cancelBtn = new Button("Cancel");
+        this.cancelBtn.getStyleClass().add("secondary-button");
+
+        this.buttonContainer = new HBox(20);
+        this.buttonContainer.getChildren().addAll(cancelBtn, updateProfileBtn);
+        buttonContainer.setAlignment(Pos.TOP_CENTER);
 
         if(loggedUser.getProfileImage() == null) {
             profile = new ImageView(new Image("file:resources/icons/user.png"));
@@ -67,6 +83,7 @@ public class Profile extends VBox {
 
         this.prefWidthProperty().bind(this.widthProperty());
         this.setAlignment(Pos.TOP_CENTER);
+        this.setSpacing(20);
         this.setPadding(new Insets(100, 0, 0, 0));
     }
 
@@ -90,10 +107,31 @@ public class Profile extends VBox {
                 loggedUser.setProfileImage(image);
             }
         });
+
+        this.updateProfileBtn.setOnMouseClicked(e -> {
+
+            if(this.userController.updateProfile(nameField.getText(), emailField.getText(), Integer.parseInt(birthdayField.getText()))) {
+                this.name.setText(nameField.getText());
+                this.email.setText(emailField.getText());
+                this.birthday.setText(String.valueOf(birthdayField.getText()));
+
+                loggedUser.setUsername(nameField.getText());
+                loggedUser.setEmail(emailField.getText());
+                loggedUser.setAge(Integer.parseInt(birthdayField.getText()));
+
+                this.getChildren().removeAll(nameField, emailField, birthdayField, buttonContainer);
+                this.getChildren().addAll(name, email, birthday, editContainer);
+            }
+        });
+
+        this.cancelBtn.setOnMouseClicked(e -> {
+            this.getChildren().removeAll(nameField, emailField, birthdayField, buttonContainer);
+            this.getChildren().addAll(name, email, birthday, editContainer);
+        });
     }
 
     private VBox setEditProfile() {
-        VBox container = new VBox(20);
+        this.editProfileContainer = new VBox(20);
 
         Image editIcon = new Image("file:resources/icons/edit-profile.png");
         ImageView editIconView = new ImageView(editIcon);
@@ -105,15 +143,29 @@ public class Profile extends VBox {
         editBtn.getStyleClass().add("primary-button");
         editBtn.setPrefWidth(200);
 
-        container.getChildren().addAll(editIconView, editBtn);
-        container.setAlignment(Pos.TOP_CENTER);
-        container.getStyleClass().add("small-container");
+        editProfileContainer.getChildren().addAll(editIconView, editBtn);
+        editProfileContainer.setAlignment(Pos.TOP_CENTER);
+        editProfileContainer.getStyleClass().add("small-container");
 
-        return container;
+        editBtn.setOnMouseClicked(e -> {
+            this.nameField = new TextField(loggedUser.getUsername());
+            this.emailField = new TextField(loggedUser.getEmail());
+            this.birthdayField = new TextField(String.valueOf(loggedUser.getAge()));
+
+            this.nameField.setMaxWidth(500);
+            this.emailField.setMaxWidth(500);
+            this.birthdayField.setMaxWidth(500);
+
+            this.getChildren().removeAll(name, email, birthday, editContainer);
+
+            this.getChildren().addAll(nameField, emailField, birthdayField, buttonContainer);
+        });
+
+        return editProfileContainer;
     }
 
     private VBox setChangePassword() {
-        VBox container = new VBox(20);
+        this.passwordContainer = new VBox(20);
 
         Image passwordIcon = new Image("file:resources/icons/change-password.png");
         ImageView passwordIconView = new ImageView(passwordIcon);
@@ -125,11 +177,15 @@ public class Profile extends VBox {
         passwordBtn.getStyleClass().add("primary-button");
         passwordBtn.setPrefWidth(200);
 
-        container.getChildren().addAll(passwordIconView, passwordBtn);
-        container.setAlignment(Pos.TOP_CENTER);
-        container.getStyleClass().add("small-container");
+        passwordContainer.getChildren().addAll(passwordIconView, passwordBtn);
+        passwordContainer.setAlignment(Pos.TOP_CENTER);
+        passwordContainer.getStyleClass().add("small-container");
 
-        return container;
+        passwordBtn.setOnMouseClicked(e -> {
+
+        });
+
+        return passwordContainer;
     }
 
 }

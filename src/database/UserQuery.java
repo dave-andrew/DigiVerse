@@ -31,4 +31,23 @@ public class UserQuery {
 
     }
 
+    public boolean updateProfile(String name, String email, int birthday) {
+        String query = "UPDATE msuser SET UserName = ?, UserEmail = ?, UserAge = ? WHERE UserID = ?";
+
+        try(PreparedStatement ps = con.prepareStatement(query)) {
+            assert ps != null;
+            ps.setString(1, name);
+            ps.setString(2, email);
+            ps.setInt(3, birthday);
+            ps.setString(4, LoggedUser.getInstance().getId());
+
+            ps.executeUpdate();
+            return true;
+        } catch (Exception e) {
+            e.printStackTrace();
+            return false;
+        }
+
+    }
+
 }
