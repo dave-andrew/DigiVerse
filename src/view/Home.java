@@ -251,6 +251,20 @@ public class Home {
             fetchClass();
         });
 
+        userBtn.setOnMouseClicked(e -> {
+            mainPane.getChildren().clear();
+            leftNav.getChildren().clear();
+            leftNav.getChildren().add(iconBtn);
+
+            profilePage();
+        });
+
+    }
+
+    public void profilePage() {
+        VBox profile = new Profile();
+
+        mainPane.getChildren().add(profile);
     }
 
     public void logout() {
