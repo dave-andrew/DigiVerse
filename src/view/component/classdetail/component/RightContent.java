@@ -28,14 +28,16 @@ public class RightContent extends VBox {
     private ForumController forumController;
     private CommentController commentController;
     private Classroom classroom;
+    private User user;
 
     private void init() {
         this.forumController = new ForumController();
         this.commentController = new CommentController();
+        this.user = LoggedUser.getInstance();
     }
 
     private void setLayout() {
-        this.getChildren().add(Container("post", "", LoggedUser.getInstance()));
+        this.getChildren().add(Container("post", "", user));
 
         List<Forum> forumList = this.forumController.getClassroomForum(classroom.getClassId());
 
@@ -142,6 +144,11 @@ public class RightContent extends VBox {
 
         Image profile = new Image("file:resources/icons/user.png");
         ImageView profileImage = new ImageView(profile);
+
+        if(user.getProfile() != null) {
+            profileImage = new ImageView(LoggedUser.getInstance().getProfileImage());
+        }
+
         profileImage.setFitWidth(30);
         profileImage.setFitHeight(30);
         profileImage.getStyleClass().add("profile");
@@ -178,21 +185,21 @@ public class RightContent extends VBox {
     private HBox Container(String type, String text, User user) {
         HBox container = new HBox(5);
 
-        if(LoggedUser.getInstance() == null || LoggedUser.getInstance().getProfileImage() == null) {
-            Image profile = new Image("file:resources/icons/user.png");
-            ImageView profileImage = new ImageView(profile);
-            profileImage.setFitWidth(30);
-            profileImage.setFitHeight(30);
-
-            profileImage.getStyleClass().add("profile");
-            container.getChildren().add(profileImage);
-        }
-        Image profile = user.getProfile();
+        Image profile = new Image("file:resources/icons/user.png");
         ImageView profileImage = new ImageView(profile);
+
+        if(user.getProfile() != null) {
+            profile = user.getProfile();
+            profileImage = new ImageView(profile);
+        }
+
+        profileImage.setFitWidth(30);
+        profileImage.setFitHeight(30);
         profileImage.getStyleClass().add("profile");
 
+        container.getChildren().add(profileImage);
+
         if(type.equals("post")) {
-            container.getChildren().add(profileImage);
             postInput = new TextField();
             postInput.setPromptText("What's on your mind, " + LoggedUser.getInstance().getUsername() + "?");
 
@@ -214,7 +221,7 @@ public class RightContent extends VBox {
             container.setPadding(new Insets(10, 10, 10, 10));
 
         } else if(type.equals("display")) {
-            container.getChildren().add(profileImage);
+
 
             VBox userContainer = new VBox();
             Label userName = new Label(user.getUsername());

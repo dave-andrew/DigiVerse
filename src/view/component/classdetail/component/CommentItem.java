@@ -42,6 +42,10 @@ public class CommentItem extends HBox {
         Image profile = new Image("file:resources/icons/user.png");
         ImageView profileImage = new ImageView(profile);
 
+        if(comment.getUser().getProfile() != null) {
+            profileImage = new ImageView(comment.getUser().getProfile());
+        }
+
         profileImage.setFitWidth(30);
         profileImage.setFitHeight(30);
 
