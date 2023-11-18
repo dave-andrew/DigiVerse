@@ -6,6 +6,7 @@ import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
+import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
@@ -22,13 +23,14 @@ public class Profile extends VBox {
     private ImageView profile, profileNav;
     private Label name, email, birthday;
     private TextField nameField, emailField, birthdayField;
+    private PasswordField oldPasswordField, newPasswordField, confirmPasswordField;
     private LoggedUser loggedUser;
-    private HBox editContainer, buttonContainer;
+    private HBox editContainer, buttonContainer, changeButtonContainer;
     private UserController userController;
 
     private VBox passwordContainer, editProfileContainer;
 
-    private Button updateProfileBtn, cancelBtn;
+    private Button updateProfileBtn, cancelBtn, cancelPasswordBtn, updatePasswordBtn;
 
     public Profile(ImageView profileNav) {
         this.loggedUser = LoggedUser.getInstance();
@@ -49,6 +51,29 @@ public class Profile extends VBox {
         this.buttonContainer = new HBox(20);
         this.buttonContainer.getChildren().addAll(cancelBtn, updateProfileBtn);
         buttonContainer.setAlignment(Pos.TOP_CENTER);
+
+        this.oldPasswordField = new PasswordField();
+        this.newPasswordField = new PasswordField();
+        this.confirmPasswordField = new PasswordField();
+
+        this.oldPasswordField.setPromptText("Old Password");
+        this.newPasswordField.setPromptText("New Password");
+        this.confirmPasswordField.setPromptText("Confirm Password");
+
+        this.oldPasswordField.setMaxWidth(500);
+        this.newPasswordField.setMaxWidth(500);
+        this.confirmPasswordField.setMaxWidth(500);
+
+        this.changeButtonContainer = new HBox(20);
+
+        this.updatePasswordBtn = new Button("Update Password");
+        this.updatePasswordBtn.getStyleClass().add("primary-button");
+
+        this.cancelPasswordBtn = new Button("Cancel");
+        this.cancelPasswordBtn.getStyleClass().add("secondary-button");
+
+        this.changeButtonContainer.getChildren().addAll(cancelPasswordBtn, updatePasswordBtn);
+        changeButtonContainer.setAlignment(Pos.TOP_CENTER);
 
         if(loggedUser.getProfileImage() == null) {
             profile = new ImageView(new Image("file:resources/icons/user.png"));
@@ -128,6 +153,18 @@ public class Profile extends VBox {
             this.getChildren().removeAll(nameField, emailField, birthdayField, buttonContainer);
             this.getChildren().addAll(name, email, birthday, editContainer);
         });
+
+        this.updatePasswordBtn.setOnMouseClicked(e -> {
+            if(this.userController.updatePassword(oldPasswordField.getText(), newPasswordField.getText(), confirmPasswordField.getText())) {
+                this.getChildren().removeAll(oldPasswordField, newPasswordField, confirmPasswordField, changeButtonContainer);
+                this.getChildren().addAll(name, email, birthday, editContainer);
+            }
+        });
+
+        this.cancelPasswordBtn.setOnMouseClicked(e -> {
+            this.getChildren().removeAll(oldPasswordField, newPasswordField, confirmPasswordField, changeButtonContainer);
+            this.getChildren().addAll(name, email, birthday, editContainer);
+        });
     }
 
     private VBox setEditProfile() {
@@ -182,7 +219,8 @@ public class Profile extends VBox {
         passwordContainer.getStyleClass().add("small-container");
 
         passwordBtn.setOnMouseClicked(e -> {
-
+            this.getChildren().removeAll(name, email, birthday, editContainer);
+            this.getChildren().addAll(oldPasswordField, newPasswordField, confirmPasswordField, changeButtonContainer);
         });
 
         return passwordContainer;

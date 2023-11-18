@@ -25,4 +25,16 @@ public class UserController {
         return userQuery.updateProfile(name, email, birthday);
     }
 
+    public boolean updatePassword(String oldPassword, String newPassword, String confirmPassword) {
+        if(oldPassword.isEmpty() || newPassword.isEmpty() || confirmPassword.isEmpty()) {
+            return false;
+        } else if(!newPassword.equals(confirmPassword)) {
+            return false;
+        } else if(!userQuery.validateOldPassword(oldPassword)) {
+            return false;
+        }
+
+        return userQuery.updatePassword(newPassword);
+    }
+
 }
