@@ -15,6 +15,13 @@
     -fx-fill: #36454F;
 }
 
+.text-field {
+    -fx-background-color: #F5F5F5;
+    -fx-border-color: #E5E5E5;
+    -fx-border-radius: 5px;
+    -fx-border-width: 1;
+}
+
 .scroll-pane {
     -fx-background-color: transparent;
     -fx-background: transparent;
@@ -179,7 +186,7 @@
     -fx-padding: 20px;
     -fx-background-color: #fff;
     -fx-background-radius: 10px;
-    -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.2), 10, 0, 0, 0);
+    -fx-effect: dropshadow(three-pass-box, rgba(0, 0, 0, 0.2), 10, 0, 0, 0);
 }
 
 .image-button {
@@ -289,11 +296,11 @@
 
 .task-item:hover {
     -fx-background-color: #F5F5F5;
-    -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.2), 10, 0, 0, 0);
+    -fx-effect: dropshadow(three-pass-box, rgba(0, 0, 0, 0.2), 10, 0, 0, 0);
 }
 
 .modal {
-    -fx-background-color: rgba(0,0,0,0.5);
+    -fx-background-color: rgba(0, 0, 0, 0.5);
     -fx-border-width: 2px;
     -fx-border-color: #36454F;
     -fx-background-color: #CACACA;
@@ -331,7 +338,7 @@
 }
 
 .class-card:hover {
-    -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.2), 10, 0, 0, 0);
+    -fx-effect: dropshadow(three-pass-box, rgba(0, 0, 0, 0.2), 10, 0, 0, 0);
 }
 
 .class-card:pressed {
@@ -341,4 +348,10 @@
 .blue-bg {
     -fx-background-radius: 10px 10px 0 0;
     -fx-background-color: #377fee;
+}
+
+.calendar {
+    -fx-border-color: #C0C0C0;
+    -fx-border-width: 1;
+    -fx-background-color: #FFFFFF;
 }

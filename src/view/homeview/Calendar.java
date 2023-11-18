@@ -115,7 +115,7 @@ public class Calendar extends VBox {
                     calendarGrid.add(emptyCell, col, row);
                 } else if (day <= daysInMonth) {
                     VBox dayPane = new VBox();
-                    dayPane.setStyle("-fx-border-color: #C0C0C0; -fx-border-width: 1; -fx-background-color: #FFFFFF;");
+                    dayPane.getStyleClass().add("calendar");
                     dayPane.setPadding(new Insets(5));
                     Label dayText = new Label(String.valueOf(day));
                     dayPane.getChildren().add(dayText);
