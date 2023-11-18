@@ -117,11 +117,10 @@ public class CommentItem extends HBox {
 
             if(toggleReply) {
                 fetchReply();
-                toggleReply = !toggleReply;
             } else {
                 replyContainer.getChildren().clear();
-                toggleReply = !toggleReply;
             }
+            toggleReply = !toggleReply;
         });
     }
 

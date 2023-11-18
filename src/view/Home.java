@@ -120,7 +120,7 @@ public class Home {
 
 
         if (loggedUser != null) {
-            Image userImage = loggedUser.getProfileImage();
+            Image userImage = loggedUser.getProfile();
             if (userImage == null) {
                 userImg = new ImageView(new Image("file:resources/icons/user.png"));
             } else {
@@ -267,7 +267,7 @@ public class Home {
     }
 
     public void profilePage() {
-        VBox profile = new Profile();
+        VBox profile = new Profile(userImg);
 
         mainPane.getChildren().add(profile);
     }

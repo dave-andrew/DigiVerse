@@ -197,9 +197,14 @@ public class RightContent extends VBox {
         profileImage.setFitHeight(30);
         profileImage.getStyleClass().add("profile");
 
-        container.getChildren().add(profileImage);
-
         if(type.equals("post")) {
+            ImageView loggedUserProfile = new ImageView(LoggedUser.getInstance().getProfileImage());
+            loggedUserProfile.setFitWidth(30);
+            loggedUserProfile.setFitHeight(30);
+            loggedUserProfile.getStyleClass().add("profile");
+
+            container.getChildren().add(loggedUserProfile);
+
             postInput = new TextField();
             postInput.setPromptText("What's on your mind, " + LoggedUser.getInstance().getUsername() + "?");
 
@@ -221,7 +226,7 @@ public class RightContent extends VBox {
             container.setPadding(new Insets(10, 10, 10, 10));
 
         } else if(type.equals("display")) {
-
+            container.getChildren().add(profileImage);
 
             VBox userContainer = new VBox();
             Label userName = new Label(user.getUsername());

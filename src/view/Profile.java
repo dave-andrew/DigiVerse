@@ -18,15 +18,16 @@ import java.io.File;
 
 public class Profile extends VBox {
 
-    private ImageView profile;
+    private ImageView profile, profileNav;
     private Label name, email, birthday;
     private LoggedUser loggedUser;
     private HBox editContainer;
     private UserController userController;
 
-    public Profile() {
+    public Profile(ImageView profileNav) {
         this.loggedUser = LoggedUser.getInstance();
         this.userController = new UserController();
+        this.profileNav = profileNav;
         init();
         actions();
     }
@@ -82,8 +83,7 @@ public class Profile extends VBox {
             if(selectedFile != null) {
                 Image image = new Image("file:" + selectedFile.getAbsolutePath());
                 profile.setImage(image);
-
-
+                this.profileNav.setImage(image);
 
                 this.userController.updateProfileImage(selectedFile);
 
