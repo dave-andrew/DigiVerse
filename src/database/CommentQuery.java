@@ -253,4 +253,26 @@ public class CommentQuery {
         return taskList;
     }
 
+    public TaskComment replyComment(TaskComment replyComment) {
+
+        String query = "INSERT INTO mscomment VALUES (?, ?, ?, ?, ?)";
+
+        try (PreparedStatement ps = con.prepareStatement(query)) {
+
+            assert ps != null;
+            ps.setString(1, replyComment.getId());
+            ps.setString(2, replyComment.getReplyid());
+            ps.setString(3, replyComment.getText());
+            ps.setString(4, replyComment.getUserid());
+            ps.setString(5, replyComment.getCreatedAt());
+
+            ps.executeUpdate();
+
+            return replyComment;
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+
+    }
+
 }

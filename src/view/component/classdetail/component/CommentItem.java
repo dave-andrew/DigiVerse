@@ -87,10 +87,6 @@ public class CommentItem extends HBox {
 
                 commentTextField.setOnKeyPressed(e2 -> {
                     if(e2.getCode().toString().equals("ENTER")) {
-//                        Create new Comment
-//                        Add a new CommentItem
-                        System.out.println(commentTextField.getReplyField().getText());
-
                         commentController.replyComment(commentTextField.getReplyField().getText(), comment.getId());
 
                         commentTextField.getReplyField().clear();

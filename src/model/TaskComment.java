@@ -17,6 +17,10 @@ public class TaskComment extends Comment{
         this.taskid = taskid;
     }
 
+    public TaskComment(String replyid, String text, String userid, User user) {
+        super(replyid, text, userid, user);
+    }
+
     public String getTaskid() {
         return taskid;
     }

@@ -44,8 +44,16 @@ public class CommentController {
         return this.commentQuery.getStudentTaskComments(taskid);
     }
 
-    public TaskComment replyComment(String commentid, String text) {
-        return null;
+    public TaskComment replyComment(String text, String commentid) {
+
+        if(text.isEmpty()) {
+            return null;
+        }
+
+        TaskComment taskComment = new TaskComment(commentid, text, LoggedUser.getInstance().getId(), LoggedUser.getInstance());
+
+        return this.commentQuery.replyComment(taskComment);
+
     }
 
 }

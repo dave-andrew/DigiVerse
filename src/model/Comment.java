@@ -29,7 +29,7 @@ public class Comment {
         this.createdAt = DateManager.getNow();
     }
 
-    public Comment(String replyid, String text, String userid) {
+    public Comment(String replyid, String text, String userid, User user) {
         this.id = UUID.randomUUID().toString();
         this.replyid = replyid;
         this.text = text;
@@ -68,5 +68,13 @@ public class Comment {
 
     public String getCreatedAt() {
         return createdAt;
+    }
+
+    public String getReplyid() {
+        return replyid;
+    }
+
+    public void setReplyid(String replyid) {
+        this.replyid = replyid;
     }
 }
