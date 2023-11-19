@@ -2,6 +2,7 @@ package view;
 
 import controller.AuthController;
 import helper.ScreenManager;
+import helper.StageManager;
 import helper.ThemeManager;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
@@ -40,6 +41,8 @@ public class Register {
 
     private Button loginLink;
 
+    private Label errorLbl;
+
     private void initialize() {
         borderPane = new BorderPane();
         subTitle = new Label("Be the change, sign in to make it happen!");
@@ -48,6 +51,7 @@ public class Register {
         passwordLbl = new Label("Password:");
         confirmPasswordLbl = new Label("Confirm Password:");
         agelbl = new Label("Age:");
+        errorLbl = new Label();
 
         nameTxt = new TextField();
         emailTxt = new TextField();
@@ -80,6 +84,8 @@ public class Register {
         Font font = Font.loadFont("file:resources/fonts/LindenHill-Italic.ttf", 40);
         subTitle.setFont(font);
 
+        errorLbl.setStyle("-fx-text-fill: red;-fx-font-weight: bold;");
+
         nameVbox.getChildren().addAll(nameLbl, nameTxt);
         emailVbox.getChildren().addAll(emailLbl, emailTxt);
         passwordVbox.getChildren().addAll(passwordLbl, passwordTxt);
@@ -89,8 +95,10 @@ public class Register {
         registerVbox.setAlignment(Pos.CENTER);
         registerVbox.setPadding(new Insets(30, 0, 0, 0));
 
-        vbox.getChildren().addAll(subTitle, nameVbox, emailVbox, passwordVbox, confirmPasswordVbox, ageVbox, registerVbox);
-        vbox.setAlignment(Pos.CENTER_RIGHT);
+        VBox.setMargin(registerBtn, new Insets(0, 0, 10, 0));
+
+        vbox.getChildren().addAll(subTitle, nameVbox, emailVbox, passwordVbox, confirmPasswordVbox, ageVbox, registerVbox, errorLbl);
+        vbox.setAlignment(Pos.CENTER);
         vbox.setPadding(new Insets(-130, 100, 0, 0));
         borderPane.setRight(vbox);
 
@@ -124,7 +132,12 @@ public class Register {
             String dob = String.valueOf(dobPicker.getValue());
 
             String output = authController.checkRegister(username, email, password, confirmPassword, dob);
-            System.out.println(output);
+
+            if(output.equals("Register Success!")) {
+                errorLbl.setStyle("-fx-text-fill: green;-fx-font-weight: bold;");
+                new Login(stage);
+            }
+            errorLbl.setText(output);
         });
     }
 
