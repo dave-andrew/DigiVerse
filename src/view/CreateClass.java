@@ -46,11 +46,11 @@ public class CreateClass {
         mainVbox = new VBox(20);
         topBar = new CreateClassNav(dialogStage);
 
-        userInfoBox = new ChangeAccountBox();
+        userInfoBox = new ChangeAccountBox(dialogStage);
         userInfoBox.setAlignment(Pos.TOP_CENTER);
         userInfoBox.getStyleClass().add("container");
 
-        classFormBox = new CreateClassForm();
+        classFormBox = new CreateClassForm(dialogStage);
         classFormBox.getStyleClass().add("container");
 
         dialogStage.setScene(new Scene(borderPane, ScreenManager.SCREEN_WIDTH, ScreenManager.SCREEN_HEIGHT));

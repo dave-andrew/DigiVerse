@@ -1,5 +1,8 @@
 package view.component;
 
+import controller.AuthController;
+import helper.ImageManager;
+import helper.StageManager;
 import javafx.geometry.Pos;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
@@ -7,11 +10,15 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
+import javafx.stage.Stage;
 import model.LoggedUser;
+import view.Login;
 
 public class ChangeAccountBox extends VBox {
 
     private LoggedUser loggedUser;
+    private AuthController authController;
+    private Stage dialogStage;
 
     private VBox userBox;
     private HBox userHbox;
@@ -21,6 +28,7 @@ public class ChangeAccountBox extends VBox {
 
     private void initialize() {
         loggedUser = LoggedUser.getInstance();
+        authController = new AuthController();
 
         this.setSpacing(10);
 
@@ -32,12 +40,17 @@ public class ChangeAccountBox extends VBox {
         Image image = new Image("file:resources/icons/user.png");
         userImg = new ImageView(image);
         userImg.setFitWidth(40);
-        userImg.setPreserveRatio(true);
+        userImg.setFitHeight(40);
 
         if(loggedUser != null) {
             userNameLbl = new Label(loggedUser.getUsername());
             userEmailLbl = new Label(loggedUser.getEmail());
+            if(loggedUser.getProfile() != null) {
+                userImg.setImage(loggedUser.getProfile());
+            }
         }
+
+        ImageManager.makeCircular(userImg, 20);
 
         changeAccountBtn = new Button("Change");
         changeAccountBtn.getStyleClass().add("secondary-button");
@@ -50,11 +63,17 @@ public class ChangeAccountBox extends VBox {
 
     private void actions() {
         changeAccountBtn.setOnAction(e -> {
-            System.out.println("Change Account");
+            LoggedUser.getInstance().logout();
+
+            this.authController.removeAuth();
+
+            new Login(StageManager.getInstance());
+            dialogStage.close();
         });
     }
 
-    public ChangeAccountBox() {
+    public ChangeAccountBox(Stage dialogStage) {
+        this.dialogStage = dialogStage;
         initialize();
         actions();
     }

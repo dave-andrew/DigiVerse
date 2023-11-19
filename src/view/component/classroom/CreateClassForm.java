@@ -19,6 +19,8 @@ import java.util.ArrayList;
 
 public class CreateClassForm extends VBox {
 
+    private Stage dialogStage;
+
     private ClassController classController;
 
     private Label classNameLbl, classDescLbl, classCodeLbl, classSubjectLbl;
@@ -81,15 +83,16 @@ public class CreateClassForm extends VBox {
             String message = classController.checkCreateClass(className, classDesc, classCode, classSubject);
             Toast.makeText((Stage) stackPane.getScene().getWindow(), message, 2000, 500, 500);
 
-            new Home(StageManager.getInstance());
+            dialogStage.close();
         });
 
         cancelBtn.setOnAction(e -> {
-            new Home(StageManager.getInstance());
+            dialogStage.close();
         });
     }
 
-    public CreateClassForm() {
+    public CreateClassForm(Stage dialogStage) {
+        this.dialogStage = dialogStage;
         initialize();
         actions();
 

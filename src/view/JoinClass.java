@@ -31,13 +31,14 @@ public class JoinClass {
     private VBox joinInfo;
     private Label joinInfoSub, lbl1, lbl2;
     private VBox joinInfoList;
+    private Stage dialogStage;
 
     public JoinClass(Stage ownerStage) {
         initialize(ownerStage);
         setLayout();
         setActions();
 
-        Stage dialogStage = new Stage();
+        this.dialogStage = new Stage();
         dialogStage.initModality(Modality.APPLICATION_MODAL);
         dialogStage.initOwner(ownerStage);
 //        dialogStage.initStyle(StageStyle.TRANSPARENT);
@@ -54,7 +55,7 @@ public class JoinClass {
         mainVbox = new VBox(20);
         topBar = new JoinClassNav(stage);
 
-        userInfoBox = new ChangeAccountBox();
+        userInfoBox = new ChangeAccountBox(dialogStage);
         userInfoBox.setAlignment(Pos.TOP_CENTER);
         userInfoBox.getStyleClass().add("container");
 

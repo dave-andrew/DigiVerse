@@ -76,6 +76,7 @@ public class Home {
     }
 
     private void fetchClass() {
+        mainPane.getChildren().clear();
         classGrid = new ClassroomList(mainPane, leftNav, iconBtn);
         scrollPane.setContent(classGrid);
 
@@ -243,10 +244,12 @@ public class Home {
 
         createClass.setOnAction(e -> {
             new CreateClass(stage);
+            fetchClass();
         });
 
         joinClass.setOnAction(e -> {
             new JoinClass(stage);
+            fetchClass();
         });
 
         homeSideNav.setOnMouseClicked(e -> {
