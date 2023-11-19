@@ -31,6 +31,7 @@ public class Profile extends VBox {
     private LoggedUser loggedUser;
     private HBox editContainer, buttonContainer, changeButtonContainer;
     private UserController userController;
+    private Label errorLbl;
 
     private VBox passwordContainer, editProfileContainer;
 
@@ -45,6 +46,9 @@ public class Profile extends VBox {
     }
 
     private void init() {
+
+        this.errorLbl = new Label();
+        this.errorLbl.setStyle("-fx-text-fill: red;");
 
         this.updateProfileBtn = new Button("Update Profile");
         this.updateProfileBtn.getStyleClass().add("primary-button");
@@ -146,7 +150,9 @@ public class Profile extends VBox {
 
         this.updateProfileBtn.setOnMouseClicked(e -> {
 
-            if(this.userController.updateProfile(nameField.getText(), emailField.getText(), String.valueOf(birthdayField.getValue()))) {
+            String message = this.userController.updateProfile(nameField.getText(), emailField.getText(), String.valueOf(birthdayField.getValue()));
+
+            if(message.equals("Success")) {
                 this.name.setText("Username : " + nameField.getText());
                 this.email.setText("Email : " + emailField.getText());
 
@@ -159,25 +165,33 @@ public class Profile extends VBox {
                 loggedUser.setEmail(emailField.getText());
                 loggedUser.setAge(String.valueOf(birthdayField.getValue()));
 
-                this.getChildren().removeAll(nameField, emailField, birthdayField, buttonContainer);
+                this.getChildren().removeAll(nameField, emailField, birthdayField, errorLbl, buttonContainer);
                 this.getChildren().addAll(name, email, birthday, editContainer);
+                return;
             }
+
+            errorLbl.setText(message);
         });
 
         this.cancelBtn.setOnMouseClicked(e -> {
-            this.getChildren().removeAll(nameField, emailField, birthdayField, buttonContainer);
+            this.getChildren().removeAll(nameField, emailField, birthdayField, errorLbl, buttonContainer);
             this.getChildren().addAll(name, email, birthday, editContainer);
         });
 
         this.updatePasswordBtn.setOnMouseClicked(e -> {
-            if(this.userController.updatePassword(oldPasswordField.getText(), newPasswordField.getText(), confirmPasswordField.getText())) {
-                this.getChildren().removeAll(oldPasswordField, newPasswordField, confirmPasswordField, changeButtonContainer);
+            String message = this.userController.updatePassword(oldPasswordField.getText(), newPasswordField.getText(), confirmPasswordField.getText());
+
+            if(message.equals("Success")) {
+                this.getChildren().removeAll(oldPasswordField, newPasswordField, confirmPasswordField, errorLbl, changeButtonContainer);
                 this.getChildren().addAll(name, email, birthday, editContainer);
+                return;
             }
+
+            errorLbl.setText(message);
         });
 
         this.cancelPasswordBtn.setOnMouseClicked(e -> {
-            this.getChildren().removeAll(oldPasswordField, newPasswordField, confirmPasswordField, changeButtonContainer);
+            this.getChildren().removeAll(oldPasswordField, newPasswordField, confirmPasswordField, errorLbl, changeButtonContainer);
             this.getChildren().addAll(name, email, birthday, editContainer);
         });
     }
@@ -216,8 +230,8 @@ public class Profile extends VBox {
             this.birthdayField.setMaxWidth(500);
 
             this.getChildren().removeAll(name, email, birthday, editContainer);
-
-            this.getChildren().addAll(nameField, emailField, birthdayField, buttonContainer);
+            this.errorLbl.setText("");
+            this.getChildren().addAll(nameField, emailField, birthdayField, errorLbl, buttonContainer);
         });
 
         return editProfileContainer;
@@ -257,8 +271,10 @@ public class Profile extends VBox {
         passwordContainer.getStyleClass().add("small-container");
 
         passwordBtn.setOnMouseClicked(e -> {
+            this.errorLbl.setText("");
+
             this.getChildren().removeAll(name, email, birthday, editContainer);
-            this.getChildren().addAll(oldPasswordField, newPasswordField, confirmPasswordField, changeButtonContainer);
+            this.getChildren().addAll(oldPasswordField, newPasswordField, confirmPasswordField, errorLbl, changeButtonContainer);
         });
 
         return passwordContainer;

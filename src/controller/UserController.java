@@ -16,22 +16,22 @@ public class UserController {
         userQuery.updateProfileImage(file);
     }
 
-    public boolean updateProfile(String name, String email, String birthday) {
+    public String updateProfile(String name, String email, String birthday) {
 
         if(name.isEmpty() || email.isEmpty() || birthday.isEmpty()) {
-            return false;
+            return "All fields must be filled!";
         }
 
         return userQuery.updateProfile(name, email, birthday);
     }
 
-    public boolean updatePassword(String oldPassword, String newPassword, String confirmPassword) {
+    public String updatePassword(String oldPassword, String newPassword, String confirmPassword) {
         if(oldPassword.isEmpty() || newPassword.isEmpty() || confirmPassword.isEmpty()) {
-            return false;
+            return "All fields must be filled!";
         } else if(!newPassword.equals(confirmPassword)) {
-            return false;
+            return "New password and confirm password must be same!";
         } else if(!userQuery.validateOldPassword(oldPassword)) {
-            return false;
+            return "Old password is wrong!";
         }
 
         return userQuery.updatePassword(newPassword);

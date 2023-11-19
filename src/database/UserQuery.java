@@ -33,7 +33,7 @@ public class UserQuery {
 
     }
 
-    public boolean updateProfile(String name, String email, String birthday) {
+    public String updateProfile(String name, String email, String birthday) {
         String query = "UPDATE msuser SET UserName = ?, UserEmail = ?, UserDOB = ? WHERE UserID = ?";
 
         try (PreparedStatement ps = con.prepareStatement(query)) {
@@ -44,10 +44,10 @@ public class UserQuery {
             ps.setString(4, LoggedUser.getInstance().getId());
 
             ps.executeUpdate();
-            return true;
+            return "Success";
         } catch (Exception e) {
             e.printStackTrace();
-            return false;
+            return "Unexpected Error";
         }
 
     }
@@ -72,7 +72,7 @@ public class UserQuery {
         }
     }
 
-    public boolean updatePassword(String newPassword) {
+    public String updatePassword(String newPassword) {
         String updateQuery = "UPDATE msuser SET UserPassword = ? WHERE UserID = ?";
         try (PreparedStatement preparedStatement = con.prepareStatement(updateQuery)) {
 
@@ -80,9 +80,9 @@ public class UserQuery {
             preparedStatement.setString(1, newPassword);
             preparedStatement.setString(2, LoggedUser.getInstance().getId());
             preparedStatement.executeUpdate();
-            return true;
+            return "Success";
         } catch (SQLException e) {
-            return false;
+            return "Unexpected Error";
 //            throw new RuntimeException(e);
         }
     }
