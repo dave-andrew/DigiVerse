@@ -29,14 +29,18 @@ public class ClassController {
     public String checkJoinClass(String groupCode) {
         if(groupCode.isEmpty()) {
             return "Please fill the group code!";
-        } else {
-            Classroom classroom = classQuery.joinClass(groupCode);
-            if(classroom == null) {
-                return "Group code not found!";
-            } else {
-                return "Join Class Success!";
-            }
         }
+        String classroom = classQuery.joinClass(groupCode);
+
+        if(classroom.equals("no data")) {
+            return "Group code not found!";
+        }
+
+        if(classroom.equals("ingroup")) {
+            return "You are already in the group!";
+        }
+
+        return "Class Joined!";
     }
 
     public ArrayList<Classroom> getUserClassroom() {

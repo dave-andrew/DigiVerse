@@ -10,7 +10,7 @@ public class GroupCodeForm extends VBox {
     private Label groupCodeLbl, groupCodeDesc;
     private TextField groupCodeField;
 
-    public GroupCodeForm() {
+    public GroupCodeForm(Label errorLbl) {
         this.setSpacing(20);
         this.setPadding(new Insets(20));
 
@@ -20,7 +20,7 @@ public class GroupCodeForm extends VBox {
         groupCodeField = new TextField();
         groupCodeField.setPromptText("Group Code");
 
-        this.getChildren().addAll(groupCodeLbl, groupCodeDesc, groupCodeField);
+        this.getChildren().addAll(groupCodeLbl, groupCodeDesc, groupCodeField, errorLbl);
 
     }
 

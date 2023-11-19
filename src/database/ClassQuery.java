@@ -68,28 +68,31 @@ public class ClassQuery {
         return classrooms;
     }
 
-    public Classroom joinClass(String classCode) {
+    public String joinClass(String classCode) {
         String checkGroupClassCode = "SELECT * FROM msclass WHERE ClassCode = ?";
         String query = "INSERT INTO class_member VALUES (?, ?, ?)";
 
         PreparedStatement checkGroupCode = connect.prepareStatement(checkGroupClassCode);
         PreparedStatement ps = connect.prepareStatement(query);
         try {
+            assert checkGroupCode != null;
             checkGroupCode.setString(1, classCode);
             ResultSet rs = checkGroupCode.executeQuery();
             if(!rs.next()){
-                return null;
+                return "no data";
             }
 
+            assert ps != null;
             ps.setString(1, rs.getString("ClassID"));
             ps.setString(2, loggedUser.getId());
             ps.setString(3, "Student");
 
             ps.executeUpdate();
 
-            return new Classroom(rs.getString("ClassID"), rs.getString("ClassName"), rs.getString("ClassDesc"), rs.getString("ClassCode"), rs.getString("ClassSubject"), rs.getBlob("ClassImage"));
+            return rs.getString("ClassID");
         } catch (Exception e) {
-            throw new RuntimeException(e);
+            return "ingroup";
+//            throw new RuntimeException(e);
         }
     }
 

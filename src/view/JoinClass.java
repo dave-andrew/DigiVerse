@@ -29,7 +29,7 @@ public class JoinClass {
     private VBox userInfoBox;
     private GroupCodeForm classFormBox;
     private VBox joinInfo;
-    private Label joinInfoSub, lbl1, lbl2;
+    private Label joinInfoSub, lbl1, lbl2, errorLbl;
     private VBox joinInfoList;
     private Stage dialogStage;
 
@@ -55,11 +55,14 @@ public class JoinClass {
         mainVbox = new VBox(20);
         topBar = new JoinClassNav(stage);
 
+        errorLbl = new Label();
+        errorLbl.setStyle("-fx-text-fill: red;");
+
         userInfoBox = new ChangeAccountBox(dialogStage);
         userInfoBox.setAlignment(Pos.TOP_CENTER);
         userInfoBox.getStyleClass().add("container");
 
-        classFormBox = new GroupCodeForm();
+        classFormBox = new GroupCodeForm(errorLbl);
         classFormBox.getStyleClass().add("container");
 
         joinInfo = new VBox(5);
@@ -93,7 +96,14 @@ public class JoinClass {
 
     private void setActions() {
         topBar.getJoinBtn().setOnMouseClicked(e -> {
-            classController.checkJoinClass(classFormBox.getGroupCode());
+            String message = classController.checkJoinClass(classFormBox.getGroupCode());
+
+            if(message.equals("Class Joined!")) {
+                dialogStage.close();
+            }
+
+            errorLbl.setText(message);
+
         });
     }
 }
