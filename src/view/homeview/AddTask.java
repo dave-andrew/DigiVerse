@@ -8,6 +8,7 @@ import javafx.geometry.Insets;
 import model.Forum;
 import model.LoggedUser;
 import model.Task;
+import view.Profile;
 import view.component.TimeSpinner;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
@@ -173,19 +174,7 @@ public class AddTask extends BorderPane {
         // Set the default value of the DatePicker to today
         datePicker.setValue(LocalDate.now());
 
-        datePicker.setConverter(new StringConverter<>() {
-            DateTimeFormatter dateFormatter = DateTimeFormatter.ofPattern("dd MMMM yyyy");
-
-            @Override
-            public String toString(LocalDate date) {
-                return date != null ? dateFormatter.format(date) : "";
-            }
-
-            @Override
-            public LocalDate fromString(String string) {
-                return string != null && !string.isEmpty() ? LocalDate.parse(string, dateFormatter) : null;
-            }
-        });
+        Profile.DateFormatter(datePicker);
 
         this.timeSpinner = new TimeSpinner();
         timeSpinner.getValueFactory().setValue(LocalTime.of(23, 59, 59));

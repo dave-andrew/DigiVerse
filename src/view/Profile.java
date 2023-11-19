@@ -12,6 +12,7 @@ import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.scene.shape.Circle;
 import javafx.stage.FileChooser;
+import javafx.util.StringConverter;
 import model.LoggedUser;
 import model.User;
 
@@ -92,7 +93,15 @@ public class Profile extends VBox {
         email = new Label("Email : " + loggedUser.getEmail());
         email.getStyleClass().add("title");
 
-        birthday = new Label("Birthday : " + loggedUser.getDob());
+        DateTimeFormatter dateFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+        String dobString = loggedUser.getDob();
+
+        LocalDate dateOfBirth = LocalDate.parse(dobString, dateFormatter);
+
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd MMMM yyyy");
+        String formattedDate = dateOfBirth.format(formatter);
+
+        birthday = new Label("Birthday : " + formattedDate);
         birthday.getStyleClass().add("title");
 
         this.getChildren().addAll(profile, name, email, birthday);
@@ -140,7 +149,11 @@ public class Profile extends VBox {
             if(this.userController.updateProfile(nameField.getText(), emailField.getText(), String.valueOf(birthdayField.getValue()))) {
                 this.name.setText("Username : " + nameField.getText());
                 this.email.setText("Email : " + emailField.getText());
-                this.birthday.setText("Birthday : " + String.valueOf(birthdayField.getValue()));
+
+                DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd MMMM yyyy");
+                String formattedDate = birthdayField.getValue().format(formatter);
+
+                this.birthday.setText("Birthday : " + formattedDate);
 
                 loggedUser.setUsername(nameField.getText());
                 loggedUser.setEmail(emailField.getText());
@@ -196,6 +209,8 @@ public class Profile extends VBox {
             LocalDate dateOfBirth = LocalDate.parse(dobString, formatter);
             birthdayField = new DatePicker(dateOfBirth);
 
+            DateFormatter(birthdayField);
+
             this.nameField.setMaxWidth(500);
             this.emailField.setMaxWidth(500);
             this.birthdayField.setMaxWidth(500);
@@ -206,6 +221,22 @@ public class Profile extends VBox {
         });
 
         return editProfileContainer;
+    }
+
+    public static void DateFormatter(DatePicker birthdayField) {
+        birthdayField.setConverter(new StringConverter<>() {
+            DateTimeFormatter dateFormatter = DateTimeFormatter.ofPattern("dd MMMM yyyy");
+
+            @Override
+            public String toString(LocalDate date) {
+                return date != null ? dateFormatter.format(date) : "";
+            }
+
+            @Override
+            public LocalDate fromString(String string) {
+                return string != null && !string.isEmpty() ? LocalDate.parse(string, dateFormatter) : null;
+            }
+        });
     }
 
     private VBox setChangePassword() {

@@ -2,6 +2,7 @@ package view.homeview.task;
 
 import controller.AnswerController;
 import controller.CommentController;
+import helper.DateManager;
 import helper.ImageManager;
 import helper.StageManager;
 import javafx.geometry.Insets;
@@ -83,7 +84,9 @@ public class TaskDetail extends HBox {
         Label taskName = new Label(task.getTitle());
         taskName.getStyleClass().add("title");
 
-        Label postedBy = new Label("Posted by: " + task.getUser().getUsername() + " • " + task.getCreatedAt());
+        String createDate = DateManager.ddMMMyy(task.getCreatedAt());
+
+        Label postedBy = new Label("Posted by: " + task.getUser().getUsername() + " • " + createDate);
         VBox.setMargin(postedBy, new Insets(20, 0, 0, 0));
 
         VBox detail = new VBox();
@@ -100,7 +103,9 @@ public class TaskDetail extends HBox {
             score = new Label("Score: -");
         }
 
-        Label deadline = new Label("Deadline: " + task.getDeadlineAt());
+        String formattedDate = DateManager.ddMMMyy(task.getDeadlineAt());
+
+        Label deadline = new Label("Deadline: " + formattedDate);
 
         HBox scoreDeadlineBox = new HBox();
         scoreDeadlineBox.setAlignment(Pos.CENTER_LEFT);

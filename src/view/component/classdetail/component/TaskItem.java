@@ -1,5 +1,6 @@
 package view.component.classdetail.component;
 
+import helper.DateManager;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.control.Label;
@@ -42,7 +43,9 @@ public class TaskItem extends HBox {
 
         this.getChildren().add(spacer);
 
-        Label deadline = new Label(task.getDeadlineAt());
+        String formattedDate = DateManager.ddMMMyy(task.getDeadlineAt());
+
+        Label deadline = new Label(formattedDate);
         deadline.setAlignment(Pos.CENTER_RIGHT);
         HBox.setHgrow(deadline, Priority.NEVER);
         deadline.setStyle("-fx-font-size: 13px; -fx-text-fill: #9E9E9E;");

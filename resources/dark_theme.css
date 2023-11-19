@@ -23,6 +23,14 @@
     -fx-text-fill: #FFFFFF;
 }
 
+.text-area {
+    -fx-background-color: #2E2E2E;
+    -fx-border-color: #404040;
+    -fx-border-radius: 5px;
+    -fx-border-width: 1px;
+    -fx-text-fill: #FFFFFF;
+}
+
 .scroll-pane {
     -fx-background-color: transparent;
     -fx-background: transparent;

@@ -26,4 +26,11 @@ public class DateManager {
     	return formatDate(LocalDateTime.now());
     }
 
+    public static String ddMMMyy(String date) {
+        	DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
+        	LocalDateTime dateTime = LocalDateTime.parse(date, formatter);
+        	formatter = DateTimeFormatter.ofPattern("dd MMM yyyy HH:mm");
+        	return dateTime.format(formatter);
+    }
+
 }
