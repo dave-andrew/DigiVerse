@@ -50,19 +50,21 @@ public class AuthController {
     public String checkLogin(String email, String pass, boolean remember) {
         if(email.isEmpty() || pass.isEmpty()) {
             return "Please fill all the fields!";
-        } else {
-            User user = authQuery.login(email, pass);
-            LoggedUser.getInstance(user);
-
-            if(remember) {
-                authQuery.rememberMe(user);
-            }
-            if(user == null) {
-                return "Email or password is incorrect!";
-            } else {
-                return "Login Success!";
-            }
         }
+
+        User user = authQuery.login(email, pass);
+
+
+        if(user == null) {
+            return "Email or password is incorrect!";
+        }
+
+        if(remember) {
+            authQuery.rememberMe(user);
+        }
+
+        LoggedUser.getInstance(user);
+        return "Login Success!";
     }
 
     public String checkAuth() {

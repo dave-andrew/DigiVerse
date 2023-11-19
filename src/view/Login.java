@@ -36,6 +36,8 @@ public class Login {
 
     private CheckBox rememberMe;
 
+    private Label errorLbl;
+
     private void initialize() {
         borderPane = new BorderPane();
 
@@ -67,12 +69,16 @@ public class Login {
         loginImage = new ImageView(image);
 
         vbox = new VBox(10);
+
+        errorLbl = new Label();
     }
 
     private Scene setLayout() {
 
         Font font = Font.loadFont("file:resources/fonts/LindenHill-Italic.ttf", 40);
         subTitle.setFont(font);
+
+        errorLbl.setStyle("-fx-text-fill: red;");
 
         emailVbox.getChildren().addAll(emailLbl, emailTxt);
         passwordVbox.getChildren().addAll(passwordLbl, passwordTxt);
@@ -84,8 +90,10 @@ public class Login {
 
         rememberMeVbox.setPadding(new Insets(30, 0, 0, 0));
 
-        vbox.getChildren().addAll(subTitle, emailVbox, passwordVbox, rememberMeVbox, loginVbox);
-        vbox.setAlignment(Pos.CENTER_RIGHT);
+        loginVbox.setPadding(new Insets(0, 0, 10, 0));
+
+        vbox.getChildren().addAll(subTitle, emailVbox, passwordVbox, rememberMeVbox, loginVbox, errorLbl);
+        vbox.setAlignment(Pos.CENTER);
         vbox.setPadding(new Insets(-130, 100, 0, 0));
         borderPane.setRight(vbox);
 
@@ -112,10 +120,13 @@ public class Login {
             boolean remember = rememberMe.isSelected();
 
             String message = authController.checkLogin(email, password, remember);
-            System.out.println(message);
+
             if (message.equals("Login Success!")) {
+                errorLbl.setStyle("-fx-text-fill: green;");
                 new Home(stage);
             }
+
+            errorLbl.setText(message);
         });
 
         registerLink.setOnAction(e -> {

@@ -45,10 +45,11 @@ public class AuthQuery {
     }
 
     public User login(String email, String pass) {
-        String query = "SELECT * FROM msuser WHERE UserEmail = ? AND UserPassword = ?";
+        String query = "SELECT * FROM msuser WHERE UserEmail = ? AND UserPassword = ? LIMIT 1";
 
         PreparedStatement ps = connect.prepareStatement(query);
         try {
+            assert ps != null;
             ps.setString(1, email);
             ps.setString(2, pass);
 
@@ -60,7 +61,8 @@ public class AuthQuery {
                 }
             }
         } catch (SQLException e) {
-            throw new RuntimeException(e);
+            return null;
+//            throw new RuntimeException(e);
         }
     }
 
