@@ -5,10 +5,7 @@ import helper.ImageManager;
 import helper.StageManager;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
-import javafx.scene.control.Button;
-import javafx.scene.control.Label;
-import javafx.scene.control.PasswordField;
-import javafx.scene.control.TextField;
+import javafx.scene.control.*;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.HBox;
@@ -19,12 +16,16 @@ import model.LoggedUser;
 import model.User;
 
 import java.io.File;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 
 public class Profile extends VBox {
 
     private ImageView profile, profileNav;
     private Label name, email, birthday;
-    private TextField nameField, emailField, birthdayField;
+    private TextField nameField;
+    private TextField emailField;
+    private DatePicker birthdayField;
     private PasswordField oldPasswordField, newPasswordField, confirmPasswordField;
     private LoggedUser loggedUser;
     private HBox editContainer, buttonContainer, changeButtonContainer;
@@ -91,7 +92,7 @@ public class Profile extends VBox {
         email = new Label("Email : " + loggedUser.getEmail());
         email.getStyleClass().add("title");
 
-        birthday = new Label("Age: " + String.valueOf(loggedUser.getAge()));
+        birthday = new Label("Birthday : " + loggedUser.getDob());
         birthday.getStyleClass().add("title");
 
         this.getChildren().addAll(profile, name, email, birthday);
@@ -136,14 +137,14 @@ public class Profile extends VBox {
 
         this.updateProfileBtn.setOnMouseClicked(e -> {
 
-            if(this.userController.updateProfile(nameField.getText(), emailField.getText(), Integer.parseInt(birthdayField.getText()))) {
-                this.name.setText(nameField.getText());
-                this.email.setText(emailField.getText());
-                this.birthday.setText(String.valueOf(birthdayField.getText()));
+            if(this.userController.updateProfile(nameField.getText(), emailField.getText(), String.valueOf(birthdayField.getValue()))) {
+                this.name.setText("Username : " + nameField.getText());
+                this.email.setText("Email : " + emailField.getText());
+                this.birthday.setText("Birthday : " + String.valueOf(birthdayField.getValue()));
 
                 loggedUser.setUsername(nameField.getText());
                 loggedUser.setEmail(emailField.getText());
-                loggedUser.setAge(Integer.parseInt(birthdayField.getText()));
+                loggedUser.setAge(String.valueOf(birthdayField.getValue()));
 
                 this.getChildren().removeAll(nameField, emailField, birthdayField, buttonContainer);
                 this.getChildren().addAll(name, email, birthday, editContainer);
@@ -188,7 +189,12 @@ public class Profile extends VBox {
         editBtn.setOnMouseClicked(e -> {
             this.nameField = new TextField(loggedUser.getUsername());
             this.emailField = new TextField(loggedUser.getEmail());
-            this.birthdayField = new TextField(String.valueOf(loggedUser.getAge()));
+
+            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+            String dobString = loggedUser.getDob();
+
+            LocalDate dateOfBirth = LocalDate.parse(dobString, formatter);
+            birthdayField = new DatePicker(dateOfBirth);
 
             this.nameField.setMaxWidth(500);
             this.emailField.setMaxWidth(500);

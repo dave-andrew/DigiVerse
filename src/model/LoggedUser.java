@@ -13,7 +13,7 @@ public class LoggedUser extends User{
 
     public static LoggedUser getInstance(User user) {
         if(loggedUser == null) {
-            loggedUser = new LoggedUser(user.getId(), user.getUsername(), user.getEmail(), user.getPassword(), user.getAge(), user.getBlobProfile());
+            loggedUser = new LoggedUser(user.getId(), user.getUsername(), user.getEmail(), user.getPassword(), user.getDob(), user.getBlobProfile());
         }
         return loggedUser;
     }
@@ -22,8 +22,8 @@ public class LoggedUser extends User{
         return loggedUser;
     }
 
-    private LoggedUser(String id, String username, String email, String password, int age, Blob profile) {
-        super(id, username, email, password, age, profile);
+    private LoggedUser(String id, String username, String email, String password, String dob, Blob profile) {
+        super(id, username, email, password, dob, profile);
 
         if(profile != null){
             this.profileImage = ImageManager.convertBlobImage(profile);

@@ -28,7 +28,7 @@ public class Register {
     private Label nameLbl, emailLbl, passwordLbl, confirmPasswordLbl, agelbl;
     private TextField nameTxt, emailTxt;
     private PasswordField passwordTxt, confirmPasswordTxt;
-    private Spinner<Integer> ageSpinner;
+    private DatePicker dobPicker;
     private Button registerBtn;
 
     private Image image;
@@ -54,7 +54,7 @@ public class Register {
         passwordTxt = new PasswordField();
         confirmPasswordTxt = new PasswordField();
 
-        ageSpinner = new Spinner<>();
+        dobPicker = new DatePicker();
 
         nameVbox = new VBox();
         emailVbox = new VBox();
@@ -80,14 +80,11 @@ public class Register {
         Font font = Font.loadFont("file:resources/fonts/LindenHill-Italic.ttf", 40);
         subTitle.setFont(font);
 
-        SpinnerValueFactory<Integer> valueFactory = new SpinnerValueFactory.IntegerSpinnerValueFactory(1, 100, 18);
-        ageSpinner.setValueFactory(valueFactory);
-
         nameVbox.getChildren().addAll(nameLbl, nameTxt);
         emailVbox.getChildren().addAll(emailLbl, emailTxt);
         passwordVbox.getChildren().addAll(passwordLbl, passwordTxt);
         confirmPasswordVbox.getChildren().addAll(confirmPasswordLbl, confirmPasswordTxt);
-        ageVbox.getChildren().addAll(agelbl, ageSpinner);
+        ageVbox.getChildren().addAll(agelbl, dobPicker);
         registerVbox.getChildren().addAll(registerBtn, loginLink);
         registerVbox.setAlignment(Pos.CENTER);
         registerVbox.setPadding(new Insets(30, 0, 0, 0));
@@ -124,9 +121,9 @@ public class Register {
             String email = emailTxt.getText();
             String password = passwordTxt.getText();
             String confirmPassword = confirmPasswordTxt.getText();
-            int age = ageSpinner.getValue();
+            String dob = String.valueOf(dobPicker.getValue());
 
-            String output = authController.checkRegister(username, email, password, confirmPassword, age);
+            String output = authController.checkRegister(username, email, password, confirmPassword, dob);
             System.out.println(output);
         });
     }

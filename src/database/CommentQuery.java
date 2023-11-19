@@ -69,7 +69,7 @@ public class CommentQuery {
                             rs.getString("Username"),
                             rs.getString("UserEmail"),
                             "",
-                            rs.getInt("UserAge"),
+                            rs.getString("UserDOB"),
                             rs.getBlob("UserProfile"));
 
                     Forum forum = new Forum(
@@ -154,7 +154,7 @@ public class CommentQuery {
                             rs.getString("Username"),
                             rs.getString("UserEmail"),
                             "",
-                            rs.getInt("UserAge"),
+                            rs.getString("UserDOB"),
                             rs.getBlob("UserProfile"));
 
                     Task task = new Task(
@@ -217,7 +217,7 @@ public class CommentQuery {
                             rs.getString("Username"),
                             rs.getString("UserEmail"),
                             "",
-                            rs.getInt("UserAge"),
+                            rs.getString("UserDOB"),
                             rs.getBlob("UserProfile"));
 
                     Task task = new Task(
@@ -296,7 +296,7 @@ public class CommentQuery {
                             rs.getString("Username"),
                             rs.getString("UserEmail"),
                             "",
-                            rs.getInt("UserAge"),
+                            rs.getString("UserDOB"),
                             rs.getBlob("UserProfile"));
 
                     TaskComment replyTaskComment = new TaskComment(

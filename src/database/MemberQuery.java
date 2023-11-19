@@ -18,7 +18,7 @@ public class MemberQuery {
         ArrayList<ClassroomMember> classroomMembers = new ArrayList<>();
 
         String query = "SELECT\n" +
-                "\tClassID, Role, msuser.UserID, UserName, UserEmail, UserAge, UserProfile\n" +
+                "\tClassID, Role, msuser.UserID, UserName, UserEmail, UserDOB, UserProfile\n" +
                 "FROM class_member\n" +
                 "JOIN msuser\n" +
                 "ON class_member.UserID = msuser.UserID\n" +
@@ -31,7 +31,7 @@ public class MemberQuery {
 
             try(var rs = ps.executeQuery()) {
                 while(rs.next()) {
-                    User user = new User(rs.getString("UserID"), rs.getString("UserName"), rs.getString("UserEmail"), "", rs.getInt("UserAge"), rs.getBlob("UserProfile"));
+                    User user = new User(rs.getString("UserID"), rs.getString("UserName"), rs.getString("UserEmail"), "", rs.getString("UserDOB"), rs.getBlob("UserProfile"));
                     classroomMembers.add(new ClassroomMember(rs.getString("ClassID"), user, rs.getString("Role")));
                 }
             }

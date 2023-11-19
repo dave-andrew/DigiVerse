@@ -25,11 +25,12 @@ public class AuthQuery {
 
         PreparedStatement ps = connect.prepareStatement(query);
         try {
+            assert ps != null;
             ps.setString(1, user.getId());
             ps.setString(2, user.getUsername());
             ps.setString(3, user.getEmail());
             ps.setString(4, user.getPassword());
-            ps.setInt(5, user.getAge());
+            ps.setString(5, user.getDob());
 
             int rows = ps.executeUpdate();
 
@@ -53,7 +54,7 @@ public class AuthQuery {
 
             try(ResultSet rs = ps.executeQuery()) {
                 if(rs.next()) {
-                    return new User(rs.getString("UserID"), rs.getString("UserName"), rs.getString("UserEmail"), rs.getString("UserPassword"), rs.getInt("UserAge"), rs.getBlob("UserProfile"));
+                    return new User(rs.getString("UserID"), rs.getString("UserName"), rs.getString("UserEmail"), rs.getString("UserPassword"), rs.getString("UserDOB"), rs.getBlob("UserProfile"));
                 } else {
                     return null;
                 }
@@ -111,7 +112,7 @@ public class AuthQuery {
                         deleteAuthData(computerName);
                         return "false";
                     } else {
-                        User user = new User(rs.getString("UserID"), rs.getString("UserName"), rs.getString("UserEmail"), rs.getString("UserPassword"), rs.getInt("UserAge"), rs.getBlob("UserProfile"));
+                        User user = new User(rs.getString("UserID"), rs.getString("UserName"), rs.getString("UserEmail"), rs.getString("UserPassword"), rs.getString("UserDOB"), rs.getBlob("UserProfile"));
                         LoggedUser.getInstance(user);
                         return "true";
                     }

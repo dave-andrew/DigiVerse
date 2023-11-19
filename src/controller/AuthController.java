@@ -4,6 +4,9 @@ import database.AuthQuery;
 import model.LoggedUser;
 import model.User;
 
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
+
 public class AuthController {
 
     private AuthQuery authQuery;
@@ -12,19 +15,31 @@ public class AuthController {
         this.authQuery = new AuthQuery();
     }
 
-    public String checkRegister(String username, String email, String pass, String confirmPass, int age) {
-        if(username.isEmpty() || email.isEmpty() || pass.isEmpty() || confirmPass.isEmpty()) {
+    public String checkRegister(String username, String email, String pass, String confirmPass, String dob) {
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+
+        if (username.isEmpty() || email.isEmpty() || pass.isEmpty() || confirmPass.isEmpty()) {
             return "Please fill all the fields!";
-        } else if(!pass.equals(confirmPass)) {
-            return "Password and confirm password must be same!";
-        } else if(pass.length() < 8) {
+        } else if (!pass.equals(confirmPass)) {
+            return "Password and confirm password must be the same!";
+        } else if (pass.length() < 8) {
             return "Password must be greater than 8 characters!";
-        }else if(age < 17) {
-            return "Age must be greater than 17!";
         } else {
-            User user = new User(username, email, pass, age);
-            authQuery.register(user);
-            return "Register Success!";
+            try {
+                LocalDate dateOfBirth = LocalDate.parse(dob, formatter);
+
+                int age = LocalDate.now().getYear() - dateOfBirth.getYear();
+
+                if (age < 17) {
+                    return "Age must be greater than 17!";
+                }
+
+                User user = new User(username, email, pass, dob);
+                authQuery.register(user);
+                return "Register Success!";
+            } catch (Exception e) {
+                return "Invalid date format for Date of Birth!";
+            }
         }
     }
 

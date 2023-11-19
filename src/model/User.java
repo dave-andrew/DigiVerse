@@ -13,16 +13,16 @@ public class User {
     private String username;
     private String email;
     private String password;
-    private int age;
+    private String dob;
     private Image profile;
     private Blob blobProfile;
 
-    public User(String id, String username, String email, String password, int age, Blob profile) {
+    public User(String id, String username, String email, String password, String dob, Blob profile) {
         this.id = id;
         this.username = username;
         this.email = email;
         this.password = password;
-        this.age = age;
+        this.dob = dob;
 
         try {
             if(profile != null) {
@@ -35,20 +35,20 @@ public class User {
         }
     }
 
-    public User(String username, String email, String password, int age) {
+    public User(String username, String email, String password, String dob) {
         this.id = UUID.randomUUID().toString();
         this.username = username;
         this.email = email;
         this.password = password;
-        this.age = age;
+        this.dob = dob;
     }
 
-    public User(String id, String username, String email, String password, int age) {
+    public User(String id, String username, String email, String password, String dob) {
         this.id = id;
         this.username = username;
         this.email = email;
         this.password = password;
-        this.age = age;
+        this.dob = dob;
     }
 
 
@@ -76,12 +76,12 @@ public class User {
         this.password = password;
     }
 
-    public int getAge() {
-        return age;
+    public String getDob() {
+        return dob;
     }
 
-    public void setAge(int age) {
-        this.age = age;
+    public void setAge(String dob) {
+        this.dob = dob;
     }
 
     public String getId() {

@@ -55,7 +55,7 @@ public class TaskQuery {
     public ArrayList<Task> getClassroomTask(String classid) {
         ArrayList<Task> taskList = new ArrayList<>();
         String query = "SELECT\n" +
-                "    class_task.TaskID, TaskTitle, TaskDesc, DeadlineAt, CreatedAt, Scored, msuser.UserID, UserName, UserEmail, UserAge, UserProfile\n" +
+                "    class_task.TaskID, TaskTitle, TaskDesc, DeadlineAt, CreatedAt, Scored, msuser.UserID, UserName, UserEmail, UserDOB, UserProfile\n" +
                 "FROM class_task\n" +
                 "JOIN mstask ON class_task.TaskID = mstask.TaskID\n" +
                 "JOIN msuser ON mstask.UserID = msuser.UserID\n" +
@@ -68,7 +68,7 @@ public class TaskQuery {
     public ArrayList<Task> getScoredClassroomTask(String classid) {
         ArrayList<Task> taskList = new ArrayList<>();
         String query = "SELECT\n" +
-                "    class_task.TaskID, TaskTitle, TaskDesc, DeadlineAt, CreatedAt, Scored, msuser.UserID, UserName, UserEmail, UserAge, UserProfile\n" +
+                "    class_task.TaskID, TaskTitle, TaskDesc, DeadlineAt, CreatedAt, Scored, msuser.UserID, UserName, UserEmail, UserDOB, UserProfile\n" +
                 "FROM class_task\n" +
                 "JOIN mstask ON class_task.TaskID = mstask.TaskID\n" +
                 "JOIN msuser ON mstask.UserID = msuser.UserID\n" +
@@ -86,7 +86,7 @@ public class TaskQuery {
 
             try(var rs = ps.executeQuery()) {
                 while(rs.next()) {
-                    User user = new User(rs.getString("UserID"), rs.getString("UserName"), rs.getString("UserEmail"), "", rs.getInt("UserAge"), rs.getBlob("UserProfile"));
+                    User user = new User(rs.getString("UserID"), rs.getString("UserName"), rs.getString("UserEmail"), "", rs.getString("UserDOB"), rs.getBlob("UserProfile"));
                     Task task = new Task(rs.getString("TaskID"), rs.getString("UserID"), user, rs.getString("TaskTitle"), rs.getString("TaskDesc"), rs.getString("DeadlineAt"), rs.getString("CreatedAt"), rs.getBoolean("Scored"));
                     taskList.add(task);
                 }
@@ -117,7 +117,7 @@ public class TaskQuery {
                 while(rs.next()) {
 
                     Classroom classroom = new Classroom(rs.getString("ClassID"), rs.getString("ClassName"), rs.getString("ClassDesc"), rs.getString("ClassCode"), rs.getString("ClassSubject"), rs.getBlob("ClassImage"));
-                    User user = new User(rs.getString("UserID"), rs.getString("UserName"), rs.getString("UserEmail"), "", rs.getInt("UserAge"), rs.getBlob("UserProfile"));
+                    User user = new User(rs.getString("UserID"), rs.getString("UserName"), rs.getString("UserEmail"), "", rs.getString("UserDOB"), rs.getBlob("UserProfile"));
                     Task task = new Task(rs.getString("TaskID"), rs.getString("UserID"), user, rs.getString("TaskTitle"), rs.getString("TaskDesc"), rs.getString("DeadlineAt"), rs.getString("CreatedAt"), rs.getBoolean("Scored"), classroom);
                     taskList.add(task);
 

@@ -33,14 +33,14 @@ public class UserQuery {
 
     }
 
-    public boolean updateProfile(String name, String email, int birthday) {
-        String query = "UPDATE msuser SET UserName = ?, UserEmail = ?, UserAge = ? WHERE UserID = ?";
+    public boolean updateProfile(String name, String email, String birthday) {
+        String query = "UPDATE msuser SET UserName = ?, UserEmail = ?, UserDOB = ? WHERE UserID = ?";
 
         try (PreparedStatement ps = con.prepareStatement(query)) {
             assert ps != null;
             ps.setString(1, name);
             ps.setString(2, email);
-            ps.setInt(3, birthday);
+            ps.setString(3, birthday);
             ps.setString(4, LoggedUser.getInstance().getId());
 
             ps.executeUpdate();

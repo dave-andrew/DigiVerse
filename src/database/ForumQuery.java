@@ -23,7 +23,7 @@ public class ForumQuery {
     public ArrayList<Forum> getClassroomForum(String classid) {
         ArrayList<Forum> forumList = new ArrayList<>();
         String query = "SELECT\n" +
-                "    class_forum.ForumID, ForumText, class_forum.UserID, UserName, UserEmail, UserAge, UserProfile, class_forum.ClassID, ClassName, ClassDesc, ClassCode, ClassSubject, ClassImage, CreatedAt\n" +
+                "    class_forum.ForumID, ForumText, class_forum.UserID, UserName, UserEmail, UserDOB, UserProfile, class_forum.ClassID, ClassName, ClassDesc, ClassCode, ClassSubject, ClassImage, CreatedAt\n" +
                 "FROM class_forum\n" +
                 "JOIN msclass ON class_forum.ClassID = msclass.ClassID\n" +
                 "JOIN msuser ON class_forum.UserID = msuser.UserID\n" +
@@ -38,7 +38,7 @@ public class ForumQuery {
 
             try(var rs = ps.executeQuery()) {
                 while(rs.next()) {
-                    User user = new User(rs.getString("UserID"), rs.getString("UserName"), rs.getString("UserEmail"), "", rs.getInt("UserAge"), rs.getBlob("UserProfile"));
+                    User user = new User(rs.getString("UserID"), rs.getString("UserName"), rs.getString("UserEmail"), "", rs.getString("UserDOB"), rs.getBlob("UserProfile"));
                     Classroom classroom = new Classroom(rs.getString("ClassID"), rs.getString("ClassName"), rs.getString("ClassDesc"), rs.getString("ClassCode"), rs.getString("ClassSubject"), rs.getBlob("ClassImage"));
 
                     forumList.add(new Forum(rs.getString("ForumID"), rs.getString("ForumText"), rs.getString("UserID"), user, rs.getString("ClassID"), classroom, rs.getString("CreatedAt")));
