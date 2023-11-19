@@ -149,10 +149,18 @@ public class Home {
         leftNav.getChildren().add(iconBtn);
         leftNav.setAlignment(Pos.CENTER_LEFT);
 
-        ToggleButton themeSwitchButton = new ToggleButton("Toggle Theme");
+        ToggleButton themeSwitchButton = new ToggleButton();
         themeSwitchButton.setOnAction(e -> {
-            ThemeManager.toggleTheme(scene);
+            ThemeManager.toggleTheme(scene, themeSwitchButton);
         });
+
+        ImageView sun = new ImageView(new Image("file:resources/icons/sun.png"));
+        themeSwitchButton.setGraphic(sun);
+
+        sun.setFitWidth(30);
+        sun.setFitHeight(30);
+
+        themeSwitchButton.getStyleClass().add("image-button");
 
         rightNav.getChildren().addAll(themeSwitchButton, plusBtn, userBtn);
         rightNav.setAlignment(Pos.CENTER_RIGHT);
