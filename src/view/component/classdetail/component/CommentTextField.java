@@ -1,5 +1,6 @@
 package view.component.classdetail.component;
 
+import helper.ImageManager;
 import javafx.scene.control.TextField;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
@@ -22,6 +23,8 @@ public class CommentTextField extends HBox {
 
         profileImg.setFitWidth(30);
         profileImg.setFitHeight(30);
+
+        ImageManager.makeCircular(profileImg, 15);
 
         this.replyField = new TextField();
         replyField.prefWidthProperty().bind(this.widthProperty().subtract(50));

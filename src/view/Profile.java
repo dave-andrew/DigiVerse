@@ -1,6 +1,7 @@
 package view;
 
 import controller.UserController;
+import helper.ImageManager;
 import helper.StageManager;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
@@ -12,6 +13,7 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
+import javafx.scene.shape.Circle;
 import javafx.stage.FileChooser;
 import model.LoggedUser;
 import model.User;
@@ -75,22 +77,21 @@ public class Profile extends VBox {
         this.changeButtonContainer.getChildren().addAll(cancelPasswordBtn, updatePasswordBtn);
         changeButtonContainer.setAlignment(Pos.TOP_CENTER);
 
-        if(loggedUser.getProfileImage() == null) {
+        if (loggedUser.getProfileImage() == null) {
             profile = new ImageView(new Image("file:resources/icons/user.png"));
         } else {
             profile = new ImageView(loggedUser.getProfileImage());
         }
 
-        profile.setFitHeight(100);
-        profile.setFitWidth(100);
+        ImageManager.makeCircular(profile, 75);
 
-        name = new Label(loggedUser.getUsername());
+        name = new Label("Username : " + loggedUser.getUsername());
         name.getStyleClass().add("title");
 
-        email = new Label(loggedUser.getEmail());
+        email = new Label("Email : " + loggedUser.getEmail());
         email.getStyleClass().add("title");
 
-        birthday = new Label(String.valueOf(loggedUser.getAge()));
+        birthday = new Label("Age: " + String.valueOf(loggedUser.getAge()));
         birthday.getStyleClass().add("title");
 
         this.getChildren().addAll(profile, name, email, birthday);

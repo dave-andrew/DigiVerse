@@ -34,7 +34,10 @@ public class ClassMemberItem extends HBox {
 
         this.profile = new ImageView(profileImg);
         this.profile.setFitWidth(40);
-        this.profile.setPreserveRatio(true);
+        this.profile.setFitHeight(40);
+
+        ImageManager.makeCircular(profile, 20);
+
         this.getChildren().add(profile);
         this.getChildren().add(userBox);
 

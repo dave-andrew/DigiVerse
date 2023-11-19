@@ -2,9 +2,7 @@ package view.homeview.task;
 
 import controller.AnswerController;
 import controller.MemberController;
-import helper.ImageManager;
 import javafx.geometry.Insets;
-import javafx.geometry.Pos;
 import javafx.scene.control.Label;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.image.Image;

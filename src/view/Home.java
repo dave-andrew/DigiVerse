@@ -1,6 +1,7 @@
 package view;
 
 import controller.AuthController;
+import helper.ImageManager;
 import helper.ScreenManager;
 import helper.StageManager;
 import helper.ThemeManager;
@@ -141,6 +142,8 @@ public class Home {
         plusBtn = new Button();
         plusBtn.setGraphic(plus);
         plusBtn.getStyleClass().add("image-button");
+
+        ImageManager.makeCircular(userImg, 20);
 
         userBtn = new Button();
         userBtn.setGraphic(userImg);

@@ -1,8 +1,10 @@
 package helper;
 
 import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.scene.image.WritableImage;
 import javafx.scene.paint.Color;
+import javafx.scene.shape.Circle;
 
 import java.io.ByteArrayInputStream;
 import java.sql.Blob;
@@ -95,6 +97,21 @@ public class ImageManager {
 
     public static Image importGUI(String baseString) {
         return new Image("file:resources/game/gui/" + baseString + ".png");
+    }
+
+    public static void makeCircular(ImageView imageView, double radius) {
+
+        // Set the clip on the ImageView
+        Circle clip = new Circle();
+        clip.setCenterX(radius);
+        clip.setCenterY(radius);
+        clip.setRadius(radius);
+        imageView.setClip(clip);
+
+        imageView.setPreserveRatio(false);
+
+        imageView.setFitWidth(radius * 2);
+        imageView.setFitHeight(radius * 2);
     }
 
 }

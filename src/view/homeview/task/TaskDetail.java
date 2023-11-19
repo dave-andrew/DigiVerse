@@ -2,6 +2,7 @@ package view.homeview.task;
 
 import controller.AnswerController;
 import controller.CommentController;
+import helper.ImageManager;
 import helper.StageManager;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
@@ -160,6 +161,9 @@ public class TaskDetail extends HBox {
             } else {
                 userImg = new ImageView(LoggedUser.getInstance().getProfileImage());
             }
+
+            ImageManager.makeCircular(userImg, 15);
+
             commentInputContainer.getChildren().add(userImg);
 
             TextField commentInput = new TextField();

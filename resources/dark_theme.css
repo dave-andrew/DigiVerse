@@ -91,6 +91,7 @@
 .primary-button {
     -fx-background-color: #4DCAFF;
     -fx-padding: 7px 30px;
+    -fx-fill: #1E1E1E;
 }
 
 .primary-button:hover {

@@ -23,7 +23,9 @@ public class MemberItem extends HBox {
 
         this.profile = new ImageView(profileImg);
         this.profile.setFitWidth(35);
-        this.profile.setPreserveRatio(true);
+        this.profile.setFitHeight(35);
+
+        ImageManager.makeCircular(profile, 17.5);
 
         HBox userBox = new HBox();
         userBox.setAlignment(Pos.CENTER_LEFT);

@@ -2,6 +2,7 @@ package view.component.classdetail.component;
 
 import controller.CommentController;
 import controller.ForumController;
+import helper.ImageManager;
 import javafx.event.EventHandler;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
@@ -153,6 +154,8 @@ public class RightContent extends VBox {
         profileImage.setFitHeight(30);
         profileImage.getStyleClass().add("profile");
 
+        ImageManager.makeCircular(profileImage, 15);
+
         TextField commentInput = new TextField();
         commentInput.setPromptText("Write a comment...");
         commentInput.setStyle("-fx-font-size: 14px");
@@ -202,6 +205,8 @@ public class RightContent extends VBox {
             loggedUserProfile.setFitWidth(30);
             loggedUserProfile.setFitHeight(30);
             loggedUserProfile.getStyleClass().add("profile");
+
+            ImageManager.makeCircular(loggedUserProfile, 15);
 
             container.getChildren().add(loggedUserProfile);
 

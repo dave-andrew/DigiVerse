@@ -1,6 +1,7 @@
 package view.component.classdetail.component;
 
 import controller.CommentController;
+import helper.ImageManager;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.scene.image.Image;
@@ -48,6 +49,8 @@ public class CommentItem extends HBox {
 
         profileImage.setFitWidth(30);
         profileImage.setFitHeight(30);
+
+        ImageManager.makeCircular(profileImage, 15);
 
         profileImage.getStyleClass().add("profile");
 
