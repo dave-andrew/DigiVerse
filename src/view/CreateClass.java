@@ -30,6 +30,8 @@ public class CreateClass {
     private VBox userInfoBox;
     private VBox classFormBox;
 
+    private Label errorLbl;
+
     public CreateClass(Stage stage) {
         initialize(stage);
         setLayout();
@@ -50,7 +52,10 @@ public class CreateClass {
         userInfoBox.setAlignment(Pos.TOP_CENTER);
         userInfoBox.getStyleClass().add("container");
 
-        classFormBox = new CreateClassForm(dialogStage);
+        errorLbl = new Label();
+        errorLbl.setStyle("-fx-text-fill: red;");
+
+        classFormBox = new CreateClassForm(dialogStage, errorLbl);
         classFormBox.getStyleClass().add("container");
 
         dialogStage.setScene(new Scene(borderPane, ScreenManager.SCREEN_WIDTH, ScreenManager.SCREEN_HEIGHT));

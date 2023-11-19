@@ -23,7 +23,7 @@ public class CreateClassForm extends VBox {
 
     private ClassController classController;
 
-    private Label classNameLbl, classDescLbl, classCodeLbl, classSubjectLbl;
+    private Label classNameLbl, classDescLbl, classCodeLbl, classSubjectLbl, errorLbl;
     private TextField classNameField, classDescField, classCodeField;
     private ComboBox<String> classSubjectField;
 
@@ -81,9 +81,12 @@ public class CreateClassForm extends VBox {
             String classSubject = classSubjectField.getValue();
 
             String message = classController.checkCreateClass(className, classDesc, classCode, classSubject);
-            Toast.makeText((Stage) stackPane.getScene().getWindow(), message, 2000, 500, 500);
 
-            dialogStage.close();
+            if(message.equals("Create Class Success!")) {
+                dialogStage.close();
+            }
+
+            errorLbl.setText(message);
         });
 
         cancelBtn.setOnAction(e -> {
@@ -91,8 +94,9 @@ public class CreateClassForm extends VBox {
         });
     }
 
-    public CreateClassForm(Stage dialogStage) {
+    public CreateClassForm(Stage dialogStage, Label errorLbl) {
         this.dialogStage = dialogStage;
+        this.errorLbl = errorLbl;
         initialize();
         actions();
 
@@ -111,7 +115,9 @@ public class CreateClassForm extends VBox {
         classCodeBox.getChildren().addAll(classCodeLbl, classCodeField);
         classSubjectBox.getChildren().addAll(classSubjectLbl, classSubjectField);
 
-        this.getChildren().addAll(classNameBox, classDescBox, classCodeBox, classSubjectBox, btnBox);
+        btnBox.setPadding(new Insets(0, 0, 10, 0));
+
+        this.getChildren().addAll(classNameBox, classDescBox, classCodeBox, classSubjectBox, errorLbl, btnBox);
     }
 
 }

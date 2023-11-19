@@ -18,12 +18,17 @@ public class ClassController {
     public String checkCreateClass(String className, String classDesc, String classCode, String classSubject) {
         if(className.isEmpty() || classDesc.isEmpty() || classCode.isEmpty() || classSubject.isEmpty()) {
             return "Please fill all the fields!";
-        } else {
-            Classroom classroom = new Classroom(className, classDesc, classCode, classSubject);
-
-            classQuery.createClass(classroom);
-            return "Create Class Success!";
         }
+
+        if(classCode.length() > 8) {
+            return "Class code must be less than 8 characters!";
+        }
+
+        Classroom classroom = new Classroom(className, classDesc, classCode, classSubject);
+
+        classQuery.createClass(classroom);
+
+        return "Create Class Success!";
     }
 
     public String checkJoinClass(String groupCode) {
