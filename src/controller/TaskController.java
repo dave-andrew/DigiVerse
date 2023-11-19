@@ -19,7 +19,6 @@ public class TaskController {
     public Task createTask(String title, String description, String deadlineAt, boolean scored, String classid) {
 
         if(title.isEmpty() || description.isEmpty() || deadlineAt.isEmpty()) {
-            Toast.makeError(StageManager.getInstance(), "Please fill all the fields!", 2000, 500, 500);
             return null;
         }
 

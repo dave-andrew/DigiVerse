@@ -44,7 +44,7 @@ public class AddTask extends BorderPane {
     private HBox leftNav;
     private Image closeImg;
     private ImageView close;
-    private Label title;
+    private Label title, errorLbl;
     private Button joinBtn;
     private Button closeBtn;
 
@@ -68,6 +68,9 @@ public class AddTask extends BorderPane {
         dialogStage.initModality(Modality.APPLICATION_MODAL);
         dialogStage.initOwner(stage);
 //        dialogStage.initStyle(StageStyle.TRANSPARENT);
+
+        errorLbl = new Label();
+        errorLbl.setStyle("-fx-text-fill: red;");
 
         this.root = new BorderPane();
         this.root.setTop(navBar());
@@ -99,15 +102,19 @@ public class AddTask extends BorderPane {
         this.descriptionField = new TextArea();
         VBox.setMargin(description, new Insets(30, 0, 0, 0));
 
-        VBox addFile = new VBox();
-
         Label addFileBtn = new Label();
         VBox.setMargin(addFileBtn, new Insets(100, 0, 0, 0));
 
         container.getChildren().add(addFileBtn);
 
-        content.getChildren().addAll(title, titleField, description, descriptionField);
-        center.getChildren().addAll(content, addFile);
+        HBox errorContainer = new HBox();
+        errorContainer.setAlignment(Pos.CENTER);
+
+        errorContainer.getChildren().add(errorLbl);
+
+        content.getChildren().addAll(title, titleField, description, descriptionField, errorContainer);
+
+        center.getChildren().addAll(content);
 
         return container;
     }
@@ -162,7 +169,14 @@ public class AddTask extends BorderPane {
 
         String deadlineAt = DateManager.formatDate(deadline, time);
 
+        if(title.isEmpty() || description.isEmpty()) {
+            errorLbl.setText("Please fill all the fields");
+            return;
+        }
+
         this.taskController.createTask(title, description, deadlineAt, scored, classroom.getClassId());
+
+        dialogStage.close();
     }
 
     private VBox rightBar() {
