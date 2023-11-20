@@ -132,18 +132,48 @@ public class OfflineGame {
     }
 
     public void updateGame(long now) {
-        clearPane();
+        isPaused = currentState instanceof GamePauseState;
+
+        handleInput();
 
         double deltaTime = (double) (now - lastTimeFrame) / 50_000_000;
-        playerUpdate(deltaTime);
-        updateBullets(deltaTime);
-        checkCollisions(deltaTime);
-        checkItemCollision();
+
+        if (!isPaused) {
+            clearPane();
+
+            playerUpdate(deltaTime);
+            updateBullets(deltaTime);
+            checkCollisions(deltaTime);
+            checkItemCollision();
+
+            root.getChildren().add(player);
+
+            setUpGui();
+        }
         lastTimeFrame = now;
+    }
 
-        root.getChildren().add(player);
+    private boolean escapeKeyPressed = false;
 
-        setUpGui();
+    private void handleInput() {
+        if (InputManager.getPressedKeys().contains(KeyCode.ESCAPE)) {
+            if (!escapeKeyPressed) {
+                escapeKeyPressed = true;
+                togglePauseState();
+            }
+        } else {
+            escapeKeyPressed = false;
+        }
+    }
+
+    private void togglePauseState() {
+        if (isPaused) {
+            isPaused = false;
+            changeState(playState);
+        } else {
+            isPaused = true;
+            changeState(pauseState);
+        }
     }
 
     private ImageView score;
