@@ -15,6 +15,7 @@ import javafx.animation.AnimationTimer;
 import javafx.scene.control.Label;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.layout.VBox;
 import javafx.scene.media.Media;
 import javafx.scene.media.MediaException;
 import javafx.scene.media.MediaPlayer;
@@ -37,6 +38,8 @@ public class OfflineGame {
 
     private AnimationTimer timer;
 
+    private VBox pauseMenu;
+
     private Player player;
     private Pane root;
     private Scene scene;
@@ -58,9 +61,9 @@ public class OfflineGame {
     public OfflineGame(Stage stage) {
         this.stage = stage;
         this.root = new Pane();
+        this.pauseMenu = new VBox(10);
 
         this.scene = new Scene(root, ScreenManager.SCREEN_WIDTH, ScreenManager.SCREEN_HEIGHT);
-        System.out.println("REEEEEEEEE" + this.scene);
         player = Player.getInstance();
         player.setX(ScreenManager.SCREEN_WIDTH / 2);
         player.setY(ScreenManager.SCREEN_HEIGHT / 2);
@@ -169,6 +172,7 @@ public class OfflineGame {
     private void togglePauseState() {
         if (isPaused) {
             isPaused = false;
+            this.getRoot().getChildren().remove(this.getPauseMenu());
             changeState(playState);
         } else {
             isPaused = true;
@@ -367,5 +371,9 @@ public class OfflineGame {
     public void changeState(GameBaseState newState) {
         this.currentState = newState;
         this.currentState.onEnterState();
+    }
+
+    public VBox getPauseMenu() {
+        return pauseMenu;
     }
 }
