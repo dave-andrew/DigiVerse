@@ -4,7 +4,6 @@ import javafx.geometry.Pos;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.Slider;
-import javafx.scene.control.Spinner;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import view.OfflineGame;
@@ -16,6 +15,10 @@ public class SettingMenu extends VBox {
     private VBox pauseMenu;
 
     private Label musicLabel, SFXLabel, resolutionLabel, fps60Label, fps144Label;
+
+    private double originalMusicVolume;
+    private double originalSFXVolume;
+    private double originalTargetFPS;
 
     public SettingMenu(OfflineGame game) {
         musicSlider = new Slider();
@@ -74,6 +77,10 @@ public class SettingMenu extends VBox {
         applyButton.setPrefWidth(250);
         applyButton.getStyleClass().add("primary-button");
 
+        originalMusicVolume = game.getMediaPlayer().getVolume();
+        originalSFXVolume = game.getMediaPlayer().getVolume();
+        originalTargetFPS = game.getTargetFPS();
+
         applyButton.setOnAction(e -> {
             game.getPauseMenu().getChildren().remove(this);
             game.getPauseMenu().getChildren().add(pauseMenu);
@@ -83,6 +90,9 @@ public class SettingMenu extends VBox {
         backButton.getStyleClass().add("secondary-button");
 
         backButton.setOnAction(e -> {
+            game.getMediaPlayer().setVolume(originalMusicVolume);
+            game.setTargetFPS(originalTargetFPS);
+
             game.getPauseMenu().getChildren().remove(this);
             game.getPauseMenu().getChildren().add(pauseMenu);
         });
@@ -101,5 +111,4 @@ public class SettingMenu extends VBox {
     public void setPauseMenu(VBox pauseMenu) {
         this.pauseMenu = pauseMenu;
     }
-
 }

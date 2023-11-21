@@ -164,12 +164,16 @@ public class OfflineGame {
         });
     }
 
-    private double TARGET_FPS = 60.0;
+    private double TARGET_FPS = 144.0;
     private double TARGET_FRAME_TIME = 1.0 / TARGET_FPS * 20;
 
     public void setTargetFPS(double fps) {
         TARGET_FPS = fps;
         TARGET_FRAME_TIME = 1.0 / TARGET_FPS * 20;
+    }
+
+    public double getTargetFPS() {
+        return TARGET_FPS;
     }
 
     public void updateGame(long now) {
