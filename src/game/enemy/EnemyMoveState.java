@@ -21,7 +21,7 @@ public class EnemyMoveState extends EnemyBaseState {
     @Override
     public void onUpdate(double deltaTime, OfflineGame game) {
 
-        System.out.println(deltaTime);
+//        System.out.println(deltaTime);
 
         this.lastTimeFrame += deltaTime;
 

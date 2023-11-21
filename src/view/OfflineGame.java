@@ -12,6 +12,8 @@ import game.player.PlayerNoLiveState;
 import game.player.PlayerStandState;
 import helper.*;
 import javafx.animation.AnimationTimer;
+import javafx.geometry.Insets;
+import javafx.geometry.Pos;
 import javafx.scene.control.Label;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
@@ -38,7 +40,9 @@ public class OfflineGame {
 
     private AnimationTimer timer;
 
+//    Game Layout
     private VBox pauseMenu;
+    private VBox settingMenu;
 
     private Player player;
     private Pane root;
@@ -51,6 +55,10 @@ public class OfflineGame {
     private final BulletManager bulletManager = BulletManager.getInstance();
     private final ItemManager itemManager = ItemManager.getInstance();
 
+    private boolean isPaused = false;
+    private MediaPlayer mediaPlayer;
+    private Label fpsLabel;
+
 //  Game State
     private GameBaseState currentState;
     public GameStartState startState;
@@ -61,7 +69,21 @@ public class OfflineGame {
     public OfflineGame(Stage stage) {
         this.stage = stage;
         this.root = new Pane();
-        this.pauseMenu = new VBox(10);
+
+
+        setupAudio();
+
+        this.pauseMenu = new VBox(40);
+        this.pauseMenu.setAlignment(Pos.CENTER);
+        this.pauseMenu.setPrefSize(500, 400);
+        pauseMenu.setPadding(new Insets(50));
+        pauseMenu.setStyle("-fx-background-color: white;-fx-background-radius: 10;");
+
+        this.settingMenu = new VBox(40);
+        this.settingMenu.setAlignment(Pos.CENTER);
+        this.settingMenu.setPrefSize(500, 400);
+        settingMenu.setPadding(new Insets(50));
+        settingMenu.setStyle("-fx-background-color: white;-fx-background-radius: 10;");
 
         this.scene = new Scene(root, ScreenManager.SCREEN_WIDTH, ScreenManager.SCREEN_HEIGHT);
         player = Player.getInstance();
@@ -75,14 +97,23 @@ public class OfflineGame {
         this.pauseState = new GamePauseState(this);
         this.overState = new GameOverState(this);
 
-        this.inputManager = InputManager.getInstance(this.scene);
-
         initialize(stage);
         setupGameLoop();
-        setupAudio();
+
+        this.inputManager = InputManager.getInstance(this.scene);
 
         this.currentState = this.startState;
         this.currentState.onEnterState();
+
+        this.fpsLabel = new Label("FPS: 0");
+
+        this.fpsLabel.setPrefWidth(100);
+        this.fpsLabel.setLayoutX(root.getWidth() - fpsLabel.getPrefWidth() - 10);
+        this.fpsLabel.setLayoutY(10);
+
+        root.getChildren().add(fpsLabel);
+
+        scene.getStylesheets().add("file:resources/light_theme.css");
 
         stage.setScene(scene);
         stage.setTitle("DigiVerse - Prairie King");
@@ -101,17 +132,16 @@ public class OfflineGame {
         setUpGui();
     }
 
-    private boolean isPaused = false;
-    private MediaPlayer mediaPlayer;
-
     private void setupGameLoop() {
         this.timer = new AnimationTimer() {
             @Override
             public void handle(long now) {
                 if(currentState instanceof GamePauseState) {
                     isPaused = true;
+                    mediaPlayer.pause();
                 } else {
                     isPaused = false;
+                    mediaPlayer.play();
                 }
                 currentState.onUpdate(now);
             }
@@ -134,12 +164,27 @@ public class OfflineGame {
         });
     }
 
+    private static final double TARGET_FPS = 60.0;
+    private static final double TARGET_FRAME_TIME = 1.0 / TARGET_FPS * 20;
+
     public void updateGame(long now) {
         isPaused = currentState instanceof GamePauseState;
 
         handleInput();
 
         double deltaTime = (double) (now - lastTimeFrame) / 50_000_000;
+
+        while (deltaTime < TARGET_FRAME_TIME) {
+            try {
+                Thread.sleep(1);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+            now = System.nanoTime();
+            deltaTime = (double) (now - lastTimeFrame) / 50_000_000;
+        }
+
+        fpsLabel.setText("FPS: " + (int) (1 / deltaTime * 20));
 
         if (!isPaused) {
             clearPane();
@@ -150,11 +195,12 @@ public class OfflineGame {
             checkItemCollision();
 
             root.getChildren().add(player);
-
             setUpGui();
         }
         lastTimeFrame = now;
     }
+
+
 
     private boolean escapeKeyPressed = false;
 
@@ -375,5 +421,12 @@ public class OfflineGame {
 
     public VBox getPauseMenu() {
         return pauseMenu;
+    }
+    public VBox getSettingMenu() {
+        return settingMenu;
+    }
+
+    public MediaPlayer getMediaPlayer() {
+        return mediaPlayer;
     }
 }

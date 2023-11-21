@@ -1,38 +1,39 @@
 package game.gamestate;
 
 import helper.InputManager;
+import helper.ScreenManager;
 import javafx.geometry.Insets;
 import javafx.scene.control.Button;
+import javafx.scene.control.Slider;
+import javafx.scene.control.Spinner;
 import javafx.scene.input.KeyCode;
 import javafx.scene.layout.VBox;
 import view.OfflineGame;
+import view.gameview.PauseMenu;
+import view.gameview.SettingMenu;
 
 public class GamePauseState extends GameBaseState {
 
-    private Button resumeButton, settingButton, exitButton;
+    private PauseMenu pauseMenu;
+    private SettingMenu settingMenu;
 
     public GamePauseState(OfflineGame game) {
         super(game);
 
-        resumeButton = new Button("Resume");
-        settingButton = new Button("Setting");
-        exitButton = new Button("Exit");
+        settingMenu = new SettingMenu(game);
+        pauseMenu = new PauseMenu(game, settingMenu);
+        settingMenu.setPauseMenu(pauseMenu);
 
-        resumeButton.setOnAction(e -> {
-            game.getRoot().getChildren().remove(game.getPauseMenu());
-            game.changeState(game.playState);
-        });
+        game.getPauseMenu().getChildren().addAll(pauseMenu);
 
-        settingButton.setOnAction(e -> {
-            game.getRoot().getChildren().remove(game.getPauseMenu());
-        });
+        double screenWidth = ScreenManager.SCREEN_WIDTH;
+        double screenHeight = ScreenManager.SCREEN_HEIGHT;
 
-        exitButton.setOnAction(e -> {
-            System.exit(0);
-        });
+        double pauseMenuX = (screenWidth - game.getPauseMenu().getPrefWidth()) / 2;
+        double pauseMenuY = (screenHeight - game.getPauseMenu().getPrefHeight()) / 2;
 
-        game.getPauseMenu().getChildren().addAll(resumeButton, settingButton, exitButton);
-
+        game.getPauseMenu().setLayoutX(pauseMenuX);
+        game.getPauseMenu().setLayoutY(pauseMenuY);
     }
 
     @Override

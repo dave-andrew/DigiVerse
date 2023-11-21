@@ -48,7 +48,7 @@ public class Enemy extends ImageView {
         initSprite(type);
 
         this.diedSprites = ImageManager.importEnemyDiedSprites();
-        System.out.println(diedSprites.size());
+//        System.out.println(diedSprites.size());
 
         this.posX = posX;
         this.posY = posY;
