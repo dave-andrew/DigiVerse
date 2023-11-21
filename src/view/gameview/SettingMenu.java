@@ -31,8 +31,20 @@ public class SettingMenu extends VBox {
         fps60Label = new Label("60 FPS");
         fps60Label.getStyleClass().add("fps-card");
 
+        fps60Label.setOnMouseClicked(e -> {
+            fps60Label.getStyleClass().add("act");
+            fps144Label.getStyleClass().remove("act");
+            game.setTargetFPS(60);
+        });
+
         fps144Label = new Label("144 FPS");
         fps144Label.getStyleClass().addAll("fps-card", "act");
+
+        fps144Label.setOnMouseClicked(e -> {
+            fps144Label.getStyleClass().add("act");
+            fps60Label.getStyleClass().remove("act");
+            game.setTargetFPS(144);
+        });
 
         HBox fpsContainer = new HBox(20);
         fpsContainer.getChildren().addAll(fps60Label, fps144Label);
