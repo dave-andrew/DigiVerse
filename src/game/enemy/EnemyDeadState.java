@@ -4,6 +4,7 @@ import game.Enemy;
 import game.dropitem.Coin1;
 import game.dropitem.Coin5;
 import game.dropitem.DropItem;
+import game.dropitem.Life;
 import helper.ItemManager;
 import javafx.scene.media.Media;
 import javafx.scene.media.MediaPlayer;
@@ -68,25 +69,19 @@ public class EnemyDeadState extends EnemyBaseState {
 
         int randomNumber = random.nextInt(10);
 
-        if (randomNumber < 2) {
+        if (randomNumber < 1) {
             DropItem newDropItem = new Coin5(enemy, enemy.getPosX(), enemy.getPosY());
             itemManager.addDropItem(newDropItem);
             dropItems.add(newDropItem);
-        } else if (randomNumber < 4) {
+        } else if (randomNumber < 3) {
             DropItem newDropItem = new Coin1(enemy, enemy.getPosX(), enemy.getPosY());
+            itemManager.addDropItem(newDropItem);
+            dropItems.add(newDropItem);
+        } else if(randomNumber < 4) {
+            DropItem newDropItem = new Life(enemy, enemy.getPosX(), enemy.getPosY());
             itemManager.addDropItem(newDropItem);
             dropItems.add(newDropItem);
         }
     }
-//
-//    private void removeDropItems() {
-//        Iterator<DropItem> iterator = dropItems.iterator();
-//        while (iterator.hasNext()) {
-//            DropItem dropItem = iterator.next();
-//            enemy.getRoot().getChildren().remove(dropItem);
-//            itemManager.removeItem(dropItem);
-//            iterator.remove();
-//        }
-//    }
 
 }

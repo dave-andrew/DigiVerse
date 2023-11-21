@@ -379,8 +379,6 @@ public class OfflineGame {
         for (DropItem dropItem : itemListCopy) {
             dropItem.getState().onEnterState();
         }
-
-//        System.out.println(player.getScore());
     }
 
     public void cleanUp() {
