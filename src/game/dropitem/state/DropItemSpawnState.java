@@ -1,10 +1,7 @@
 package game.dropitem.state;
 
 import game.Enemy;
-import game.dropitem.Coin1;
-import game.dropitem.Coin5;
-import game.dropitem.DropItem;
-import game.dropitem.Life;
+import game.dropitem.*;
 import game.enemy.EnemyDespawnState;
 import javafx.scene.media.Media;
 import javafx.scene.media.MediaPlayer;
@@ -35,6 +32,14 @@ public class DropItemSpawnState extends DropItemBaseState {
                 player.setScore(player.getScore() + ((Coin5) dropItem).getValue());
             } else if(dropItem instanceof Life) {
                 player.setLives(player.getLives() + 1);
+            } else if(dropItem instanceof QuickLoad) {
+
+            }else if(dropItem instanceof ThreeShot) {
+
+            } else if(dropItem instanceof Nuke) {
+
+            } else if(dropItem instanceof Cartwheel) {
+
             }
 
             dropItem.changeState(dropItem.despawnState);
