@@ -16,6 +16,8 @@ public class SettingMenu extends VBox {
 
     private Label musicLabel, SFXLabel, resolutionLabel, fps60Label, fps144Label;
 
+    private Label settingsLabel;
+
     private double originalMusicVolume;
     private double originalSFXVolume;
     private double originalTargetFPS;
@@ -23,6 +25,11 @@ public class SettingMenu extends VBox {
     public SettingMenu(OfflineGame game) {
         musicSlider = new Slider();
         SFXSlider = new Slider();
+
+        settingsLabel = new Label("Settings");
+        settingsLabel.getStyleClass().add("title");
+
+        this.getChildren().add(settingsLabel);
 
         applyButton = new Button("Apply");
         backButton = new Button("Back");
