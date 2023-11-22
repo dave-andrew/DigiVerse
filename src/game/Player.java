@@ -1,5 +1,6 @@
 package game;
 
+import enums.PowerUp;
 import game.player.*;
 import helper.Collider;
 import helper.ImageManager;
@@ -17,6 +18,7 @@ public class Player extends ImageView {
     private int lives;
     private double speed;
     private double shootcd;
+    private double baseShootcd;
     private int score;
 
     private Collider collider;
@@ -47,6 +49,8 @@ public class Player extends ImageView {
 
     private Image sprite;
 
+    private PowerUp powerUp;
+
     public static Player getInstance() {
         if(instance == null) {
             instance = new Player();
@@ -57,7 +61,8 @@ public class Player extends ImageView {
     private Player() {
         this.lives = 3;
         this.speed = 10;
-        this.shootcd = 5;
+        this.baseShootcd = 8;
+        this.shootcd = this.baseShootcd;
         this.score = 0;
 
         this.leftSprites = ImageManager.importPlayerSprites("left");
@@ -191,4 +196,17 @@ public class Player extends ImageView {
     public void setScore(int score) {
         this.score = score;
     }
+    public PowerUp getPowerUp() {
+        return powerUp;
+    }
+    public void setPowerUp(PowerUp powerUp) {
+        this.powerUp = powerUp;
+    }
+    public double getBaseShoodcd() {
+        return this.baseShootcd;
+    }
+    public void setBaseShootcd(double baseShootcd) {
+        this.baseShootcd = baseShootcd;
+    }
 }
+

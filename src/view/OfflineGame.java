@@ -1,6 +1,7 @@
 package view;
 
 import com.sun.media.jfxmedia.MediaError;
+import enums.PowerUp;
 import game.Bullet;
 import game.Enemy;
 import game.Player;
@@ -40,7 +41,7 @@ public class OfflineGame {
 
     private AnimationTimer timer;
 
-//    Game Layout
+    //    Game Layout
     private VBox pauseMenu;
     private VBox settingMenu;
 
@@ -59,7 +60,7 @@ public class OfflineGame {
     private MediaPlayer mediaPlayer;
     private Label fpsLabel;
 
-//  Game State
+    //  Game State
     private GameBaseState currentState;
     public GameStartState startState;
     public GamePlayState playState;
@@ -136,7 +137,7 @@ public class OfflineGame {
         this.timer = new AnimationTimer() {
             @Override
             public void handle(long now) {
-                if(currentState instanceof GamePauseState) {
+                if (currentState instanceof GamePauseState) {
                     isPaused = true;
                     mediaPlayer.pause();
                 } else {
@@ -210,7 +211,6 @@ public class OfflineGame {
     }
 
 
-
     private boolean escapeKeyPressed = false;
 
     private void handleInput() {
@@ -264,7 +264,7 @@ public class OfflineGame {
         root.getChildren().add(health);
 
         healthText = new Label();
-        if(player.getLives() < 0) {
+        if (player.getLives() < 0) {
             this.mediaPlayer.stop();
             healthText.setText("0");
         } else {
@@ -286,33 +286,61 @@ public class OfflineGame {
         root.getChildren().remove(healthText);
     }
 
+    private double powerUpTime = 0;
+
     private void playerUpdate(double deltaTime) {
-        if(!isPaused) {
-            player.getState().onUpdate(deltaTime, root);
-            player.getCollider().setCollider(player.getPosX(), player.getPosY());
-            if (InputManager.getPressedKeys().contains(KeyCode.SPACE)) {
-                enemySpawner();
-            }
-            if (player.getState() instanceof PlayerStandState) {
-                deadPause = false;
-            }
+        if (isPaused) {
+            return;
         }
+
+        player.getState().onUpdate(deltaTime, root);
+        player.getCollider().setCollider(player.getPosX(), player.getPosY());
+
+        //TODO
+        if (InputManager.getPressedKeys().contains(KeyCode.SPACE)) {
+            enemySpawner();
+        }
+
+        if (player.getState() instanceof PlayerStandState) {
+            deadPause = false;
+        }
+
+        if (player.getPowerUp() == PowerUp.NONE) {
+            powerUpTime = 0;
+            player.setShootcd(player.getBaseShoodcd());
+            return;
+        }
+
+        if (powerUpTime >= 2.0) {
+            player.setPowerUp(PowerUp.NONE);
+            return;
+        }
+
+        if (player.getPowerUp() == PowerUp.QUICKLOAD) {
+            player.setShootcd(1.5);
+        }
+
+
+        powerUpTime += deltaTime;
+        System.out.println(powerUpTime);
     }
 
     private void updateBullets(double deltaTime) {
-        if(!isPaused) {
-            Iterator<Bullet> bulletIterator = bulletManager.getBulletList().iterator();
-            while (bulletIterator.hasNext()) {
-                Bullet bullet = bulletIterator.next();
-                if (bullet.getPosX() < 0 || bullet.getPosX() > ScreenManager.SCREEN_WIDTH ||
-                        bullet.getPosY() < 0 || bullet.getPosY() > ScreenManager.SCREEN_HEIGHT) {
-                    bullet.changeState(bullet.stopState);
-                    root.getChildren().remove(bullet);
-                    bulletIterator.remove();
-                }
-                bullet.getState().onUpdate(deltaTime, bullet.getDirection());
-                bullet.getCollider().setCollider(bullet.getPosX(), bullet.getPosY());
+        if (isPaused) {
+            return;
+        }
+
+        Iterator<Bullet> bulletIterator = bulletManager.getBulletList().iterator();
+        while (bulletIterator.hasNext()) {
+            Bullet bullet = bulletIterator.next();
+            if (bullet.getPosX() < 0 || bullet.getPosX() > ScreenManager.SCREEN_WIDTH ||
+                    bullet.getPosY() < 0 || bullet.getPosY() > ScreenManager.SCREEN_HEIGHT) {
+                bullet.changeState(bullet.stopState);
+                root.getChildren().remove(bullet);
+                bulletIterator.remove();
             }
+            bullet.getState().onUpdate(deltaTime, bullet.getDirection());
+            bullet.getCollider().setCollider(bullet.getPosX(), bullet.getPosY());
         }
     }
 
@@ -373,13 +401,13 @@ public class OfflineGame {
         double randomX;
         double randomY;
 
-        if(spawnSide == 0) {
+        if (spawnSide == 0) {
             randomX = random.nextDouble() * ScreenManager.SCREEN_WIDTH;
             randomY = -32;
-        } else if(spawnSide == 1) {
+        } else if (spawnSide == 1) {
             randomX = 32 + ScreenManager.SCREEN_WIDTH;
             randomY = random.nextDouble() * ScreenManager.SCREEN_HEIGHT;
-        } else if(spawnSide == 2) {
+        } else if (spawnSide == 2) {
             randomX = random.nextDouble() * ScreenManager.SCREEN_WIDTH;
             randomY = 32 + ScreenManager.SCREEN_HEIGHT;
         } else {
@@ -447,6 +475,7 @@ public class OfflineGame {
     public VBox getPauseMenu() {
         return pauseMenu;
     }
+
     public VBox getSettingMenu() {
         return settingMenu;
     }

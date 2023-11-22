@@ -1,5 +1,6 @@
 package game.dropitem.state;
 
+import enums.PowerUp;
 import game.Enemy;
 import game.dropitem.*;
 import game.enemy.EnemyDespawnState;
@@ -33,13 +34,13 @@ public class DropItemSpawnState extends DropItemBaseState {
             } else if(dropItem instanceof Life) {
                 player.setLives(player.getLives() + 1);
             } else if(dropItem instanceof QuickLoad) {
-
+                player.setPowerUp(PowerUp.QUICKLOAD);
             }else if(dropItem instanceof ThreeShot) {
-
+                player.setPowerUp(PowerUp.THREESHOT);
             } else if(dropItem instanceof Nuke) {
-
+                player.setPowerUp(PowerUp.NUKE);
             } else if(dropItem instanceof Cartwheel) {
-
+                player.setPowerUp(PowerUp.CARTWHEEL);
             }
 
             dropItem.changeState(dropItem.despawnState);
