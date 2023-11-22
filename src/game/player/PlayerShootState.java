@@ -80,7 +80,7 @@ public class PlayerShootState extends PlayerBaseState {
     }
 
     private void handlePowerUpAction(PowerUp p) {
-        System.out.println(p.toString());
+//        System.out.println(p.toString());
 
         ArrayList<Integer> directions = new ArrayList<>();
 
