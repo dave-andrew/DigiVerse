@@ -61,33 +61,49 @@ public class EnemyDeadState extends EnemyBaseState {
         }
     }
 
-    private void createDropItems() {
-        Random random = new Random();
+    private Random random = new Random();
 
-        int randomNumber = random.nextInt(10);
+    public void createDropItems() {
+        double[] dropItemWeights = {0.1, 0.1, 0.005, 0.005, 0.005, 0.005, 0.005, 0.005};
 
-        DropItem newDropItem = null;
-        if (randomNumber < 1) {
-            newDropItem = new Coin1(enemy, enemy.getPosX(), enemy.getPosY());
-        } else if (randomNumber < 2) {
-            newDropItem = new Coin5(enemy, enemy.getPosX(), enemy.getPosY());
-        } else if(randomNumber < 2.0005) {
-            newDropItem = new Life(enemy, enemy.getPosX(), enemy.getPosY());
-        } else if(randomNumber < 2.1) {
-            newDropItem = new QuickLoad(enemy, enemy.getPosX(), enemy.getPosY());
-        } else if(randomNumber < 2.15) {
-            newDropItem = new ThreeShot(enemy, enemy.getPosX(), enemy.getPosY());
-        } else if(randomNumber < 2.2) {
-            newDropItem = new Nuke(enemy, enemy.getPosX(), enemy.getPosY());
-        } else if(randomNumber < 2.25) {
-            newDropItem = new Cartwheel(enemy, enemy.getPosX(), enemy.getPosY());
+        double randomNumber = random.nextDouble();
+        double cumulativeWeight = 0;
+
+        for (int i = 0; i < dropItemWeights.length; i++) {
+            cumulativeWeight += dropItemWeights[i];
+            if (randomNumber < cumulativeWeight) {
+                DropItem newDropItem = null;
+                switch (i) {
+                    case 0:
+                        newDropItem = new Coin1(enemy, enemy.getPosX(), enemy.getPosY());
+                        break;
+                    case 1:
+                        newDropItem = new Coin5(enemy, enemy.getPosX(), enemy.getPosY());
+                        break;
+                    case 2:
+                        newDropItem = new Life(enemy, enemy.getPosX(), enemy.getPosY());
+                        break;
+                    case 3:
+                        newDropItem = new QuickLoad(enemy, enemy.getPosX(), enemy.getPosY());
+                        break;
+                    case 4:
+                        newDropItem = new ThreeShot(enemy, enemy.getPosX(), enemy.getPosY());
+                        break;
+                    case 5:
+                        newDropItem = new Nuke(enemy, enemy.getPosX(), enemy.getPosY());
+                        break;
+                    case 6:
+                        newDropItem = new Cartwheel(enemy, enemy.getPosX(), enemy.getPosY());
+                        break;
+                }
+
+                if (newDropItem != null) {
+                    dropItems.add(newDropItem);
+                     itemManager.addDropItem(newDropItem);
+                }
+                break;
+            }
         }
-
-        if(newDropItem != null) {
-            dropItems.add(newDropItem);
-            itemManager.addDropItem(newDropItem);
-        }
-
     }
 
 }
