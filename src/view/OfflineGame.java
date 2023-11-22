@@ -27,10 +27,7 @@ import javafx.scene.Scene;
 import javafx.scene.layout.Pane;
 
 import java.io.File;
-import java.util.ArrayList;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Random;
+import java.util.*;
 
 import javafx.scene.input.KeyCode;
 import javafx.util.Duration;
@@ -286,8 +283,6 @@ public class OfflineGame {
         root.getChildren().remove(healthText);
     }
 
-    private double powerUpTime = 0;
-
     private void playerUpdate(double deltaTime) {
         if (isPaused) {
             return;
@@ -305,22 +300,33 @@ public class OfflineGame {
             deadPause = false;
         }
 
-        if (player.getPowerUp() == PowerUp.NONE) {
-            powerUpTime = 0;
-            return;
+        checkPowerUps(deltaTime);
+    }
+
+    private synchronized void checkPowerUps(double deltaTime) {
+
+        Map<PowerUp, Double> powerUpTimeMap = player.getPowerUpTime();
+        List<PowerUp> powerUpsToRemove = new ArrayList<>();
+
+        for (Map.Entry<PowerUp, Double> entry : powerUpTimeMap.entrySet()) {
+            PowerUp powerUp = entry.getKey();
+            double time = entry.getValue();
+
+            if (time > 0) {
+                powerUpTimeMap.put(powerUp, time - deltaTime);
+            } else {
+                if (powerUp == PowerUp.QUICKLOAD) {
+                    player.setShootcd(1);
+                }
+                powerUpsToRemove.add(powerUp);
+            }
         }
 
-        if (powerUpTime >= 2.0) {
-            player.setShootcd(player.getBaseShoodcd());
-            player.setPowerUp(PowerUp.NONE);
-            return;
+        for (PowerUp powerUpToRemove : powerUpsToRemove) {
+            powerUpTimeMap.remove(powerUpToRemove);
         }
 
-        if (player.getPowerUp() == PowerUp.QUICKLOAD) {
-            player.setShootcd(1.5);
-        }
 
-        powerUpTime += deltaTime;
     }
 
     private void updateBullets(double deltaTime) {

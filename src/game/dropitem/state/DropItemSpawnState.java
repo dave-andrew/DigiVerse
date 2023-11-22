@@ -11,6 +11,7 @@ import java.io.File;
 
 public class DropItemSpawnState extends DropItemBaseState {
     private MediaPlayer mediaPlayer;
+    private final double effectTime = 2.0;
 
     public DropItemSpawnState(Enemy enemy, DropItem dropItem) {
         super(enemy, dropItem);
@@ -34,13 +35,13 @@ public class DropItemSpawnState extends DropItemBaseState {
             } else if(dropItem instanceof Life) {
                 player.setLives(player.getLives() + 1);
             } else if(dropItem instanceof QuickLoad) {
-                player.setPowerUp(PowerUp.QUICKLOAD);
+                player.getPowerUpTime().put(PowerUp.QUICKLOAD, effectTime);
             }else if(dropItem instanceof ThreeShot) {
-                player.setPowerUp(PowerUp.THREESHOT);
+                player.getPowerUpTime().put(PowerUp.THREESHOT, effectTime);
             } else if(dropItem instanceof Nuke) {
-                player.setPowerUp(PowerUp.NUKE);
+                player.getPowerUpTime().put(PowerUp.NUKE, effectTime);
             } else if(dropItem instanceof Cartwheel) {
-                player.setPowerUp(PowerUp.CARTWHEEL);
+                player.getPowerUpTime().put(PowerUp.CARTWHEEL, effectTime);
             }
 
             dropItem.changeState(dropItem.despawnState);

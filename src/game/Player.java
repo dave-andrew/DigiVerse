@@ -11,6 +11,8 @@ import javafx.scene.image.ImageView;
 import javafx.scene.input.KeyCode;
 
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.concurrent.ConcurrentHashMap;
 
 public class Player extends ImageView {
 
@@ -50,7 +52,7 @@ public class Player extends ImageView {
 
     private Image sprite;
 
-    private PowerUp powerUp;
+    private ConcurrentHashMap<PowerUp, Double> powerUpTime = new ConcurrentHashMap<>();
 
     public static Player getInstance() {
         if(instance == null) {
@@ -197,17 +199,19 @@ public class Player extends ImageView {
     public void setScore(int score) {
         this.score = score;
     }
-    public PowerUp getPowerUp() {
-        return powerUp;
-    }
-    public void setPowerUp(PowerUp powerUp) {
-        this.powerUp = powerUp;
-    }
     public double getBaseShoodcd() {
         return this.baseShootcd;
     }
     public void setBaseShootcd(double baseShootcd) {
         this.baseShootcd = baseShootcd;
+    }
+
+    public ConcurrentHashMap<PowerUp, Double> getPowerUpTime() {
+        return powerUpTime;
+    }
+
+    public void setPowerUpTime(ConcurrentHashMap<PowerUp, Double> powerUpTime) {
+        this.powerUpTime = powerUpTime;
     }
 }
 

@@ -40,7 +40,7 @@ public class AddTask extends BorderPane {
 
     private BorderPane root;
 
-//    NAVBAR
+    //    NAVBAR
     private HBox leftNav;
     private Image closeImg;
     private ImageView close;
@@ -48,7 +48,7 @@ public class AddTask extends BorderPane {
     private Button joinBtn;
     private Button closeBtn;
 
-//  CENTER FORM
+    //  CENTER FORM
     private TextField titleField;
     private TextArea descriptionField;
     private CheckBox scored;
@@ -169,7 +169,7 @@ public class AddTask extends BorderPane {
 
         String deadlineAt = DateManager.formatDate(deadline, time);
 
-        if(title.isEmpty() || description.isEmpty()) {
+        if (title.isEmpty() || description.isEmpty()) {
             errorLbl.setText("Please fill all the fields");
             return;
         }

@@ -1,5 +1,6 @@
 package game.player;
 
+import enums.PowerUp;
 import game.Bullet;
 import game.Player;
 import helper.InputManager;
@@ -9,6 +10,7 @@ import javafx.scene.media.Media;
 import javafx.scene.media.MediaPlayer;
 
 import java.io.File;
+import java.util.ArrayList;
 
 public class PlayerShootState extends PlayerBaseState {
     private int frame = 0;
@@ -52,6 +54,13 @@ public class PlayerShootState extends PlayerBaseState {
 
     @Override
     public void spriteManager(double velocityX, double velocityY, int frame) {
+
+//        player.setShootcd(player.getBaseShoodcd());
+
+        player.getPowerUpTime().keySet().forEach(this::handlePowerUpAction);
+
+        ArrayList<Integer> directions = new ArrayList<>();
+
         if(InputManager.getPressedKeys().contains(KeyCode.UP) && InputManager.getPressedKeys().contains(KeyCode.RIGHT)){
             if (validateMove()) {
                 player.setSprite(player.getRightSprites().get(0));
@@ -59,7 +68,9 @@ public class PlayerShootState extends PlayerBaseState {
                 player.setSprite(player.getRightSprites().get(frame));
             }
 
-            spawnBullet(root, 45);
+            directions.add(45);
+
+            spawnBullet(root, directions);
 
         } else if(InputManager.getPressedKeys().contains(KeyCode.UP) && InputManager.getPressedKeys().contains(KeyCode.LEFT)){
             if (validateMove()) {
@@ -68,7 +79,9 @@ public class PlayerShootState extends PlayerBaseState {
                 player.setSprite(player.getLeftSprites().get(frame));
             }
 
-            spawnBullet(root, -45);
+            directions.add(-45);
+
+            spawnBullet(root, directions);
 
         } else if(InputManager.getPressedKeys().contains(KeyCode.DOWN) && InputManager.getPressedKeys().contains(KeyCode.RIGHT)){
             if (validateMove()) {
@@ -77,7 +90,8 @@ public class PlayerShootState extends PlayerBaseState {
                 player.setSprite(player.getRightSprites().get(frame));
             }
 
-            spawnBullet(root, 135);
+            directions.add(135);
+            spawnBullet(root, directions);
 
         } else if(InputManager.getPressedKeys().contains(KeyCode.DOWN) && InputManager.getPressedKeys().contains(KeyCode.LEFT)) {
             if (validateMove()) {
@@ -86,7 +100,9 @@ public class PlayerShootState extends PlayerBaseState {
                 player.setSprite(player.getLeftSprites().get(frame));
             }
 
-            spawnBullet(root, -135);
+            directions.add(-135);
+            spawnBullet(root, directions);
+
         } else if (InputManager.getPressedKeys().contains(KeyCode.RIGHT)){
             if (validateMove()){
                 player.setSprite(player.getRightSprites().get(0));
@@ -94,7 +110,8 @@ public class PlayerShootState extends PlayerBaseState {
                 player.setSprite(player.getRightSprites().get(frame));
             }
 
-            spawnBullet(root, 90);
+            directions.add(90);
+            spawnBullet(root, directions);
 
         } else if (InputManager.getPressedKeys().contains(KeyCode.LEFT)){
             if (validateMove()){
@@ -103,7 +120,8 @@ public class PlayerShootState extends PlayerBaseState {
                 player.setSprite(player.getLeftSprites().get(frame));
             }
 
-            spawnBullet(root, -90);
+            directions.add(-90);
+            spawnBullet(root, directions);
 
         } else if (InputManager.getPressedKeys().contains(KeyCode.UP)){
             if (validateMove()) {
@@ -112,7 +130,8 @@ public class PlayerShootState extends PlayerBaseState {
                 player.setSprite(player.getUpSprites().get(frame));
             }
 
-            spawnBullet(root, 0);
+            directions.add(0);
+            spawnBullet(root, directions);
 
         } else if (InputManager.getPressedKeys().contains(KeyCode.DOWN)) {
             if (validateMove()) {
@@ -121,14 +140,11 @@ public class PlayerShootState extends PlayerBaseState {
                 player.setSprite(player.getDownSprites().get(frame));
             }
 
-            spawnBullet(root, 180);
+            directions.add(180);
+            spawnBullet(root, directions);
 
         } else if (InputManager.getPressedKeys().isEmpty()){
             player.changeState(player.standState);
-            return;
-        } else if (!InputManager.getPressedKeys().isEmpty()){
-            player.changeState(player.walkState);
-            return;
         }
     }
 
@@ -137,44 +153,75 @@ public class PlayerShootState extends PlayerBaseState {
                 || InputManager.getPressedKeys().contains(KeyCode.A) || InputManager.getPressedKeys().contains(KeyCode.D));
     }
 
-    private void spawnBullet(Pane root, int direction) {
+    private void handlePowerUpAction(PowerUp p) {
+
+        ArrayList<Integer> directions = new ArrayList<>();
+        if(p == PowerUp.THREESHOT) {
+
+            directions.add(0);
+            directions.add(45);
+            directions.add(-45);
+
+            spawnBullet(root, directions);
+        }
+
+        if(p == PowerUp.CARTWHEEL) {
+            directions.add(0);
+            directions.add(45);
+            directions.add(-45);
+            directions.add(90);
+            directions.add(-90);
+            directions.add(135);
+            directions.add(-135);
+            directions.add(180);
+            spawnBullet(root, directions);
+        }
+    }
+
+    private void spawnBullet(Pane root, ArrayList<Integer> directions) {
         if (canSpawnBullet) {
 
-            File file = new File("resources/game/soundFX/gunshot.wav");
-            Media media = new Media(file.toURI().toString());
-            MediaPlayer mediaPlayer = new MediaPlayer(media);
-            mediaPlayer.play();
+            try {
+                File file = new File("resources/game/soundFX/gunshot.wav");
+                Media media = new Media(file.toURI().toString());
+                MediaPlayer mediaPlayer = new MediaPlayer(media);
+                mediaPlayer.play();
 
-            double posX = player.getPosX();
-            double posY = player.getPosY();
+                double posX = player.getPosX();
+                double posY = player.getPosY();
 
-            if(direction == 90){
-                posX += 16;
-            } else if(direction == -90) {
-                posX -= 16;
-            } else if(direction == 0) {
-                posY -= 16;
-            } else if(direction == 180) {
-                posY += 16;
-            } else if(direction == 45) {
-                posX += 16;
-                posY -= 16;
-            } else if(direction == -45) {
-                posX -= 16;
-                posY -= 16;
-            } else if(direction == 135) {
-                posX += 16;
-                posY += 16;
-            } else if(direction == -135) {
-                posX -= 16;
-                posY += 16;
+                for (Integer direction : directions) {
+                    if (direction == 90) {
+                        posX += 16;
+                    } else if (direction == -90) {
+                        posX -= 16;
+                    } else if (direction == 0) {
+                        posY -= 16;
+                    } else if (direction == 180) {
+                        posY += 16;
+                    } else if (direction == 45) {
+                        posX += 16;
+                        posY -= 16;
+                    } else if (direction == -45) {
+                        posX -= 16;
+                        posY -= 16;
+                    } else if (direction == 135) {
+                        posX += 16;
+                        posY += 16;
+                    } else if (direction == -135) {
+                        posX -= 16;
+                        posY += 16;
+                    }
+
+                    Bullet newBullet = new Bullet(root, posX, posY, direction);
+                    bulletManager.addBulletList(newBullet);
+                }
+
+                timeSinceLastBullet = 0;
+                canSpawnBullet = false;
+            } catch (Exception e) {
+                e.printStackTrace();
             }
-
-            Bullet newBullet = new Bullet(root, posX, posY, direction);
-            bulletManager.addBulletList(newBullet);
-
-            timeSinceLastBullet = 0;
-            canSpawnBullet = false;
         }
     }
 }
