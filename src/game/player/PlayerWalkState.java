@@ -2,6 +2,7 @@ package game.player;
 
 import game.Player;
 import helper.InputManager;
+import helper.ScreenManager;
 import javafx.scene.input.KeyCode;
 import javafx.scene.layout.Pane;
 
@@ -28,72 +29,42 @@ public class PlayerWalkState extends PlayerBaseState {
             this.frame++;
             this.lastTimeFrame = 0;
         }
+
         if (frame == 4) {
             this.frame = 0;
         }
 
-        double speed = player.getSpeed();
-        double velocityX = 0;
-        double velocityY = 0;
-
-        if(InputManager.getPressedKeys().contains(KeyCode.UP) || InputManager.getPressedKeys().contains(KeyCode.DOWN) ||
-            InputManager.getPressedKeys().contains(KeyCode.RIGHT) || InputManager.getPressedKeys().contains(KeyCode.LEFT)){
+        if (InputManager.getPressedKeys().contains(KeyCode.UP) || InputManager.getPressedKeys().contains(KeyCode.DOWN) ||
+                InputManager.getPressedKeys().contains(KeyCode.RIGHT) || InputManager.getPressedKeys().contains(KeyCode.LEFT)) {
             player.changeState(player.shootState);
             return;
         }
 
-        if (InputManager.getPressedKeys().contains(KeyCode.D)) {
-            velocityX += speed;
-        }
-        if (InputManager.getPressedKeys().contains(KeyCode.A)) {
-            velocityX -= speed;
-        }
+        walk(deltaTime, frame);
+    }
 
-        if (InputManager.getPressedKeys().contains(KeyCode.W)) {
-            velocityY -= speed;
-        }
-        if (InputManager.getPressedKeys().contains(KeyCode.S)) {
-            velocityY += speed;
-        }
-
-        if (velocityX != 0 && velocityY != 0) {
-            double length = Math.sqrt(velocityX * velocityX + velocityY * velocityY);
-            velocityX = (velocityX / length) * speed;
-            velocityY = (velocityY / length) * speed;
-        }
-
-        player.setVelocityX(velocityX);
-        player.setVelocityY(velocityY);
-
+    @Override
+    public void spriteManager(double velocityX, double velocityY, int frame) {
         if (InputManager.getPressedKeys().isEmpty()) {
             player.changeState(player.standState);
             return;
-        } else if (player.getVelocityX() == 0 && player.getVelocityY() != 0) {
-            if (player.getVelocityY() > 0) {
-                player.setSprite(player.getDownSprites().get(frame));
-            } else {
-                player.setSprite(player.getUpSprites().get(frame));
-            }
-        } else if (player.getVelocityX() != 0 && player.getVelocityY() == 0) {
-            if (player.getVelocityX() > 0) {
-                player.setSprite(player.getRightSprites().get(frame));
-            } else {
-                player.setSprite(player.getLeftSprites().get(frame));
-            }
-        } else {
-            if (player.getVelocityX() > 0) {
-                player.setSprite(player.getRightSprites().get(frame));
-            } else {
-                player.setSprite(player.getLeftSprites().get(frame));
-            }
         }
 
-        player.setPosX(player.getPosX() + player.getVelocityX() * deltaTime);
-        player.setPosY(player.getPosY() + player.getVelocityY() * deltaTime);
+        if (velocityX == 0 && velocityY != 0) {
+            if (velocityY > 0) {
+                player.setSprite(player.getDownSprites().get(frame));
+                return;
+            }
 
-        player.setX(player.getPosX());
-        player.setY(player.getPosY());
+            player.setSprite(player.getUpSprites().get(frame));
+            return;
+        }
 
-        player.setImage(player.getSprite());
+        if (velocityX > 0) {
+            player.setSprite(player.getRightSprites().get(frame));
+            return;
+        }
+
+        player.setSprite(player.getLeftSprites().get(frame));
     }
 }

@@ -27,4 +27,9 @@ public class PlayerRespawnState extends PlayerBaseState {
         player.setImage(player.getSprite());
         player.changeState(player.standState);
     }
+
+    @Override
+    public void spriteManager(double velocityX, double velocityY, int frame) {
+
+    }
 }

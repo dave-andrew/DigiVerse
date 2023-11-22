@@ -307,11 +307,11 @@ public class OfflineGame {
 
         if (player.getPowerUp() == PowerUp.NONE) {
             powerUpTime = 0;
-            player.setShootcd(player.getBaseShoodcd());
             return;
         }
 
         if (powerUpTime >= 2.0) {
+            player.setShootcd(player.getBaseShoodcd());
             player.setPowerUp(PowerUp.NONE);
             return;
         }
@@ -320,9 +320,7 @@ public class OfflineGame {
             player.setShootcd(1.5);
         }
 
-
         powerUpTime += deltaTime;
-        System.out.println(powerUpTime);
     }
 
     private void updateBullets(double deltaTime) {

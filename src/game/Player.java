@@ -4,6 +4,7 @@ import enums.PowerUp;
 import game.player.*;
 import helper.Collider;
 import helper.ImageManager;
+import helper.InputManager;
 import helper.ScreenManager;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;

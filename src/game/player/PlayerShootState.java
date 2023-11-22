@@ -16,6 +16,7 @@ public class PlayerShootState extends PlayerBaseState {
     private double bulletCooldown;
     private double timeSinceLastBullet = 0;
     private boolean canSpawnBullet = true;
+    private Pane root;
 
     public PlayerShootState(Player player) {
         super(player);
@@ -28,6 +29,7 @@ public class PlayerShootState extends PlayerBaseState {
 
     @Override
     public void onUpdate(double deltaTime, Pane root) {
+        this.root = root;
 
         timeSinceLastBullet += deltaTime;
 
@@ -45,30 +47,11 @@ public class PlayerShootState extends PlayerBaseState {
             this.frame = 0;
         }
 
-        double speed = player.getSpeed();
-        double velocityX = 0;
-        double velocityY = 0;
+        walk(deltaTime, frame);
+    }
 
-        if (InputManager.getPressedKeys().contains(KeyCode.D)) {
-            velocityX += speed;
-        }
-        if (InputManager.getPressedKeys().contains(KeyCode.A)) {
-            velocityX -= speed;
-        }
-
-        if (InputManager.getPressedKeys().contains(KeyCode.W)) {
-            velocityY -= speed;
-        }
-        if (InputManager.getPressedKeys().contains(KeyCode.S)) {
-            velocityY += speed;
-        }
-
-        if (velocityX != 0 && velocityY != 0) {
-            double length = Math.sqrt(velocityX * velocityX + velocityY * velocityY);
-            velocityX = (velocityX / length) * speed;
-            velocityY = (velocityY / length) * speed;
-        }
-
+    @Override
+    public void spriteManager(double velocityX, double velocityY, int frame) {
         if(InputManager.getPressedKeys().contains(KeyCode.UP) && InputManager.getPressedKeys().contains(KeyCode.RIGHT)){
             if (validateMove()) {
                 player.setSprite(player.getRightSprites().get(0));
@@ -147,17 +130,6 @@ public class PlayerShootState extends PlayerBaseState {
             player.changeState(player.walkState);
             return;
         }
-
-        player.setVelocityX(velocityX);
-        player.setVelocityY(velocityY);
-
-        player.setPosX(player.getPosX() + player.getVelocityX() * deltaTime);
-        player.setPosY(player.getPosY() + player.getVelocityY() * deltaTime);
-
-        player.setX(player.getPosX());
-        player.setY(player.getPosY());
-
-        player.setImage(player.getSprite());
     }
 
     private boolean validateMove() {
@@ -200,8 +172,6 @@ public class PlayerShootState extends PlayerBaseState {
 
             Bullet newBullet = new Bullet(root, posX, posY, direction);
             bulletManager.addBulletList(newBullet);
-
-//            Keknya bakal tetep harus di store di arraylist supaya bisa cek collision ntar
 
             timeSinceLastBullet = 0;
             canSpawnBullet = false;

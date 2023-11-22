@@ -52,4 +52,9 @@ public class PlayerDeadState extends PlayerBaseState{
         }
 
     }
+
+    @Override
+    public void spriteManager(double velocityX, double velocityY, int frame) {
+
+    }
 }

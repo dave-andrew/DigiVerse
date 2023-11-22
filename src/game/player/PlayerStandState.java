@@ -26,4 +26,9 @@ public class PlayerStandState extends PlayerBaseState {
             player.changeState(player.walkState);
         }
     }
+
+    @Override
+    public void spriteManager(double velocityX, double velocityY, int frame) {
+
+    }
 }

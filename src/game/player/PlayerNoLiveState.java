@@ -17,4 +17,9 @@ public class PlayerNoLiveState extends PlayerBaseState{
     public void onUpdate(double deltaTime, Pane root) {
 
     }
+
+    @Override
+    public void spriteManager(double velocityX, double velocityY, int frame) {
+
+    }
 }
