@@ -3,9 +3,11 @@ package game.dropitem.state;
 import enums.PowerUp;
 import game.Enemy;
 import game.dropitem.*;
+import game.enemy.EnemyDeadState;
 import game.enemy.EnemyDespawnState;
 import javafx.scene.media.Media;
 import javafx.scene.media.MediaPlayer;
+import view.OfflineGame;
 
 import java.io.File;
 
@@ -39,7 +41,11 @@ public class DropItemSpawnState extends DropItemBaseState {
             }else if(dropItem instanceof ThreeShot) {
                 player.getPowerUpTime().put(PowerUp.THREESHOT, effectTime);
             } else if(dropItem instanceof Nuke) {
-                player.getPowerUpTime().put(PowerUp.NUKE, effectTime);
+                OfflineGame.enemyList.forEach(enemy -> {
+                    if(!(enemy.getState() instanceof EnemyDeadState)) {
+                        enemy.changeState(enemy.deadState);
+                    }
+                });
             } else if(dropItem instanceof Cartwheel) {
                 player.getPowerUpTime().put(PowerUp.CARTWHEEL, effectTime);
             }

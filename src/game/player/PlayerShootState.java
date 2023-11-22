@@ -32,6 +32,13 @@ public class PlayerShootState extends PlayerBaseState {
     @Override
     public void onUpdate(double deltaTime, Pane root) {
         this.root = root;
+
+        player.setShootcd(player.getBaseShoodcd());
+
+        if(player.getPowerUpTime().containsKey(PowerUp.QUICKLOAD)) {
+            player.setShootcd(1.5);
+        }
+
         this.bulletCooldown = player.getShootcd();
 
         timeSinceLastBullet += deltaTime;
@@ -56,14 +63,6 @@ public class PlayerShootState extends PlayerBaseState {
     @Override
     public void spriteManager(double velocityX, double velocityY, int frame) {
 
-//        player.setShootcd(player.getBaseShoodcd());
-
-        if(player.getPowerUpTime().containsKey(PowerUp.QUICKLOAD)) {
-            player.setShootcd(player.getBaseShoodcd() / 2);
-        } else {
-            player.setShootcd(player.getBaseShoodcd());
-        }
-
         if (InputManager.getPressedKeys().isEmpty()){
             player.changeState(player.standState);
         }
@@ -85,20 +84,12 @@ public class PlayerShootState extends PlayerBaseState {
 
         ArrayList<Integer> directions = new ArrayList<>();
 
-        if(p == PowerUp.QUICKLOAD) {
-            player.setShootcd(1.5);
-        } else {
-            player.setShootcd(player.getBaseShoodcd());
-        }
-
         if(InputManager.getPressedKeys().contains(KeyCode.UP) && InputManager.getPressedKeys().contains(KeyCode.RIGHT)){
             if (validateMove()) {
                 player.setSprite(player.getRightSprites().get(0));
             } else {
                 player.setSprite(player.getRightSprites().get(frame));
             }
-
-            if (checkPowerUp(p, directions)) return;
 
             if(p == PowerUp.THREESHOT) {
 
@@ -109,6 +100,9 @@ public class PlayerShootState extends PlayerBaseState {
                 spawnBullet(root, directions);
                 return;
             }
+
+            if (checkPowerUp(p, directions)) return;
+
 
             directions.add(45);
 
@@ -121,8 +115,6 @@ public class PlayerShootState extends PlayerBaseState {
                 player.setSprite(player.getLeftSprites().get(frame));
             }
 
-            if (checkPowerUp(p, directions)) return;
-
             if(p == PowerUp.THREESHOT) {
 
                 directions.add(0);
@@ -132,6 +124,8 @@ public class PlayerShootState extends PlayerBaseState {
                 spawnBullet(root, directions);
                 return;
             }
+
+            if (checkPowerUp(p, directions)) return;
 
             directions.add(-45);
 
@@ -144,8 +138,6 @@ public class PlayerShootState extends PlayerBaseState {
                 player.setSprite(player.getRightSprites().get(frame));
             }
 
-            if (checkPowerUp(p, directions)) return;
-
             if(p == PowerUp.THREESHOT) {
 
                 directions.add(90);
@@ -155,6 +147,8 @@ public class PlayerShootState extends PlayerBaseState {
                 spawnBullet(root, directions);
                 return;
             }
+
+            if (checkPowerUp(p, directions)) return;
 
             directions.add(135);
             spawnBullet(root, directions);
@@ -166,8 +160,6 @@ public class PlayerShootState extends PlayerBaseState {
                 player.setSprite(player.getLeftSprites().get(frame));
             }
 
-            if (checkPowerUp(p, directions)) return;
-
             if(p == PowerUp.THREESHOT) {
 
                 directions.add(-90);
@@ -177,6 +169,8 @@ public class PlayerShootState extends PlayerBaseState {
                 spawnBullet(root, directions);
                 return;
             }
+
+            if (checkPowerUp(p, directions)) return;
 
             directions.add(-135);
             spawnBullet(root, directions);
@@ -188,8 +182,6 @@ public class PlayerShootState extends PlayerBaseState {
                 player.setSprite(player.getRightSprites().get(frame));
             }
 
-            if (checkPowerUp(p, directions)) return;
-
             if(p == PowerUp.THREESHOT) {
 
                 directions.add(45);
@@ -199,6 +191,8 @@ public class PlayerShootState extends PlayerBaseState {
                 spawnBullet(root, directions);
                 return;
             }
+
+            if (checkPowerUp(p, directions)) return;
 
             directions.add(90);
             spawnBullet(root, directions);
@@ -210,8 +204,6 @@ public class PlayerShootState extends PlayerBaseState {
                 player.setSprite(player.getLeftSprites().get(frame));
             }
 
-            if (checkPowerUp(p, directions)) return;
-
             if(p == PowerUp.THREESHOT) {
 
                 directions.add(-45);
@@ -221,6 +213,8 @@ public class PlayerShootState extends PlayerBaseState {
                 spawnBullet(root, directions);
                 return;
             }
+
+            if (checkPowerUp(p, directions)) return;
 
             directions.add(-90);
             spawnBullet(root, directions);
@@ -232,8 +226,6 @@ public class PlayerShootState extends PlayerBaseState {
                 player.setSprite(player.getUpSprites().get(frame));
             }
 
-            if (checkPowerUp(p, directions)) return;
-
             if(p == PowerUp.THREESHOT) {
 
                 directions.add(0);
@@ -243,6 +235,8 @@ public class PlayerShootState extends PlayerBaseState {
                 spawnBullet(root, directions);
                 return;
             }
+
+            if (checkPowerUp(p, directions)) return;
 
             directions.add(0);
             spawnBullet(root, directions);
@@ -254,8 +248,6 @@ public class PlayerShootState extends PlayerBaseState {
                 player.setSprite(player.getDownSprites().get(frame));
             }
 
-            if (checkPowerUp(p, directions)) return;
-
             if(p == PowerUp.THREESHOT) {
 
                 directions.add(-135);
@@ -265,6 +257,8 @@ public class PlayerShootState extends PlayerBaseState {
                 spawnBullet(root, directions);
                 return;
             }
+
+            if (checkPowerUp(p, directions)) return;
 
             directions.add(180);
             spawnBullet(root, directions);

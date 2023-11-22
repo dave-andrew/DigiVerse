@@ -46,7 +46,7 @@ public class OfflineGame {
     private Pane root;
     private Scene scene;
     private InputManager inputManager;
-    private final ArrayList<Enemy> enemyList = new ArrayList<>();
+    public static final ArrayList<Enemy> enemyList = new ArrayList<>();
     private ArrayList<Image> groundSprites;
     private long lastTimeFrame = 0;
     private boolean deadPause = false;
