@@ -11,7 +11,7 @@ import java.io.File;
 
 public class DropItemSpawnState extends DropItemBaseState {
     private MediaPlayer mediaPlayer;
-    private final double effectTime = 2.0;
+    private final double effectTime = 200.0;
 
     public DropItemSpawnState(Enemy enemy, DropItem dropItem) {
         super(enemy, dropItem);

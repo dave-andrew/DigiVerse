@@ -26,12 +26,13 @@ public class PlayerShootState extends PlayerBaseState {
 
     @Override
     public void onEnterState() {
-        this.bulletCooldown = player.getShootcd();
+
     }
 
     @Override
     public void onUpdate(double deltaTime, Pane root) {
         this.root = root;
+        this.bulletCooldown = player.getShootcd();
 
         timeSinceLastBullet += deltaTime;
 
@@ -57,15 +58,56 @@ public class PlayerShootState extends PlayerBaseState {
 
 //        player.setShootcd(player.getBaseShoodcd());
 
-        player.getPowerUpTime().keySet().forEach(this::handlePowerUpAction);
+        if(player.getPowerUpTime().containsKey(PowerUp.QUICKLOAD)) {
+            player.setShootcd(player.getBaseShoodcd() / 2);
+        } else {
+            player.setShootcd(player.getBaseShoodcd());
+        }
+
+        if (InputManager.getPressedKeys().isEmpty()){
+            player.changeState(player.standState);
+        }
+
+        if (!player.getPowerUpTime().isEmpty()) {
+            player.getPowerUpTime().keySet().forEach(this::handlePowerUpAction);
+        } else {
+            handlePowerUpAction(PowerUp.NONE);
+        }
+    }
+
+    private boolean validateMove() {
+        return !(InputManager.getPressedKeys().contains(KeyCode.W) || InputManager.getPressedKeys().contains(KeyCode.S)
+                || InputManager.getPressedKeys().contains(KeyCode.A) || InputManager.getPressedKeys().contains(KeyCode.D));
+    }
+
+    private void handlePowerUpAction(PowerUp p) {
+        System.out.println(p.toString());
 
         ArrayList<Integer> directions = new ArrayList<>();
+
+        if(p == PowerUp.QUICKLOAD) {
+            player.setShootcd(1.5);
+        } else {
+            player.setShootcd(player.getBaseShoodcd());
+        }
 
         if(InputManager.getPressedKeys().contains(KeyCode.UP) && InputManager.getPressedKeys().contains(KeyCode.RIGHT)){
             if (validateMove()) {
                 player.setSprite(player.getRightSprites().get(0));
             } else {
                 player.setSprite(player.getRightSprites().get(frame));
+            }
+
+            if (checkPowerUp(p, directions)) return;
+
+            if(p == PowerUp.THREESHOT) {
+
+                directions.add(0);
+                directions.add(45);
+                directions.add(90);
+
+                spawnBullet(root, directions);
+                return;
             }
 
             directions.add(45);
@@ -79,6 +121,18 @@ public class PlayerShootState extends PlayerBaseState {
                 player.setSprite(player.getLeftSprites().get(frame));
             }
 
+            if (checkPowerUp(p, directions)) return;
+
+            if(p == PowerUp.THREESHOT) {
+
+                directions.add(0);
+                directions.add(-45);
+                directions.add(-90);
+
+                spawnBullet(root, directions);
+                return;
+            }
+
             directions.add(-45);
 
             spawnBullet(root, directions);
@@ -88,6 +142,18 @@ public class PlayerShootState extends PlayerBaseState {
                 player.setSprite(player.getRightSprites().get(0));
             } else {
                 player.setSprite(player.getRightSprites().get(frame));
+            }
+
+            if (checkPowerUp(p, directions)) return;
+
+            if(p == PowerUp.THREESHOT) {
+
+                directions.add(90);
+                directions.add(135);
+                directions.add(180);
+
+                spawnBullet(root, directions);
+                return;
             }
 
             directions.add(135);
@@ -100,6 +166,18 @@ public class PlayerShootState extends PlayerBaseState {
                 player.setSprite(player.getLeftSprites().get(frame));
             }
 
+            if (checkPowerUp(p, directions)) return;
+
+            if(p == PowerUp.THREESHOT) {
+
+                directions.add(-90);
+                directions.add(-135);
+                directions.add(180);
+
+                spawnBullet(root, directions);
+                return;
+            }
+
             directions.add(-135);
             spawnBullet(root, directions);
 
@@ -108,6 +186,18 @@ public class PlayerShootState extends PlayerBaseState {
                 player.setSprite(player.getRightSprites().get(0));
             } else {
                 player.setSprite(player.getRightSprites().get(frame));
+            }
+
+            if (checkPowerUp(p, directions)) return;
+
+            if(p == PowerUp.THREESHOT) {
+
+                directions.add(45);
+                directions.add(90);
+                directions.add(135);
+
+                spawnBullet(root, directions);
+                return;
             }
 
             directions.add(90);
@@ -120,6 +210,18 @@ public class PlayerShootState extends PlayerBaseState {
                 player.setSprite(player.getLeftSprites().get(frame));
             }
 
+            if (checkPowerUp(p, directions)) return;
+
+            if(p == PowerUp.THREESHOT) {
+
+                directions.add(-45);
+                directions.add(-90);
+                directions.add(-135);
+
+                spawnBullet(root, directions);
+                return;
+            }
+
             directions.add(-90);
             spawnBullet(root, directions);
 
@@ -128,6 +230,18 @@ public class PlayerShootState extends PlayerBaseState {
                 player.setSprite(player.getUpSprites().get(0));
             } else {
                 player.setSprite(player.getUpSprites().get(frame));
+            }
+
+            if (checkPowerUp(p, directions)) return;
+
+            if(p == PowerUp.THREESHOT) {
+
+                directions.add(0);
+                directions.add(45);
+                directions.add(-45);
+
+                spawnBullet(root, directions);
+                return;
             }
 
             directions.add(0);
@@ -140,31 +254,26 @@ public class PlayerShootState extends PlayerBaseState {
                 player.setSprite(player.getDownSprites().get(frame));
             }
 
+            if (checkPowerUp(p, directions)) return;
+
+            if(p == PowerUp.THREESHOT) {
+
+                directions.add(-135);
+                directions.add(180);
+                directions.add(135);
+
+                spawnBullet(root, directions);
+                return;
+            }
+
             directions.add(180);
             spawnBullet(root, directions);
 
-        } else if (InputManager.getPressedKeys().isEmpty()){
-            player.changeState(player.standState);
-        }
-    }
-
-    private boolean validateMove() {
-        return !(InputManager.getPressedKeys().contains(KeyCode.W) || InputManager.getPressedKeys().contains(KeyCode.S)
-                || InputManager.getPressedKeys().contains(KeyCode.A) || InputManager.getPressedKeys().contains(KeyCode.D));
-    }
-
-    private void handlePowerUpAction(PowerUp p) {
-
-        ArrayList<Integer> directions = new ArrayList<>();
-        if(p == PowerUp.THREESHOT) {
-
-            directions.add(0);
-            directions.add(45);
-            directions.add(-45);
-
-            spawnBullet(root, directions);
         }
 
+    }
+
+    private boolean checkPowerUp(PowerUp p, ArrayList<Integer> directions) {
         if(p == PowerUp.CARTWHEEL) {
             directions.add(0);
             directions.add(45);
@@ -175,7 +284,9 @@ public class PlayerShootState extends PlayerBaseState {
             directions.add(-135);
             directions.add(180);
             spawnBullet(root, directions);
+            return true;
         }
+        return false;
     }
 
     private void spawnBullet(Pane root, ArrayList<Integer> directions) {

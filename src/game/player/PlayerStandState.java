@@ -15,7 +15,7 @@ public class PlayerStandState extends PlayerBaseState {
 
     @Override
     public void onEnterState() {
-        System.out.println("Stand State");
+//        System.out.println("Stand State");
     }
 
     @Override

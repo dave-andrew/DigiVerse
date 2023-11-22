@@ -42,7 +42,7 @@ public class OfflineGame {
     private VBox pauseMenu;
     private VBox settingMenu;
 
-    private Player player;
+    private final Player player;
     private Pane root;
     private Scene scene;
     private InputManager inputManager;
@@ -303,30 +303,26 @@ public class OfflineGame {
         checkPowerUps(deltaTime);
     }
 
-    private synchronized void checkPowerUps(double deltaTime) {
+    private void checkPowerUps(double deltaTime) {
+        synchronized (player) {
+            Map<PowerUp, Double> powerUpTimeMap = player.getPowerUpTime();
+            List<PowerUp> powerUpsToRemove = new ArrayList<>();
 
-        Map<PowerUp, Double> powerUpTimeMap = player.getPowerUpTime();
-        List<PowerUp> powerUpsToRemove = new ArrayList<>();
+            for (Map.Entry<PowerUp, Double> entry : powerUpTimeMap.entrySet()) {
+                PowerUp powerUp = entry.getKey();
+                double time = entry.getValue();
 
-        for (Map.Entry<PowerUp, Double> entry : powerUpTimeMap.entrySet()) {
-            PowerUp powerUp = entry.getKey();
-            double time = entry.getValue();
-
-            if (time > 0) {
-                powerUpTimeMap.put(powerUp, time - deltaTime);
-            } else {
-                if (powerUp == PowerUp.QUICKLOAD) {
-                    player.setShootcd(1);
+                if (time > 0) {
+                    powerUpTimeMap.put(powerUp, time - deltaTime);
+                } else {
+                    powerUpsToRemove.add(powerUp);
                 }
-                powerUpsToRemove.add(powerUp);
+            }
+
+            for (PowerUp powerUpToRemove : powerUpsToRemove) {
+                player.getPowerUpTime().remove(powerUpToRemove);
             }
         }
-
-        for (PowerUp powerUpToRemove : powerUpsToRemove) {
-            powerUpTimeMap.remove(powerUpToRemove);
-        }
-
-
     }
 
     private void updateBullets(double deltaTime) {
