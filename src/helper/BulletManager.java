@@ -29,4 +29,8 @@ public class BulletManager {
     public void addBulletList(Bullet newBullet) {
         this.bulletList.add(newBullet);
     }
+
+    public void addAllBullet(ArrayList<Bullet> bulletList) {
+        this.bulletList.addAll(bulletList);
+    }
 }

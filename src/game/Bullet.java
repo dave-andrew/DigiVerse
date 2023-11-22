@@ -16,7 +16,7 @@ public class Bullet extends ImageView {
     private double posX;
     private double posY;
 
-    private String direction;
+    private int direction;
 
     private int speed;
 
@@ -31,7 +31,7 @@ public class Bullet extends ImageView {
 
     private Collider collider;
 
-    public Bullet(Pane root, double posX, double posY, String direction) {
+    public Bullet(Pane root, double posX, double posY, int direction) {
         this.speed = 20;
         this.posX = posX;
         this.posY = posY;
@@ -51,28 +51,6 @@ public class Bullet extends ImageView {
         root.getChildren().add(this);
         this.setX(posX);
         this.setY(posY);
-
-//        AnimationTimer run = new AnimationTimer() {
-//            @Override
-//            public void handle(long now) {
-//                if (lastTimeFrame == 0) {
-//                    lastTimeFrame = now;
-//                } else if(currentState instanceof BulletStopState) {
-//                    root.getChildren().remove(Bullet.this);
-//                    this.stop();
-//                }
-//
-//                double deltaTime = (double) (now - lastTimeFrame) / 25_000_000;
-//
-//                currentState.onUpdate(deltaTime, direction);
-//
-//                collider.setCollider(posX, posY);
-//
-//                lastTimeFrame = now;
-//            }
-//        };
-//
-//        run.start();
     }
 
     public void changeState(BulletBaseState state) {
@@ -115,7 +93,7 @@ public class Bullet extends ImageView {
         this.collider = collider;
     }
 
-    public String getDirection() {
+    public int getDirection() {
         return this.direction;
     }
 }

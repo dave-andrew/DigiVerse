@@ -76,7 +76,7 @@ public class PlayerShootState extends PlayerBaseState {
                 player.setSprite(player.getRightSprites().get(frame));
             }
 
-            spawnBullet(root, "up-right");
+            spawnBullet(root, 45);
 
         } else if(InputManager.getPressedKeys().contains(KeyCode.UP) && InputManager.getPressedKeys().contains(KeyCode.LEFT)){
             if (validateMove()) {
@@ -85,7 +85,7 @@ public class PlayerShootState extends PlayerBaseState {
                 player.setSprite(player.getLeftSprites().get(frame));
             }
 
-            spawnBullet(root, "up-left");
+            spawnBullet(root, -45);
 
         } else if(InputManager.getPressedKeys().contains(KeyCode.DOWN) && InputManager.getPressedKeys().contains(KeyCode.RIGHT)){
             if (validateMove()) {
@@ -94,7 +94,7 @@ public class PlayerShootState extends PlayerBaseState {
                 player.setSprite(player.getRightSprites().get(frame));
             }
 
-            spawnBullet(root, "down-right");
+            spawnBullet(root, 135);
 
         } else if(InputManager.getPressedKeys().contains(KeyCode.DOWN) && InputManager.getPressedKeys().contains(KeyCode.LEFT)) {
             if (validateMove()) {
@@ -103,7 +103,7 @@ public class PlayerShootState extends PlayerBaseState {
                 player.setSprite(player.getLeftSprites().get(frame));
             }
 
-            spawnBullet(root, "down-left");
+            spawnBullet(root, -135);
         } else if (InputManager.getPressedKeys().contains(KeyCode.RIGHT)){
             if (validateMove()){
                 player.setSprite(player.getRightSprites().get(0));
@@ -111,7 +111,7 @@ public class PlayerShootState extends PlayerBaseState {
                 player.setSprite(player.getRightSprites().get(frame));
             }
 
-            spawnBullet(root, "right");
+            spawnBullet(root, 90);
 
         } else if (InputManager.getPressedKeys().contains(KeyCode.LEFT)){
             if (validateMove()){
@@ -120,7 +120,7 @@ public class PlayerShootState extends PlayerBaseState {
                 player.setSprite(player.getLeftSprites().get(frame));
             }
 
-            spawnBullet(root, "left");
+            spawnBullet(root, -90);
 
         } else if (InputManager.getPressedKeys().contains(KeyCode.UP)){
             if (validateMove()) {
@@ -129,7 +129,7 @@ public class PlayerShootState extends PlayerBaseState {
                 player.setSprite(player.getUpSprites().get(frame));
             }
 
-            spawnBullet(root, "up");
+            spawnBullet(root, 0);
 
         } else if (InputManager.getPressedKeys().contains(KeyCode.DOWN)) {
             if (validateMove()) {
@@ -138,7 +138,7 @@ public class PlayerShootState extends PlayerBaseState {
                 player.setSprite(player.getDownSprites().get(frame));
             }
 
-            spawnBullet(root, "down");
+            spawnBullet(root, 180);
 
         } else if (InputManager.getPressedKeys().isEmpty()){
             player.changeState(player.standState);
@@ -165,7 +165,7 @@ public class PlayerShootState extends PlayerBaseState {
                 || InputManager.getPressedKeys().contains(KeyCode.A) || InputManager.getPressedKeys().contains(KeyCode.D));
     }
 
-    private void spawnBullet(Pane root, String direction) {
+    private void spawnBullet(Pane root, int direction) {
         if (canSpawnBullet) {
 
             File file = new File("resources/game/soundFX/gunshot.wav");
@@ -176,24 +176,24 @@ public class PlayerShootState extends PlayerBaseState {
             double posX = player.getPosX();
             double posY = player.getPosY();
 
-            if(direction.equals("right")){
+            if(direction == 90){
                 posX += 16;
-            } else if(direction.equals("left")) {
+            } else if(direction == -90) {
                 posX -= 16;
-            } else if(direction.equals("up")) {
+            } else if(direction == 0) {
                 posY -= 16;
-            } else if(direction.equals("down")) {
+            } else if(direction == 180) {
                 posY += 16;
-            } else if(direction.equals("up-right")) {
+            } else if(direction == 45) {
                 posX += 16;
                 posY -= 16;
-            } else if(direction.equals("up-left")) {
+            } else if(direction == -45) {
                 posX -= 16;
                 posY -= 16;
-            } else if(direction.equals("down-right")) {
+            } else if(direction == 135) {
                 posX += 16;
                 posY += 16;
-            } else if(direction.equals("down-left")) {
+            } else if(direction == -135) {
                 posX -= 16;
                 posY += 16;
             }

@@ -1,10 +1,7 @@
 package game.enemy;
 
 import game.Enemy;
-import game.dropitem.Coin1;
-import game.dropitem.Coin5;
-import game.dropitem.DropItem;
-import game.dropitem.Life;
+import game.dropitem.*;
 import helper.ItemManager;
 import javafx.scene.media.Media;
 import javafx.scene.media.MediaPlayer;
@@ -69,19 +66,28 @@ public class EnemyDeadState extends EnemyBaseState {
 
         int randomNumber = random.nextInt(10);
 
+        DropItem newDropItem = null;
         if (randomNumber < 1) {
-            DropItem newDropItem = new Coin5(enemy, enemy.getPosX(), enemy.getPosY());
-            itemManager.addDropItem(newDropItem);
-            dropItems.add(newDropItem);
-        } else if (randomNumber < 3) {
-            DropItem newDropItem = new Coin1(enemy, enemy.getPosX(), enemy.getPosY());
-            itemManager.addDropItem(newDropItem);
-            dropItems.add(newDropItem);
-        } else if(randomNumber < 4) {
-            DropItem newDropItem = new Life(enemy, enemy.getPosX(), enemy.getPosY());
-            itemManager.addDropItem(newDropItem);
-            dropItems.add(newDropItem);
+            newDropItem = new Coin1(enemy, enemy.getPosX(), enemy.getPosY());
+        } else if (randomNumber < 2) {
+            newDropItem = new Coin5(enemy, enemy.getPosX(), enemy.getPosY());
+        } else if(randomNumber < 2.0005) {
+            newDropItem = new Life(enemy, enemy.getPosX(), enemy.getPosY());
+        } else if(randomNumber < 2.1) {
+            newDropItem = new QuickLoad(enemy, enemy.getPosX(), enemy.getPosY());
+        } else if(randomNumber < 2.15) {
+            newDropItem = new ThreeShot(enemy, enemy.getPosX(), enemy.getPosY());
+        } else if(randomNumber < 2.2) {
+            newDropItem = new Nuke(enemy, enemy.getPosX(), enemy.getPosY());
+        } else if(randomNumber < 2.25) {
+            newDropItem = new Cartwheel(enemy, enemy.getPosX(), enemy.getPosY());
         }
+
+        if(newDropItem != null) {
+            dropItems.add(newDropItem);
+            itemManager.addDropItem(newDropItem);
+        }
+
     }
 
 }

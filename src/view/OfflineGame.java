@@ -367,8 +367,29 @@ public class OfflineGame {
 
     private void enemySpawner() {
         Random random = new Random();
-        double randomX = random.nextDouble() * ScreenManager.SCREEN_WIDTH;
-        double randomY = random.nextDouble() * ScreenManager.SCREEN_HEIGHT;
+
+        int spawnSide = random.nextInt(4);
+
+        double randomX;
+        double randomY;
+
+        if(spawnSide == 0) {
+            randomX = random.nextDouble() * ScreenManager.SCREEN_WIDTH;
+            randomY = -32;
+        } else if(spawnSide == 1) {
+            randomX = 32 + ScreenManager.SCREEN_WIDTH;
+            randomY = random.nextDouble() * ScreenManager.SCREEN_HEIGHT;
+        } else if(spawnSide == 2) {
+            randomX = random.nextDouble() * ScreenManager.SCREEN_WIDTH;
+            randomY = 32 + ScreenManager.SCREEN_HEIGHT;
+        } else {
+            randomX = -32;
+            randomY = random.nextDouble() * ScreenManager.SCREEN_HEIGHT;
+        }
+
+
+        System.out.println(randomX + " " + randomY);
+
         Enemy enemy = new Enemy(root, randomX, randomY, player, "soldier");
         enemyList.add(enemy);
     }

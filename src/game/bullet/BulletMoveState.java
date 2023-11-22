@@ -13,7 +13,7 @@ public class BulletMoveState extends BulletBaseState {
     }
 
     @Override
-    public void onUpdate(double deltaTime, String direction) {
+    public void onUpdate(double deltaTime, int direction) {
         if (bullet.getPosX() > ScreenManager.SCREEN_WIDTH || bullet.getPosX() < 0 ||
                 bullet.getPosY() > ScreenManager.SCREEN_HEIGHT || bullet.getPosY() < 0) {
             bullet.changeState(bullet.stopState);
@@ -26,31 +26,31 @@ public class BulletMoveState extends BulletBaseState {
         double diagonalSpeed = bullet.getSpeed() / Math.sqrt(2);
 
         switch (direction) {
-            case "right":
+            case 90:
                 velX = bullet.getSpeed();
                 break;
-            case "left":
+            case -90:
                 velX = -bullet.getSpeed();
                 break;
-            case "up":
+            case 0:
                 velY = -bullet.getSpeed();
                 break;
-            case "down":
+            case 180:
                 velY = bullet.getSpeed();
                 break;
-            case "up-right":
+            case 45:
                 velX = diagonalSpeed;
                 velY = -diagonalSpeed;
                 break;
-            case "up-left":
+            case -45:
                 velX = -diagonalSpeed;
                 velY = -diagonalSpeed;
                 break;
-            case "down-right":
+            case 135:
                 velX = diagonalSpeed;
                 velY = diagonalSpeed;
                 break;
-            case "down-left":
+            case -135:
                 velX = -diagonalSpeed;
                 velY = diagonalSpeed;
                 break;

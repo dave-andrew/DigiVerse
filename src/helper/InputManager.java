@@ -25,7 +25,7 @@ public class InputManager {
     public static synchronized InputManager getInstance(Scene scene) {
         if (gameInput == null) {
             gameInput = new InputManager(scene);
-            System.out.println(scene);
+//            System.out.println(scene);
         }
         return gameInput;
     }
@@ -39,14 +39,14 @@ public class InputManager {
     }
 
     private void handlePlayerInput() {
-        System.out.println("InputManager" + this.scene);
+//        System.out.println("InputManager" + this.scene);
         KeyCode[] allowedKeys = { KeyCode.A, KeyCode.S, KeyCode.D, KeyCode.W, KeyCode.UP, KeyCode.DOWN, KeyCode.LEFT,
                 KeyCode.RIGHT, KeyCode.SPACE, KeyCode.ESCAPE };
         List<KeyCode> allowedKeysList = Arrays.asList(allowedKeys);
 
         this.scene.setOnKeyPressed(e -> {
             KeyCode keyCode = e.getCode();
-            System.out.println(keyCode);
+//            System.out.println(keyCode);
             if (!pressedKeys.contains(keyCode) && allowedKeysList.contains(keyCode)) {
                 pressedKeys.add(keyCode);
             }

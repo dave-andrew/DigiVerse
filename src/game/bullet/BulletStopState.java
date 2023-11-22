@@ -13,7 +13,7 @@ public class BulletStopState extends BulletBaseState{
     }
 
     @Override
-    public void onUpdate(double deltaTime, String direction) {
+    public void onUpdate(double deltaTime, int direction) {
 
     }
 }

@@ -12,6 +12,6 @@ public abstract class BulletBaseState {
 
     public abstract void onEnterState();
 
-    public abstract void onUpdate(double deltaTime, String direction);
+    public abstract void onUpdate(double deltaTime, int direction);
 
 }
