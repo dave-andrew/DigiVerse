@@ -193,23 +193,22 @@ public class OfflineGame {
 
         fpsLabel.setText("FPS: " + (int) (1 / deltaTime * 20));
 
-        if (isPaused) {
-            return;
+        if (!isPaused) {
+            clearPane();
+
+            playerUpdate(deltaTime);
+            updateBullets(deltaTime);
+            checkCollisions(deltaTime);
+            checkItemCollision();
+
+            root.getChildren().add(player);
+            setUpGui();
+
+            if(Math.random() <= 0.01) {
+                enemySpawner();
+            }
         }
 
-        clearPane();
-
-        playerUpdate(deltaTime);
-        updateBullets(deltaTime);
-        checkCollisions(deltaTime);
-        checkItemCollision();
-
-        root.getChildren().add(player);
-        setUpGui();
-
-        if(Math.random() <= 0.01) {
-            enemySpawner();
-        }
         lastTimeFrame = now;
     }
 

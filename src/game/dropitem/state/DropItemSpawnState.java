@@ -12,14 +12,21 @@ import view.OfflineGame;
 import java.io.File;
 
 public class DropItemSpawnState extends DropItemBaseState {
-    private MediaPlayer mediaPlayer;
+    private MediaPlayer coinSound, lifeSound, powerupSound;
     private final double effectTime = 200.0;
 
     public DropItemSpawnState(Enemy enemy, DropItem dropItem) {
         super(enemy, dropItem);
 
         File moneySFX = new File("resources/game/soundFX/money.wav");
-        this.mediaPlayer = new MediaPlayer(new Media(moneySFX.toURI().toString()));
+        this.coinSound = new MediaPlayer(new Media(moneySFX.toURI().toString()));
+
+        File lifeSFX = new File("resources/game/soundFX/lifeadd.wav");
+        this.lifeSound = new MediaPlayer(new Media(lifeSFX.toURI().toString()));
+
+        File powerupSFX = new File("resources/game/soundFX/powerup.wav");
+        this.powerupSound = new MediaPlayer(new Media(powerupSFX.toURI().toString()));
+
     }
 
     @Override
@@ -29,16 +36,20 @@ public class DropItemSpawnState extends DropItemBaseState {
         }
 
         if(player.getCollider().collidesWith(dropItem.getCollider())) {
-            this.mediaPlayer.play();
             if(dropItem instanceof Coin1) {
+                this.coinSound.play();
                 player.setScore(player.getScore() + ((Coin1) dropItem).getValue());
             } else if(dropItem instanceof Coin5) {
+                this.coinSound.play();
                 player.setScore(player.getScore() + ((Coin5) dropItem).getValue());
             } else if(dropItem instanceof Life) {
+                this.lifeSound.play();
                 player.setLives(player.getLives() + 1);
             } else if(dropItem instanceof QuickLoad) {
+                this.powerupSound.play();
                 player.getPowerUpTime().put(PowerUp.QUICKLOAD, effectTime);
             }else if(dropItem instanceof ThreeShot) {
+                this.powerupSound.play();
                 player.getPowerUpTime().put(PowerUp.THREESHOT, effectTime);
             } else if(dropItem instanceof Nuke) {
                 OfflineGame.enemyList.forEach(enemy -> {
@@ -47,6 +58,7 @@ public class DropItemSpawnState extends DropItemBaseState {
                     }
                 });
             } else if(dropItem instanceof Cartwheel) {
+                this.powerupSound.play();
                 player.getPowerUpTime().put(PowerUp.CARTWHEEL, effectTime);
             }
 
