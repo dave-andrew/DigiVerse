@@ -34,6 +34,22 @@ import javafx.util.Duration;
 
 public class OfflineGame {
 
+//    Game Attributes
+    private int level = 0;
+    private double enemySpawnRate = 0.01;
+
+    public void addLevel() {
+        if(this.level == 2) {
+            this.level = 0;
+            return;
+        }
+        this.level++;
+    }
+
+    public void resetLevel() {
+        this.level = 0;
+    }
+
     private Stage stage;
 
     private AnimationTimer timer;
@@ -47,7 +63,8 @@ public class OfflineGame {
     private Scene scene;
     private InputManager inputManager;
     public static final ArrayList<Enemy> enemyList = new ArrayList<>();
-    private ArrayList<Image> groundSprites;
+    private ArrayList<ArrayList<Image>> groundSprites;
+    private ArrayList<String> enemySprites;
     private long lastTimeFrame = 0;
     private boolean deadPause = false;
     private final BulletManager bulletManager = BulletManager.getInstance();
@@ -88,7 +105,27 @@ public class OfflineGame {
         player.setX(ScreenManager.SCREEN_WIDTH / 2);
         player.setY(ScreenManager.SCREEN_HEIGHT / 2);
 
-        groundSprites = ImageManager.importGroundSprites("tile");
+        this.fpsLabel = new Label("FPS: 0");
+
+        this.fpsLabel.setPrefWidth(100);
+        this.fpsLabel.setLayoutX(root.getWidth() - fpsLabel.getPrefWidth() - 10);
+        this.fpsLabel.setLayoutY(10);
+
+        this.timerLabel = new Label();
+        this.timerLabel.setPrefWidth(100);
+        this.timerLabel.setLayoutX((root.getWidth() - timerLabel.getPrefWidth()) / 2);
+        this.timerLabel.setLayoutY(10);
+
+        this.groundSprites = new ArrayList<>();
+        groundSprites.add(0, ImageManager.importGroundSprites("tile"));
+        groundSprites.add(1, ImageManager.importGroundSprites("rock"));
+        groundSprites.add(2, ImageManager.importGroundSprites("sand"));
+
+        this.enemySprites = new ArrayList<>();
+        enemySprites.add(0, "soldier");
+        enemySprites.add(1, "mummy");
+        enemySprites.add(2, "bug");
+
 
         this.startState = new GameStartState(this);
         this.playState = new GamePlayState(this);
@@ -98,17 +135,6 @@ public class OfflineGame {
 
         initialize(stage);
         setupGameLoop();
-
-        this.fpsLabel = new Label("FPS: 0");
-
-        this.fpsLabel.setPrefWidth(100);
-        this.fpsLabel.setLayoutX(root.getWidth() - fpsLabel.getPrefWidth() - 10);
-        this.fpsLabel.setLayoutY(10);
-
-        this.timerLabel = new Label("Time: 90s");
-        this.timerLabel.setPrefWidth(100);
-        this.timerLabel.setLayoutX((root.getWidth() - timerLabel.getPrefWidth()) / 2);
-        this.timerLabel.setLayoutY(10);
 
         this.inputManager = InputManager.getInstance(this.scene);
 
@@ -194,8 +220,6 @@ public class OfflineGame {
 
         double deltaTime = (double) (now - lastTimeFrame) / 50_000_000;
 
-        updateTimer();
-
         while (deltaTime < TARGET_FRAME_TIME) {
             try {
                 Thread.sleep(1);
@@ -219,7 +243,7 @@ public class OfflineGame {
             root.getChildren().add(player);
             setUpGui();
 
-            if (Math.random() <= 0.01) {
+            if (Math.random() <= enemySpawnRate) {
                 enemySpawner();
             }
         }
@@ -321,6 +345,11 @@ public class OfflineGame {
         healthText.setLayoutX(50);
         healthText.setLayoutY(50);
         root.getChildren().add(healthText);
+
+        root.getChildren().add(fpsLabel);
+        root.getChildren().add(timerLabel);
+
+        updateTimer();
     }
 
     public void clearPane() {
@@ -330,6 +359,9 @@ public class OfflineGame {
         root.getChildren().remove(scoreText);
         root.getChildren().remove(health);
         root.getChildren().remove(healthText);
+
+        root.getChildren().remove(fpsLabel);
+        root.getChildren().remove(timerLabel);
     }
 
     private void playerUpdate(double deltaTime) {
@@ -424,10 +456,12 @@ public class OfflineGame {
     }
 
     private void setupBackground() {
+        ArrayList<Image> groundSprite = groundSprites.get(level);
+
         for (int i = 0; i < ScreenManager.SCREEN_WIDTH + 64; i += 32) {
             for (int j = 0; j < ScreenManager.SCREEN_HEIGHT + 64; j += 32) {
-                Image groundSprite = groundSprites.get(new Random().nextInt(groundSprites.size()));
-                ImageView tile = new ImageView(groundSprite);
+                Image ground = groundSprite.get(new Random().nextInt(groundSprite.size()));
+                ImageView tile = new ImageView(ground);
                 tile.setScaleX(2);
                 tile.setScaleY(2);
                 tile.setX(i);
@@ -459,7 +493,9 @@ public class OfflineGame {
             randomY = random.nextDouble() * ScreenManager.SCREEN_HEIGHT;
         }
 
-        Enemy enemy = new Enemy(root, randomX, randomY, player, "soldier");
+        String enemyType = enemySprites.get(random.nextInt(enemySprites.size()));
+
+        Enemy enemy = new Enemy(root, randomX, randomY, player, enemyType);
         enemyList.add(enemy);
     }
 
@@ -526,5 +562,13 @@ public class OfflineGame {
 
     public MediaPlayer getMediaPlayer() {
         return mediaPlayer;
+    }
+
+    public double getEnemySpawnRate() {
+        return this.enemySpawnRate;
+    }
+
+    public void setEnemySpawnRate(double enemySpawnRate) {
+        this.enemySpawnRate = enemySpawnRate;
     }
 }

@@ -81,6 +81,10 @@ public class Enemy extends ImageView {
     private void initSprite(String type) {
         if(type.equals("soldier")) {
             this.spriteList = ImageManager.importEnemySprites("soldier");
+        } else if(type.equals("mummy")) {
+            this.spriteList = ImageManager.importEnemySprites("mummy");
+        } else if(type.equals("bug")) {
+            this.spriteList = ImageManager.importEnemySprites("bug");
         }
     }
 

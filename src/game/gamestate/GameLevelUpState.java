@@ -24,7 +24,11 @@ public class GameLevelUpState extends GameBaseState {
 
     @Override
     public void onEnterState() {
+        game.addLevel();
         game.getRoot().getChildren().add(guiView);
+
+        game.setEnemySpawnRate(game.getEnemySpawnRate() + 0.05);
+
     }
 
     @Override

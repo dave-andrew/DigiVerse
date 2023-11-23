@@ -14,9 +14,6 @@ public class GamePlayState extends GameBaseState {
     @Override
     public void onEnterState() {
         game.getMediaPlayer().play();
-
-        game.getRoot().getChildren().add(game.getFpsLabel());
-        game.getRoot().getChildren().add(game.getTimerLabel());
     }
 
     @Override

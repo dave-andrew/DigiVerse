@@ -29,6 +29,9 @@ public class GameOverState extends GameBaseState {
 
         game.getMediaPlayer().stop();
 
+        game.resetLevel();
+        game.setEnemySpawnRate(0.01);
+
         game.getRoot().getChildren().add(guiView);
     }
 
