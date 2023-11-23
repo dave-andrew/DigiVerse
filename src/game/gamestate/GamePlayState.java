@@ -13,12 +13,16 @@ public class GamePlayState extends GameBaseState {
 
     @Override
     public void onEnterState() {
+        game.getMediaPlayer().play();
 
+        game.getRoot().getChildren().add(game.getFpsLabel());
+        game.getRoot().getChildren().add(game.getTimerLabel());
     }
 
     @Override
     public void onUpdate(long now) {
         if (game.getPlayer().getState() instanceof PlayerNoLiveState) {
+            game.setBatchTimer(game.getInitialTimer());
             this.game.changeState(this.game.overState);
             return;
         }

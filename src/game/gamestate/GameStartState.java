@@ -12,7 +12,6 @@ import view.OfflineGame;
 public class GameStartState extends GameBaseState{
 
     private ImageView guiView;
-    private Scene scene;
 
     public GameStartState(OfflineGame game) {
         super(game);
@@ -20,8 +19,6 @@ public class GameStartState extends GameBaseState{
 
     @Override
     public void onEnterState() {
-
-        scene = game.getScene();
 
         Image gui = ImageManager.importGUI("start-banner");
         guiView = new ImageView(gui);

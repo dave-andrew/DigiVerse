@@ -55,7 +55,7 @@ public class OfflineGame {
 
     private boolean isPaused = false;
     private MediaPlayer mediaPlayer;
-    private Label fpsLabel;
+    private Label fpsLabel, timerLabel;
 
     //  Game State
     private GameBaseState currentState;
@@ -63,11 +63,11 @@ public class OfflineGame {
     public GamePlayState playState;
     public GamePauseState pauseState;
     public GameOverState overState;
+    public GameLevelUpState gameLevelUpState;
 
     public OfflineGame(Stage stage) {
         this.stage = stage;
         this.root = new Pane();
-
 
         setupAudio();
 
@@ -94,14 +94,10 @@ public class OfflineGame {
         this.playState = new GamePlayState(this);
         this.pauseState = new GamePauseState(this);
         this.overState = new GameOverState(this);
+        this.gameLevelUpState = new GameLevelUpState(this);
 
         initialize(stage);
         setupGameLoop();
-
-        this.inputManager = InputManager.getInstance(this.scene);
-
-        this.currentState = this.startState;
-        this.currentState.onEnterState();
 
         this.fpsLabel = new Label("FPS: 0");
 
@@ -109,7 +105,15 @@ public class OfflineGame {
         this.fpsLabel.setLayoutX(root.getWidth() - fpsLabel.getPrefWidth() - 10);
         this.fpsLabel.setLayoutY(10);
 
-        root.getChildren().add(fpsLabel);
+        this.timerLabel = new Label("Time: 90s");
+        this.timerLabel.setPrefWidth(100);
+        this.timerLabel.setLayoutX((root.getWidth() - timerLabel.getPrefWidth()) / 2);
+        this.timerLabel.setLayoutY(10);
+
+        this.inputManager = InputManager.getInstance(this.scene);
+
+        this.currentState = this.startState;
+        this.currentState.onEnterState();
 
         scene.getStylesheets().add("file:resources/light_theme.css");
 
@@ -130,6 +134,14 @@ public class OfflineGame {
         setUpGui();
     }
 
+    public Label getFpsLabel() {
+        return fpsLabel;
+    }
+
+    public Label getTimerLabel() {
+        return timerLabel;
+    }
+
     private void setupGameLoop() {
         this.timer = new AnimationTimer() {
             @Override
@@ -139,7 +151,6 @@ public class OfflineGame {
                     mediaPlayer.pause();
                 } else {
                     isPaused = false;
-                    mediaPlayer.play();
                 }
                 currentState.onUpdate(now);
             }
@@ -152,7 +163,6 @@ public class OfflineGame {
         Media media = new Media(file.toURI().toString());
         mediaPlayer = new MediaPlayer(media);
         mediaPlayer.setVolume(0.1);
-        mediaPlayer.play();
 
         mediaPlayer.setOnEndOfMedia(new Runnable() {
             @Override
@@ -174,12 +184,17 @@ public class OfflineGame {
         return TARGET_FPS;
     }
 
+    private final int INITIAL_TIMER_VALUE = 90;
+    private double elapsedTimer = 0.0;
+
     public void updateGame(long now) {
         isPaused = currentState instanceof GamePauseState;
 
         handleInput();
 
         double deltaTime = (double) (now - lastTimeFrame) / 50_000_000;
+
+        updateTimer();
 
         while (deltaTime < TARGET_FRAME_TIME) {
             try {
@@ -204,7 +219,7 @@ public class OfflineGame {
             root.getChildren().add(player);
             setUpGui();
 
-            if(Math.random() <= 0.01) {
+            if (Math.random() <= 0.01) {
                 enemySpawner();
             }
         }
@@ -212,7 +227,36 @@ public class OfflineGame {
         lastTimeFrame = now;
     }
 
+    private int batchTimer = INITIAL_TIMER_VALUE;
+    private long lastUpdateTime = System.currentTimeMillis();
 
+    public int getInitialTimer() {
+        return INITIAL_TIMER_VALUE;
+    }
+
+    public void setBatchTimer(int batchTimer) {
+        this.batchTimer = batchTimer;
+    }
+
+    private void updateTimer() {
+        if (!isPaused && !deadPause) {
+            long currentTime = System.currentTimeMillis();
+            long elapsedTimeMillis = currentTime - lastUpdateTime;
+
+            if (elapsedTimeMillis >= 1000) {
+                lastUpdateTime = currentTime;
+                batchTimer--;
+                timerLabel.setText("Time: " + batchTimer + "s");
+
+                if (batchTimer <= 0) {
+                    batchTimer = INITIAL_TIMER_VALUE;
+                    elapsedTimer = 0;
+                    this.changeState(this.gameLevelUpState);
+                    timerLabel.setText("Time: " + batchTimer + "s");
+                }
+            }
+        }
+    }
     private boolean escapeKeyPressed = false;
 
     private void handleInput() {

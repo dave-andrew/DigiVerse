@@ -39,6 +39,7 @@ public class GamePauseState extends GameBaseState {
     @Override
     public void onEnterState() {
 
+        game.getMediaPlayer().pause();
         game.getRoot().getChildren().add(game.getPauseMenu());
 
     }

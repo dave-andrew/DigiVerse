@@ -26,6 +26,9 @@ public class GameOverState extends GameBaseState {
 
     @Override
     public void onEnterState() {
+
+        game.getMediaPlayer().stop();
+
         game.getRoot().getChildren().add(guiView);
     }
 
@@ -34,7 +37,7 @@ public class GameOverState extends GameBaseState {
         if(InputManager.getPressedKeys().contains(KeyCode.SPACE)) {
             game.getRoot().getChildren().remove(guiView);
             game.cleanUp();
-            game.changeState(game.startState);
+            game.changeState(game.playState);
         }
     }
 }
