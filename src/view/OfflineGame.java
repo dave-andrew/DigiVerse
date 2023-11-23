@@ -86,6 +86,7 @@ public class OfflineGame {
         this.stage = stage;
         this.root = new Pane();
 
+
         setupAudio();
 
         this.pauseMenu = new VBox(40);

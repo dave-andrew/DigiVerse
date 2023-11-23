@@ -14,6 +14,7 @@ public class InputManager {
     private static InputManager gameInput;
     private static final ArrayList<KeyCode> pressedKeys = new ArrayList<>();
     private static final ArrayList<MouseButton> mouseClicks = new ArrayList<>();
+    private static final ArrayList<Character> typedChars = new ArrayList<>();
 
     private Scene scene;
 
@@ -25,7 +26,6 @@ public class InputManager {
     public static synchronized InputManager getInstance(Scene scene) {
         if (gameInput == null) {
             gameInput = new InputManager(scene);
-//            System.out.println(scene);
         }
         return gameInput;
     }
@@ -39,16 +39,19 @@ public class InputManager {
     }
 
     private void handlePlayerInput() {
-//        System.out.println("InputManager" + this.scene);
-        KeyCode[] allowedKeys = { KeyCode.A, KeyCode.S, KeyCode.D, KeyCode.W, KeyCode.UP, KeyCode.DOWN, KeyCode.LEFT,
-                KeyCode.RIGHT, KeyCode.SPACE, KeyCode.ESCAPE };
+        KeyCode[] allowedKeys = {KeyCode.A, KeyCode.S, KeyCode.D, KeyCode.W, KeyCode.UP, KeyCode.DOWN, KeyCode.LEFT,
+                KeyCode.RIGHT, KeyCode.SPACE, KeyCode.ESCAPE};
         List<KeyCode> allowedKeysList = Arrays.asList(allowedKeys);
 
         this.scene.setOnKeyPressed(e -> {
             KeyCode keyCode = e.getCode();
-//            System.out.println(keyCode);
             if (!pressedKeys.contains(keyCode) && allowedKeysList.contains(keyCode)) {
                 pressedKeys.add(keyCode);
+            }
+
+            if (keyCode.isLetterKey()) {
+                typedChars.add(keyCode.getChar().charAt(0));
+                checkCheats();
             }
         });
 
@@ -65,5 +68,39 @@ public class InputManager {
             mouseClicks.remove(e.getButton());
         });
     }
+
+    public void checkCheats() {
+        if (godCheat()) {
+            typedChars.clear();
+            System.out.println("GOD MODE ACTIVATED");
+        }
+
+        if (dropRateCheat()) {
+            typedChars.clear();
+            System.out.println("DROP RATE CHEAT ACTIVATED");
+        }
+    }
+
+    public boolean godCheat() {
+        String cheat = "GOD";
+        return checkCheat(cheat);
+    }
+
+    public boolean dropRateCheat() {
+        String cheat = "DROP";
+        return checkCheat(cheat);
+    }
+
+    private boolean checkCheat(String cheat) {
+        int typedSize = typedChars.size();
+
+        StringBuilder lastTypedChars = new StringBuilder();
+        for (int i = Math.max(0, typedSize - cheat.length()); i < typedSize; i++) {
+            lastTypedChars.append(typedChars.get(i));
+        }
+
+        return lastTypedChars.toString().equals(cheat);
+    }
+
 
 }
