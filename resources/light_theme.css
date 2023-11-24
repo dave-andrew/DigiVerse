@@ -95,6 +95,10 @@
     -fx-background-color: #2980b9;
 }
 
+.scroll-bar {
+    -fx-font-size: 12px;
+}
+
 /* ============================== */
 
 .auth-layout {
