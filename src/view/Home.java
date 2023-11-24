@@ -273,7 +273,7 @@ public class Home {
             calendar.setAlignment(Pos.TOP_CENTER);
 
             calendar.getStyleClass().add("card");
-            calendar.setStyle("-fx-background-radius: 0px");
+            calendar.setStyle("-fx-effect: null");
 
             calendar.setPadding(new Insets(0, 0, 200, 0));
 

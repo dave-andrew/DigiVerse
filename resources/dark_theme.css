@@ -403,6 +403,10 @@
     -fx-text-fill: #FFFFFF;
 }
 
+.calendar-box:hover {
+    -fx-background-color: #2a2a2a;
+}
+
 .calendar-day {
     -fx-background-color: rgba(86, 86, 86, 0.67);
 }

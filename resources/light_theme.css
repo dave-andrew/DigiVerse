@@ -346,7 +346,6 @@
 .calendar-item {
     -fx-cursor: hand;
     -fx-font-size: 12px;
-    -fx-background-color: white;
 }
 
 .calendar-item:hover {
@@ -388,6 +387,10 @@
 .calendar-box {
     -fx-background-color: #cecece, white;
     -fx-background-insets: 0, 0 1 1 0;
+}
+
+.calendar-box:hover {
+    -fx-background-color: #cecece, #F5F5F5;
 }
 
 .calendar-box.first-row {

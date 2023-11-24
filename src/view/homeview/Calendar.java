@@ -67,7 +67,7 @@ public class Calendar extends VBox {
         prevMonthBtn = new Button();
         prevMonthBtn.setGraphic(leftArrowView);
         prevMonthBtn.setAlignment(Pos.TOP_CENTER);
-        prevMonthBtn.setStyle("-fx-background-color: transparent; -fx-border-color: transparent; -fx-border-width: 0;-fx-cursor: hand");
+        prevMonthBtn.getStyleClass().add("image-button");
 
         Image rightArrow = new Image("file:resources/icons/right-nav.png");
         ImageView rightArrowView = new ImageView(rightArrow);
@@ -76,7 +76,7 @@ public class Calendar extends VBox {
         nextMonthBtn = new Button();
         nextMonthBtn.setGraphic(rightArrowView);
         nextMonthBtn.setAlignment(Pos.TOP_CENTER);
-        nextMonthBtn.setStyle("-fx-background-color: transparent; -fx-border-color: transparent; -fx-border-width: 0;-fx-cursor: hand");
+        nextMonthBtn.getStyleClass().add("image-button");
 
         calendarHeader.getChildren().addAll(prevMonthBtn, monthLbl, nextMonthBtn);
         calendarHeader.setAlignment(Pos.TOP_CENTER);
