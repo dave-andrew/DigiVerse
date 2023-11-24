@@ -16,6 +16,8 @@ public class ClassCard extends StackPane {
         VBox cardContent = new VBox(10);
 
         Label classNameLbl = new Label(className);
+        classNameLbl.getStyleClass().add("bold-text");
+
         Label classCodeLbl = new Label(classCode);
         classCodeLbl.setWrapText(true);
         cardContent.getStyleClass().add("blue-bg");

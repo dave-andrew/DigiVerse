@@ -89,7 +89,7 @@ public class Home {
 
         borderPane = new BorderPane();
         mainPane = new StackPane();
-//        mainPane.getStyleClass().add("bg-primary");
+        mainPane.setStyle("-fx-border-color: transparent #E5E5E5 transparent transparent; -fx-border-width: 1px;");
 
         navBar = new HBox();
         leftNav = new HBox(15);
@@ -178,9 +178,11 @@ public class Home {
 
         homeSideNav = sideNavItem("file:resources/icons/home.png", "Home");
         homeSideNav.getStyleClass().add("side-nav-item");
+        homeSideNav.setPrefWidth(250);
 
         calenderSideNav = sideNavItem("file:resources/icons/calendar.png", "Calendar");
         calenderSideNav.getStyleClass().add("side-nav-item");
+        calenderSideNav.setPrefWidth(250);
     }
 
     private Scene setLayout() {
@@ -201,7 +203,7 @@ public class Home {
 
         HBox logOutBtn = new HBox();
         logOutBtn.getStyleClass().add("side-nav-item");
-        logOutBtn.setAlignment(Pos.CENTER);
+//        logOutBtn.setAlignment(Pos.CENTER);
 
         Label logOutLbl = new Label("Log Out");
         logOutLbl.setStyle("-fx-font-size: 16px;-fx-text-fill: #FF0000;");

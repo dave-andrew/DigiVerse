@@ -306,6 +306,7 @@ public class Profile extends VBox {
 
         editIconView.setFitWidth(25);
         editIconView.setPreserveRatio(true);
+        HBox.setMargin(editIconView, new Insets(0, 0, 0, 20));
 
         Label editBtn = new Label("Edit Profile");
         editBtn.setPrefWidth(100);
@@ -338,6 +339,9 @@ public class Profile extends VBox {
             profileContainer.getChildren().addAll(nameField, emailField, birthdayField, errorLbl, buttonContainer);
         });
 
+        VBox.setMargin(editProfileContainer, new Insets(0, 0, 400, 0));
+        editProfileContainer.getStyleClass().add("border-button");
+
         return editProfileContainer;
     }
 
@@ -366,12 +370,15 @@ public class Profile extends VBox {
         passwordIconView.setFitWidth(25);
         passwordIconView.setPreserveRatio(true);
 
+        HBox.setMargin(passwordIconView, new Insets(0, 0, 0, 20));
+
         Label passwordBtn = new Label("Change Password");
         passwordBtn.setPrefWidth(150);
         passwordBtn.setStyle("-fx-font-size: 14px");
 
         passwordContainer.getChildren().addAll(passwordIconView, passwordBtn);
         passwordContainer.setAlignment(Pos.CENTER_RIGHT);
+        passwordContainer.getStyleClass().add("border-button");
 
         passwordContainer.setOnMouseClicked(e -> {
             this.errorLbl.setText("");
@@ -380,6 +387,8 @@ public class Profile extends VBox {
             profileContainer.getChildren().removeAll(oldPasswordField, newPasswordField, confirmPasswordField, errorLbl, changeButtonContainer);
             profileContainer.getChildren().addAll(oldPasswordField, newPasswordField, confirmPasswordField, errorLbl, changeButtonContainer);
         });
+
+        VBox.setMargin(passwordContainer, new Insets(0, 0, 400, 0));
 
         return passwordContainer;
     }

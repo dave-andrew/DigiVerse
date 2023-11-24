@@ -101,6 +101,24 @@
     -fx-background-color: #4dd0e1; /* Accent color for progress bar */
 }
 
+.scroll-bar:vertical {
+    -fx-background-color: transparent;
+}
+
+.scroll-bar .thumb {
+    -fx-background-color: #3498db;
+    -fx-background-radius: 100px;
+}
+
+.scroll-bar .thumb:hover {
+    -fx-background-color: #2980b9;
+}
+
+.scroll-bar {
+    -fx-font-size: 12px;
+}
+
+
 /* ============================== */
 
 .auth-layout {
@@ -167,7 +185,7 @@
 }
 
 .side-nav-item {
-    -fx-padding: 15px 50px;
+    -fx-padding: 15px 30px;
     -fx-cursor: hand;
 }
 
@@ -382,4 +400,15 @@
     -fx-border-width: 1;
     -fx-background-color: #2E2E2E;
     -fx-text-fill: #FFFFFF;
+}
+
+.border-button {
+    -fx-border-radius: 10px;
+    -fx-border-color: #E5E5E5;
+    -fx-border-width: 1px;
+    -fx-cursor: hand;
+}
+
+.bold-text {
+    -fx-font-family: "Nunito Black";
 }
