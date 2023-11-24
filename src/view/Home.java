@@ -23,6 +23,7 @@ import view.homeview.Calendar;
 import view.homeview.ClassroomList;
 
 import javax.xml.crypto.dsig.keyinfo.KeyValue;
+import java.util.Objects;
 
 
 public class Home {
@@ -128,11 +129,7 @@ public class Home {
 
         if (loggedUser != null) {
             Image userImage = loggedUser.getProfile();
-            if (userImage == null) {
-                userImg = new ImageView(new Image("file:resources/icons/user.png"));
-            } else {
-                userImg = new ImageView(userImage);
-            }
+            userImg = new ImageView(Objects.requireNonNullElseGet(userImage, () -> new Image("file:resources/icons/user.png")));
         } else {
             userImg = new ImageView(new Image("file:resources/icons/user.png"));
         }
@@ -206,7 +203,7 @@ public class Home {
 //        logOutBtn.setAlignment(Pos.CENTER);
 
         Label logOutLbl = new Label("Log Out");
-        logOutLbl.setStyle("-fx-font-size: 16px;-fx-text-fill: #FF0000;");
+        logOutLbl.setStyle("-fx-font-size: 16px;-fx-text-fill: #d70000;");
 
         HBox.setMargin(logOutLbl, new Insets(0, 0, 0, 10));
 

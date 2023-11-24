@@ -221,7 +221,6 @@
 
 .image-button {
     -fx-background-color: transparent;
-    -fx-background-radius: 100px;
     -fx-cursor: hand;
 }
 
@@ -422,4 +421,8 @@
 .right-border {
     -fx-border-color: transparent #E5E5E5 transparent transparent;
     -fx-border-width: 1px;
+}
+
+.profile-pic {
+    -fx-fill: #f5f5f5;
 }

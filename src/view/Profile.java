@@ -67,7 +67,7 @@ public class Profile extends VBox {
         Rectangle banner = new Rectangle();
         banner.widthProperty().bind(this.widthProperty().subtract(40));
         banner.setHeight(225);
-        banner.setFill(Color.valueOf("#2c3e50"));
+        banner.setStyle("-fx-fill: linear-gradient(to top, violet, indigo, blue, green, yellow, orange, red);");
 
         double cornerRadiusTop = 20.0;
 
@@ -125,7 +125,10 @@ public class Profile extends VBox {
             profile = new ImageView(loggedUser.getProfileImage());
         }
 
-        ImageManager.makeCircular(profile, 100);
+        this.profileLayout = new HBox(30);
+        profileLayout.setAlignment(Pos.BOTTOM_LEFT);
+
+        ImageManager.makeCircular(profileLayout, profile, 100);
 
         name = new Label(loggedUser.getUsername());
         name.setStyle("-fx-font-size: 40px");
@@ -168,8 +171,7 @@ public class Profile extends VBox {
 
         profileContainer.setAlignment(Pos.CENTER);
 
-        this.profileLayout = new HBox(30);
-        profileLayout.setAlignment(Pos.BOTTOM_LEFT);
+
 
         this.nameBirthday = new VBox(5);
 
@@ -190,7 +192,7 @@ public class Profile extends VBox {
 
         nameBirthday.setPadding(new Insets(0, 0, -20, 0));
 
-        profileLayout.getChildren().addAll(profile, nameBirthday);
+        profileLayout.getChildren().addAll(nameBirthday);
 
         profileContainer.getChildren().addAll(profileLayout);
 

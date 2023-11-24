@@ -51,6 +51,7 @@ public class ClassroomList extends GridPane {
             index++;
         }
 
+        this.prefWidthProperty().bind(mainPane.widthProperty().subtract(10));
         this.setPadding(new Insets(20));
         this.setHgap(20);
         this.setVgap(20);

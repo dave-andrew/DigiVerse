@@ -1,10 +1,14 @@
 package helper;
 
+import javafx.geometry.Pos;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.image.WritableImage;
+import javafx.scene.layout.HBox;
 import javafx.scene.layout.StackPane;
+import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
+import javafx.scene.paint.Paint;
 import javafx.scene.shape.Circle;
 
 import java.io.ByteArrayInputStream;
@@ -113,4 +117,36 @@ public class ImageManager {
         imageView.setFitWidth(radius * 2);
         imageView.setFitHeight(radius * 2);
     }
+
+    public static void makeCircular(HBox tolol, ImageView imageView, double radius) {
+
+        StackPane stackPane = new StackPane();
+
+        Circle clip = new Circle();
+        clip.setCenterX(radius);
+        clip.setCenterY(radius);
+        clip.setRadius(radius);
+        clip.getStyleClass().add("profile-pic");
+
+        stackPane.getChildren().add(clip);
+
+        Circle clip2 = new Circle();
+        clip2.setCenterX(radius);
+        clip2.setCenterY(radius);
+        clip2.setRadius(radius - 5);
+
+        imageView.setPreserveRatio(false);
+
+        imageView.setFitWidth(radius * 2);
+        imageView.setFitHeight(radius * 2);
+        imageView.setClip(clip2);
+
+        stackPane.getChildren().add(imageView);
+
+        stackPane.setAlignment(Pos.CENTER);
+
+        tolol.getChildren().add(stackPane);
+
+    }
+
 }

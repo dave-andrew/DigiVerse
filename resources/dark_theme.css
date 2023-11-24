@@ -237,8 +237,8 @@
 
 .image-button {
     -fx-background-color: transparent;
-    -fx-background-radius: 100px;
     -fx-cursor: hand;
+    -fx-background-radius: 10px;
 }
 
 .image-button:hover {
@@ -384,7 +384,7 @@
 }
 
 .class-card:hover {
-    -fx-effect: dropshadow(three-pass-box, rgba(255,255,255,0.5), 10, 0, 0, 0);
+    -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.8), 14, 0, 0, 0);
 }
 
 .class-card:pressed {
@@ -419,3 +419,6 @@
     -fx-border-width: 1px;
 }
 
+.profile-pic {
+    -fx-fill: #2c2c2c;
+}
