@@ -222,6 +222,7 @@
 .image-button {
     -fx-background-color: transparent;
     -fx-cursor: hand;
+    -fx-background-radius: 10px;
 }
 
 .image-button:hover {
@@ -345,6 +346,7 @@
 .calendar-item {
     -fx-cursor: hand;
     -fx-font-size: 12px;
+    -fx-background-color: white;
 }
 
 .calendar-item:hover {
@@ -379,10 +381,33 @@
     -fx-background-color: #377fee;
 }
 
-.calendar {
-    -fx-border-color: #C0C0C0;
-    -fx-border-width: 1;
-    -fx-background-color: #FFFFFF;
+.calendar-day {
+    -fx-background-color: rgba(213, 213, 213, 0.67);
+}
+
+.calendar-box {
+    -fx-background-color: #cecece, white;
+    -fx-background-insets: 0, 0 1 1 0;
+}
+
+.calendar-box.first-row {
+    -fx-background-insets: 0, 1 1 1 0;
+}
+
+.calendar-box.first-column {
+    -fx-background-insets: 0, 0 1 1 1;
+}
+
+.calendar-box.first-row.first-column {
+    -fx-background-insets: 0, 1;
+}
+
+.r {
+    -fx-border-color: transparent transparent #cecece transparent; -fx-border-width: 0 0 1px 0;
+}
+
+.rb {
+    -fx-border-color: transparent #cecece #cecece transparent; -fx-border-width: 0 1px 1px 0;
 }
 
 .fps-card {

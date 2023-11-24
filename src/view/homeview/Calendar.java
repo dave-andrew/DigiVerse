@@ -1,6 +1,5 @@
 package view.homeview;
 
-import controller.AnswerController;
 import controller.MemberController;
 import controller.TaskController;
 import javafx.geometry.Insets;
@@ -12,10 +11,10 @@ import javafx.scene.image.ImageView;
 import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
+import jfxtras.labs.scene.control.scheduler.skin.DayBodyPane;
 import model.Classroom;
 import model.Task;
 import view.homeview.task.TaskBase;
-import view.homeview.task.TaskDetail;
 
 import java.time.LocalDateTime;
 import java.time.YearMonth;
@@ -55,6 +54,8 @@ public class Calendar extends VBox {
         calendarGrid = new GridPane();
 
         monthLbl = new Label(date.getMonth() + " " + date.getYear());
+        monthLbl.getStyleClass().add("bold-text");
+        monthLbl.setStyle("-fx-font-size: 20px");
 
         monthLbl.setAlignment(Pos.TOP_CENTER);
         monthLbl.setFont(Font.font(16));
@@ -81,7 +82,7 @@ public class Calendar extends VBox {
         calendarHeader.setAlignment(Pos.TOP_CENTER);
         calendarHeader.setPadding(new Insets(20, 0, 20, 0));
 
-        calendarGrid.setAlignment(Pos.CENTER);
+        calendarGrid.setAlignment(Pos.TOP_CENTER);
 
         prevMonthBtn.setOnAction(e -> {
             date = date.minusMonths(1);
@@ -98,8 +99,18 @@ public class Calendar extends VBox {
         calendarGrid.getChildren().clear();
         String[] daysOfWeek = {"Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"};
         for (int i = 0; i < 7; i++) {
+            VBox dayBox = new VBox();
+            dayBox.setPrefWidth(160);
+            dayBox.setPrefHeight(40);
+            dayBox.setAlignment(Pos.TOP_CENTER);
+
+            dayBox.getStyleClass().add("calendar-day");
+
             Label dayLabel = new Label(daysOfWeek[i]);
-            calendarGrid.add(dayLabel, i, 0);
+
+            dayBox.getChildren().add(dayLabel);
+
+            calendarGrid.add(dayBox, i, 0);
         }
 
         YearMonth yearMonth = YearMonth.of(date.getYear(), date.getMonthValue());
@@ -112,10 +123,16 @@ public class Calendar extends VBox {
             for (int col = 0; col < 7; col++) {
                 if (row == 1 && col < dayOfWeek) {
                     StackPane emptyCell = new StackPane();
+                    if(dayOfWeek - 1 == col) {
+                        emptyCell.getStyleClass().add("rb");
+                    } else {
+                        emptyCell.getStyleClass().add("r");
+                    }
                     calendarGrid.add(emptyCell, col, row);
                 } else if (day <= daysInMonth) {
                     VBox dayPane = new VBox();
-                    dayPane.getStyleClass().add("calendar");
+                    dayPane.getStyleClass().add("calendar-box");
+
                     dayPane.setPadding(new Insets(5));
                     Label dayText = new Label(String.valueOf(day));
                     dayPane.getChildren().add(dayText);
@@ -123,9 +140,17 @@ public class Calendar extends VBox {
                     dayPane.setPrefHeight(110);
                     dayPane.setAlignment(Pos.TOP_LEFT);
 
+                    if(col == 0) {
+                        dayPane.getStyleClass().add("first-column");
+                    } else if(row == 1) {
+                        dayPane.getStyleClass().add("first-row");
+                    } else if(String.valueOf(day).equals("1")) {
+                        dayPane.getStyleClass().add("first-column");
+                    }
+
                     ArrayList<Task> taskList = fetchTask(day, yearMonth.getMonthValue(), yearMonth.getYear());
 
-                    for(Task task : taskList) {
+                    for (Task task : taskList) {
                         Label taskTitle = new Label(" • " + task.getTitle());
                         taskTitle.setWrapText(true);
                         taskTitle.setMaxWidth(150);
@@ -159,8 +184,6 @@ public class Calendar extends VBox {
                 }
             }
         }
-
-        this.calendarGrid.setAlignment(Pos.CENTER);
 
         this.getChildren().add(calendarHeader);
         this.getChildren().add(calendarGrid);
@@ -212,5 +235,4 @@ public class Calendar extends VBox {
 
         this.leftNav.getChildren().addAll(iconBtn, icon, lbl);
     }
-
 }

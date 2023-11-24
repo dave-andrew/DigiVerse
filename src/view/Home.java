@@ -262,9 +262,28 @@ public class Home {
             mainPane.getChildren().clear();
             leftNav.getChildren().clear();
             leftNav.getChildren().add(iconBtn);
+
+            ScrollPane scrollPane = new ScrollPane();
+            scrollPane.setHbarPolicy(ScrollPane.ScrollBarPolicy.NEVER);
+            scrollPane.setVbarPolicy(ScrollPane.ScrollBarPolicy.AS_NEEDED);
+
+            scrollPane.prefWidthProperty().bind(mainPane.widthProperty().subtract(10));
+
             VBox calendar = new Calendar(mainPane, leftNav, iconBtn);
             calendar.setAlignment(Pos.TOP_CENTER);
-            mainPane.getChildren().add(calendar);
+
+            calendar.getStyleClass().add("card");
+            calendar.setStyle("-fx-background-radius: 0px");
+
+            calendar.setPadding(new Insets(0, 0, 200, 0));
+
+//            VBox.setMargin(calendar, new Insets(50));
+
+            scrollPane.setContent(calendar);
+            scrollPane.fitToWidthProperty().set(true);
+            scrollPane.setPadding(new Insets(20));
+
+            mainPane.getChildren().add(scrollPane);
         });
 
         iconBtn.setOnMouseClicked(e -> {
