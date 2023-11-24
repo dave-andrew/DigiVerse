@@ -82,6 +82,19 @@
     -fx-background-color: #3498db;
 }
 
+.scroll-bar:vertical {
+    -fx-background-color: transparent;
+}
+
+.scroll-bar .thumb {
+    -fx-background-color: #3498db;
+    -fx-background-radius: 100px;
+}
+
+.scroll-bar .thumb:hover {
+    -fx-background-color: #2980b9;
+}
+
 /* ============================== */
 
 .auth-layout {
