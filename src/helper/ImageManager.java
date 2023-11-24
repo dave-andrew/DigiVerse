@@ -3,6 +3,7 @@ package helper;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.image.WritableImage;
+import javafx.scene.layout.StackPane;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
 
@@ -101,7 +102,6 @@ public class ImageManager {
 
     public static void makeCircular(ImageView imageView, double radius) {
 
-        // Set the clip on the ImageView
         Circle clip = new Circle();
         clip.setCenterX(radius);
         clip.setCenterY(radius);
@@ -113,5 +113,4 @@ public class ImageManager {
         imageView.setFitWidth(radius * 2);
         imageView.setFitHeight(radius * 2);
     }
-
 }

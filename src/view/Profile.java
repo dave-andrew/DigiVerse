@@ -1,5 +1,6 @@
 package view;
 
+import controller.TaskController;
 import controller.UserController;
 import helper.ImageManager;
 import helper.StageManager;
@@ -18,13 +19,21 @@ import javafx.scene.shape.Rectangle;
 import javafx.stage.FileChooser;
 import javafx.util.StringConverter;
 import model.LoggedUser;
+import model.Task;
 import model.User;
+import view.component.classdetail.component.TaskItem;
 
 import java.io.File;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
 
 public class Profile extends VBox {
+
+    private TaskController taskController;
+    private UserController userController;
+
+
 
     private ImageView profile, profileNav;
     private Label name, email, birthday;
@@ -34,9 +43,8 @@ public class Profile extends VBox {
     private PasswordField oldPasswordField, newPasswordField, confirmPasswordField;
     private LoggedUser loggedUser;
     private HBox editContainer, buttonContainer, changeButtonContainer, profileLayout, birthdayContainer, emailContainer;
-    private UserController userController;
     private Label errorLbl;
-    private VBox profileContainer;
+    private VBox profileContainer, profileContent;
 
     private VBox nameBirthday;
     private HBox editProfileContainer, passwordContainer;
@@ -46,9 +54,12 @@ public class Profile extends VBox {
     public Profile(ImageView profileNav) {
         this.loggedUser = LoggedUser.getInstance();
         this.userController = new UserController();
+        this.taskController = new TaskController();
         this.profileNav = profileNav;
         init();
         actions();
+
+        setUpProfileContent();
     }
 
     private void init() {
@@ -256,7 +267,8 @@ public class Profile extends VBox {
                 birthdayContainer.getChildren().add(birthday);
 
                 profileContainer.getChildren().removeAll(nameField, emailField, birthdayField, errorLbl, buttonContainer);
-                profileContainer.getChildren().addAll(name, email);
+
+                profileContainer.getChildren().add(profileContent);
                 return;
             }
 
@@ -265,6 +277,7 @@ public class Profile extends VBox {
 
         this.cancelBtn.setOnMouseClicked(e -> {
             profileContainer.getChildren().removeAll(nameField, emailField, birthdayField, errorLbl, buttonContainer);
+            profileContainer.getChildren().add(profileContent);
         });
 
         this.updatePasswordBtn.setOnMouseClicked(e -> {
@@ -272,6 +285,7 @@ public class Profile extends VBox {
 
             if(message.equals("Success")) {
                 profileContainer.getChildren().removeAll(oldPasswordField, newPasswordField, confirmPasswordField, errorLbl, changeButtonContainer);
+                profileContainer.getChildren().add(profileContent);
                 return;
             }
 
@@ -280,6 +294,7 @@ public class Profile extends VBox {
 
         this.cancelPasswordBtn.setOnMouseClicked(e -> {
             profileContainer.getChildren().removeAll(oldPasswordField, newPasswordField, confirmPasswordField, errorLbl, changeButtonContainer);
+            profileContainer.getChildren().add(profileContent);
         });
     }
 
@@ -294,6 +309,7 @@ public class Profile extends VBox {
 
         Label editBtn = new Label("Edit Profile");
         editBtn.setPrefWidth(100);
+        editBtn.setStyle("-fx-font-size: 14px");
 
         editProfileContainer.getChildren().addAll(editIconView, editBtn);
         editProfileContainer.setAlignment(Pos.CENTER_RIGHT);
@@ -316,7 +332,7 @@ public class Profile extends VBox {
 
         editProfileContainer.setOnMouseClicked(e -> {
             this.errorLbl.setText("");
-
+            profileContainer.getChildren().remove(profileContent);
             profileContainer.getChildren().removeAll(oldPasswordField, newPasswordField, confirmPasswordField, errorLbl, changeButtonContainer);
             profileContainer.getChildren().removeAll(nameField, emailField, birthdayField, errorLbl, buttonContainer);
             profileContainer.getChildren().addAll(nameField, emailField, birthdayField, errorLbl, buttonContainer);
@@ -351,19 +367,93 @@ public class Profile extends VBox {
         passwordIconView.setPreserveRatio(true);
 
         Label passwordBtn = new Label("Change Password");
-        passwordBtn.setPrefWidth(100);
+        passwordBtn.setPrefWidth(150);
+        passwordBtn.setStyle("-fx-font-size: 14px");
 
         passwordContainer.getChildren().addAll(passwordIconView, passwordBtn);
         passwordContainer.setAlignment(Pos.CENTER_RIGHT);
 
         passwordContainer.setOnMouseClicked(e -> {
             this.errorLbl.setText("");
+            profileContainer.getChildren().remove(profileContent);
             profileContainer.getChildren().removeAll(nameField, emailField, birthdayField, errorLbl, buttonContainer);
             profileContainer.getChildren().removeAll(oldPasswordField, newPasswordField, confirmPasswordField, errorLbl, changeButtonContainer);
             profileContainer.getChildren().addAll(oldPasswordField, newPasswordField, confirmPasswordField, errorLbl, changeButtonContainer);
         });
 
         return passwordContainer;
+    }
+
+
+
+
+    private VBox taskContainer;
+    private Button pendingTask, finishedTask;
+
+    public void setUpProfileContent() {
+
+        this.profileContent = new VBox(20);
+        this.profileContent.setAlignment(Pos.TOP_CENTER);
+        this.profileContent.getStyleClass().add("card");
+
+        profileContent.setPadding(new Insets(20));
+        profileContent.setMaxWidth(600);
+        VBox.setMargin(profileContent, new Insets(0, 0, 400, 0));
+
+        HBox tab = new HBox();
+        tab.setAlignment(Pos.CENTER);
+
+        this.pendingTask = new Button("Pending Task");
+        pendingTask.getStyleClass().addAll("nav-button", "active");
+
+        this.finishedTask = new Button("Finished Task");
+        finishedTask.getStyleClass().add("nav-button");
+
+        tab.getChildren().addAll(pendingTask, finishedTask);
+
+        profileContent.getChildren().add(tab);
+
+        taskContainer = new VBox();
+
+        fetchPendingTask();
+
+        pendingTask.setOnMouseClicked(e -> fetchPendingTask());
+
+        finishedTask.setOnMouseClicked(e -> fetchFinishTask());
+
+        this.profileContent.getChildren().add(taskContainer);
+
+        profileContainer.getChildren().add(this.profileContent);
+    }
+
+    public void fetchPendingTask() {
+        this.taskContainer.getChildren().clear();
+        this.finishedTask.getStyleClass().remove("active");
+        this.pendingTask.getStyleClass().remove("active");
+        this.pendingTask.getStyleClass().add("active");
+
+        ArrayList<Task> tasks = this.taskController.fetchUserPendingTask(loggedUser.getId());
+
+        for (Task task : tasks) {
+            TaskItem taskItem = new TaskItem(task);
+            this.taskContainer.getChildren().add(taskItem);
+        }
+    }
+
+    public void fetchFinishTask() {
+        this.taskContainer.getChildren().clear();
+
+        this.pendingTask.getStyleClass().remove("active");
+        this.finishedTask.getStyleClass().remove("active");
+        this.finishedTask.getStyleClass().add("active");
+
+        ArrayList<Task> tasks = this.taskController.fetchUserFinishedTask(loggedUser.getId());
+
+        for (Task task : tasks) {
+            TaskItem taskItem = new TaskItem(task);
+            this.taskContainer.getChildren().add(taskItem);
+        }
+
     }
 
 }

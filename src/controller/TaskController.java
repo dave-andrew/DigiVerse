@@ -38,4 +38,12 @@ public class TaskController {
     public ArrayList<Task> fetchTaskByDate(String date) {
         return taskQuery.fetchTaskByDate(date);
     }
+
+    public ArrayList<Task> fetchUserPendingTask(String userid) {
+        return taskQuery.fetchUserPendingTask(userid);
+    }
+
+    public ArrayList<Task> fetchUserFinishedTask(String userid) {
+        return taskQuery.fetchUserFinishedTask(userid);
+    }
 }
