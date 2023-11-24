@@ -89,7 +89,7 @@ public class Home {
 
         borderPane = new BorderPane();
         mainPane = new StackPane();
-        mainPane.setStyle("-fx-border-color: transparent #E5E5E5 transparent transparent; -fx-border-width: 1px;");
+        mainPane.setStyle("");
 
         navBar = new HBox();
         leftNav = new HBox(15);

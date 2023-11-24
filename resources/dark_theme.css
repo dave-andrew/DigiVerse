@@ -6,7 +6,7 @@
 /* DEFAULT CSS */
 
 .root {
-    -fx-background-color: #263238;
+    -fx-background-color: #2c2c2c;
     -fx-font-size: 16px;
     -fx-font-family: "Nunito";
 }
@@ -179,8 +179,8 @@
 }
 
 .side-nav {
-    -fx-border-color: transparent #E5E5E5 transparent #E5E5E5 ;
-    -fx-border-width: 0 1px 0 1px;
+    -fx-border-color: transparent #5a5a5a transparent transparent;
+    -fx-border-width: 0 1px 0 0;
     -fx-padding: 0;
 }
 
@@ -198,10 +198,11 @@
 }
 
 .nav-bar {
-    -fx-background-color: transparent;
+    -fx-background-color: #3c3c3c;
     -fx-padding: 10px 40px 10px 40px;
-    -fx-border-color: transparent transparent #E5E5E5 transparent;
-    -fx-border-width: 0 0 1px 0;
+    /*-fx-border-color: transparent transparent #5a5a5a transparent;*/
+    /*-fx-border-width: 0 0 1.5px 0;*/
+    -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.6), 10, 0, 0, 0);;
 }
 
 .title {
@@ -259,7 +260,7 @@
 
 .small-container {
     -fx-padding: 20px 50px;
-    -fx-border-color: #E5E5E5;
+    -fx-border-color: #5a5a5a;
     -fx-border-width: 1px;
     -fx-max-width: 100%;
     -fx-min-width: 300px;
@@ -268,7 +269,7 @@
 }
 
 .border {
-    -fx-border-color: #E5E5E5;
+    -fx-border-color: #5a5a5a;
     -fx-border-width: 1px;
     -fx-border-radius: 10px;
 }
@@ -303,7 +304,7 @@
 
 .class-nav {
     -fx-background-color: transparent;
-    -fx-border-color: transparent transparent #E5E5E5 transparent;
+    -fx-border-color: transparent transparent #5a5a5a transparent;
     -fx-border-width: 0 0 1px 0;
 }
 
@@ -379,7 +380,7 @@
     -fx-background-radius: 10px;
     -fx-cursor: hand;
     -fx-border-radius: 10px;
-    -fx-border-color: #E5E5E5;
+    -fx-border-color: #5a5a5a;
 }
 
 .class-card:hover {
@@ -404,7 +405,7 @@
 
 .border-button {
     -fx-border-radius: 10px;
-    -fx-border-color: #E5E5E5;
+    -fx-border-color: #5a5a5a;
     -fx-border-width: 1px;
     -fx-cursor: hand;
 }
@@ -412,3 +413,9 @@
 .bold-text {
     -fx-font-family: "Nunito Black";
 }
+
+.right-border {
+    -fx-border-color: transparent #5a5a5a transparent transparent;
+    -fx-border-width: 1px;
+}
+
