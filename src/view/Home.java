@@ -288,7 +288,16 @@ public class Home {
     public void profilePage() {
         VBox profile = new Profile(userImg);
 
-        mainPane.getChildren().add(profile);
+        ScrollPane scrollPane = new ScrollPane();
+        scrollPane.setContent(profile);
+
+        scrollPane.setHbarPolicy(ScrollPane.ScrollBarPolicy.NEVER);
+        scrollPane.setVbarPolicy(ScrollPane.ScrollBarPolicy.AS_NEEDED);
+
+        scrollPane.prefWidthProperty().bind(mainPane.widthProperty());
+        profile.prefWidthProperty().bind(scrollPane.widthProperty());
+
+        mainPane.getChildren().add(scrollPane);
     }
 
     public void logout() {
