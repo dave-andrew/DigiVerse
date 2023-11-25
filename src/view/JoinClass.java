@@ -77,6 +77,10 @@ public class JoinClass {
         lbl1 = new Label("• Use an authorized account");
         lbl2 = new Label("• Use a maximum of 10 letters of group code.");
 
+        joinInfoSub.setStyle("-fx-font-size: 17px;");
+        lbl1.setStyle("-fx-font-size: 14px; -fx-font-family: 'Nunito Light'");
+        lbl2.setStyle("-fx-font-size: 14px; -fx-font-family: 'Nunito Light'");
+
         joinInfoList.getChildren().addAll(lbl1, lbl2);
 
         joinInfo.getChildren().addAll(joinInfoSub, joinInfoList);

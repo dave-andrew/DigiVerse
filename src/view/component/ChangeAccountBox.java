@@ -37,6 +37,7 @@ public class ChangeAccountBox extends VBox {
         userHbox = new HBox(10);
 
         userInfoLbl = new Label("Logged As:");
+        userInfoLbl.setStyle("-fx-font-size: 20px;");
 
         Image image = new Image("file:resources/icons/user.png");
         userImg = new ImageView(image);
@@ -62,7 +63,12 @@ public class ChangeAccountBox extends VBox {
         userBox.getChildren().addAll(userNameLbl, userEmailLbl);
         userHbox.getChildren().addAll(userImg, userBox, spacer, changeAccountBtn);
         userHbox.setAlignment(Pos.CENTER_LEFT);
-        this.getChildren().addAll(userInfoLbl, userHbox);
+
+        HBox titleBox = new HBox();
+        titleBox.getChildren().add(userInfoLbl);
+        titleBox.getStyleClass().add("bottom-border");
+
+        this.getChildren().addAll(titleBox, userHbox);
     }
 
     private void actions() {

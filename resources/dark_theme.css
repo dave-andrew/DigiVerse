@@ -3,6 +3,21 @@
     src: url("./fonts/Nunito-Bold.ttf");
 }
 
+@font-face {
+    font-family: "Nunito Black";
+    src: url("./fonts/Nunito-Black.ttf");
+}
+
+@font-face {
+    font-family: "Nunito Light";
+    src: url("./fonts/Nunito-Medium.ttf");
+}
+
+/*@font-face {*/
+/*    font-family: "Nunito Regular";*/
+/*    src: url("./fonts/Nunito-Regular.ttf");*/
+/*}*/
+
 /* DEFAULT CSS */
 
 .root {
@@ -452,4 +467,10 @@
 
 .profile-pic {
     -fx-fill: #2c2c2c;
+}
+
+.bottom-border {
+    -fx-border-color: transparent transparent #E5E5E5 transparent;
+    -fx-border-width: 1px;
+    -fx-padding: 0 0 10px 0;
 }
