@@ -115,7 +115,7 @@ public class RightContent extends VBox {
         forumContainer.getChildren().add(dropDownComment);
 
         forumContainer.getStyleClass().add("border");
-        forumContainer.setPadding(new Insets(10, 10, 10, 10));
+        forumContainer.setPadding(new Insets(10));
 
         return forumContainer;
     }
@@ -228,7 +228,7 @@ public class RightContent extends VBox {
 
             HBox.setHgrow(postInput, Priority.ALWAYS);
             container.getStyleClass().add("border");
-            container.setPadding(new Insets(10, 10, 10, 10));
+            container.setPadding(new Insets(15));
 
         } else if(type.equals("display")) {
             container.getChildren().add(profileImage);
