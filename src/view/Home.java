@@ -5,7 +5,9 @@ import helper.ImageManager;
 import helper.ScreenManager;
 import helper.StageManager;
 import helper.ThemeManager;
+import javafx.animation.Interpolator;
 import javafx.animation.KeyFrame;
+import javafx.animation.KeyValue;
 import javafx.animation.Timeline;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
@@ -22,7 +24,6 @@ import view.component.classroom.ClassCard;
 import view.homeview.Calendar;
 import view.homeview.ClassroomList;
 
-import javax.xml.crypto.dsig.keyinfo.KeyValue;
 import java.util.Objects;
 
 
@@ -36,12 +37,12 @@ public class Home {
     private BorderPane borderPane;
     private GridPane classGrid;
 
-    private HBox navBar, homeSideNav, calenderSideNav;
+    private HBox navBar, homeSideNav, calenderSideNav, logOutBtn;
 
     private HBox leftNav, rightNav;
 
     private Image iconImg, plusImg;
-    private ImageView icon, plus, userImg;
+    private ImageView icon, plus, userImg, leftArrow;
     private Button iconBtn;
     private Image logoutImage;
     private ImageView logoutIcon;
@@ -49,12 +50,12 @@ public class Home {
     private Label title;
 
 
-    private StackPane mainPane;
+    private StackPane mainPane, sp;
     private ScrollPane scrollPane;
 
-    private Button plusBtn, userBtn;
+    private Button plusBtn, userBtn, toggleSide;
 
-    private VBox sideBar;
+    private VBox sideBar, sideBarSpacer;
 
     private ContextMenu plusMenu;
     private MenuItem createClass, joinClass;
@@ -91,7 +92,7 @@ public class Home {
 
         borderPane = new BorderPane();
         mainPane = new StackPane();
-        mainPane.setStyle("");
+//        mainPane.prefWidthProperty().bind(borderPane.widthProperty().subtract(210));
 
         navBar = new HBox();
         leftNav = new HBox(15);
@@ -194,12 +195,12 @@ public class Home {
 
 //        Kalo mau tambah side bar item
 
-        VBox spacer = new VBox();
-        VBox.setVgrow(spacer, Priority.ALWAYS);
+        this.sideBarSpacer = new VBox();
+        VBox.setVgrow(sideBarSpacer, Priority.ALWAYS);
 
-        sideBar.getChildren().add(spacer);
+        sideBar.getChildren().add(sideBarSpacer);
 
-        HBox logOutBtn = new HBox();
+        this.logOutBtn = new HBox();
         logOutBtn.getStyleClass().add("side-nav-item");
 //        logOutBtn.setAlignment(Pos.CENTER);
 
@@ -224,8 +225,25 @@ public class Home {
         HBox.setHgrow(leftNav, Priority.ALWAYS);
         HBox.setHgrow(rightNav, Priority.NEVER);
 
+        this.sp = new StackPane();
+        sp.getChildren().add(sideBar);
+
+        Image image = new Image("file:resources/icons/left-arrow.png");
+        leftArrow = new ImageView(image);
+
+        leftArrow.setFitWidth(25);
+        leftArrow.setFitHeight(25);
+
+        this.toggleSide = new Button();
+        toggleSide.setGraphic(leftArrow);
+        toggleSide.setStyle("-fx-background-color: transparent; -fx-border-color: transparent; -fx-border-width: 0;");
+
+        sp.getChildren().add(toggleSide);
+
+        sp.setAlignment(Pos.CENTER_RIGHT);
+
         borderPane.setCenter(mainPane);
-        borderPane.setLeft(sideBar);
+        borderPane.setLeft(sp);
         borderPane.setTop(navBar);
 
 //        borderPane.getStyleClass().add("bg-secondary");
@@ -302,6 +320,69 @@ public class Home {
             profilePage();
         });
 
+        toggleSide.setOnMouseClicked(e -> {
+
+            if(toggleSideBar) {
+                closeSidebar();
+                sideBar.getChildren().remove(homeSideNav);
+                sideBar.getChildren().remove(calenderSideNav);
+                sideBar.getChildren().remove(sideBarSpacer);
+                sideBar.getChildren().remove(logOutBtn);
+            } else {
+                openSidebar();
+            }
+
+            toggleSideBar = !toggleSideBar;
+        });
+
+    }
+
+    private boolean toggleSideBar = true;
+
+    void closeSidebar() {
+        sp.setTranslateX(0);
+
+        KeyValue keyValue = new KeyValue(sp.prefWidthProperty(), 0, Interpolator.EASE_BOTH);
+        KeyValue rotateArrow = new KeyValue(leftArrow.rotateProperty(), 180, Interpolator.EASE_BOTH);
+
+        KeyFrame start = new KeyFrame(Duration.ZERO,
+                new KeyValue(sp.prefWidthProperty(), sp.getWidth(), Interpolator.LINEAR));
+
+        KeyFrame end = new KeyFrame(Duration.seconds(0.5),
+                keyValue,
+                rotateArrow
+        );
+
+        Timeline timeline = new Timeline(start, end);
+        timeline.play();
+    }
+
+
+    void openSidebar() {
+
+        double currentTranslateX = sp.getTranslateX();
+
+        KeyValue keyValue = new KeyValue(sp.prefWidthProperty(), 240, Interpolator.EASE_BOTH);
+        KeyValue rotateArrow = new KeyValue(leftArrow.rotateProperty(), 0, Interpolator.EASE_BOTH);
+
+
+        KeyFrame start = new KeyFrame(Duration.ZERO,
+                new KeyValue(sp.translateXProperty(), currentTranslateX, Interpolator.LINEAR));
+
+        KeyFrame end = new KeyFrame(Duration.seconds(0.5),
+                keyValue,
+                rotateArrow
+        );
+
+        Timeline timeline = new Timeline(start, end);
+        timeline.play();
+
+        timeline.onFinishedProperty().set(e -> {
+            sideBar.getChildren().add(homeSideNav);
+            sideBar.getChildren().add(calenderSideNav);
+            sideBar.getChildren().add(sideBarSpacer);
+            sideBar.getChildren().add(logOutBtn);
+        });
     }
 
     public void profilePage() {
