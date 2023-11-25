@@ -42,21 +42,22 @@ public class CreateClass {
         Stage dialogStage = new Stage();
         dialogStage.initModality(Modality.APPLICATION_MODAL);
         dialogStage.initOwner(ownerStage);
-//        dialogStage.initStyle(StageStyle.TRANSPARENT);
 
         borderPane = new BorderPane();
         mainVbox = new VBox(20);
         topBar = new CreateClassNav(dialogStage);
 
         userInfoBox = new ChangeAccountBox(dialogStage);
-        userInfoBox.setAlignment(Pos.TOP_CENTER);
-        userInfoBox.getStyleClass().add("container");
+        userInfoBox.setAlignment(Pos.CENTER_LEFT);
+        userInfoBox.getStyleClass().add("card");
+        userInfoBox.setMaxWidth(800);
 
         errorLbl = new Label();
         errorLbl.setStyle("-fx-text-fill: red;");
 
         classFormBox = new CreateClassForm(dialogStage, errorLbl);
-        classFormBox.getStyleClass().add("container");
+        classFormBox.getStyleClass().add("card");
+        classFormBox.setMaxWidth(800);
 
         dialogStage.setScene(new Scene(borderPane, ScreenManager.SCREEN_WIDTH, ScreenManager.SCREEN_HEIGHT));
         ThemeManager.getTheme(dialogStage.getScene());
@@ -70,6 +71,8 @@ public class CreateClass {
 
         borderPane.setTop(topBar);
         borderPane.setCenter(mainVbox);
+
+        borderPane.setMaxWidth(800);
     }
 
     private void showAndWait() {

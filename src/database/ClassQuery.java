@@ -62,7 +62,7 @@ public class ClassQuery {
                 }
             }
         } catch (Exception e) {
-            throw new RuntimeException(e);
+//            throw new RuntimeException(e);
         }
 
         return classrooms;

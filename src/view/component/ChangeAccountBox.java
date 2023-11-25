@@ -9,6 +9,7 @@ import javafx.scene.control.Label;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.HBox;
+import javafx.scene.layout.Priority;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 import model.LoggedUser;
@@ -55,9 +56,12 @@ public class ChangeAccountBox extends VBox {
         changeAccountBtn = new Button("Change");
         changeAccountBtn.getStyleClass().add("secondary-button");
 
+        HBox spacer = new HBox();
+        HBox.setHgrow(spacer, Priority.ALWAYS);
+
         userBox.getChildren().addAll(userNameLbl, userEmailLbl);
-        userHbox.getChildren().addAll(userImg, userBox, changeAccountBtn);
-        userHbox.setAlignment(Pos.TOP_CENTER);
+        userHbox.getChildren().addAll(userImg, userBox, spacer, changeAccountBtn);
+        userHbox.setAlignment(Pos.CENTER_LEFT);
         this.getChildren().addAll(userInfoLbl, userHbox);
     }
 
@@ -76,6 +80,8 @@ public class ChangeAccountBox extends VBox {
         this.dialogStage = dialogStage;
         initialize();
         actions();
+
+        this.setPrefWidth(800);
     }
 
 }
