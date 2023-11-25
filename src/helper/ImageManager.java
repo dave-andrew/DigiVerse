@@ -133,7 +133,7 @@ public class ImageManager {
         Circle clip2 = new Circle();
         clip2.setCenterX(radius);
         clip2.setCenterY(radius);
-        clip2.setRadius(radius - 5);
+        clip2.setRadius(radius - 7);
 
         imageView.setPreserveRatio(false);
 
