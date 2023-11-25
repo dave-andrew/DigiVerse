@@ -489,3 +489,13 @@
     -fx-border-width: 1px;
     -fx-padding: 0 0 10px 0;
 }
+
+.left-border {
+    -fx-border-color: transparent transparent transparent #E5E5E5;
+    -fx-border-width: 3px;
+}
+
+.reply-bg {
+    -fx-background-color: #f3f3f3;
+    -fx-background-radius: 7px;
+}

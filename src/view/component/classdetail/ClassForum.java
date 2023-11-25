@@ -115,6 +115,6 @@ public class ClassForum extends ClassBase {
         setLayout();
 
         this.setContent(forumContainer);
-        this.setPannable(true);
+        this.setPannable(false);
     }
 }

@@ -2,6 +2,7 @@ package view.component.classdetail.component;
 
 import controller.CommentController;
 import helper.ImageManager;
+import javafx.geometry.Insets;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.scene.image.Image;
@@ -58,22 +59,32 @@ public class CommentItem extends HBox {
         textContainer.prefWidthProperty().bind(this.widthProperty().subtract(50));
 
         Label username = new Label(comment.getUser().getUsername());
-        username.setStyle("-fx-font-size: 12px");
+        username.setStyle("-fx-font-size: 16px");
 
         Label commentText = new Label(comment.getText());
         commentText.setWrapText(true);
+
+        commentText.setStyle("-fx-font-family: 'Nunito Regular'; -fx-font-size: 14px");
 
         HBox btnContainer = new HBox(10);
 
         this.replyBtn = new Label("Reply");
         replyBtn.getStyleClass().add("reply-button");
+        replyBtn.setOpacity(0.5);
 
         this.loadReplyBtn = new Label("View Reply");
         loadReplyBtn.getStyleClass().add("reply-button");
+        loadReplyBtn.setOpacity(0.5);
 
         btnContainer.getChildren().addAll(replyBtn, loadReplyBtn);
 
-        textContainer.getChildren().addAll(username, commentText, btnContainer);
+        VBox replyContentContainer = new VBox();
+        replyContentContainer.setPadding(new Insets(5, 0, 5, 10));
+
+        replyContentContainer.getChildren().addAll(commentText);
+        replyContentContainer.getStyleClass().add("reply-bg");
+
+        textContainer.getChildren().addAll(username, replyContentContainer, btnContainer);
 
         this.replyInputContainer = new VBox();
 
@@ -120,8 +131,12 @@ public class CommentItem extends HBox {
 
             if(toggleReply) {
                 fetchReply();
+                if(!replyContainer.getChildren().isEmpty()) {
+                    replyContainer.getStyleClass().add("left-border");
+                }
             } else {
                 replyContainer.getChildren().clear();
+                replyContainer.getStyleClass().remove("left-border");
             }
             toggleReply = !toggleReply;
         });

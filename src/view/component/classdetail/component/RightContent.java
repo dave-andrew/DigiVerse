@@ -78,7 +78,6 @@ public class RightContent extends VBox {
         forumContainer.getChildren().add(commentInput);
 
         HBox dropDownComment = new HBox();
-        dropDownComment.setPadding(new Insets(10, 10, 10, 10));
 
         Image arrowDown = new Image("file:resources/icons/down-arrow.png");
         ImageView arrowDownImage = new ImageView(arrowDown);
@@ -88,7 +87,8 @@ public class RightContent extends VBox {
 
         Button dropDownBtn = new Button();
         dropDownBtn.setGraphic(arrowDownImage);
-        dropDownBtn.setStyle("-fx-background-color: transparent;-fx-border-color: none; -fx-cursor: hand; -fx-padding: 0px;");
+        dropDownBtn.setStyle("-fx-background-color: transparent;-fx-border-color: none; -fx-cursor: hand;");
+        dropDownBtn.setPadding(new Insets(0));
 
         dropDownBtn.prefWidthProperty().bind(forumContainer.widthProperty().subtract(75));
 
@@ -249,14 +249,11 @@ public class RightContent extends VBox {
 
             container.getChildren().add(postInput);
 
-            postInput.setOnKeyPressed(new EventHandler<KeyEvent>() {
-                @Override
-                public void handle(KeyEvent event) {
-                    if (event.getCode() == KeyCode.ENTER) {
-                        Forum forum = forumController.createForum(postInput.getText(), classroom.getClassId());
-                        getChildren().add(1, Container("display", forum.getText(), user));
-                        postInput.clear();
-                    }
+            postInput.setOnKeyPressed(event -> {
+                if (event.getCode() == KeyCode.ENTER) {
+                    Forum forum = forumController.createForum(postInput.getText(), classroom.getClassId());
+                    getChildren().add(1, Container("display", forum.getText(), user));
+                    postInput.clear();
                 }
             });
 
