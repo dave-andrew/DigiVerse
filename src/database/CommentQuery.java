@@ -200,14 +200,20 @@ public class CommentQuery {
                 "JOIN msuser ON msuser.UserID = mscomment.UserID\n" +
                 "JOIN mstask ON mstask.TaskID = task_comment.TaskID\n" +
                 "WHERE task_comment.TaskID = ?\n" +
-                "AND (mscomment.UserID IN (SELECT UserID FROM class_member WHERE Role = 'Teacher') OR mscomment.UserID = ?)\n" +
+                "AND (mscomment.UserID IN (" +
+                "SELECT UserID FROM class_task\n" +
+                "JOIN msclass ON msclass.ClassID = class_task.ClassID\n" +
+                "JOIN class_member ON msclass.ClassID = class_member.ClassID\n" +
+                "WHERE Role = 'Teacher' AND class_task.TaskID = ?" +
+                ") OR mscomment.UserID = ?)\n" +
                 "ORDER BY mscomment.CreatedAt DESC";
 
         try (PreparedStatement ps = con.prepareStatement(query)) {
 
             assert ps != null;
             ps.setString(1, taskid);
-            ps.setString(2, LoggedUser.getInstance().getId());
+            ps.setString(2, taskid);
+            ps.setString(3, LoggedUser.getInstance().getId());
 
             try (var rs = ps.executeQuery()) {
                 while (rs.next()) {

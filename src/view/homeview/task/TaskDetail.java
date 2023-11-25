@@ -207,7 +207,8 @@ public class TaskDetail extends HBox {
 
                 commentListContainer.getChildren().add(commentContainer);
             }
-        } else {
+        } else if(this.userRole.equals("Student")) {
+            System.out.println("TESSFDSFDSFD");
             ArrayList<TaskComment> taskCommentList = this.commentController.getStudentTaskComments(task.getId());
 
             for (TaskComment taskComment : taskCommentList) {
