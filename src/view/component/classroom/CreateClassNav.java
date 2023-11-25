@@ -1,5 +1,6 @@
 package view.component.classroom;
 
+import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
@@ -24,8 +25,8 @@ public class CreateClassNav extends HBox {
 
         closeImg = new Image("file:resources/icons/close.png");
         close = new ImageView(closeImg);
-        close.setFitWidth(20);
-        close.setPreserveRatio(true);
+        close.setFitWidth(17);
+        close.setFitHeight(17);
 
         closeBtn = new Button();
         closeBtn.setGraphic(close);
@@ -33,6 +34,7 @@ public class CreateClassNav extends HBox {
 
         title = new Label("Create Class");
         title.getStyleClass().add("title");
+        title.setPadding(new Insets(15, 0, 15, 0));
 
         joinBtn = new Button("Create");
         joinBtn.getStyleClass().add("primary-button");

@@ -53,7 +53,7 @@ public class ChangeAccountBox extends VBox {
 
         ImageManager.makeCircular(userImg, 20);
 
-        changeAccountBtn = new Button("Change");
+        changeAccountBtn = new Button("Change Account");
         changeAccountBtn.getStyleClass().add("secondary-button");
 
         HBox spacer = new HBox();

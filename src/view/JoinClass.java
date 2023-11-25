@@ -59,7 +59,7 @@ public class JoinClass {
         errorLbl.setStyle("-fx-text-fill: red;");
 
         userInfoBox = new ChangeAccountBox(dialogStage);
-        userInfoBox.setAlignment(Pos.TOP_CENTER);
+        userInfoBox.setAlignment(Pos.CENTER_LEFT);
         userInfoBox.getStyleClass().add("card");
         userInfoBox.setMaxWidth(800);
 
