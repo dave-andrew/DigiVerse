@@ -95,7 +95,6 @@ public class Main extends Application {
 
         primaryStage.setTitle("DigiVerse");
         primaryStage.getIcons().add(new Image("file:resources/icons/app_logo.png"));
-//        primaryStage.setResizable(false);
         stage.initStyle(StageStyle.UTILITY);
         primaryStage.show();
     }

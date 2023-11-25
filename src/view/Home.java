@@ -77,6 +77,7 @@ public class Home {
     }
 
     private void fetchClass() {
+
         mainPane.getChildren().clear();
         classGrid = new ClassroomList(mainPane, leftNav, iconBtn);
         scrollPane.setContent(classGrid);
@@ -223,9 +224,9 @@ public class Home {
         HBox.setHgrow(leftNav, Priority.ALWAYS);
         HBox.setHgrow(rightNav, Priority.NEVER);
 
+        borderPane.setCenter(mainPane);
         borderPane.setLeft(sideBar);
         borderPane.setTop(navBar);
-        borderPane.setCenter(mainPane);
 
 //        borderPane.getStyleClass().add("bg-secondary");
 
