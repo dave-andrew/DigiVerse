@@ -3,6 +3,10 @@ package view.component.classdetail.component;
 import controller.CommentController;
 import controller.ForumController;
 import helper.ImageManager;
+import javafx.animation.Interpolator;
+import javafx.animation.KeyFrame;
+import javafx.animation.KeyValue;
+import javafx.animation.Timeline;
 import javafx.event.EventHandler;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
@@ -16,10 +20,9 @@ import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Priority;
 import javafx.scene.layout.VBox;
-import javafx.scene.paint.Color;
-import javafx.scene.shape.Line;
 import model.*;
 
+import javafx.util.Duration;
 import java.util.Collections;
 import java.util.List;
 
@@ -52,28 +55,27 @@ public class RightContent extends VBox {
 
     public VBox forumContainer(Forum forum) {
         VBox forumContainer = new VBox();
-        forumContainer.getChildren().add(Container("display", forum.getText(), forum.getUser()));
 
-        Line line = new Line();
-        line.setStroke(Color.valueOf("#E0E0E0"));
-        line.endXProperty().bind(this.widthProperty().subtract(75));
+        HBox post = Container("display", forum.getText(), forum.getUser());
+
+        forumContainer.getChildren().add(post);
+
+        VBox line = new VBox();
+        line.getChildren().add(post);
+        line.getStyleClass().add("bottom-border");
 
         VBox.setMargin(line, new Insets(10, 0, 10, 0));
 
         forumContainer.getChildren().add(line);
 
         VBox commentContainer = new VBox();
-        commentContainer.setPadding(new Insets(10, 10, 10, 10));
 
         forumContainer.getChildren().add(commentContainer);
 
-        forumContainer.getChildren().add(commentInput(forum, commentContainer));
+        HBox commentInput = commentInput(forum, commentContainer);
+        commentInput.getStyleClass().add("bottom-border");
 
-        Line line2 = new Line();
-        line2.setStroke(Color.valueOf("#E0E0E0"));
-        line2.endXProperty().bind(this.widthProperty().subtract(75));
-
-        forumContainer.getChildren().add(line2);
+        forumContainer.getChildren().add(commentInput);
 
         HBox dropDownComment = new HBox();
         dropDownComment.setPadding(new Insets(10, 10, 10, 10));
@@ -86,12 +88,12 @@ public class RightContent extends VBox {
 
         Button dropDownBtn = new Button();
         dropDownBtn.setGraphic(arrowDownImage);
-        dropDownBtn.setStyle("-fx-background-color: transparent;-fx-border-color: none; -fx-cursor: hand");
+        dropDownBtn.setStyle("-fx-background-color: transparent;-fx-border-color: none; -fx-cursor: hand; -fx-padding: 0px;");
 
-        dropDownBtn.prefWidthProperty().bind(forumContainer.widthProperty().subtract(50));
+        dropDownBtn.prefWidthProperty().bind(forumContainer.widthProperty().subtract(75));
 
         Button loadMoreComment = new Button("Load more");
-        loadMoreComment.setStyle("-fx-background-color: transparent;-fx-border-color: none; -fx-cursor: hand");
+        loadMoreComment.setStyle("-fx-background-color: transparent;-fx-border-color: none; -fx-cursor: hand;");
 
         loadMoreComment.setOnMouseClicked(e -> {
             fetchForumComment(commentContainer, forum);
@@ -103,10 +105,32 @@ public class RightContent extends VBox {
 
                 forum.setToggle(false);
                 commentContainer.getChildren().add(loadMoreComment);
+
+                KeyFrame start = new KeyFrame(Duration.ZERO,
+                        new KeyValue(dropDownBtn.rotateProperty(), 0)
+                );
+
+                KeyFrame end = new KeyFrame(Duration.seconds(0.5),
+                        new KeyValue(dropDownBtn.rotateProperty(), 180)
+                );
+
+                Timeline timeline = new Timeline(start, end);
+                timeline.play();
             } else {
                 commentContainer.getChildren().clear();
                 forum.setCommentCounter(0);
                 forum.setToggle(true);
+
+                KeyFrame start = new KeyFrame(Duration.ZERO,
+                        new KeyValue(dropDownBtn.rotateProperty(), 180)
+                );
+
+                KeyFrame end = new KeyFrame(Duration.seconds(0.5),
+                        new KeyValue(dropDownBtn.rotateProperty(), 0)
+                );
+
+                Timeline timeline = new Timeline(start, end);
+                timeline.play();
             }
         });
 
@@ -115,23 +139,33 @@ public class RightContent extends VBox {
         forumContainer.getChildren().add(dropDownComment);
 
         forumContainer.getStyleClass().add("border");
-        forumContainer.setPadding(new Insets(10));
+        forumContainer.setPadding(new Insets(15));
 
         return forumContainer;
     }
 
     private void fetchForumComment(VBox commentContainer, Forum forum) {
-//        commentContainer.getChildren().clear();
-
         List<ForumComment> forumCommentList = this.commentController.getForumComments(forum.getId(), forum.getCommentCounter());
 
         VBox commentFetched = new VBox();
 
         for (ForumComment forumComment : forumCommentList) {
             HBox commentItem = new CommentItem(forumComment);
-
             commentFetched.getChildren().add(0, commentItem);
         }
+
+        KeyValue keyValue = new KeyValue(commentFetched.opacityProperty(), 0, Interpolator.EASE_OUT);
+
+        KeyFrame start = new KeyFrame(Duration.ZERO, keyValue);
+
+        KeyFrame end = new KeyFrame(Duration.seconds(0.5),
+                new KeyValue(commentFetched.opacityProperty(), 1)
+        );
+
+
+        Timeline timeline = new Timeline(start, end);
+
+        timeline.play();
 
         commentContainer.getChildren().add(0, commentFetched);
 

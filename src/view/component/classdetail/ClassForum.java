@@ -80,7 +80,7 @@ public class ClassForum extends ClassBase {
             forumStack.getChildren().add(labelsVBox);
         } else {
             className = new Label(classroom.getClassName());
-            className.setStyle("-fx-text-fill: white; -fx-font-size: 35px");
+            className.setStyle("-fx-text-fill: white; -fx-font-size: 40px; -fx-font-family: 'Nunito'");
             classDesc = new Label(classroom.getClassDesc());
             classDesc.setStyle("-fx-text-fill: white; -fx-font-size: 20px");
 
