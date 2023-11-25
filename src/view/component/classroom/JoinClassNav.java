@@ -38,6 +38,7 @@ public class JoinClassNav extends HBox {
 
         joinBtn = new Button("Join");
         joinBtn.getStyleClass().add("primary-button");
+        joinBtn.setStyle("-fx-text-fill: white");
 
         this.setAlignment(Pos.CENTER_LEFT);
         HBox.setHgrow(title, Priority.ALWAYS);

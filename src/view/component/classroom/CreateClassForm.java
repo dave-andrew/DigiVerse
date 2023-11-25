@@ -102,6 +102,7 @@ public class CreateClassForm extends VBox {
 
         cancelBtn.getStyleClass().add("secondary-button");
         createBtn.getStyleClass().add("primary-button");
+        createBtn.setStyle("-fx-text-fill: white");
 
         btnBox.getChildren().addAll(cancelBtn, createBtn);
         btnBox.setPadding(new Insets(30, 0, 0, 0));

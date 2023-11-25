@@ -147,18 +147,17 @@
 }
 
 .primary-button {
-    -fx-background-color: #4DCAFF;
+    -fx-background-color: #009de7;
     -fx-padding: 7px 30px;
-    -fx-fill: #1E1E1E;
 }
 
 .primary-button:hover {
-    -fx-background-color: #4DDAFF;
+    -fx-background-color: #0092d9;
     -fx-cursor: hand;
 }
 
 .primary-button:pressed {
-    -fx-background-color: #4DCAFF;
+    -fx-background-color: #008ccc;
 }
 
 .secondary-button {
