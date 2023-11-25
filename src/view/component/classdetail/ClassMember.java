@@ -52,11 +52,23 @@ public class ClassMember extends ClassBase {
         studentTitle = new Label("Student");
         studentTitle.getStyleClass().add("title");
 
-        teacherContainer.getChildren().add(teacherTitle);
-        teacherContainer.getStyleClass().add("border");
+        VBox teacherTitleBox = new VBox();
+        teacherTitleBox.getStyleClass().add("bottom-border");
+        teacherTitleBox.getChildren().add(teacherTitle);
 
-        studentContainer.getChildren().add(studentTitle);
+        teacherContainer.getChildren().add(teacherTitleBox);
+        teacherContainer.getStyleClass().add("border");
+        teacherContainer.setStyle("-fx-effect: null");
+
+
+        VBox studentTitleBox = new VBox();
+        studentTitleBox.getStyleClass().add("bottom-border");
+        studentTitleBox.getChildren().add(studentTitle);
+
+        studentContainer.getChildren().add(studentTitleBox);
         studentContainer.getStyleClass().add("border");
+        studentContainer.setStyle("-fx-effect: null");
+
 
         teacherBox.getChildren().add(teacherContainer);
         studentBox.getChildren().add(studentContainer);
@@ -73,15 +85,20 @@ public class ClassMember extends ClassBase {
         this.setContent(container);
     }
 
+    private int teacherCount = 1;
+    private int studentCount = 1;
+
     private void fetchClassMember() {
         AtomicBoolean hasStudents = new AtomicBoolean(false);
 
         memberController.getClassMember(classroom.getClassId()).forEach(classroomMember -> {
             if (classroomMember.getRole().equals("Teacher")) {
-                teacherContainer.getChildren().add(new ClassMemberItem(classroomMember));
+                teacherContainer.getChildren().add(new ClassMemberItem(classroomMember, teacherCount));
+                teacherCount++;
             } else {
-                studentContainer.getChildren().add(new ClassMemberItem(classroomMember));
+                studentContainer.getChildren().add(new ClassMemberItem(classroomMember, studentCount));
                 hasStudents.set(true);
+                studentCount++;
             }
         });
 

@@ -15,7 +15,7 @@ public class ClassMemberItem extends HBox {
 
     private Image profileImg;
     private ImageView profile;
-    public ClassMemberItem(ClassroomMember classMember) {
+    public ClassMemberItem(ClassroomMember classMember, int idx) {
         User user = classMember.getUser();
 
         if(user.getBlobProfile() != null) {
@@ -28,6 +28,8 @@ public class ClassMemberItem extends HBox {
         userBox.setAlignment(Pos.CENTER_LEFT);
         userBox.setPadding(new Insets(0, 0, 0, 10));
 
+        Label index = new Label(idx + ".    ");
+
         Label userNameLbl = new Label(user.getUsername());
 
         userBox.getChildren().addAll(userNameLbl);
@@ -38,8 +40,9 @@ public class ClassMemberItem extends HBox {
 
         ImageManager.makeCircular(profile, 20);
 
-        this.getChildren().add(profile);
+        this.getChildren().addAll(index, profile);
         this.getChildren().add(userBox);
+        this.setAlignment(Pos.CENTER_LEFT);
 
     }
 
