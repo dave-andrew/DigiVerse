@@ -223,8 +223,8 @@ public class Home {
         HBox.setHgrow(leftNav, Priority.ALWAYS);
         HBox.setHgrow(rightNav, Priority.NEVER);
 
-        borderPane.setTop(navBar);
         borderPane.setLeft(sideBar);
+        borderPane.setTop(navBar);
         borderPane.setCenter(mainPane);
 
 //        borderPane.getStyleClass().add("bg-secondary");

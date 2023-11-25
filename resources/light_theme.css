@@ -178,9 +178,9 @@
 }
 
 .side-nav {
-    -fx-border-color: transparent #E5E5E5 transparent #E5E5E5;
-    -fx-border-width: 0 1px 0 1px;
     -fx-padding: 0;
+    -fx-background-color: white;
+    -fx-effect: dropshadow(three-pass-box, rgba(0, 0, 0, 0.2), 10, 0, 0, 0);
 }
 
 .side-nav-item {
@@ -199,8 +199,6 @@
 .nav-bar {
     -fx-background-color: white;
     -fx-padding: 10px 40px 10px 40px;
-    /*-fx-border-color: transparent transparent #E5E5E5 transparent;*/
-    /*-fx-border-width: 0 0 1.5px 0;*/
     -fx-effect: dropshadow(three-pass-box, rgba(0, 0, 0, 0.2), 10, 0, 0, 0);
 }
 

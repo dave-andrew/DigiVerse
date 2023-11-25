@@ -179,9 +179,9 @@
 }
 
 .side-nav {
-    -fx-border-color: transparent #5a5a5a transparent transparent;
-    -fx-border-width: 0 1px 0 0;
     -fx-padding: 0;
+    -fx-background-color: #3c3c3c;
+    -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.6), 10, 0, 0, 0);
 }
 
 .side-nav-item {
@@ -200,8 +200,6 @@
 .nav-bar {
     -fx-background-color: #3c3c3c;
     -fx-padding: 10px 40px 10px 40px;
-    /*-fx-border-color: transparent transparent #5a5a5a transparent;*/
-    /*-fx-border-width: 0 0 1.5px 0;*/
     -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.6), 10, 0, 0, 0);;
 }
 
