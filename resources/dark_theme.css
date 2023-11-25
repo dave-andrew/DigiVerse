@@ -354,12 +354,12 @@
 
 .task-item {
     -fx-padding: 10px 20px;
-    -fx-border-radius: 20px;
+    -fx-background-radius: 100px;
     -fx-cursor: hand;
 }
 
 .task-item:hover {
-    -fx-background-color: #222222;
+    -fx-background-color: #333333;
     -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.6), 10, 0, 0, 0);
 }
 
@@ -475,13 +475,13 @@
 }
 
 .bottom-border {
-    -fx-border-color: transparent transparent #E5E5E5 transparent;
+    -fx-border-color: transparent transparent #5a5a5a transparent;
     -fx-border-width: 1px;
     -fx-padding: 0 0 10px 0;
 }
 
 .left-border {
-    -fx-border-color: transparent transparent transparent #E5E5E5;
+    -fx-border-color: transparent transparent transparent #5a5a5a;
     -fx-border-width: 3px;
 }
 

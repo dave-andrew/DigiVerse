@@ -349,12 +349,12 @@
 
 .task-item {
     -fx-padding: 10px 20px;
-    -fx-border-radius: 20px;
+    -fx-background-radius: 100px;
     -fx-cursor: hand;
 }
 
 .task-item:hover {
-    -fx-background-color: #F5F5F5;
+    -fx-background-color: white;
     -fx-effect: dropshadow(three-pass-box, rgba(0, 0, 0, 0.2), 10, 0, 0, 0);
 }
 

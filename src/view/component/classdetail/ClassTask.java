@@ -7,6 +7,7 @@ import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.layout.HBox;
+import javafx.scene.layout.Priority;
 import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
@@ -49,13 +50,6 @@ public class ClassTask extends ClassBase {
     }
 
     public void initTask() {
-        if(this.userRole.equals("Teacher")) {
-            this.addTaskBtn = new Button("+ Create Task");
-            this.addTaskBtn.getStyleClass().add("primary-button");
-
-            this.taskContainer.getChildren().add(addTaskBtn);
-            VBox.setMargin(addTaskBtn, new Insets(0, 0, 40, 0));
-        }
 
         this.taskListContainer = new VBox();
         this.taskListContainer.setMaxWidth(700);
@@ -88,10 +82,25 @@ public class ClassTask extends ClassBase {
     private void fetchTask() {
         this.taskListContainer.getChildren().clear();
 
-        Label title = new Label("Task List:");
-        this.taskListContainer.getChildren().add(title);
 
-        VBox.setMargin(title, new Insets(0, 0, 20, 0));
+        Label title = new Label("Task List:");
+
+        HBox spacer = new HBox();
+        HBox.setHgrow(spacer, Priority.ALWAYS);
+
+        HBox titleContainer = new HBox(title, spacer);
+        titleContainer.setAlignment(Pos.TOP_CENTER);
+
+        if(this.userRole.equals("Teacher")) {
+            this.addTaskBtn = new Button("+ Create Task");
+            this.addTaskBtn.getStyleClass().add("primary-button");
+            this.addTaskBtn.setStyle("-fx-text-fill: white");
+
+            titleContainer.getChildren().add(addTaskBtn);
+        }
+
+        this.taskListContainer.getChildren().add(titleContainer);
+        VBox.setMargin(titleContainer, new Insets(40, 0, 20, 0));
 
         title.getStyleClass().add("title");
 

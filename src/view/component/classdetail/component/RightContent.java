@@ -266,9 +266,11 @@ public class RightContent extends VBox {
 
             VBox userContainer = new VBox();
             Label userName = new Label(user.getUsername());
-            userName.setStyle("-fx-font-size: 12px");
+            userName.setStyle("-fx-font-size: 16px");
 
             Label label = new Label(text);
+            label.setWrapText(true);
+            label.setStyle("-fx-font-family: 'Nunito Regular'; -fx-font-size: 14px");
 
             userContainer.getChildren().addAll(userName, label);
 

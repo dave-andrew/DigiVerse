@@ -61,8 +61,8 @@ public class ClassroomList extends GridPane {
         Image image = new Image("file:resources/icons/right-arrow.png");
         ImageView icon = new ImageView(image);
 
-        icon.setFitWidth(25);
-        icon.setPreserveRatio(true);
+        icon.setFitWidth(15);
+        icon.setFitHeight(15);
 
         Label lbl = new Label(classroom.getClassName());
         lbl.setStyle("-fx-font-size: 16px;");
