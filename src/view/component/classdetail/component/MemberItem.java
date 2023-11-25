@@ -14,7 +14,7 @@ public class MemberItem extends HBox {
     private Image profileImg;
     private ImageView profile;
 
-    public MemberItem(ClassroomMember member) {
+    public MemberItem(ClassroomMember member, int idx) {
         if(member.getUser().getBlobProfile() != null) {
             profileImg = ImageManager.convertBlobImage(member.getUser().getBlobProfile());
         } else {
@@ -36,7 +36,10 @@ public class MemberItem extends HBox {
 
         userBox.getChildren().addAll(userNameLbl);
 
-        this.getChildren().addAll(profile, userBox);
+        Label index = new Label(idx + ".  ");
+
+        this.getChildren().addAll(index, profile, userBox);
+        this.setAlignment(Pos.CENTER_LEFT);
     }
 
 }

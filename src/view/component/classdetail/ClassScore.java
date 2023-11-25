@@ -80,7 +80,7 @@ public class ClassScore extends HBox {
     private void setLayout() {
         fetchMember();
     }
-
+    private int idx = 1;
     private void fetchMember() {
         this.memberList.getChildren().clear();
 
@@ -88,14 +88,13 @@ public class ClassScore extends HBox {
             if(member.getRole().equals("Student")) {
                 HBox scoreContainer = new HBox();
                 Label score = new Label("Score: ");
-                scoreContainer.setAlignment(Pos.CENTER_RIGHT);
-
+                scoreContainer.setAlignment(Pos.CENTER_LEFT);
 
                 Label scoreValue = new Label("0");
 
                 scoreContainer.getChildren().addAll(score, scoreValue);
 
-                MemberItem memberItem = new MemberItem(member);
+                MemberItem memberItem = new MemberItem(member, idx);
                 HBox spacer = new HBox();
 
                 HBox.setHgrow(spacer, Priority.ALWAYS);
@@ -107,7 +106,8 @@ public class ClassScore extends HBox {
 
                 fetchAnswer(member, memberItem, scoreContainer, scoreValue);
 
-                this.memberList.getChildren().add(memberItem);
+                this.memberList.getChildren().addAll(memberItem);
+                idx++;
             }
         });
     }

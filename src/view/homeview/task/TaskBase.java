@@ -1,6 +1,7 @@
 package view.homeview.task;
 
 import javafx.scene.control.Button;
+import javafx.scene.control.ScrollPane;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
 import model.Classroom;
@@ -16,6 +17,7 @@ public class TaskBase extends BorderPane {
 
     private TaskDetail taskDetail;
     private AnswerDetail answerDetail;
+    private ScrollPane taskDetailScrollPane;
 
     public TaskBase(Task task, Classroom classroom, String userRole) {
         this.task = task;
@@ -34,7 +36,12 @@ public class TaskBase extends BorderPane {
             actions();
         }
 
-        this.setCenter(this.taskDetail);
+        this.taskDetailScrollPane = new ScrollPane();
+        this.taskDetailScrollPane.setContent(taskDetail);
+
+        this.taskDetailScrollPane.setFitToWidth(true);
+
+        this.setCenter(this.taskDetailScrollPane);
     }
 
     private HBox setTopNav() {

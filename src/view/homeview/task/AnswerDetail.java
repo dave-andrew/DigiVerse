@@ -68,11 +68,13 @@ public class AnswerDetail extends HBox {
 
     }
 
+    private int idx = 1;
+
     private void fetchMember() {
 
         memberController.getClassMember(classroom.getClassId()).forEach(member -> {
             if(member.getRole().equals("Student")) {
-                MemberItem memberItem = new MemberItem(member);
+                MemberItem memberItem = new MemberItem(member, idx);
                 memberList.getChildren().add(memberItem);
 
                 memberItem.getStyleClass().add("task-item");
@@ -80,7 +82,7 @@ public class AnswerDetail extends HBox {
                 memberItem.setOnMouseClicked(e -> {
                     fetchAnswer(member);
                 });
-
+                idx++;
             }
         });
 
