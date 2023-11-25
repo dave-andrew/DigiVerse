@@ -484,3 +484,8 @@
     -fx-border-color: transparent transparent transparent #E5E5E5;
     -fx-border-width: 3px;
 }
+
+.reply-bg {
+    -fx-background-color: #2f2f2f;
+    -fx-background-radius: 7px;
+}
