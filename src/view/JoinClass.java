@@ -60,10 +60,12 @@ public class JoinClass {
 
         userInfoBox = new ChangeAccountBox(dialogStage);
         userInfoBox.setAlignment(Pos.TOP_CENTER);
-        userInfoBox.getStyleClass().add("container");
+        userInfoBox.getStyleClass().add("card");
+        userInfoBox.setMaxWidth(800);
 
         classFormBox = new GroupCodeForm(errorLbl);
-        classFormBox.getStyleClass().add("container");
+        classFormBox.getStyleClass().add("card");
+        classFormBox.setMaxWidth(800);
 
         joinInfo = new VBox(5);
         joinInfo.setPadding(new Insets(20));
@@ -78,7 +80,8 @@ public class JoinClass {
         joinInfoList.getChildren().addAll(lbl1, lbl2);
 
         joinInfo.getChildren().addAll(joinInfoSub, joinInfoList);
-        joinInfo.getStyleClass().add("container");
+        joinInfo.getStyleClass().add("card");
+        joinInfo.setMaxWidth(800);
     }
 
     private void setLayout() {
