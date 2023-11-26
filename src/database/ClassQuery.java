@@ -95,5 +95,4 @@ public class ClassQuery {
 //            throw new RuntimeException(e);
         }
     }
-
 }

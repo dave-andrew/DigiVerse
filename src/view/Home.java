@@ -1,6 +1,7 @@
 package view;
 
 import controller.AuthController;
+import controller.ClassController;
 import helper.ImageManager;
 import helper.ScreenManager;
 import helper.StageManager;
@@ -19,11 +20,13 @@ import javafx.scene.layout.*;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
 import javafx.util.Duration;
+import model.Classroom;
 import model.LoggedUser;
 import view.component.classroom.ClassCard;
 import view.homeview.Calendar;
 import view.homeview.ClassroomList;
 
+import java.util.ArrayList;
 import java.util.Objects;
 
 
@@ -32,6 +35,7 @@ public class Home {
     private LoggedUser loggedUser;
 
     private AuthController authController;
+    private ClassController classController;
 
     private Scene scene;
     private BorderPane borderPane;
@@ -386,7 +390,7 @@ public class Home {
     }
 
     public void profilePage() {
-        VBox profile = new Profile(userImg);
+        VBox profile = new Profile(userImg, leftNav, iconBtn, mainPane);
 
         ScrollPane scrollPane = new ScrollPane();
         scrollPane.setContent(profile);
@@ -410,6 +414,7 @@ public class Home {
 
     public Home(Stage stage) {
         this.authController = new AuthController();
+        this.classController = new ClassController();
 
         initialize();
         scene = setLayout();

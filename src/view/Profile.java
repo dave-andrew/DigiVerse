@@ -1,5 +1,6 @@
 package view;
 
+import controller.MemberController;
 import controller.TaskController;
 import controller.UserController;
 import helper.ImageManager;
@@ -9,19 +10,20 @@ import javafx.geometry.Pos;
 import javafx.scene.control.*;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
-import javafx.scene.layout.HBox;
-import javafx.scene.layout.Priority;
-import javafx.scene.layout.VBox;
+import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
 import javafx.scene.shape.Line;
 import javafx.scene.shape.Rectangle;
 import javafx.stage.FileChooser;
 import javafx.util.StringConverter;
+import model.Classroom;
 import model.LoggedUser;
 import model.Task;
 import model.User;
 import view.component.classdetail.component.TaskItem;
+import view.homeview.ClassroomDetail;
+import view.homeview.task.TaskBase;
 
 import java.io.File;
 import java.time.LocalDate;
@@ -51,10 +53,19 @@ public class Profile extends VBox {
 
     private Button updateProfileBtn, cancelBtn, cancelPasswordBtn, updatePasswordBtn;
 
-    public Profile(ImageView profileNav) {
+    private StackPane mainPane;
+    private HBox leftNav;
+    private Button iconBtn;
+
+    public Profile(ImageView profileNav, HBox leftNav, Button iconBtn, StackPane mainPane) {
         this.loggedUser = LoggedUser.getInstance();
         this.userController = new UserController();
         this.taskController = new TaskController();
+
+        this.mainPane = mainPane;
+        this.leftNav = leftNav;
+        this.iconBtn = iconBtn;
+
         this.profileNav = profileNav;
         init();
         actions();
@@ -448,7 +459,49 @@ public class Profile extends VBox {
         for (Task task : tasks) {
             TaskItem taskItem = new TaskItem(task);
             this.taskContainer.getChildren().add(taskItem);
+
+            taskItem.setOnMouseClicked(e -> {
+                this.mainPane.getChildren().clear();
+
+                String userRole = new MemberController().getRole(task.getClassroom().getClassId());
+                this.mainPane.getChildren().add(new TaskBase(task, task.getClassroom(), userRole));
+
+                setLeftNav(task.getClassroom());
+            });
         }
+    }
+
+    private void setLeftNav(Classroom classroom) {
+        Image image = new Image("file:resources/icons/right-arrow.png");
+        ImageView icon = new ImageView(image);
+
+        icon.setFitWidth(25);
+        icon.setPreserveRatio(true);
+
+        Label lbl = new Label(classroom.getClassName());
+        lbl.setStyle("-fx-font-size: 16px;");
+
+        lbl.setOnMouseEntered(e -> {
+            lbl.setStyle("-fx-underline: true;-fx-cursor: hand;");
+        });
+
+        lbl.setOnMouseExited(e -> {
+            lbl.setStyle("-fx-underline: false;");
+        });
+
+        lbl.setOnMouseClicked(e -> {
+            String userRole = new MemberController().getRole(classroom.getClassId());
+            BorderPane classDetail = new ClassroomDetail(classroom, userRole, mainPane);
+
+            setLeftNav(classroom);
+
+            mainPane.getChildren().clear();
+            mainPane.getChildren().add(classDetail);
+        });
+
+        this.leftNav.getChildren().clear();
+
+        this.leftNav.getChildren().addAll(iconBtn, icon, lbl);
     }
 
     public void fetchFinishTask() {
