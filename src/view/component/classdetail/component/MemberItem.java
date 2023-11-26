@@ -16,7 +16,7 @@ public class MemberItem extends HBox {
 
     public MemberItem(ClassroomMember member, int idx) {
         if(member.getUser().getBlobProfile() != null) {
-            profileImg = ImageManager.convertBlobImage(member.getUser().getBlobProfile());
+            profileImg = member.getUser().getProfile();
         } else {
             profileImg = new Image("file:resources/icons/user.png");
         }

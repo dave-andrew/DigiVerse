@@ -63,7 +63,7 @@ public class AuthController {
             authQuery.rememberMe(user);
         }
 
-        LoggedUser.getInstance(user);
+        LoggedUser.initialize(user);
         return "Login Success!";
     }
 

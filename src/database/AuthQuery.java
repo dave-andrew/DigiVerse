@@ -115,7 +115,7 @@ public class AuthQuery {
                         return "false";
                     } else {
                         User user = new User(rs.getString("UserID"), rs.getString("UserName"), rs.getString("UserEmail"), rs.getString("UserPassword"), rs.getString("UserDOB"), rs.getBlob("UserProfile"));
-                        LoggedUser.getInstance(user);
+                        LoggedUser.initialize(user);
                         return "true";
                     }
                 } else {

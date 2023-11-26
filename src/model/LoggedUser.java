@@ -11,7 +11,7 @@ public class LoggedUser extends User{
     private static LoggedUser loggedUser;
     private Image profileImage;
 
-    public static LoggedUser getInstance(User user) {
+    public static LoggedUser initialize(User user) {
         if(loggedUser == null) {
             loggedUser = new LoggedUser(user.getId(), user.getUsername(), user.getEmail(), user.getPassword(), user.getDob(), user.getBlobProfile());
         }
