@@ -39,10 +39,11 @@ public class Enemy extends ImageView {
     private final ArrayList<Image> diedSprites;
 
     private final Pane root;
-
+    private String type;
     public Enemy(Pane root, double posX, double posY, Player player, String type, int health) {
 
         this.player = player;
+        this.type = type;
 
         this.root = root;
         this.health = health;
@@ -87,6 +88,8 @@ public class Enemy extends ImageView {
             this.spriteList = ImageManager.importEnemySprites("mummy");
         } else if(type.equals("bug")) {
             this.spriteList = ImageManager.importEnemySprites("bug");
+        } else if(type.equals("spider")) {
+            this.spriteList = ImageManager.spider("spider");
         }
     }
 
@@ -153,5 +156,9 @@ public class Enemy extends ImageView {
 
     public void setHealth(int health) {
         this.health = health;
+    }
+
+    public String getType() {
+        return type;
     }
 }

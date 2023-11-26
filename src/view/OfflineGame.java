@@ -497,6 +497,10 @@ public class OfflineGame {
 
         String enemyType = enemySprites.get(random.nextInt(enemySprites.size()));
 
+        if(Math.random() <= 0.5) {
+            enemyType = "spider";
+        }
+
         Enemy enemy = new Enemy(root, randomX, randomY, player, enemyType, baseEnemyHealth);
         enemyList.add(enemy);
     }
