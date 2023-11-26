@@ -92,12 +92,13 @@ public class AnswerDetail extends HBox {
         fileContainer.getChildren().clear();
 
         Label fileTitle = new Label("Student Answer");
+        fileTitle.setStyle("-fx-font-size: 20px;");
         this.fileContainer.getChildren().addAll(fileTitle);
         VBox.setMargin(fileTitle, new Insets(0, 0, 20, 0));
 
         GridPane fileList = new GridPane();
-        fileList.setHgap(10);  // Horizontal gap between file items
-        fileList.setVgap(10);  // Vertical gap between file items
+        fileList.setHgap(10);
+        fileList.setVgap(10);
 
         AtomicInteger rowIndex = new AtomicInteger();
         AtomicInteger colIndex = new AtomicInteger();
