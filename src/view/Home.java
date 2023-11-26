@@ -18,11 +18,9 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.*;
 import javafx.stage.Stage;
-import javafx.stage.StageStyle;
 import javafx.util.Duration;
 import model.Classroom;
 import model.LoggedUser;
-import view.component.classroom.ClassCard;
 import view.homeview.Calendar;
 import view.homeview.ClassroomList;
 
@@ -183,7 +181,7 @@ public class Home {
         sideBar = new VBox();
 
         homeSideNav = sideNavItem("file:resources/icons/home.png", "Home");
-        homeSideNav.getStyleClass().add("side-nav-item");
+        homeSideNav.getStyleClass().addAll("side-nav-item", "active");
         homeSideNav.setPrefWidth(250);
 
         calenderSideNav = sideNavItem("file:resources/icons/calendar.png", "Calendar");
@@ -278,6 +276,9 @@ public class Home {
         });
 
         homeSideNav.setOnMouseClicked(e -> {
+            calenderSideNav.getStyleClass().remove("active");
+            homeSideNav.getStyleClass().remove("active");
+            homeSideNav.getStyleClass().add("active");
             mainPane.getChildren().clear();
             leftNav.getChildren().clear();
             leftNav.getChildren().add(iconBtn);
@@ -285,6 +286,9 @@ public class Home {
         });
 
         calenderSideNav.setOnMouseClicked(e -> {
+            calenderSideNav.getStyleClass().remove("active");
+            homeSideNav.getStyleClass().remove("active");
+            calenderSideNav.getStyleClass().add("active");
             mainPane.getChildren().clear();
             leftNav.getChildren().clear();
             leftNav.getChildren().add(iconBtn);
@@ -313,6 +317,9 @@ public class Home {
         });
 
         iconBtn.setOnMouseClicked(e -> {
+            calenderSideNav.getStyleClass().remove("active");
+            homeSideNav.getStyleClass().remove("active");
+            homeSideNav.getStyleClass().add("active");
             mainPane.getChildren().clear();
             leftNav.getChildren().clear();
             leftNav.getChildren().add(iconBtn);
@@ -320,6 +327,9 @@ public class Home {
         });
 
         userBtn.setOnMouseClicked(e -> {
+            calenderSideNav.getStyleClass().remove("active");
+            homeSideNav.getStyleClass().remove("active");
+            homeSideNav.getStyleClass().remove("active");
             mainPane.getChildren().clear();
             leftNav.getChildren().clear();
             leftNav.getChildren().add(iconBtn);
