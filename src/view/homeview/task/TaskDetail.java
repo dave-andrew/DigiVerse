@@ -5,6 +5,7 @@ import controller.CommentController;
 import helper.DateManager;
 import helper.ImageManager;
 import helper.StageManager;
+import helper.Toast;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
@@ -27,7 +28,10 @@ import view.component.classdetail.component.CommentItem;
 import view.component.classtask.UploadFileModal;
 
 import java.io.File;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 
 public class TaskDetail extends HBox {
 
@@ -344,11 +348,21 @@ public class TaskDetail extends HBox {
 
     private void actions() {
         this.submitBtn.setOnAction(e -> {
+
+            if(!checkDeadline()) {
+                return;
+            }
+
             new UploadFileModal(task.getId(), fileContainer, sideContent, downloadBtn);
             fetchAnswer();
         });
 
         this.markAsDoneBtn.setOnMouseClicked(e -> {
+
+            if(!checkDeadline()) {
+                return;
+            }
+
             ArrayList<File> fileList = fetchAnswer();
 
             if(submitStatus.getText().equals("Not Submitted")) {
@@ -362,4 +376,28 @@ public class TaskDetail extends HBox {
             }
         });
     }
+
+    private boolean checkDeadline() {
+        String nowString = DateManager.getNow();
+        String deadlineString = task.getDeadlineAt();
+
+        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+
+        try {
+            Date now = dateFormat.parse(nowString);
+            Date deadline = dateFormat.parse(deadlineString);
+
+            if (now.compareTo(deadline) > 0) {
+                // Deadline has passed
+                Toast.makeText(StageManager.getInstance(), "Deadline has passed\nYou can't submit this task anymore", 2000, 500, 500);
+                return false;
+            }
+
+        } catch (ParseException e) {
+            // Handle the ParseException
+            e.printStackTrace();
+        }
+        return true;
+    }
+
 }

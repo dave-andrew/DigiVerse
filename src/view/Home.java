@@ -193,7 +193,7 @@ public class Home {
         sideBar.getChildren().addAll(homeSideNav, calenderSideNav);
         sideBar.getStyleClass().add("side-nav");
 
-//        Kalo mau tambah side bar item
+//        TODO: Add class with role as teacher and student
 
         this.sideBarSpacer = new VBox();
         VBox.setVgrow(sideBarSpacer, Priority.ALWAYS);
