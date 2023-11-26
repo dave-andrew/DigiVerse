@@ -225,14 +225,14 @@ public class TaskDetail extends HBox {
 
         innerMainContent.getChildren().addAll(imgStack, detail);
         innerMainContent.setAlignment(Pos.TOP_LEFT);
-//        innerMainContent.setStyle("-fx-background-color: #F5f5f5");
 
-//        scoreDeadlineBox.prefWidthProperty().bind(innerMainContent.widthProperty());
+        innerMainContent.prefWidthProperty().bind(this.widthProperty().subtract(600));
 
         mainContent.getChildren().add(innerMainContent);
         mainContent.getStyleClass().add("card");
         mainContent.setAlignment(Pos.TOP_LEFT);
         HBox.setHgrow(mainContent, Priority.ALWAYS);
+//        mainContent.setMaxWidth(800);
 
         HBox.setMargin(sideContent, new Insets(0, 0, 0, 50));
 
@@ -259,6 +259,7 @@ public class TaskDetail extends HBox {
 
         this.submitBtn = new Button("+ Upload File");
         submitBtn.getStyleClass().add("primary-button");
+        submitBtn.setStyle("-fx-text-fill: #fff;");
         submitBtn.setPrefSize(300, 40);
         VBox.setMargin(submitBtn, new Insets(30, 0, 0, 0));
 
@@ -294,6 +295,7 @@ public class TaskDetail extends HBox {
             VBox.setMargin(constraintBox, new Insets(30, 0, 0, 0));
 
             sideContent.getChildren().add(constraintBox);
+            sideContent.setPrefWidth(330);
         }
 
         submitContainer.getStyleClass().add("card");
@@ -307,6 +309,7 @@ public class TaskDetail extends HBox {
         VBox.setMargin(fileContainer, new Insets(30, 0, 0, 0));
 
         this.downloadBtn = new Button("Download");
+        downloadBtn.setStyle("-fx-text-fill: #fff;");
         downloadBtn.setPrefSize(300, 40);
         VBox.setMargin(downloadBtn, new Insets(10, 0, 0, 0));
 
