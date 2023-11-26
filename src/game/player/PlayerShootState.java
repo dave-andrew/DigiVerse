@@ -36,7 +36,7 @@ public class PlayerShootState extends PlayerBaseState {
         player.setShootcd(player.getBaseShoodcd());
 
         if(player.getPowerUpTime().containsKey(PowerUp.QUICKLOAD)) {
-            player.setShootcd(1.5);
+            player.setShootcd(2.5);
         }
 
         this.bulletCooldown = player.getShootcd();

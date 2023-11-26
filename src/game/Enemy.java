@@ -44,6 +44,11 @@ public class Enemy extends ImageView {
 
         this.player = player;
         this.type = type;
+        this.speed = 3;
+
+        if(type.equals("spider")) {
+            this.speed = 5;
+        }
 
         this.root = root;
         this.health = health;
@@ -59,7 +64,6 @@ public class Enemy extends ImageView {
         this.setX(posX);
         this.setY(posY);
 
-        this.speed = 3;
         this.sprite = new Image("file:resources/game/enemy/soldier-1.png");
 
         this.collider = new Collider(posX, posY, sprite.getWidth());
