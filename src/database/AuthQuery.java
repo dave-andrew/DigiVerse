@@ -20,8 +20,7 @@ public class AuthQuery {
     public boolean register(User user) {
         String query = "INSERT INTO msuser VALUES (?, ?, ?, ?, ?, NULL)";
 
-        PreparedStatement ps = connect.prepareStatement(query);
-        try {
+        try (PreparedStatement ps = connect.prepareStatement(query)) {
             assert ps != null;
             ps.setString(1, user.getId());
             ps.setString(2, user.getUsername());
@@ -40,8 +39,7 @@ public class AuthQuery {
     public User login(String email, String pass) {
         String query = "SELECT * FROM msuser WHERE UserEmail = ? AND UserPassword = ? LIMIT 1";
 
-        PreparedStatement ps = connect.prepareStatement(query);
-        try {
+        try (PreparedStatement ps = connect.prepareStatement(query)) {
             assert ps != null;
             ps.setString(1, email);
             ps.setString(2, pass);
