@@ -46,4 +46,7 @@ public class TaskController {
     public ArrayList<Task> fetchUserFinishedTask(String userid) {
         return taskQuery.fetchUserFinishedTask(userid);
     }
+    public ArrayList<Task> fetchClassroomPendingTask(String classid) {
+        return taskQuery.fetchClassroomPendingTask(classid);
+    }
 }

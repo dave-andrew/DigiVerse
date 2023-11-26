@@ -118,7 +118,8 @@ public class ImageManager {
         imageView.setFitHeight(radius * 2);
     }
 
-    public static void makeCircular(HBox hbox, ImageView imageView, double radius) {
+    public static void makeCircular(HBox container, ImageView imageView, double radius) {
+
         StackPane stackPane = new StackPane();
 
         Circle clip = new Circle();
@@ -144,7 +145,7 @@ public class ImageManager {
 
         stackPane.setAlignment(Pos.CENTER);
 
-        hbox.getChildren().add(stackPane);
+        container.getChildren().add(stackPane);
 
     }
 

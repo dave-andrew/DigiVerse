@@ -1,5 +1,6 @@
 package database;
 
+import helper.DateManager;
 import helper.StageManager;
 import helper.Toast;
 import model.Classroom;
@@ -191,6 +192,42 @@ public class TaskQuery {
                 }
             }
 
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        return taskList;
+    }
+
+    public ArrayList<Task> fetchClassroomPendingTask(String classid) {
+
+        ArrayList<Task> taskList = new ArrayList<>();
+
+        String query = "SELECT * FROM class_task\n" +
+                "JOIN mstask ON class_task.TaskID = mstask.TaskID\n" +
+                "JOIN msuser ON mstask.UserID = msuser.UserID\n" +
+                "JOIN msclass ON msclass.ClassID = class_task.ClassID\n" +
+                "WHERE class_task.ClassID = ? AND \n" +
+                "mstask.DeadlineAt > ?\n" +
+                "ORDER BY mstask.DeadlineAt ASC\n" +
+                "LIMIT 2";
+
+        try (PreparedStatement ps = connect.prepareStatement(query)) {
+
+            assert ps != null;
+            ps.setString(1, classid);
+            ps.setString(2, DateManager.getNow());
+
+            try (var rs = ps.executeQuery()) {
+                while(rs.next()) {
+
+                    Classroom classroom = new Classroom(rs.getString("ClassID"), rs.getString("ClassName"), rs.getString("ClassDesc"), rs.getString("ClassCode"), rs.getString("ClassSubject"), rs.getBlob("ClassImage"));
+                    User user = new User(rs.getString("UserID"), rs.getString("UserName"), rs.getString("UserEmail"), "", rs.getString("UserDOB"), rs.getBlob("UserProfile"));
+                    Task task = new Task(rs.getString("TaskID"), rs.getString("UserID"), user, rs.getString("TaskTitle"), rs.getString("TaskDesc"), rs.getString("DeadlineAt"), rs.getString("CreatedAt"), rs.getBoolean("Scored"), classroom);
+                    taskList.add(task);
+
+                }
+            }
         } catch (Exception e) {
             e.printStackTrace();
         }
