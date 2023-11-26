@@ -3,7 +3,6 @@ package database;
 import helper.StageManager;
 import helper.Toast;
 import model.Answer;
-import model.LoggedUser;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -16,12 +15,12 @@ import java.util.UUID;
 
 public class FileQuery {
 
-    private Connect connect;
-    private Connection con;
+    private final Connect connect;
+    private final Connection connection;
 
     public FileQuery() {
         this.connect = Connect.getConnection();
-        this.con = connect.getConnect();
+        this.connection = connect.getConnect();
     }
 
     public void uploadTaskAnswer(Answer answer) {
@@ -33,7 +32,7 @@ public class FileQuery {
         String insertFileQuery = "INSERT INTO msfile VALUES (?, ?, ?, ?)";
 
         try {
-            con.setAutoCommit(false); // Disable auto-commit
+            connection.setAutoCommit(false); // Disable auto-commit
 
             // Get previous answer file id
             List<String> fileidList = new ArrayList<>();
@@ -99,13 +98,13 @@ public class FileQuery {
                 }
             }
 
-            con.commit();
+            connection.commit();
             Toast.makeText(StageManager.getInstance(), "Answer uploaded successfully!", 2000, 500, 500);
 
         } catch (Exception e) {
             try {
-                if (con != null) {
-                    con.rollback(); // Rollback the transaction in case of an exception
+                if (connection != null) {
+                    connection.rollback(); // Rollback the transaction in case of an exception
                 }
             } catch (SQLException rollbackException) {
                 rollbackException.printStackTrace();
@@ -114,8 +113,8 @@ public class FileQuery {
             e.printStackTrace();
         } finally {
             try {
-                if (con != null) {
-                    con.setAutoCommit(true);
+                if (connection != null) {
+                    connection.setAutoCommit(true);
                 }
             } catch (SQLException e) {
                 e.printStackTrace();
@@ -133,7 +132,5 @@ public class FileQuery {
 
         return "";
     }
-
-
 
 }

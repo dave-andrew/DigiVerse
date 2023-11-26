@@ -4,7 +4,6 @@ import helper.StageManager;
 import helper.Toast;
 import model.Classroom;
 import model.Forum;
-import model.LoggedUser;
 import model.User;
 
 import java.sql.PreparedStatement;
@@ -12,11 +11,9 @@ import java.util.ArrayList;
 
 public class ForumQuery {
 
-    private Connect connect;
-    private LoggedUser loggedUser;
+    private final Connect connect;
 
     public ForumQuery() {
-        loggedUser = LoggedUser.getInstance();
         this.connect = Connect.getConnection();
     }
 
@@ -31,13 +28,12 @@ public class ForumQuery {
                 "WHERE class_forum.ClassID = ?\n" +
                 "ORDER BY CreatedAt DESC";
 
-        PreparedStatement ps = connect.prepareStatement(query);
-        try {
+        try (PreparedStatement ps = connect.prepareStatement(query)) {
             assert ps != null;
             ps.setString(1, classid);
 
-            try(var rs = ps.executeQuery()) {
-                while(rs.next()) {
+            try (var rs = ps.executeQuery()) {
+                while (rs.next()) {
                     User user = new User(rs.getString("UserID"), rs.getString("UserName"), rs.getString("UserEmail"), "", rs.getString("UserDOB"), rs.getBlob("UserProfile"));
                     Classroom classroom = new Classroom(rs.getString("ClassID"), rs.getString("ClassName"), rs.getString("ClassDesc"), rs.getString("ClassCode"), rs.getString("ClassSubject"), rs.getBlob("ClassImage"));
 
@@ -55,9 +51,8 @@ public class ForumQuery {
         String query = "INSERT INTO msforum VALUES (?, ?, ?)";
         String query2 = "INSERT INTO class_forum VALUES (?, ?, ?)";
 
-        PreparedStatement ps = connect.prepareStatement(query);
-        PreparedStatement ps2 = connect.prepareStatement(query2);
-        try {
+        try (PreparedStatement ps = connect.prepareStatement(query);
+             PreparedStatement ps2 = connect.prepareStatement(query2)) {
             assert ps != null;
             ps.setString(1, forum.getId());
             ps.setString(2, forum.getText());

@@ -1,20 +1,17 @@
 package database;
 
 import helper.DateManager;
-import helper.StageManager;
 import model.LoggedUser;
 import model.User;
-import view.OfflineGame;
 
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
 
 public class AuthQuery {
 
-    private Connect connect;
+    private final Connect connect;
 
     public AuthQuery() {
         this.connect = Connect.getConnection();
@@ -34,11 +31,7 @@ public class AuthQuery {
 
             int rows = ps.executeUpdate();
 
-            if(rows > 0) {
-                return true;
-            } else {
-                return false;
-            }
+            return rows > 0;
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
@@ -53,8 +46,8 @@ public class AuthQuery {
             ps.setString(1, email);
             ps.setString(2, pass);
 
-            try(ResultSet rs = ps.executeQuery()) {
-                if(rs.next()) {
+            try (ResultSet rs = ps.executeQuery()) {
+                if (rs.next()) {
                     return new User(rs.getString("UserID"), rs.getString("UserName"), rs.getString("UserEmail"), rs.getString("UserPassword"), rs.getString("UserDOB"), rs.getBlob("UserProfile"));
                 } else {
                     return null;
@@ -62,7 +55,6 @@ public class AuthQuery {
             }
         } catch (SQLException e) {
             return null;
-//            throw new RuntimeException(e);
         }
     }
 
@@ -75,19 +67,15 @@ public class AuthQuery {
         now = now.plusDays(1);
         String formattedDate = DateManager.formatDate(now);
 
-        PreparedStatement ps = connect.prepareStatement(query);
-        try {
+        try (PreparedStatement ps = connect.prepareStatement(query)) {
+            assert ps != null;
             ps.setString(1, computerName);
             ps.setString(2, user.getId());
             ps.setString(3, formattedDate);
 
             int rows = ps.executeUpdate();
 
-            if(rows > 0) {
-                return true;
-            } else {
-                return false;
-            }
+            return rows > 0;
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
@@ -97,13 +85,11 @@ public class AuthQuery {
         LocalDateTime now = LocalDateTime.now();
 
         String query = "SELECT * FROM authcheck AS a JOIN msuser AS u ON a.UserID = u.UserID WHERE a.DeviceName = ?";
-
-        String computerName = System.getenv("COMPUTERNAME");
-
         try (PreparedStatement ps = connect.prepareStatement(query)) {
-            if(ps != null){
+            String computerName = System.getenv("COMPUTERNAME");
+            if (ps != null) {
                 ps.setString(1, computerName);
-            }else {
+            } else {
                 return "error";
             }
 
@@ -123,7 +109,6 @@ public class AuthQuery {
                 }
             }
         } catch (SQLException e) {
-//            throw new RuntimeException(e);
             return "error";
         }
     }
@@ -132,6 +117,7 @@ public class AuthQuery {
         String deleteQuery = "DELETE FROM authcheck WHERE DeviceName = ?";
 
         try (PreparedStatement deleteStatement = connect.prepareStatement(deleteQuery)) {
+            assert deleteStatement != null;
             deleteStatement.setString(1, deviceName);
             deleteStatement.executeUpdate();
         } catch (SQLException e) {

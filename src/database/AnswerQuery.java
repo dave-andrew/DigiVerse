@@ -2,7 +2,10 @@ package database;
 
 import helper.DateManager;
 
-import java.io.*;
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
 import java.sql.Blob;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -12,10 +15,10 @@ import java.util.UUID;
 
 public class AnswerQuery {
 
-    private Connect con;
+    private final Connect connect;
 
     public AnswerQuery() {
-        this.con = Connect.getConnection();
+        this.connect = Connect.getConnection();
     }
 
     public ArrayList<File> getMemberAnswer(String taskid, String userid) {
@@ -31,8 +34,7 @@ public class AnswerQuery {
                 "ON msfile.FileID = answer_detail.FileID\n" +
                 "WHERE TaskID = ? AND UserID = ?";
 
-        try (PreparedStatement ps = con.prepareStatement(query)) {
-
+        try (PreparedStatement ps = connect.prepareStatement(query)) {
             assert ps != null;
             ps.setString(1, taskid);
             ps.setString(2, userid);
@@ -80,7 +82,7 @@ public class AnswerQuery {
                 "FROM answer_header\n" +
                 "WHERE TaskID = ? AND UserID = ?";
 
-        try (PreparedStatement ps = con.prepareStatement(query)) {
+        try (PreparedStatement ps = connect.prepareStatement(query)) {
 
             assert ps != null;
             ps.setString(1, taskid);
@@ -99,7 +101,7 @@ public class AnswerQuery {
     public void markAsDone(String taskid, String userid) {
         String query = "INSERT INTO answer_header VALUES (?, ?, ?, NULL, ?)";
 
-        try (PreparedStatement ps = con.prepareStatement(query)) {
+        try (PreparedStatement ps = connect.prepareStatement(query)) {
             assert ps != null;
             ps.setString(1, UUID.randomUUID().toString());
             ps.setString(2, taskid);
@@ -115,7 +117,7 @@ public class AnswerQuery {
     public void markUndone(String taskid, String userid) {
         String query = "DELETE FROM answer_header WHERE TaskID = ? AND UserID = ?";
 
-        try (PreparedStatement ps = con.prepareStatement(query)) {
+        try (PreparedStatement ps = connect.prepareStatement(query)) {
             assert ps != null;
             ps.setString(1, taskid);
             ps.setString(2, userid);
@@ -129,7 +131,7 @@ public class AnswerQuery {
     public Integer getAnswerScore(String taskid, String userid) {
         String query = "SELECT SCORE FROM answer_header WHERE TaskID = ? AND UserID = ?";
 
-        try (PreparedStatement ps = con.prepareStatement(query)) {
+        try (PreparedStatement ps = connect.prepareStatement(query)) {
 
             assert ps != null;
             ps.setString(1, taskid);
@@ -160,7 +162,7 @@ public class AnswerQuery {
                 "SET answer_header.Score = ? " +
                 "WHERE mstask.TaskTitle = ? AND answer_header.UserID = ?";
 
-        try (PreparedStatement ps = con.prepareStatement(query)) {
+        try (PreparedStatement ps = connect.prepareStatement(query)) {
             assert ps != null;
             ps.setInt(1, score);
             ps.setString(2, taskid);

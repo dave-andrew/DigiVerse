@@ -1,6 +1,5 @@
 package database;
 
-import helper.ImageManager;
 import model.LoggedUser;
 
 import java.io.File;
@@ -11,16 +10,16 @@ import java.sql.SQLException;
 
 public class UserQuery {
 
-    private Connect con;
+    private final Connect connect;
 
     public UserQuery() {
-        this.con = Connect.getConnection();
+        this.connect = Connect.getConnection();
     }
 
     public void updateProfileImage(File file) {
         String query = "UPDATE msuser SET UserProfile = ? WHERE UserID = ?";
 
-        try (PreparedStatement ps = con.prepareStatement(query)) {
+        try (PreparedStatement ps = connect.prepareStatement(query)) {
             assert ps != null;
             ps.setBlob(1, new FileInputStream(file));
             ps.setString(2, LoggedUser.getInstance().getId());
@@ -36,7 +35,7 @@ public class UserQuery {
     public String updateProfile(String name, String email, String birthday) {
         String query = "UPDATE msuser SET UserName = ?, UserEmail = ?, UserDOB = ? WHERE UserID = ?";
 
-        try (PreparedStatement ps = con.prepareStatement(query)) {
+        try (PreparedStatement ps = connect.prepareStatement(query)) {
             assert ps != null;
             ps.setString(1, name);
             ps.setString(2, email);
@@ -54,7 +53,7 @@ public class UserQuery {
 
     public boolean validateOldPassword(String oldPassword) {
         String query = "SELECT COUNT(*) FROM msuser WHERE UserPassword = ? AND UserID = ?";
-        try (PreparedStatement preparedStatement = con.prepareStatement(query)) {
+        try (PreparedStatement preparedStatement = connect.prepareStatement(query)) {
 
             assert preparedStatement != null;
             preparedStatement.setString(1, oldPassword);
@@ -68,13 +67,12 @@ public class UserQuery {
             return false;
         } catch (SQLException e) {
             return false;
-//            throw new RuntimeException(e);
         }
     }
 
     public String updatePassword(String newPassword) {
         String updateQuery = "UPDATE msuser SET UserPassword = ? WHERE UserID = ?";
-        try (PreparedStatement preparedStatement = con.prepareStatement(updateQuery)) {
+        try (PreparedStatement preparedStatement = connect.prepareStatement(updateQuery)) {
 
             assert preparedStatement != null;
             preparedStatement.setString(1, newPassword);
@@ -83,7 +81,6 @@ public class UserQuery {
             return "Success";
         } catch (SQLException e) {
             return "Unexpected Error";
-//            throw new RuntimeException(e);
         }
     }
 
