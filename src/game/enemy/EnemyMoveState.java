@@ -34,6 +34,10 @@ public class EnemyMoveState extends EnemyBaseState {
             this.frame = 0;
         }
 
+        if(enemy.getHealth() <= 0) {
+            enemy.changeState(enemy.deadState);
+        }
+
         if (enemy.getPlayer() != null && !(game.getState() instanceof GamePauseState)) {
             double destX = enemy.getPlayer().getPosX();
             double destY = enemy.getPlayer().getPosY();

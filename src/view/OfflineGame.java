@@ -59,6 +59,7 @@ public class OfflineGame {
     private VBox settingMenu;
 
     private final Player player;
+    private int baseEnemyHealth = 1;
     private Pane root;
     private Scene scene;
     private InputManager inputManager;
@@ -437,7 +438,7 @@ public class OfflineGame {
                     if (bullet.getCollider().collidesWith(enemy.getCollider()) && !(enemy.getState() instanceof EnemyDeadState)) {
                         bullet.changeState(bullet.stopState);
                         root.getChildren().remove(bullet);
-                        enemy.changeState(enemy.deadState);
+                        enemy.setHealth(enemy.getHealth() - 1);
                         bulletIterator.remove();
                     } else if (bullet.getPosX() < 0 || bullet.getPosX() > ScreenManager.SCREEN_WIDTH ||
                             bullet.getPosY() < 0 || bullet.getPosY() > ScreenManager.SCREEN_HEIGHT) {
@@ -496,7 +497,7 @@ public class OfflineGame {
 
         String enemyType = enemySprites.get(random.nextInt(enemySprites.size()));
 
-        Enemy enemy = new Enemy(root, randomX, randomY, player, enemyType);
+        Enemy enemy = new Enemy(root, randomX, randomY, player, enemyType, baseEnemyHealth);
         enemyList.add(enemy);
     }
 
@@ -571,5 +572,13 @@ public class OfflineGame {
 
     public void setEnemySpawnRate(double enemySpawnRate) {
         this.enemySpawnRate = enemySpawnRate;
+    }
+
+    public int getBaseEnemyHealth() {
+        return baseEnemyHealth;
+    }
+
+    public void setBaseEnemyHealth(int baseEnemyHealth) {
+        this.baseEnemyHealth = baseEnemyHealth;
     }
 }

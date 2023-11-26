@@ -31,6 +31,7 @@ public class GameOverState extends GameBaseState {
 
         game.resetLevel();
         game.setEnemySpawnRate(0.01);
+        game.setBaseEnemyHealth(1);
 
         game.getRoot().getChildren().add(guiView);
     }

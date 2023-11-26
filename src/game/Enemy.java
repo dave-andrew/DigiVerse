@@ -18,6 +18,7 @@ public class Enemy extends ImageView {
 
     private Player player;
 
+    private int health;
     private double posX;
     private double posY;
 
@@ -39,11 +40,12 @@ public class Enemy extends ImageView {
 
     private final Pane root;
 
-    public Enemy(Pane root, double posX, double posY, Player player, String type) {
+    public Enemy(Pane root, double posX, double posY, Player player, String type, int health) {
 
         this.player = player;
 
         this.root = root;
+        this.health = health;
 
         initSprite(type);
 
@@ -143,5 +145,13 @@ public class Enemy extends ImageView {
 
     public Pane getRoot() {
         return root;
+    }
+
+    public int getHealth() {
+        return health;
+    }
+
+    public void setHealth(int health) {
+        this.health = health;
     }
 }
