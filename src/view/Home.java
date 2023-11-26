@@ -37,6 +37,9 @@ public class Home {
     private AuthController authController;
     private ClassController classController;
 
+    public static ArrayList<Classroom> teacherClassList = new ArrayList<>();
+    public static ArrayList<Classroom> studentClassList = new ArrayList<>();
+
     private Scene scene;
     private BorderPane borderPane;
     private GridPane classGrid;

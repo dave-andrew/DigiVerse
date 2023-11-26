@@ -11,6 +11,7 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.*;
 import model.Classroom;
+import view.Home;
 import view.component.classroom.ClassCard;
 
 import java.util.ArrayList;
@@ -35,7 +36,7 @@ public class ClassroomList extends GridPane {
         ArrayList<Classroom> classroomList = classController.getUserClassroom();
 
         for (Classroom classroom : classroomList) {
-            StackPane sp = new ClassCard(classroom.getClassName(), classroom.getClassDesc());
+            StackPane sp = new ClassCard(classroom);
 
             sp.setOnMouseClicked(e -> {
                 String userRole = new MemberController().getRole(classroom.getClassId());
@@ -45,6 +46,12 @@ public class ClassroomList extends GridPane {
 
                 mainPane.getChildren().clear();
                 mainPane.getChildren().add(classDetail);
+
+                if(userRole.equals("Teacher")) {
+                    Home.teacherClassList.add(classroom);
+                } else {
+                    Home.studentClassList.add(classroom);
+                }
             });
 
             this.add(sp, index % 4, index / 4);
