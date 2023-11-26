@@ -359,17 +359,21 @@
 }
 
 .modal {
-    -fx-background-color: rgba(0, 0, 0, 0.5);
-    -fx-border-width: 2px;
-    -fx-border-color: #36454F;
-    -fx-background-color: #CACACA;
+    -fx-background-color: rgba(255, 255, 255, 1);
+    -fx-border-color: #E5E5E5;
+    -fx-border-width: 1px;
+    -fx-border-radius: 5px;
+    -fx-background-radius: 5px;
+    -fx-padding: 20px;
 }
 
 .upload-box {
     -fx-border-style: dashed;
     -fx-border-color: #36454F;
-    -fx-border-width: 1px;
-    -fx-background-color: #CDCDCD;
+    -fx-border-width: 2px;
+    -fx-border-radius: 10px;
+    -fx-background-radius: 10px;
+    -fx-background-color: #efefef;
 }
 
 .calendar-item {
@@ -490,6 +494,12 @@
     -fx-padding: 0 0 10px 0;
 }
 
+.top-border {
+    -fx-border-color: #E5E5E5 transparent transparent transparent;
+    -fx-border-width: 1px;
+    -fx-padding: 10px 0 0 0;
+}
+
 .left-border {
     -fx-border-color: transparent transparent transparent #E5E5E5;
     -fx-border-width: 3px;
@@ -501,5 +511,5 @@
 }
 
 .side-nav-item.active {
-    -fx-background-color: #b7ecff;
+    -fx-background-color: #e5f5ff;
 }

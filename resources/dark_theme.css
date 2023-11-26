@@ -364,17 +364,21 @@
 }
 
 .modal {
-    -fx-background-color: rgba(0,0,0,0.8);
-    -fx-border-width: 2px;
-    -fx-border-color: #111111;
     -fx-background-color: #333333;
+    -fx-border-color: #5a5a5a;
+    -fx-border-width: 1px;
+    -fx-border-radius: 5px;
+    -fx-background-radius: 5px;
+    -fx-padding: 20px;
 }
 
 .upload-box {
     -fx-border-style: dashed;
-    -fx-border-color: #111111;
-    -fx-border-width: 1px;
+    -fx-border-color: #1f1f1f;
     -fx-background-color: #444444;
+    -fx-border-width: 2px;
+    -fx-border-radius: 10px;
+    -fx-background-radius: 10px;
 }
 
 .calendar-item {
@@ -480,6 +484,12 @@
     -fx-padding: 0 0 10px 0;
 }
 
+.top-border {
+    -fx-border-color: #5a5a5a transparent transparent transparent;
+    -fx-border-width: 1px;
+    -fx-padding: 10px 0 0 0;
+}
+
 .left-border {
     -fx-border-color: transparent transparent transparent #5a5a5a;
     -fx-border-width: 3px;
@@ -488,4 +498,8 @@
 .reply-bg {
     -fx-background-color: #2f2f2f;
     -fx-background-radius: 7px;
+}
+
+.side-nav-item.active {
+    -fx-background-color: #006985;
 }

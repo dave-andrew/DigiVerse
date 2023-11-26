@@ -73,8 +73,8 @@ public class AddTask extends BorderPane {
         errorLbl.setStyle("-fx-text-fill: red;");
 
         this.root = new BorderPane();
-        this.root.setTop(navBar());
         this.root.setRight(rightBar());
+        this.root.setTop(navBar());
         this.root.setCenter(center());
 
         dialogScene = new Scene(root, ScreenManager.SCREEN_WIDTH, ScreenManager.SCREEN_HEIGHT);
@@ -135,6 +135,7 @@ public class AddTask extends BorderPane {
 
         title = new Label("Create New Task");
         title.getStyleClass().add("title");
+        title.setStyle("-fx-text-fill: white;");
 
         joinBtn = new Button("Add Task");
         joinBtn.getStyleClass().add("primary-button");

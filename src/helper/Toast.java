@@ -28,7 +28,7 @@ public final class Toast
         toastStage.setY(0);
 
         Text text = new Text(toastMsg);
-        text.setFont(Font.font("Verdana", 18));
+        text.setFont(Font.font("Nunito", 18));
         text.setFill(Color.BLACK);
 
         VBox box = new VBox(text);
@@ -44,6 +44,7 @@ public final class Toast
         root.setOpacity(0);
 
         Scene scene = new Scene(root);
+        ThemeManager.getTheme(scene);
         scene.setFill(Color.TRANSPARENT);
         toastStage.setScene(scene);
         toastStage.show();

@@ -4,6 +4,9 @@ import controller.TaskController;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.control.Label;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
+import javafx.scene.layout.HBox;
 import javafx.scene.layout.Priority;
 import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
@@ -46,10 +49,15 @@ public class ClassCard extends StackPane {
         ArrayList<Task> pendingTask = this.taskController.fetchClassroomPendingTask(classroom.getClassId());
 
         for (Task task : pendingTask) {
-            Label taskCard = new Label(" • " + task.getTitle());
+
+            Label taskCard = new Label(" ⦿ " + task.getTitle());
             taskCard.setWrapText(true);
-            taskCard.setStyle("-fx-text-fill: black; -fx-font-size: 12px;");
-            spacer.getChildren().add(taskCard);
+            taskCard.setStyle("-fx-font-size: 12px;");
+
+            HBox taskContainer = new HBox(10);
+            taskContainer.getChildren().addAll(taskCard);
+
+            spacer.getChildren().add(taskContainer);
         }
 
         VBox.setVgrow(spacer, Priority.ALWAYS);
