@@ -113,6 +113,7 @@ public class AddTask extends BorderPane {
         errorContainer.getChildren().add(errorLbl);
 
         content.getChildren().addAll(title, titleField, description, descriptionField, errorContainer);
+        content.getStyleClass().add("card");
 
         center.getChildren().addAll(content);
 
@@ -135,10 +136,10 @@ public class AddTask extends BorderPane {
 
         title = new Label("Create New Task");
         title.getStyleClass().add("title");
-        title.setStyle("-fx-text-fill: white;");
 
-        joinBtn = new Button("Add Task");
+        joinBtn = new Button("Create Task");
         joinBtn.getStyleClass().add("primary-button");
+        joinBtn.setStyle("-fx-text-fill: white;");
 
         HBox.setHgrow(title, Priority.ALWAYS);
         HBox.setHgrow(joinBtn, Priority.NEVER);

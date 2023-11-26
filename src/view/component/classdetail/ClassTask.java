@@ -1,6 +1,7 @@
 package view.component.classdetail;
 
 import controller.TaskController;
+import helper.StageManager;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
@@ -69,11 +70,9 @@ public class ClassTask extends ClassBase {
 
     private void actions() {
         if(this.userRole.equals("Teacher")) {
-            this.addTaskBtn.setOnAction(e -> {
-                Scene scene = this.getScene();
-                Stage stage = (Stage) scene.getWindow();
+            this.addTaskBtn.setOnMouseClicked(e -> {
 
-                new AddTask(stage, this.classroom);
+                new AddTask(StageManager.getInstance(), this.classroom);
                 fetchTask();
             });
         }
