@@ -230,6 +230,7 @@ public class TaskDetail extends HBox {
 //        scoreDeadlineBox.prefWidthProperty().bind(innerMainContent.widthProperty());
 
         mainContent.getChildren().add(innerMainContent);
+        mainContent.getStyleClass().add("card");
         mainContent.setAlignment(Pos.TOP_LEFT);
         HBox.setHgrow(mainContent, Priority.ALWAYS);
 
