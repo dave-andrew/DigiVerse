@@ -138,12 +138,7 @@ public class AddTask extends BorderPane {
         title.getStyleClass().add("title");
         title.setPadding(new Insets(10, 0, 10, 0));
 
-        joinBtn = new Button("Create Task");
-        joinBtn.getStyleClass().add("primary-button");
-        joinBtn.setStyle("-fx-text-fill: white;");
-
         HBox.setHgrow(title, Priority.ALWAYS);
-        HBox.setHgrow(joinBtn, Priority.NEVER);
 
         leftNav.getChildren().addAll(closeBtn, title);
         leftNav.setAlignment(Pos.CENTER_LEFT);
@@ -153,11 +148,8 @@ public class AddTask extends BorderPane {
             this.dialogStage.close();
         });
 
-        joinBtn.setOnAction(e -> {
-            submitForm();
-        });
 
-        container.getChildren().addAll(leftNav, joinBtn);
+        container.getChildren().addAll(leftNav);
         container.getStyleClass().add("nav-bar");
         container.setAlignment(Pos.CENTER);
 
@@ -189,7 +181,6 @@ public class AddTask extends BorderPane {
         Label dateTimeLabel = new Label("Deadline");
         this.datePicker = new DatePicker();
 
-        // Set the default value of the DatePicker to today
         datePicker.setValue(LocalDate.now());
 
         Profile.DateFormatter(datePicker);
@@ -221,7 +212,23 @@ public class AddTask extends BorderPane {
         scoreBox.setAlignment(Pos.CENTER_LEFT);
         scoreBox.setPadding(new Insets(30, 40, 0, 40));
 
-        rightBar.getChildren().addAll(dateTimeContainer, scoreBox);
+        VBox spacer = new VBox();
+        VBox.setVgrow(spacer, Priority.ALWAYS);
+
+        joinBtn = new Button("Create Task");
+        joinBtn.getStyleClass().add("primary-button");
+        joinBtn.setStyle("-fx-text-fill: white;");
+        joinBtn.setPrefWidth(300);
+
+        VBox.setMargin(joinBtn, new Insets(0, 0, 50, 0));
+
+        joinBtn.setOnAction(e -> {
+            submitForm();
+        });
+
+
+        rightBar.getChildren().addAll(dateTimeContainer, scoreBox, spacer, joinBtn);
+        rightBar.setAlignment(Pos.CENTER);
 
         rightBar.getStyleClass().add("side-nav");
 

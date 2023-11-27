@@ -39,12 +39,31 @@
 }
 
 .text-area {
-    -fx-control-inner-background: #2E2E2E;
-    -fx-border-color: #404040;
-    -fx-border-radius: 5px;
-    -fx-border-width: 1px;
+    -fx-background-insets: 0;
+    -fx-background-color: transparent, #2E2E2E, transparent, #2E2E2E;
+    -fx-background-radius: 5px;
     -fx-text-fill: #FFFFFF;
+    -fx-border-radius: 5px;
+    -fx-border-color: #404040;
     -fx-wrap-text: true;
+}
+
+.text-area .content {
+    -fx-background-color: transparent, #2E2E2E, transparent, #2E2E2E;
+}
+
+.text-area:focused .content {
+    -fx-background-color: transparent, #2E2E2E, transparent, #2E2E2E;
+}
+
+.text-area:focused {
+    -fx-highlight-fill: #404040;
+}
+
+.text-area .content {
+    -fx-padding: 10px;
+    -fx-text-fill: #4f4f4f;
+    -fx-highlight-fill: #2f2f2f;
 }
 
 .combo-box {
@@ -136,16 +155,35 @@
 
 .date-picker {
     -fx-background-color: #2E2E2E;
+    -fx-background-radius: 5px;
+    -fx-border-color: #2E2E2E;
+    -fx-border-radius: 5px;
+    -fx-border-width: 1;
+}
+
+.date-picker-popup {
+    -fx-background-color: #2E2E2E;
+    -fx-background-radius: 10px;
+    -fx-border-color: #2E2E2E;
+    -fx-border-radius: 10px;
+    -fx-border-width: 1;
+}
+
+.date-picker .arrow-button {
+    -fx-background-color: #2E2E2E;
     -fx-border-color: #404040;
     -fx-border-radius: 5px;
     -fx-border-width: 1px;
-    -fx-text-fill: #FFFFFF;
+}
+
+.date-picker .arrow-button:hover {
+    -fx-background-color: #333333;
 }
 
 .date-picker .date-cell {
     -fx-background-color: #2E2E2E;
-    -fx-border-color: #404040;
-    -fx-text-fill: #FFFFFF;
+    -fx-border-color: #2E2E2E;
+    -fx-border-width: 2px;
     -fx-padding: 5px;
 }
 
@@ -166,7 +204,11 @@
 }
 
 .date-picker-popup  {
-    -fx-border-color: transparent;
+    -fx-background-color: #333333;
+    -fx-border-color: #404040;
+    -fx-border-radius: 10px;
+    -fx-background-radius: 10px;
+    -fx-border-width: 1px;
 }
 
 .date-picker-popup .month-year-pane {
@@ -176,6 +218,25 @@
 
 .date-picker-popup > .month-year-pane > .spinner {
     -fx-background-color: #333333;
+}
+
+.spinner .increment-arrow-button {
+    -fx-background-color: #333333;
+    -fx-border-color: #404040;
+    -fx-border-radius: 5px 5px 0 0;
+    -fx-border-width: 1px;
+}
+
+.spinner .decrement-arrow-button {
+    -fx-background-color: #333333;
+    -fx-border-color: #404040;
+    -fx-border-radius: 0 0 5px 5px;
+    -fx-border-width: 1px;
+}
+
+.spinner .increment-arrow-button:hover,
+.spinner .decrement-arrow-button:hover {
+    -fx-background-color: #2E2E2E;
 }
 
 /* ============================== */
