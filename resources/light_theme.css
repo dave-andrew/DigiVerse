@@ -38,7 +38,6 @@
 }
 
 .text-area {
-    /*-fx-background-color: #F5F5F5;*/
     -fx-control-inner-background: #F5F5F5;
     -fx-border-color: #E5E5E5;
     -fx-border-radius: 5px;
@@ -141,6 +140,11 @@
 .date-picker .date-cell {
     -fx-background-color: #efefef;
     -fx-border-color: #bebebe;
+    -fx-padding: 5px;
+}
+
+.date-picker .date-cell:hover {
+    -fx-background-color: #F9F9F9;
 }
 
 .date-picker .date-cell:selected {

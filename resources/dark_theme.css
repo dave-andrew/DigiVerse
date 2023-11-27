@@ -88,8 +88,8 @@
 }
 
 .spinner .text-field {
-    -fx-background-color: #263238; /* Dark background color */
-    -fx-border-color: #37474f; /* Dark border color */
+    -fx-background-color: #2E2E2E;
+    -fx-border-color: #484848;
     -fx-border-width: 1;
 }
 
@@ -146,6 +146,7 @@
     -fx-background-color: #2E2E2E;
     -fx-border-color: #404040;
     -fx-text-fill: #FFFFFF;
+    -fx-padding: 5px;
 }
 
 .date-picker .date-cell:hover {
