@@ -8,9 +8,11 @@ import helper.Collider;
 import helper.ImageManager;
 import helper.ItemManager;
 import javafx.animation.AnimationTimer;
+import javafx.scene.effect.DropShadow;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.Pane;
+import javafx.scene.paint.Color;
 
 import java.util.ArrayList;
 
@@ -44,11 +46,7 @@ public class Enemy extends ImageView {
 
         this.player = player;
         this.type = type;
-        this.speed = 3;
-
-        if(type.equals("spider")) {
-            this.speed = 5;
-        }
+        this.speed = (type.equals("spider")) ? 5 : 3;
 
         this.root = root;
         this.health = health;
@@ -79,6 +77,15 @@ public class Enemy extends ImageView {
 
         this.setScaleX(2);
         this.setScaleY(2);
+
+        DropShadow dropShadow = new DropShadow();
+        dropShadow.setRadius(5.0);
+        dropShadow.setOffsetX(-5.0);
+        dropShadow.setOffsetY(5.0);
+        dropShadow.setColor(Color.rgb(0, 0, 0, 0.4));
+
+        this.setEffect(dropShadow);
+
     }
 
     public ArrayList<Image> getDiedSprites() {
