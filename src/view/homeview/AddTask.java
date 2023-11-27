@@ -136,6 +136,7 @@ public class AddTask extends BorderPane {
 
         title = new Label("Create New Task");
         title.getStyleClass().add("title");
+        title.setPadding(new Insets(10, 0, 10, 0));
 
         joinBtn = new Button("Create Task");
         joinBtn.getStyleClass().add("primary-button");
@@ -158,6 +159,7 @@ public class AddTask extends BorderPane {
 
         container.getChildren().addAll(leftNav, joinBtn);
         container.getStyleClass().add("nav-bar");
+        container.setAlignment(Pos.CENTER);
 
         return container;
     }
