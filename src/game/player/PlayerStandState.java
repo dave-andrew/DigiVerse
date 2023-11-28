@@ -5,7 +5,7 @@ import helper.InputManager;
 import javafx.scene.input.KeyCode;
 import javafx.scene.layout.Pane;
 
-import java.util.ArrayList;
+import java.util.Set;
 
 public class PlayerStandState extends PlayerBaseState {
 
@@ -15,14 +15,14 @@ public class PlayerStandState extends PlayerBaseState {
 
     @Override
     public void onEnterState() {
-//        System.out.println("Stand State");
+
     }
 
     @Override
     public void onUpdate(double deltaTime, Pane root) {
 
-        ArrayList<KeyCode> pressedKeys = InputManager.getPressedKeys();
-        if(!pressedKeys.isEmpty()){
+        Set<KeyCode> pressedKeys = InputManager.getPressedKeys();
+        if (!pressedKeys.isEmpty()) {
             player.changeState(player.getWalkState());
         }
     }

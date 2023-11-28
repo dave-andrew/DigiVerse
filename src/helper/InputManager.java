@@ -5,18 +5,18 @@ import javafx.scene.input.KeyCode;
 import javafx.scene.input.MouseButton;
 import javafx.scene.input.MouseEvent;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
+import java.util.HashSet;
+import java.util.Set;
 
 public class InputManager {
 
-    private static InputManager gameInput;
-    private static final ArrayList<KeyCode> pressedKeys = new ArrayList<>();
-    private static final ArrayList<MouseButton> mouseClicks = new ArrayList<>();
-    private static final ArrayList<Character> typedChars = new ArrayList<>();
+    private static final Set<KeyCode> pressedKeys = new HashSet<>();
+    private static final Set<MouseButton> mouseClicks = new HashSet<>();
+    private static InputManager inputManager;
 
-    private Scene scene;
+    private final Scene scene;
+    private final StringBuilder typedChars = new StringBuilder();
+    private final int CHARACTER_LIMIT = 10;
 
     private InputManager(Scene scene) {
         this.scene = scene;
@@ -24,33 +24,41 @@ public class InputManager {
     }
 
     public static synchronized InputManager getInstance(Scene scene) {
-        if (gameInput == null) {
-            gameInput = new InputManager(scene);
+        if (inputManager == null) {
+            inputManager = new InputManager(scene);
         }
-        return gameInput;
+        return inputManager;
     }
 
-    public static ArrayList<KeyCode> getPressedKeys() {
+    public static Set<KeyCode> getPressedKeys() {
         return pressedKeys;
     }
 
-    public static ArrayList<MouseButton> getMouseClicks() {
+    public static Set<MouseButton> getMouseClicks() {
         return mouseClicks;
     }
 
     private void handlePlayerInput() {
-        KeyCode[] allowedKeys = {KeyCode.A, KeyCode.S, KeyCode.D, KeyCode.W, KeyCode.UP, KeyCode.DOWN, KeyCode.LEFT,
-                KeyCode.RIGHT, KeyCode.SPACE, KeyCode.ESCAPE};
-        List<KeyCode> allowedKeysList = Arrays.asList(allowedKeys);
-
         this.scene.setOnKeyPressed(e -> {
             KeyCode keyCode = e.getCode();
-            if (!pressedKeys.contains(keyCode) && allowedKeysList.contains(keyCode)) {
-                pressedKeys.add(keyCode);
+            switch (keyCode) {
+                case A:
+                case S:
+                case D:
+                case W:
+                case UP:
+                case DOWN:
+                case LEFT:
+                case RIGHT:
+                case SPACE:
+                case ESCAPE:
+                    pressedKeys.add(keyCode);
+                    break;
             }
 
             if (keyCode.isLetterKey()) {
-                typedChars.add(keyCode.getChar().charAt(0));
+                typedChars.append(keyCode.getChar().charAt(0));
+                truncateCharacters();
                 checkCheats();
             }
         });
@@ -71,12 +79,10 @@ public class InputManager {
 
     public void checkCheats() {
         if (godCheat()) {
-            typedChars.clear();
             System.out.println("GOD MODE ACTIVATED");
         }
 
         if (dropRateCheat()) {
-            typedChars.clear();
             System.out.println("DROP RATE CHEAT ACTIVATED");
         }
     }
@@ -91,16 +97,25 @@ public class InputManager {
         return checkCheat(cheat);
     }
 
-    private boolean checkCheat(String cheat) {
-        int typedSize = typedChars.size();
+    private void truncateCharacters() {
+        if (typedChars.length() > CHARACTER_LIMIT) {
+            typedChars.setLength(CHARACTER_LIMIT);
+        }
+    }
 
-        StringBuilder lastTypedChars = new StringBuilder();
-        for (int i = Math.max(0, typedSize - cheat.length()); i < typedSize; i++) {
-            lastTypedChars.append(typedChars.get(i));
+    private boolean checkCheat(String cheat) {
+        int typedSize = typedChars.length();
+
+        int startIndex = Math.max(0, typedSize - cheat.length());
+        StringBuilder lastTypedChars = new StringBuilder(
+                typedChars.substring(startIndex, typedSize)
+        );
+
+        if (lastTypedChars.length() > CHARACTER_LIMIT) {
+            lastTypedChars.setLength(CHARACTER_LIMIT);
         }
 
         return lastTypedChars.toString().equals(cheat);
     }
-
 
 }
