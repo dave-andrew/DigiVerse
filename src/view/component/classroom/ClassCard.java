@@ -50,7 +50,7 @@ public class ClassCard extends StackPane {
 
         for (Task task : pendingTask) {
 
-            Label taskCard = new Label(" ⦿ " + task.getTitle());
+            Label taskCard = new Label(" • " + task.getTitle());
             taskCard.setWrapText(true);
             taskCard.setStyle("-fx-font-size: 12px;");
 
