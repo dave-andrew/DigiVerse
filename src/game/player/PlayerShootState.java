@@ -64,7 +64,7 @@ public class PlayerShootState extends PlayerBaseState {
     public void spriteManager(double velocityX, double velocityY, int frame) {
 
         if (InputManager.getPressedKeys().isEmpty()){
-            player.changeState(player.standState);
+            player.changeState(player.getStandState());
         }
 
         if (!player.getPowerUpTime().isEmpty()) {

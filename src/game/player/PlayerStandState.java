@@ -23,7 +23,7 @@ public class PlayerStandState extends PlayerBaseState {
 
         ArrayList<KeyCode> pressedKeys = InputManager.getPressedKeys();
         if(!pressedKeys.isEmpty()){
-            player.changeState(player.walkState);
+            player.changeState(player.getWalkState());
         }
     }
 

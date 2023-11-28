@@ -24,7 +24,7 @@ public class Player extends ImageView {
     private double baseShootcd;
     private int score;
 
-    private Collider collider;
+    private final Collider collider;
 
     //    Player Movement
     private double velocityX = 0.0;
@@ -43,12 +43,13 @@ public class Player extends ImageView {
 
 //    Player States
     private PlayerBaseState currentState;
-    public PlayerStandState standState;
-    public PlayerWalkState walkState;
-    public PlayerShootState shootState;
-    public PlayerDeadState deadState;
-    public PlayerRespawnState respawnState;
-    public PlayerNoLiveState noLiveState;
+
+    private final PlayerStandState standState;
+    private final PlayerWalkState walkState;
+    private final PlayerShootState shootState;
+    private final PlayerDeadState deadState;
+    private final PlayerRespawnState respawnState;
+    private final PlayerNoLiveState noLiveState;
 
     private Image sprite;
 
@@ -212,6 +213,31 @@ public class Player extends ImageView {
 
     public void setPowerUpTime(ConcurrentHashMap<PowerUp, Double> powerUpTime) {
         this.powerUpTime = powerUpTime;
+    }
+
+
+    public PlayerStandState getStandState() {
+        return standState;
+    }
+
+    public PlayerWalkState getWalkState() {
+        return walkState;
+    }
+
+    public PlayerShootState getShootState() {
+        return shootState;
+    }
+
+    public PlayerDeadState getDeadState() {
+        return deadState;
+    }
+
+    public PlayerRespawnState getRespawnState() {
+        return respawnState;
+    }
+
+    public PlayerNoLiveState getNoLiveState() {
+        return noLiveState;
     }
 }
 

@@ -449,7 +449,7 @@ public class OfflineGame {
                 }
                 if (enemy.getCollider().collidesWith(player.getCollider()) && !(enemy.getState() instanceof EnemyDeadState)) {
                     deadPause = true;
-                    player.changeState(player.deadState);
+                    player.changeState(player.getDeadState());
                 }
                 enemy.getState().onUpdate(deltaTime, this);
                 enemy.getCollider().setCollider(enemy.getPosX(), enemy.getPosY());
@@ -518,7 +518,7 @@ public class OfflineGame {
 
         player.setLives(3);
         player.setScore(0);
-        player.changeState(player.respawnState);
+        player.changeState(player.getRespawnState());
 
         mediaPlayer.stop();
         mediaPlayer.dispose();
