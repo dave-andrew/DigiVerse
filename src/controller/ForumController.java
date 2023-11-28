@@ -10,8 +10,8 @@ import java.util.ArrayList;
 
 public class ForumController {
 
-    private ForumQuery forumQuery;
-    private LoggedUser loggedUser;
+    private final ForumQuery forumQuery;
+    private final LoggedUser loggedUser;
 
     public ForumController() {
         forumQuery = new ForumQuery();

@@ -10,7 +10,7 @@ import java.util.ArrayList;
 
 public class TaskController {
 
-    private TaskQuery taskQuery;
+    private final TaskQuery taskQuery;
 
     public TaskController() {
         this.taskQuery = new TaskQuery();

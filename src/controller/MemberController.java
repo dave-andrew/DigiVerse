@@ -7,7 +7,7 @@ import java.util.ArrayList;
 
 public class MemberController {
 
-    private MemberQuery memberQuery;
+    private final MemberQuery memberQuery;
 
     public MemberController() {
         this.memberQuery = new MemberQuery();

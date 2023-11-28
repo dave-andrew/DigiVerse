@@ -9,7 +9,7 @@ import java.time.format.DateTimeFormatter;
 
 public class AuthController {
 
-    private AuthQuery authQuery;
+    private final AuthQuery authQuery;
 
     public AuthController() {
         this.authQuery = new AuthQuery();

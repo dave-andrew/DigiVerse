@@ -15,7 +15,7 @@ import java.util.ArrayList;
 
 public class AnswerController {
 
-    private AnswerQuery answerQuery;
+    private final AnswerQuery answerQuery;
 
     public AnswerController() {
         this.answerQuery = new AnswerQuery();
