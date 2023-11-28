@@ -6,44 +6,41 @@ import game.enemy.EnemyDespawnState;
 import game.enemy.EnemyMoveState;
 import helper.Collider;
 import helper.ImageManager;
-import helper.ItemManager;
-import javafx.animation.AnimationTimer;
 import javafx.scene.effect.DropShadow;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
+import view.OfflineGame;
 
 import java.util.ArrayList;
 
 public class Enemy extends ImageView {
 
-    private Player player;
+    private final OfflineGame game;
+    private final Player player;
 
     private int health;
     private double posX;
     private double posY;
 
-    private Collider collider;
+    private final Collider collider;
 
     private double speed;
     private Image sprite;
 
     private EnemyBaseState currentState;
-    public EnemyMoveState moveState;
-    public EnemyDeadState deadState;
-    public EnemyDespawnState despawnState;
+    private final EnemyDeadState deadState;
+    private final EnemyDespawnState despawnState;
 
     private ArrayList<Image> spriteList;
-
-    private long lastTimeFrame = 0;
 
     private final ArrayList<Image> diedSprites;
 
     private final Pane root;
-    private String type;
-    public Enemy(Pane root, double posX, double posY, Player player, String type, int health) {
-
+    private final String type;
+    public Enemy(OfflineGame game, Pane root, double posX, double posY, Player player, String type, int health) {
+        this.game = game;
         this.player = player;
         this.type = type;
         this.speed = (type.equals("spider")) ? 5 : 3;
@@ -54,7 +51,6 @@ public class Enemy extends ImageView {
         initSprite(type);
 
         this.diedSprites = ImageManager.importEnemyDiedSprites();
-//        System.out.println(diedSprites.size());
 
         this.posX = posX;
         this.posY = posY;
@@ -66,11 +62,11 @@ public class Enemy extends ImageView {
 
         this.collider = new Collider(posX, posY, sprite.getWidth());
 
-        this.moveState = new EnemyMoveState(this);
+        EnemyMoveState moveState = new EnemyMoveState(this);
         this.deadState = new EnemyDeadState(this);
         this.despawnState = new EnemyDespawnState(this);
 
-        this.currentState = this.moveState;
+        this.currentState = moveState;
 
         this.setImage(sprite);
         root.getChildren().add(this);
@@ -93,14 +89,19 @@ public class Enemy extends ImageView {
     }
 
     private void initSprite(String type) {
-        if(type.equals("soldier")) {
-            this.spriteList = ImageManager.importEnemySprites("soldier");
-        } else if(type.equals("mummy")) {
-            this.spriteList = ImageManager.importEnemySprites("mummy");
-        } else if(type.equals("bug")) {
-            this.spriteList = ImageManager.importEnemySprites("bug");
-        } else if(type.equals("spider")) {
-            this.spriteList = ImageManager.spider("spider");
+        switch (type) {
+            case "soldier":
+                this.spriteList = ImageManager.importEnemySprites("soldier");
+                break;
+            case "mummy":
+                this.spriteList = ImageManager.importEnemySprites("mummy");
+                break;
+            case "bug":
+                this.spriteList = ImageManager.importEnemySprites("bug");
+                break;
+            case "spider":
+                this.spriteList = ImageManager.spider("spider");
+                break;
         }
     }
 
@@ -171,5 +172,17 @@ public class Enemy extends ImageView {
 
     public String getType() {
         return type;
+    }
+
+    public EnemyDeadState getDeadState() {
+        return deadState;
+    }
+
+    public EnemyDespawnState getDespawnState() {
+        return despawnState;
+    }
+
+    public OfflineGame getGame() {
+        return game;
     }
 }

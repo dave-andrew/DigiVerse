@@ -38,34 +38,20 @@ public class OfflineGame {
     private int level = 0;
     private double enemySpawnRate = 0.01;
 
-    public void addLevel() {
-        if(this.level == 2) {
-            this.level = 0;
-            return;
-        }
-        this.level++;
-    }
-
-    public void resetLevel() {
-        this.level = 0;
-    }
-
-    private Stage stage;
-
     private AnimationTimer timer;
 
     //    Game Layout
-    private VBox pauseMenu;
-    private VBox settingMenu;
+    private final VBox pauseMenu;
+    private final VBox settingMenu;
 
     private final Player player;
     private int baseEnemyHealth = 1;
-    private Pane root;
-    private Scene scene;
-    private InputManager inputManager;
-    public static final ArrayList<Enemy> enemyList = new ArrayList<>();
-    private ArrayList<ArrayList<Image>> groundSprites;
-    private ArrayList<String> enemySprites;
+    private final Pane root;
+    private final Scene scene;
+
+    private final ArrayList<Enemy> enemyList = new ArrayList<>();
+    private final ArrayList<ArrayList<Image>> groundSprites;
+    private final ArrayList<String> enemySprites;
     private long lastTimeFrame = 0;
     private boolean deadPause = false;
     private final BulletManager bulletManager = BulletManager.getInstance();
@@ -73,18 +59,18 @@ public class OfflineGame {
 
     private boolean isPaused = false;
     private MediaPlayer mediaPlayer;
-    private Label fpsLabel, timerLabel;
+    private final Label fpsLabel;
+    private final Label timerLabel;
 
     //  Game State
     private GameBaseState currentState;
-    public GameStartState startState;
-    public GamePlayState playState;
-    public GamePauseState pauseState;
-    public GameOverState overState;
-    public GameLevelUpState gameLevelUpState;
+
+    private final GamePlayState playState;
+    private final GamePauseState pauseState;
+    private final GameOverState overState;
+    private final GameLevelUpState gameLevelUpState;
 
     public OfflineGame(Stage stage) {
-        this.stage = stage;
         this.root = new Pane();
 
 
@@ -129,7 +115,7 @@ public class OfflineGame {
         enemySprites.add(2, "bug");
 
 
-        this.startState = new GameStartState(this);
+        GameStartState startState = new GameStartState(this);
         this.playState = new GamePlayState(this);
         this.pauseState = new GamePauseState(this);
         this.overState = new GameOverState(this);
@@ -138,9 +124,9 @@ public class OfflineGame {
         initialize(stage);
         setupGameLoop();
 
-        this.inputManager = InputManager.getInstance(this.scene);
+        InputManager inputManager = InputManager.getInstance(this.scene);
 
-        this.currentState = this.startState;
+        this.currentState = startState;
         this.currentState.onEnterState();
 
         scene.getStylesheets().add("file:resources/light_theme.css");
@@ -413,7 +399,7 @@ public class OfflineGame {
             Bullet bullet = bulletIterator.next();
             if (bullet.getPosX() < 0 || bullet.getPosX() > ScreenManager.SCREEN_WIDTH ||
                     bullet.getPosY() < 0 || bullet.getPosY() > ScreenManager.SCREEN_HEIGHT) {
-                bullet.changeState(bullet.stopState);
+                bullet.changeState(bullet.getStopState());
                 root.getChildren().remove(bullet);
                 bulletIterator.remove();
             }
@@ -436,13 +422,13 @@ public class OfflineGame {
                 while (bulletIterator.hasNext()) {
                     Bullet bullet = bulletIterator.next();
                     if (bullet.getCollider().collidesWith(enemy.getCollider()) && !(enemy.getState() instanceof EnemyDeadState)) {
-                        bullet.changeState(bullet.stopState);
+                        bullet.changeState(bullet.getStopState());
                         root.getChildren().remove(bullet);
                         enemy.setHealth(enemy.getHealth() - 1);
                         bulletIterator.remove();
                     } else if (bullet.getPosX() < 0 || bullet.getPosX() > ScreenManager.SCREEN_WIDTH ||
                             bullet.getPosY() < 0 || bullet.getPosY() > ScreenManager.SCREEN_HEIGHT) {
-                        bullet.changeState(bullet.stopState);
+                        bullet.changeState(bullet.getStopState());
                         root.getChildren().remove(bullet);
                         bulletIterator.remove();
                     }
@@ -501,7 +487,7 @@ public class OfflineGame {
             enemyType = "spider";
         }
 
-        Enemy enemy = new Enemy(root, randomX, randomY, player, enemyType, baseEnemyHealth);
+        Enemy enemy = new Enemy(this, root, randomX, randomY, player, enemyType, baseEnemyHealth);
         enemyList.add(enemy);
     }
 
@@ -535,6 +521,18 @@ public class OfflineGame {
         reinitialize();
         setupGameLoop();
         setupAudio();
+    }
+
+    public void addLevel() {
+        if(this.level == 2) {
+            this.level = 0;
+            return;
+        }
+        this.level++;
+    }
+
+    public void resetLevel() {
+        this.level = 0;
     }
 
     public Scene getScene() {
@@ -585,4 +583,17 @@ public class OfflineGame {
     public void setBaseEnemyHealth(int baseEnemyHealth) {
         this.baseEnemyHealth = baseEnemyHealth;
     }
+
+    public GameOverState getOverState() {
+        return overState;
+    }
+
+    public GamePlayState getPlayState() {
+        return playState;
+    }
+
+    public ArrayList<Enemy> getEnemyList() {
+        return enemyList;
+    }
+
 }

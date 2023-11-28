@@ -18,10 +18,10 @@ public class EnemyDeadState extends EnemyBaseState {
     private double lastTimeFrame = 0;
     private int frame = 0;
 
-    private List<DropItem> dropItems = new ArrayList<>();
+    private final List<DropItem> dropItems = new ArrayList<>();
     private final ItemManager itemManager = ItemManager.getInstance();
 
-    private MediaPlayer mediaPlayer;
+    private final MediaPlayer mediaPlayer;
 
     public EnemyDeadState(Enemy enemy) {
         super(enemy);
@@ -43,7 +43,7 @@ public class EnemyDeadState extends EnemyBaseState {
         this.lastTimeFrame += deltaTime;
 
         if (frame == 1200) {
-            enemy.changeState(enemy.despawnState);
+            enemy.changeState(enemy.getDespawnState());
         }
 
         if (lastTimeFrame > 2) {
@@ -61,7 +61,7 @@ public class EnemyDeadState extends EnemyBaseState {
         }
     }
 
-    private Random random = new Random();
+    private final Random random = new Random();
 
     public void createDropItems() {
         double[] dropItemWeights = {0.1, 0.1, 0.1, 0.1, 0.1, 0.1, 0.1};

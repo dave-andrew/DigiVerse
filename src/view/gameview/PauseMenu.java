@@ -33,7 +33,7 @@ public class PauseMenu extends VBox {
 
         resumeButton.setOnAction(e -> {
             game.getRoot().getChildren().remove(game.getPauseMenu());
-            game.changeState(game.playState);
+            game.changeState(game.getPlayState());
         });
 
         settingButton.setOnAction(e -> {

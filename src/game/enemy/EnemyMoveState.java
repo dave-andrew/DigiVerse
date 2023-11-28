@@ -34,7 +34,7 @@ public class EnemyMoveState extends EnemyBaseState {
         }
 
         if (enemy.getHealth() <= 0) {
-            enemy.changeState(enemy.deadState);
+            enemy.changeState(enemy.getDeadState());
         }
 
         if (enemy.getPlayer() != null && !(game.getState() instanceof GamePauseState)) {

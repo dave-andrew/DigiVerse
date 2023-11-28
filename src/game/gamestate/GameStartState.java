@@ -38,7 +38,7 @@ public class GameStartState extends GameBaseState{
     public void onUpdate(long now) {
         if(InputManager.getPressedKeys().contains(KeyCode.SPACE)) {
             this.game.getRoot().getChildren().remove(guiView);
-            this.game.changeState(this.game.playState);
+            this.game.changeState(this.game.getPlayState());
         }
     }
 }
