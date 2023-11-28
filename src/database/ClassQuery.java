@@ -27,6 +27,7 @@ public class ClassQuery {
         PreparedStatement ps = connect.prepareStatement(query);
         PreparedStatement ps2 = connect.prepareStatement(query2);
         try {
+            assert ps != null;
             ps.setString(1, classroom.getClassId());
             ps.setString(2, classroom.getClassName());
             ps.setString(3, classroom.getClassDesc());
@@ -35,6 +36,7 @@ public class ClassQuery {
 
             ps.executeUpdate();
 
+            assert ps2 != null;
             ps2.setString(1, classroom.getClassId());
             ps2.setString(2, loggedUser.getId());
             ps2.setString(3, "Teacher");
@@ -47,7 +49,7 @@ public class ClassQuery {
 
     }
 
-    public ArrayList<Classroom> getUserClassrooom() {
+    public ArrayList<Classroom> getUserClassroom() {
         ArrayList<Classroom> classrooms = new ArrayList<>();
 
         String query = "SELECT * FROM msclass WHERE ClassID IN (SELECT ClassID FROM class_member WHERE UserID = ?)";

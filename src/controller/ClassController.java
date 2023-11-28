@@ -49,6 +49,6 @@ public class ClassController {
     }
 
     public ArrayList<Classroom> getUserClassroom() {
-        return classQuery.getUserClassrooom();
+        return classQuery.getUserClassroom();
     }
 }
