@@ -13,9 +13,13 @@ import java.io.File;
 import java.util.ArrayList;
 
 public class PlayerShootState extends PlayerBaseState {
+
+    private static final File gunshotFile = new File("resources/game/soundFX/gunshot.wav");
+    private static final Media gunshotMedia = new Media(gunshotFile.toURI().toString());
+    private static final MediaPlayer gunshotMediaPlayer = new MediaPlayer(gunshotMedia);
+
     private int frame = 0;
     private double lastTimeFrame = 0;
-    private double bulletCooldown;
     private double timeSinceLastBullet = 0;
     private boolean canSpawnBullet = true;
     private Pane root;
@@ -33,22 +37,22 @@ public class PlayerShootState extends PlayerBaseState {
     public void onUpdate(double deltaTime, Pane root) {
         this.root = root;
 
-        player.setShootcd(player.getBaseShoodcd());
-
-        if(player.getPowerUpTime().containsKey(PowerUp.QUICKLOAD)) {
-            player.setShootcd(2.5);
+        double shootCd;
+        if (player.getPowerUpTime().containsKey(PowerUp.QUICKLOAD)) {
+            shootCd = 2.5;
+        } else {
+            shootCd = player.getBaseShoodcd();
         }
+        player.setShootcd(shootCd);
 
-        this.bulletCooldown = player.getShootcd();
+        double bulletCooldown = player.getShootcd();
 
-        timeSinceLastBullet += deltaTime;
-
+        this.timeSinceLastBullet += deltaTime;
         if (timeSinceLastBullet >= bulletCooldown) {
             canSpawnBullet = true;
         }
 
         this.lastTimeFrame += deltaTime;
-
         if (lastTimeFrame > 3) {
             this.frame++;
             this.lastTimeFrame = 0;
@@ -62,16 +66,16 @@ public class PlayerShootState extends PlayerBaseState {
 
     @Override
     public void spriteManager(double velocityX, double velocityY, int frame) {
-
-        if (InputManager.getPressedKeys().isEmpty()){
+        if (InputManager.getPressedKeys().isEmpty()) {
             player.changeState(player.getStandState());
         }
 
-        if (!player.getPowerUpTime().isEmpty()) {
-            player.getPowerUpTime().keySet().forEach(this::handlePowerUpAction);
-        } else {
+        if (player.getPowerUpTime().isEmpty()) {
             handlePowerUpAction(PowerUp.NONE);
+            return;
         }
+
+        player.getPowerUpTime().keySet().forEach(this::handlePowerUpAction);
     }
 
     private boolean validateMove() {
@@ -79,20 +83,17 @@ public class PlayerShootState extends PlayerBaseState {
                 || InputManager.getPressedKeys().contains(KeyCode.A) || InputManager.getPressedKeys().contains(KeyCode.D));
     }
 
-    private void handlePowerUpAction(PowerUp p) {
-//        System.out.println(p.toString());
-
+    private void handlePowerUpAction(PowerUp powerUp) {
         ArrayList<Integer> directions = new ArrayList<>();
 
-        if(InputManager.getPressedKeys().contains(KeyCode.UP) && InputManager.getPressedKeys().contains(KeyCode.RIGHT)){
+        if (InputManager.getPressedKeys().contains(KeyCode.UP) && InputManager.getPressedKeys().contains(KeyCode.RIGHT)) {
             if (validateMove()) {
                 player.setSprite(player.getRightSprites().get(0));
             } else {
                 player.setSprite(player.getRightSprites().get(frame));
             }
 
-            if(p == PowerUp.THREESHOT) {
-
+            if (powerUp == PowerUp.THREESHOT) {
                 directions.add(0);
                 directions.add(45);
                 directions.add(90);
@@ -101,22 +102,21 @@ public class PlayerShootState extends PlayerBaseState {
                 return;
             }
 
-            if (checkPowerUp(p, directions)) return;
-
+            if (checkCartwheel(powerUp, directions)) {
+                return;
+            }
 
             directions.add(45);
-
             spawnBullet(root, directions);
 
-        } else if(InputManager.getPressedKeys().contains(KeyCode.UP) && InputManager.getPressedKeys().contains(KeyCode.LEFT)){
+        } else if (InputManager.getPressedKeys().contains(KeyCode.UP) && InputManager.getPressedKeys().contains(KeyCode.LEFT)) {
             if (validateMove()) {
                 player.setSprite(player.getLeftSprites().get(0));
             } else {
                 player.setSprite(player.getLeftSprites().get(frame));
             }
 
-            if(p == PowerUp.THREESHOT) {
-
+            if (powerUp == PowerUp.THREESHOT) {
                 directions.add(0);
                 directions.add(-45);
                 directions.add(-90);
@@ -125,20 +125,21 @@ public class PlayerShootState extends PlayerBaseState {
                 return;
             }
 
-            if (checkPowerUp(p, directions)) return;
+            if (checkCartwheel(powerUp, directions)) {
+                return;
+            }
 
             directions.add(-45);
-
             spawnBullet(root, directions);
 
-        } else if(InputManager.getPressedKeys().contains(KeyCode.DOWN) && InputManager.getPressedKeys().contains(KeyCode.RIGHT)){
+        } else if (InputManager.getPressedKeys().contains(KeyCode.DOWN) && InputManager.getPressedKeys().contains(KeyCode.RIGHT)) {
             if (validateMove()) {
                 player.setSprite(player.getRightSprites().get(0));
             } else {
                 player.setSprite(player.getRightSprites().get(frame));
             }
 
-            if(p == PowerUp.THREESHOT) {
+            if (powerUp == PowerUp.THREESHOT) {
 
                 directions.add(90);
                 directions.add(135);
@@ -148,20 +149,21 @@ public class PlayerShootState extends PlayerBaseState {
                 return;
             }
 
-            if (checkPowerUp(p, directions)) return;
+            if (checkCartwheel(powerUp, directions)) {
+                return;
+            }
 
             directions.add(135);
             spawnBullet(root, directions);
 
-        } else if(InputManager.getPressedKeys().contains(KeyCode.DOWN) && InputManager.getPressedKeys().contains(KeyCode.LEFT)) {
+        } else if (InputManager.getPressedKeys().contains(KeyCode.DOWN) && InputManager.getPressedKeys().contains(KeyCode.LEFT)) {
             if (validateMove()) {
                 player.setSprite(player.getLeftSprites().get(0));
             } else {
                 player.setSprite(player.getLeftSprites().get(frame));
             }
 
-            if(p == PowerUp.THREESHOT) {
-
+            if (powerUp == PowerUp.THREESHOT) {
                 directions.add(-90);
                 directions.add(-135);
                 directions.add(180);
@@ -170,20 +172,21 @@ public class PlayerShootState extends PlayerBaseState {
                 return;
             }
 
-            if (checkPowerUp(p, directions)) return;
+            if (checkCartwheel(powerUp, directions)) {
+                return;
+            }
 
             directions.add(-135);
             spawnBullet(root, directions);
 
-        } else if (InputManager.getPressedKeys().contains(KeyCode.RIGHT)){
-            if (validateMove()){
+        } else if (InputManager.getPressedKeys().contains(KeyCode.RIGHT)) {
+            if (validateMove()) {
                 player.setSprite(player.getRightSprites().get(0));
             } else {
                 player.setSprite(player.getRightSprites().get(frame));
             }
 
-            if(p == PowerUp.THREESHOT) {
-
+            if (powerUp == PowerUp.THREESHOT) {
                 directions.add(45);
                 directions.add(90);
                 directions.add(135);
@@ -192,20 +195,21 @@ public class PlayerShootState extends PlayerBaseState {
                 return;
             }
 
-            if (checkPowerUp(p, directions)) return;
+            if (checkCartwheel(powerUp, directions)) {
+                return;
+            }
 
             directions.add(90);
             spawnBullet(root, directions);
 
-        } else if (InputManager.getPressedKeys().contains(KeyCode.LEFT)){
-            if (validateMove()){
+        } else if (InputManager.getPressedKeys().contains(KeyCode.LEFT)) {
+            if (validateMove()) {
                 player.setSprite(player.getLeftSprites().get(0));
             } else {
                 player.setSprite(player.getLeftSprites().get(frame));
             }
 
-            if(p == PowerUp.THREESHOT) {
-
+            if (powerUp == PowerUp.THREESHOT) {
                 directions.add(-45);
                 directions.add(-90);
                 directions.add(-135);
@@ -214,19 +218,21 @@ public class PlayerShootState extends PlayerBaseState {
                 return;
             }
 
-            if (checkPowerUp(p, directions)) return;
+            if (checkCartwheel(powerUp, directions)) {
+                return;
+            }
 
             directions.add(-90);
             spawnBullet(root, directions);
 
-        } else if (InputManager.getPressedKeys().contains(KeyCode.UP)){
+        } else if (InputManager.getPressedKeys().contains(KeyCode.UP)) {
             if (validateMove()) {
                 player.setSprite(player.getUpSprites().get(0));
             } else {
                 player.setSprite(player.getUpSprites().get(frame));
             }
 
-            if(p == PowerUp.THREESHOT) {
+            if (powerUp == PowerUp.THREESHOT) {
 
                 directions.add(0);
                 directions.add(45);
@@ -236,7 +242,9 @@ public class PlayerShootState extends PlayerBaseState {
                 return;
             }
 
-            if (checkPowerUp(p, directions)) return;
+            if (checkCartwheel(powerUp, directions)) {
+                return;
+            }
 
             directions.add(0);
             spawnBullet(root, directions);
@@ -248,8 +256,7 @@ public class PlayerShootState extends PlayerBaseState {
                 player.setSprite(player.getDownSprites().get(frame));
             }
 
-            if(p == PowerUp.THREESHOT) {
-
+            if (powerUp == PowerUp.THREESHOT) {
                 directions.add(-135);
                 directions.add(180);
                 directions.add(135);
@@ -258,17 +265,17 @@ public class PlayerShootState extends PlayerBaseState {
                 return;
             }
 
-            if (checkPowerUp(p, directions)) return;
+            if (checkCartwheel(powerUp, directions)) {
+                return;
+            }
 
             directions.add(180);
             spawnBullet(root, directions);
-
         }
-
     }
 
-    private boolean checkPowerUp(PowerUp p, ArrayList<Integer> directions) {
-        if(p == PowerUp.CARTWHEEL) {
+    private boolean checkCartwheel(PowerUp p, ArrayList<Integer> directions) {
+        if (p == PowerUp.CARTWHEEL) {
             directions.add(0);
             directions.add(45);
             directions.add(-45);
@@ -280,53 +287,62 @@ public class PlayerShootState extends PlayerBaseState {
             spawnBullet(root, directions);
             return true;
         }
+
         return false;
     }
 
     private void spawnBullet(Pane root, ArrayList<Integer> directions) {
-        if (canSpawnBullet) {
+        if (!canSpawnBullet) {
+            return;
+        }
 
-            try {
-                File file = new File("resources/game/soundFX/gunshot.wav");
-                Media media = new Media(file.toURI().toString());
-                MediaPlayer mediaPlayer = new MediaPlayer(media);
-                mediaPlayer.play();
+        try {
+            gunshotMediaPlayer.stop();
+            gunshotMediaPlayer.play();
 
-                double posX = player.getPosX();
-                double posY = player.getPosY();
+            double posX = player.getPosX();
+            double posY = player.getPosY();
 
-                for (Integer direction : directions) {
-                    if (direction == 90) {
+            for (Integer direction : directions) {
+                switch (direction) {
+                    case 90:
                         posX += 16;
-                    } else if (direction == -90) {
+                        break;
+                    case -90:
                         posX -= 16;
-                    } else if (direction == 0) {
+                        break;
+                    case 0:
                         posY -= 16;
-                    } else if (direction == 180) {
+                        break;
+                    case 180:
                         posY += 16;
-                    } else if (direction == 45) {
+                        break;
+                    case 45:
                         posX += 16;
                         posY -= 16;
-                    } else if (direction == -45) {
+                        break;
+                    case -45:
                         posX -= 16;
                         posY -= 16;
-                    } else if (direction == 135) {
+                        break;
+                    case 135:
                         posX += 16;
                         posY += 16;
-                    } else if (direction == -135) {
+                        break;
+                    case -135:
                         posX -= 16;
                         posY += 16;
-                    }
-
-                    Bullet newBullet = new Bullet(root, posX, posY, direction);
-                    bulletManager.addBulletList(newBullet);
+                        break;
                 }
 
-                timeSinceLastBullet = 0;
-                canSpawnBullet = false;
-            } catch (Exception e) {
-                e.printStackTrace();
+                Bullet newBullet = new Bullet(root, posX, posY, direction);
+                bulletManager.addBulletList(newBullet);
             }
+
+            timeSinceLastBullet = 0;
+            canSpawnBullet = false;
+        } catch (Exception e) {
+            e.printStackTrace();
         }
     }
 }
