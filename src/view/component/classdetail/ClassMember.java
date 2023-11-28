@@ -1,6 +1,5 @@
 package view.component.classdetail;
 
-import controller.ClassController;
 import controller.MemberController;
 import javafx.geometry.Insets;
 import javafx.scene.control.Label;
@@ -14,9 +13,9 @@ import java.util.concurrent.atomic.AtomicBoolean;
 public class ClassMember extends ClassBase {
 
     private MemberController memberController;
-    private SplitPane outerContainer;
     private VBox teacherContainer, studentContainer;
-    private Label teacherTitle, studentTitle;
+    private int teacherCount = 1;
+    private int studentCount = 1;
 
     public ClassMember(Classroom classroom) {
         super(classroom);
@@ -33,7 +32,7 @@ public class ClassMember extends ClassBase {
         SplitPane container = new SplitPane();
         container.setStyle("-fx-background-color: transparent;");
 
-        outerContainer = new SplitPane();
+        SplitPane outerContainer = new SplitPane();
         outerContainer.setStyle("-fx-background-color: transparent;");
         outerContainer.setPadding(new Insets(20));
 
@@ -46,10 +45,10 @@ public class ClassMember extends ClassBase {
         teacherContainer.setPadding(new Insets(7, 20, 7, 20));
         studentContainer.setPadding(new Insets(7, 20, 7, 20));
 
-        teacherTitle = new Label("Teacher");
+        Label teacherTitle = new Label("Teacher");
         teacherTitle.getStyleClass().add("title");
 
-        studentTitle = new Label("Student");
+        Label studentTitle = new Label("Student");
         studentTitle.getStyleClass().add("title");
 
         VBox teacherTitleBox = new VBox();
@@ -84,9 +83,6 @@ public class ClassMember extends ClassBase {
 
         this.setContent(container);
     }
-
-    private int teacherCount = 1;
-    private int studentCount = 1;
 
     private void fetchClassMember() {
         AtomicBoolean hasStudents = new AtomicBoolean(false);

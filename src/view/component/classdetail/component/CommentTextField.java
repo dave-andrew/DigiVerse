@@ -10,7 +10,7 @@ import model.LoggedUser;
 
 public class CommentTextField extends HBox {
 
-    private TextField replyField;
+    private final TextField replyField;
 
     public CommentTextField(Comment comment) {
         ImageView profileImg;

@@ -28,10 +28,10 @@ import java.util.List;
 
 public class RightContent extends VBox {
 
+    private final Classroom classroom;
     private TextField postInput;
     private ForumController forumController;
     private CommentController commentController;
-    private Classroom classroom;
     private User user;
 
     private void init() {

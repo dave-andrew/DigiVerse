@@ -1,25 +1,16 @@
 package view.homeview;
 
-import javafx.scene.layout.*;
+import javafx.scene.layout.BorderPane;
+import javafx.scene.layout.HBox;
+import javafx.scene.layout.StackPane;
 import model.Classroom;
 import view.component.classdetail.ClassDetailNav;
 
 public class ClassroomDetail extends BorderPane {
 
-    private Classroom classroom;
-    private String userRole;
+    private final Classroom classroom;
+    private final String userRole;
     private StackPane mainPane;
-    private HBox topBar;
-
-    private void init() {
-        if(!this.userRole.isEmpty()) {
-            topBar = new ClassDetailNav(this.userRole, this);
-
-            topBar.getStyleClass().add("nav-bar");
-
-            this.setTop(topBar);
-        }
-    }
 
     public ClassroomDetail(Classroom classroom, String userRole, StackPane mainPane) {
         this.classroom = classroom;
@@ -27,6 +18,14 @@ public class ClassroomDetail extends BorderPane {
         this.mainPane = mainPane;
 
         init();
+    }
+
+    private void init() {
+        if (!this.userRole.isEmpty()) {
+            HBox topBar = new ClassDetailNav(this.userRole, this);
+            topBar.getStyleClass().add("nav-bar");
+            this.setTop(topBar);
+        }
     }
 
     public Classroom getClassroom() {

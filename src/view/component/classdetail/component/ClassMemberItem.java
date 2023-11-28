@@ -13,12 +13,13 @@ import model.User;
 
 public class ClassMemberItem extends HBox {
 
-    private Image profileImg;
-    private ImageView profile;
+    private final Image profileImg;
+    private final ImageView profile;
+
     public ClassMemberItem(ClassroomMember classMember, int idx) {
         User user = classMember.getUser();
 
-        if(user.getBlobProfile() != null) {
+        if (user.getBlobProfile() != null) {
             profileImg = user.getProfile();
         } else {
             profileImg = new Image("file:resources/icons/user.png");

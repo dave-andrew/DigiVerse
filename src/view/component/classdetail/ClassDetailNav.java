@@ -1,28 +1,35 @@
 package view.component.classdetail;
 
-import helper.ScreenManager;
-import helper.StageManager;
 import javafx.scene.control.Button;
-import javafx.scene.control.ScrollPane;
-import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
-import javafx.scene.layout.Priority;
-import javafx.stage.Stage;
-import model.LoggedUser;
+import javafx.scene.layout.Pane;
 import view.homeview.ClassroomDetail;
 
 public class ClassDetailNav extends HBox {
+    private final String userRole;
+    private final ClassroomDetail parent;
+
     private Button forum, task, member, score;
-
-    private String userRole;
-
-    private ClassroomDetail parent;
     private ClassForum classForum;
     private ClassMember classMember;
     private ClassScore classScore;
     private ClassTask classTask;
 
-    void init(){
+    public ClassDetailNav(String role, ClassroomDetail parent) {
+        this.parent = parent;
+        this.userRole = role;
+
+        init();
+        actions();
+
+        this.getChildren().addAll(forum, task, member, score);
+
+        if (role.equals("Student")) {
+            this.score.setVisible(false);
+        }
+    }
+
+    void init() {
         forum = new Button("Forum");
         forum.getStyleClass().add("nav-button");
         forum.getStyleClass().add("active");
@@ -57,42 +64,22 @@ public class ClassDetailNav extends HBox {
     }
 
     private void actions() {
-        forum.setOnAction(e -> {
-            clearStyle();
-            this.parent.setCenter(classForum);
-            forum.getStyleClass().add("active");
-        });
-
-        task.setOnAction(e -> {
-            clearStyle();
-            this.parent.setCenter(classTask);
-            task.getStyleClass().add("active");
-        });
-
-        member.setOnAction(e -> {
-            clearStyle();
-            this.parent.setCenter(classMember);
-            member.getStyleClass().add("active");
-        });
-
-        score.setOnAction(e -> {
-            clearStyle();
-            this.parent.setCenter(classScore);
-            score.getStyleClass().add("active");
-        });
+        forum.setOnAction(e -> setActive(classForum));
+        task.setOnAction(e -> setActive(classTask));
+        member.setOnAction(e -> setActive(classMember));
+        score.setOnAction(e -> setActive(classScore));
     }
-    public ClassDetailNav(String role, ClassroomDetail parent) {
-        this.parent = parent;
-        this.userRole = role;
 
-        init();
-        actions();
+    private void setActive(ClassBase classBase) {
+        clearStyle();
+        this.parent.setCenter(classBase);
+        forum.getStyleClass().add("active");
+    }
 
-        this.getChildren().addAll(forum, task, member, score);
-
-        if(role.equals("Student")){
-            this.score.setVisible(false);
-        }
+    private void setActive(Pane classBase) {
+        clearStyle();
+        this.parent.setCenter(classBase);
+        forum.getStyleClass().add("active");
     }
 
 }

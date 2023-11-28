@@ -12,7 +12,6 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
-import javafx.scene.shape.Circle;
 import javafx.scene.shape.Line;
 import javafx.scene.shape.Rectangle;
 import javafx.stage.FileChooser;
@@ -20,7 +19,6 @@ import javafx.util.StringConverter;
 import model.Classroom;
 import model.LoggedUser;
 import model.Task;
-import model.User;
 import view.component.classdetail.component.TaskItem;
 import view.homeview.ClassroomDetail;
 import view.homeview.task.TaskBase;
@@ -32,30 +30,28 @@ import java.util.ArrayList;
 
 public class Profile extends VBox {
 
-    private TaskController taskController;
-    private UserController userController;
+    private final TaskController taskController;
+    private final UserController userController;
+    private final ImageView profileNav;
+    private final LoggedUser loggedUser;
+    private final StackPane mainPane;
+    private final HBox leftNav;
+    private final Button iconBtn;
 
-
-
-    private ImageView profile, profileNav;
+    private ImageView profile;
     private Label name, email, birthday;
     private TextField nameField;
     private TextField emailField;
     private DatePicker birthdayField;
     private PasswordField oldPasswordField, newPasswordField, confirmPasswordField;
-    private LoggedUser loggedUser;
-    private HBox editContainer, buttonContainer, changeButtonContainer, profileLayout, birthdayContainer, emailContainer;
+    private HBox buttonContainer;
+    private HBox changeButtonContainer;
+    private HBox birthdayContainer;
     private Label errorLbl;
     private VBox profileContainer, profileContent;
-
-    private VBox nameBirthday;
-    private HBox editProfileContainer, passwordContainer;
-
     private Button updateProfileBtn, cancelBtn, cancelPasswordBtn, updatePasswordBtn;
-
-    private StackPane mainPane;
-    private HBox leftNav;
-    private Button iconBtn;
+    private VBox taskContainer;
+    private Button pendingTask, finishedTask;
 
     public Profile(ImageView profileNav, HBox leftNav, Button iconBtn, StackPane mainPane) {
         this.loggedUser = LoggedUser.getInstance();
@@ -71,6 +67,22 @@ public class Profile extends VBox {
         actions();
 
         setUpProfileContent();
+    }
+
+    public static void DateFormatter(DatePicker birthdayField) {
+        birthdayField.setConverter(new StringConverter<>() {
+            final DateTimeFormatter dateFormatter = DateTimeFormatter.ofPattern("dd MMMM yyyy");
+
+            @Override
+            public String toString(LocalDate date) {
+                return date != null ? dateFormatter.format(date) : "";
+            }
+
+            @Override
+            public LocalDate fromString(String string) {
+                return string != null && !string.isEmpty() ? LocalDate.parse(string, dateFormatter) : null;
+            }
+        });
     }
 
     private void init() {
@@ -136,7 +148,7 @@ public class Profile extends VBox {
             profile = new ImageView(loggedUser.getProfileImage());
         }
 
-        this.profileLayout = new HBox(30);
+        HBox profileLayout = new HBox(30);
         profileLayout.setAlignment(Pos.BOTTOM_LEFT);
 
         ImageManager.makeCircular(profileLayout, profile, 100);
@@ -144,7 +156,7 @@ public class Profile extends VBox {
         name = new Label(loggedUser.getUsername());
         name.setStyle("-fx-font-size: 40px");
 
-        this.emailContainer = new HBox(5);
+        HBox emailContainer = new HBox(5);
         emailContainer.setAlignment(Pos.CENTER_LEFT);
 
         ImageView emailIcon = new ImageView(new Image("file:resources/icons/email.png"));
@@ -155,7 +167,7 @@ public class Profile extends VBox {
         email = new Label(loggedUser.getEmail());
         email.setStyle("-fx-font-size: 14px");
 
-        this.emailContainer.getChildren().addAll(emailIcon, email);
+        emailContainer.getChildren().addAll(emailIcon, email);
 
         DateTimeFormatter dateFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
         String dobString = loggedUser.getDob();
@@ -183,14 +195,13 @@ public class Profile extends VBox {
         profileContainer.setAlignment(Pos.CENTER);
 
 
-
-        this.nameBirthday = new VBox(5);
+        VBox nameBirthday = new VBox(5);
 
         HBox spacer = new HBox();
         HBox.setHgrow(spacer, Priority.ALWAYS);
 
-        this.editContainer = new HBox(10);
-        this.editContainer.setAlignment(Pos.CENTER);
+        HBox editContainer = new HBox(10);
+        editContainer.setAlignment(Pos.CENTER);
 
         HBox nameWithButtonContainer = new HBox();
         nameWithButtonContainer.getChildren().addAll(name, spacer, editContainer);
@@ -219,7 +230,7 @@ public class Profile extends VBox {
 
         VBox.setMargin(editContainer, new Insets(100, 0, 0, 0));
 
-        this.editContainer.getChildren().addAll(edit, changePassword);
+        editContainer.getChildren().addAll(edit, changePassword);
         editContainer.setAlignment(Pos.TOP_CENTER);
 
         Line line = new Line();
@@ -249,7 +260,7 @@ public class Profile extends VBox {
 
             File selectedFile = fileChooser.showOpenDialog(StageManager.getInstance());
 
-            if(selectedFile != null) {
+            if (selectedFile != null) {
                 Image image = new Image("file:" + selectedFile.getAbsolutePath());
                 profile.setImage(image);
                 this.profileNav.setImage(image);
@@ -264,7 +275,7 @@ public class Profile extends VBox {
 
             String message = this.userController.updateProfile(nameField.getText(), emailField.getText(), String.valueOf(birthdayField.getValue()));
 
-            if(message.equals("Success")) {
+            if (message.equals("Success")) {
                 this.name.setText(nameField.getText());
                 this.email.setText(emailField.getText());
 
@@ -296,7 +307,7 @@ public class Profile extends VBox {
         this.updatePasswordBtn.setOnMouseClicked(e -> {
             String message = this.userController.updatePassword(oldPasswordField.getText(), newPasswordField.getText(), confirmPasswordField.getText());
 
-            if(message.equals("Success")) {
+            if (message.equals("Success")) {
                 profileContainer.getChildren().removeAll(oldPasswordField, newPasswordField, confirmPasswordField, errorLbl, changeButtonContainer);
                 profileContainer.getChildren().add(profileContent);
                 return;
@@ -312,7 +323,7 @@ public class Profile extends VBox {
     }
 
     private HBox setEditProfile() {
-        this.editProfileContainer = new HBox(5);
+        HBox editProfileContainer = new HBox(5);
 
         Image editIcon = new Image("file:resources/icons/edit-profile.png");
         ImageView editIconView = new ImageView(editIcon);
@@ -358,24 +369,8 @@ public class Profile extends VBox {
         return editProfileContainer;
     }
 
-    public static void DateFormatter(DatePicker birthdayField) {
-        birthdayField.setConverter(new StringConverter<>() {
-            DateTimeFormatter dateFormatter = DateTimeFormatter.ofPattern("dd MMMM yyyy");
-
-            @Override
-            public String toString(LocalDate date) {
-                return date != null ? dateFormatter.format(date) : "";
-            }
-
-            @Override
-            public LocalDate fromString(String string) {
-                return string != null && !string.isEmpty() ? LocalDate.parse(string, dateFormatter) : null;
-            }
-        });
-    }
-
     private HBox setChangePassword() {
-        this.passwordContainer = new HBox(5);
+        HBox passwordContainer = new HBox(5);
 
         Image passwordIcon = new Image("file:resources/icons/change-password.png");
         ImageView passwordIconView = new ImageView(passwordIcon);
@@ -405,12 +400,6 @@ public class Profile extends VBox {
 
         return passwordContainer;
     }
-
-
-
-
-    private VBox taskContainer;
-    private Button pendingTask, finishedTask;
 
     public void setUpProfileContent() {
 

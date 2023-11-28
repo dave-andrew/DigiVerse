@@ -9,22 +9,16 @@ import javafx.scene.image.ImageView;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Priority;
 import javafx.stage.Stage;
-import view.Home;
 
 public class CreateClassNav extends HBox {
 
-    private HBox leftNav;
-    private Image closeImg;
-    private ImageView close;
-    private Label title;
-    private Button joinBtn;
     private Button closeBtn;
 
     private void initialize() {
-        leftNav = new HBox(20);
+        HBox leftNav = new HBox(20);
 
-        closeImg = new Image("file:resources/icons/close.png");
-        close = new ImageView(closeImg);
+        Image closeImg = new Image("file:resources/icons/close.png");
+        ImageView close = new ImageView(closeImg);
         close.setFitWidth(17);
         close.setFitHeight(17);
 
@@ -32,11 +26,11 @@ public class CreateClassNav extends HBox {
         closeBtn.setGraphic(close);
         closeBtn.getStyleClass().add("image-button");
 
-        title = new Label("Create Class");
+        Label title = new Label("Create Class");
         title.getStyleClass().add("title");
         title.setPadding(new Insets(15, 0, 15, 0));
 
-        joinBtn = new Button("Create");
+        Button joinBtn = new Button("Create");
         joinBtn.getStyleClass().add("primary-button");
 
         this.setAlignment(Pos.CENTER_LEFT);
@@ -51,16 +45,16 @@ public class CreateClassNav extends HBox {
         this.getChildren().addAll(leftNav);
     }
 
-    private void actions(Stage stage) {
+    private void actions() {
         closeBtn.setOnMouseClicked(e -> {
             Stage createClassStage = (Stage) getScene().getWindow();
             createClassStage.close();
         });
     }
 
-    public CreateClassNav(Stage stage) {
+    public CreateClassNav() {
         initialize();
-        actions(stage);
+        actions();
         this.getStyleClass().add("nav-bar");
     }
 

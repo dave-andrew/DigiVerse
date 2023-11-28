@@ -11,7 +11,6 @@ import javafx.scene.image.ImageView;
 import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
-import jfxtras.labs.scene.control.scheduler.skin.DayBodyPane;
 import model.Classroom;
 import model.Task;
 import view.homeview.task.TaskBase;
@@ -22,19 +21,15 @@ import java.util.ArrayList;
 
 public class Calendar extends VBox {
 
+    private final StackPane mainPane;
+    private final HBox leftNav;
+    private final Button iconBtn;
+
     private TaskController taskController;
-
     private LocalDateTime date;
-
     private GridPane calendarGrid;
     private Label monthLbl;
-
     private HBox calendarHeader;
-    private Button prevMonthBtn, nextMonthBtn;
-
-    private StackPane mainPane;
-    private HBox leftNav;
-    private Button iconBtn;
 
     public Calendar(StackPane mainPane, HBox leftNav, Button iconBtn) {
         this.mainPane = mainPane;
@@ -64,7 +59,7 @@ public class Calendar extends VBox {
         ImageView leftArrowView = new ImageView(leftArrow);
         leftArrowView.setFitWidth(20);
         leftArrowView.setPreserveRatio(true);
-        prevMonthBtn = new Button();
+        Button prevMonthBtn = new Button();
         prevMonthBtn.setGraphic(leftArrowView);
         prevMonthBtn.setAlignment(Pos.TOP_CENTER);
         prevMonthBtn.getStyleClass().add("image-button");
@@ -73,7 +68,7 @@ public class Calendar extends VBox {
         ImageView rightArrowView = new ImageView(rightArrow);
         rightArrowView.setFitWidth(20);
         rightArrowView.setPreserveRatio(true);
-        nextMonthBtn = new Button();
+        Button nextMonthBtn = new Button();
         nextMonthBtn.setGraphic(rightArrowView);
         nextMonthBtn.setAlignment(Pos.TOP_CENTER);
         nextMonthBtn.getStyleClass().add("image-button");
@@ -123,7 +118,7 @@ public class Calendar extends VBox {
             for (int col = 0; col < 7; col++) {
                 if (row == 1 && col < dayOfWeek) {
                     StackPane emptyCell = new StackPane();
-                    if(dayOfWeek - 1 == col) {
+                    if (dayOfWeek - 1 == col) {
                         emptyCell.getStyleClass().add("rb");
                     } else {
                         emptyCell.getStyleClass().add("r");
@@ -140,11 +135,11 @@ public class Calendar extends VBox {
                     dayPane.setPrefHeight(110);
                     dayPane.setAlignment(Pos.TOP_LEFT);
 
-                    if(col == 0) {
+                    if (col == 0) {
                         dayPane.getStyleClass().add("first-column");
-                    } else if(row == 1) {
+                    } else if (row == 1) {
                         dayPane.getStyleClass().add("first-row");
-                    } else if(String.valueOf(day).equals("1")) {
+                    } else if (String.valueOf(day).equals("1")) {
                         dayPane.getStyleClass().add("first-column");
                     }
 

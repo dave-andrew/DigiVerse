@@ -19,11 +19,15 @@ import java.util.ArrayList;
 
 public class CreateClassForm extends VBox {
 
-    private Stage dialogStage;
+    private final Stage dialogStage;
 
     private ClassController classController;
 
-    private Label classNameLbl, classDescLbl, classCodeLbl, classSubjectLbl, errorLbl;
+    private Label classNameLbl;
+    private Label classDescLbl;
+    private Label classCodeLbl;
+    private Label classSubjectLbl;
+    private final Label errorLbl;
     private TextField classNameField, classDescField, classCodeField;
     private ComboBox<String> classSubjectField;
 
@@ -32,14 +36,12 @@ public class CreateClassForm extends VBox {
     private HBox btnBox;
     private Button createBtn, cancelBtn;
 
-    private ArrayList<String> subjects = new ArrayList<>();
-
-    private StackPane stackPane;
+    private final ArrayList<String> subjects = new ArrayList<>();
 
     private void initialize() {
         classController = new ClassController();
 
-        stackPane = new StackPane();
+        StackPane stackPane = new StackPane();
         this.getChildren().add(stackPane);
 
         this.setSpacing(20);
@@ -89,9 +91,7 @@ public class CreateClassForm extends VBox {
             errorLbl.setText(message);
         });
 
-        cancelBtn.setOnAction(e -> {
-            dialogStage.close();
-        });
+        cancelBtn.setOnAction(e -> dialogStage.close());
     }
 
     public CreateClassForm(Stage dialogStage, Label errorLbl) {

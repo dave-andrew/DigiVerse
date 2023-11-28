@@ -15,7 +15,10 @@ import javafx.scene.image.ImageView;
 import javafx.scene.input.DragEvent;
 import javafx.scene.input.Dragboard;
 import javafx.scene.input.TransferMode;
-import javafx.scene.layout.*;
+import javafx.scene.layout.GridPane;
+import javafx.scene.layout.HBox;
+import javafx.scene.layout.Priority;
+import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.stage.FileChooser;
 import javafx.stage.Modality;
@@ -28,15 +31,16 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class UploadFileModal {
-    private Scene scene;
-    private String taskid;
-    private FileController fileController;
-    private AnswerController answerController;
-
-    private VBox mainVbox, fileContainer, sideContent;
-    private List<File> uploadedFiles = new ArrayList<>();
+    private final String taskid;
+    private final FileController fileController;
+    private final AnswerController answerController;
+    private final VBox fileContainer;
+    private final VBox sideContent;
+    private final List<File> uploadedFiles = new ArrayList<>();
+    private final Button downloadBtn;
+    private VBox mainVbox;
     private GridPane fileGrid;
-    private Button uploadBtn, downloadBtn;
+
     public UploadFileModal(String taskid, VBox fileContainer, VBox sideContent, Button downloadBtn) {
         this.taskid = taskid;
         this.fileController = new FileController();
@@ -58,7 +62,7 @@ public class UploadFileModal {
         mainVbox = new VBox(20);
         mainVbox.getStyleClass().add("modal");
 
-        scene = new Scene(mainVbox, 600, 600);
+        Scene scene = new Scene(mainVbox, 600, 600);
         scene.setFill(Color.TRANSPARENT);
         ThemeManager.getTheme(scene);
         dialogStage.setScene(scene);
@@ -112,8 +116,8 @@ public class UploadFileModal {
             chooseFile();
         });
 
-        this.uploadBtn = new Button("+ Upload");
-        this.uploadBtn.setStyle("-fx-text-fill: white");
+        Button uploadBtn = new Button("+ Upload");
+        uploadBtn.setStyle("-fx-text-fill: white");
         uploadBtn.prefWidthProperty().bind(mainVbox.widthProperty());
         VBox.setMargin(mainVbox, new Insets(0, 0, 20, 0));
 
@@ -241,11 +245,9 @@ public class UploadFileModal {
 
         sideContent.getChildren().add(fileContainer);
 
-        if(!fileList.isEmpty()) {
+        if (!fileList.isEmpty()) {
             downloadBtn.getStyleClass().add("primary-button");
-            downloadBtn.setOnMouseClicked(e -> {
-                this.answerController.downloadAllAnswer(fileList);
-            });
+            downloadBtn.setOnMouseClicked(e -> this.answerController.downloadAllAnswer(fileList));
         }
     }
 

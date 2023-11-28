@@ -13,7 +13,7 @@ import java.io.File;
 
 public class FileItem extends HBox {
 
-    private Button removeBtn;
+    private final Button removeBtn;
 
     public FileItem(File file) {
 

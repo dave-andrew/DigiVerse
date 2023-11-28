@@ -16,7 +16,6 @@ import javafx.scene.image.ImageView;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Priority;
 import javafx.scene.layout.VBox;
-import javafx.scene.text.TextAlignment;
 import model.Classroom;
 import model.ClassroomMember;
 import model.Task;
@@ -24,18 +23,18 @@ import view.component.classdetail.component.MemberItem;
 
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.concurrent.atomic.AtomicInteger;
 
 public class ClassScore extends HBox {
+
+    private final Classroom classroom;
 
     private MemberController memberController;
     private TaskController taskController;
     private AnswerController answerController;
-
-    private VBox memberContainer, scoreContainer;
+    private VBox scoreContainer;
     private VBox memberList;
-    private ScrollPane members, taskScores;
-    private Classroom classroom;
+    private int idx = 1;
+    private ClassroomMember selectedMember;
 
     public ClassScore(Classroom classroom) {
         this.classroom = classroom;
@@ -49,30 +48,30 @@ public class ClassScore extends HBox {
         this.taskController = new TaskController();
         this.answerController = new AnswerController();
 
-        this.members = new ScrollPane();
-        this.members.vbarPolicyProperty().setValue(ScrollPane.ScrollBarPolicy.AS_NEEDED);
-        this.members.setFitToWidth(true);
-        this.members.setPannable(true);
+        ScrollPane members = new ScrollPane();
+        members.vbarPolicyProperty().setValue(ScrollPane.ScrollBarPolicy.AS_NEEDED);
+        members.setFitToWidth(true);
+        members.setPannable(true);
 
-        this.memberContainer = new VBox();
-        this.memberContainer.setPrefWidth(450);
+        VBox memberContainer = new VBox();
+        memberContainer.setPrefWidth(450);
 
         this.scoreContainer = new VBox();
         this.scoreContainer.setAlignment(Pos.TOP_CENTER);
 
-        this.taskScores = new ScrollPane();
-        this.taskScores.vbarPolicyProperty().setValue(ScrollPane.ScrollBarPolicy.AS_NEEDED);
-        this.taskScores.setFitToWidth(true);
-        this.taskScores.setPannable(true);
+        ScrollPane taskScores = new ScrollPane();
+        taskScores.vbarPolicyProperty().setValue(ScrollPane.ScrollBarPolicy.AS_NEEDED);
+        taskScores.setFitToWidth(true);
+        taskScores.setPannable(true);
 
         this.memberList = new VBox();
         this.memberList.setPadding(new Insets(20));
-        this.memberContainer.setStyle("-fx-border-color: transparent #e0e0e0 transparent transparent;");
+        memberContainer.setStyle("-fx-border-color: transparent #e0e0e0 transparent transparent;");
 
-        this.members.setContent(memberList);
-        this.memberContainer.getChildren().add(members);
+        members.setContent(memberList);
+        memberContainer.getChildren().add(members);
 
-        this.members.vbarPolicyProperty().setValue(ScrollPane.ScrollBarPolicy.NEVER);
+        members.vbarPolicyProperty().setValue(ScrollPane.ScrollBarPolicy.NEVER);
 
         this.getChildren().addAll(memberContainer, scoreContainer);
     }
@@ -80,12 +79,12 @@ public class ClassScore extends HBox {
     private void setLayout() {
         fetchMember();
     }
-    private int idx = 1;
+
     private void fetchMember() {
         this.memberList.getChildren().clear();
 
         this.memberController.getClassMember(classroom.getClassId()).forEach(member -> {
-            if(member.getRole().equals("Student")) {
+            if (member.getRole().equals("Student")) {
                 HBox scoreContainer = new HBox();
                 Label score = new Label("Score: ");
                 scoreContainer.setAlignment(Pos.CENTER_LEFT);
@@ -152,8 +151,6 @@ public class ClassScore extends HBox {
         });
     }
 
-    private ClassroomMember selectedMember;
-
     private void displayMemberScore(HashMap<String, Integer> taskHash, double averageScore, MemberItem memberItem, HBox scoreContainer) {
         this.scoreContainer.getChildren().clear();
 
@@ -199,7 +196,7 @@ public class ClassScore extends HBox {
             Label taskScoreLbl = new Label("Score: ");
             container.getChildren().add(taskScoreLbl);
 
-            if(taskHash.get(taskTitle) != null) {
+            if (taskHash.get(taskTitle) != null) {
                 Label scoreLbl = new Label(String.valueOf(taskHash.get(taskTitle)));
                 scoreLbl.setPrefWidth(60);
                 scoreLbl.setAlignment(Pos.CENTER_RIGHT);
@@ -245,7 +242,7 @@ public class ClassScore extends HBox {
                 container.getChildren().add(saveBtn);
 
                 saveBtn.setOnMouseClicked(e -> {
-                    if(this.answerController.scoreAnswer(taskTitle, selectedMember.getUser().getId(), taskScoreInput.getText())) {
+                    if (this.answerController.scoreAnswer(taskTitle, selectedMember.getUser().getId(), taskScoreInput.getText())) {
                         Toast.makeText(StageManager.getInstance(), "Score saved!", 2000, 500, 500);
                         container.getChildren().removeAll(taskScoreInput, saveBtn);
                         Label scoreInput = new Label(taskScoreInput.getText());

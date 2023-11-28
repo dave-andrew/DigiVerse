@@ -1,6 +1,5 @@
 package view;
 
-import com.sun.media.jfxmedia.MediaError;
 import enums.PowerUp;
 import game.Bullet;
 import game.Enemy;
@@ -9,7 +8,6 @@ import game.dropitem.DropItem;
 import game.enemy.EnemyDeadState;
 import game.enemy.EnemyDespawnState;
 import game.gamestate.*;
-import game.player.PlayerNoLiveState;
 import game.player.PlayerStandState;
 import helper.*;
 import javafx.animation.AnimationTimer;
@@ -20,7 +18,6 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.VBox;
 import javafx.scene.media.Media;
-import javafx.scene.media.MediaException;
 import javafx.scene.media.MediaPlayer;
 import javafx.stage.Stage;
 import javafx.scene.Scene;
@@ -34,33 +31,11 @@ import javafx.util.Duration;
 
 public class OfflineGame {
 
-//    Game Attributes
-    private int level = 0;
-    private double enemySpawnRate = 0.01;
-
-    private AnimationTimer timer;
-
-    //    Game Layout
-    private final VBox pauseMenu;
-    private final VBox settingMenu;
-
     private final Player player;
-    private int baseEnemyHealth = 1;
-    private final Pane root;
-    private final Scene scene;
 
-    private final ArrayList<Enemy> enemyList = new ArrayList<>();
-    private final ArrayList<ArrayList<Image>> groundSprites;
-    private final ArrayList<String> enemySprites;
-    private long lastTimeFrame = 0;
-    private boolean deadPause = false;
+    // Managers
     private final BulletManager bulletManager = BulletManager.getInstance();
     private final ItemManager itemManager = ItemManager.getInstance();
-
-    private boolean isPaused = false;
-    private MediaPlayer mediaPlayer;
-    private final Label fpsLabel;
-    private final Label timerLabel;
 
     //  Game State
     private GameBaseState currentState;
@@ -70,10 +45,34 @@ public class OfflineGame {
     private final GameOverState overState;
     private final GameLevelUpState gameLevelUpState;
 
+    //    Game Layout
+    private final Pane root;
+    private final Scene scene;
+    private final VBox pauseMenu;
+    private final VBox settingMenu;
+    private final Label fpsLabel;
+    private final Label timerLabel;
+
+    //  Entity Tracker
+    private final ArrayList<Enemy> enemyList = new ArrayList<>();
+    private final ArrayList<ArrayList<Image>> groundSprites;
+    private final ArrayList<String> enemySprites;
+
+
+    //    Game Attributes
+    private int level = 0;
+    private double enemySpawnRate = 0.01;
+    private int baseEnemyHealth = 1;
+    private long lastTimeFrame = 0;
+
+    private AnimationTimer timer;
+    private MediaPlayer mediaPlayer;
+
+    private boolean deadPause = false;
+    private boolean isPaused = false;
+
     public OfflineGame(Stage stage) {
         this.root = new Pane();
-
-
         setupAudio();
 
         this.pauseMenu = new VBox(40);
@@ -121,10 +120,10 @@ public class OfflineGame {
         this.overState = new GameOverState(this);
         this.gameLevelUpState = new GameLevelUpState(this);
 
-        initialize(stage);
+        initialize();
         setupGameLoop();
 
-        InputManager inputManager = InputManager.getInstance(this.scene);
+        InputManager.getInstance(this.scene);
 
         this.currentState = startState;
         this.currentState.onEnterState();
@@ -135,16 +134,13 @@ public class OfflineGame {
         stage.setTitle("DigiVerse - Prairie King");
     }
 
-    private void initialize(Stage stage) {
-
+    private void initialize() {
         setupBackground();
-
         setUpGui();
     }
 
     public void reinitialize() {
         setupBackground();
-
         setUpGui();
     }
 
@@ -178,12 +174,7 @@ public class OfflineGame {
         mediaPlayer = new MediaPlayer(media);
         mediaPlayer.setVolume(0.1);
 
-        mediaPlayer.setOnEndOfMedia(new Runnable() {
-            @Override
-            public void run() {
-                mediaPlayer.seek(Duration.ZERO);
-            }
-        });
+        mediaPlayer.setOnEndOfMedia(() -> mediaPlayer.seek(Duration.ZERO));
     }
 
     private double TARGET_FPS = 144.0;
@@ -199,7 +190,6 @@ public class OfflineGame {
     }
 
     private final int INITIAL_TIMER_VALUE = 90;
-    private double elapsedTimer = 0.0;
 
     public void updateGame(long now) {
         isPaused = currentState instanceof GamePauseState;
@@ -207,7 +197,6 @@ public class OfflineGame {
         handleInput();
 
         double deltaTime = (double) (now - lastTimeFrame) / 50_000_000;
-
         while (deltaTime < TARGET_FRAME_TIME) {
             try {
                 Thread.sleep(1);
@@ -262,7 +251,7 @@ public class OfflineGame {
 
                 if (batchTimer <= 0) {
                     batchTimer = INITIAL_TIMER_VALUE;
-                    elapsedTimer = 0;
+                    double elapsedTimer = 0;
                     this.changeState(this.gameLevelUpState);
                     timerLabel.setText("Time: " + batchTimer + "s");
                 }

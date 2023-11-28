@@ -2,15 +2,11 @@ package view;
 
 import controller.AuthController;
 import helper.ScreenManager;
-import helper.StageManager;
 import helper.ThemeManager;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
-import javafx.scene.control.Button;
-import javafx.scene.control.Label;
-import javafx.scene.control.TextField;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.BorderPane;
@@ -21,7 +17,7 @@ import javafx.stage.Stage;
 
 public class Register {
 
-    private AuthController authController = new AuthController();
+    private final AuthController authController = new AuthController();
 
     private Scene scene;
     private BorderPane borderPane;
@@ -32,7 +28,6 @@ public class Register {
     private DatePicker dobPicker;
     private Button registerBtn;
 
-    private Image image;
     private ImageView registerImage;
 
     private VBox vbox;
@@ -42,6 +37,18 @@ public class Register {
     private Button loginLink;
 
     private Label errorLbl;
+
+    public Register(Stage stage) {
+        initialize();
+
+        scene = setLayout();
+
+        actions(stage);
+
+        ThemeManager.getTheme(scene);
+        stage.setScene(scene);
+        stage.setTitle("DigiVerse - Register");
+    }
 
     private void initialize() {
         borderPane = new BorderPane();
@@ -72,7 +79,7 @@ public class Register {
         loginLink = new Button("Already have an account? Login here!");
         loginLink.getStyleClass().add("link-button");
 
-        image = new Image("file:resources/image/auth_image.png");
+        Image image = new Image("file:resources/image/auth_image.png");
 
         registerImage = new ImageView(image);
 
@@ -133,25 +140,12 @@ public class Register {
 
             String output = authController.checkRegister(username, email, password, confirmPassword, dob);
 
-            if(output.equals("Register Success!")) {
+            if (output.equals("Register Success!")) {
                 errorLbl.setStyle("-fx-text-fill: green;-fx-font-weight: bold;");
                 new Login(stage);
             }
             errorLbl.setText(output);
         });
-    }
-
-    public Register(Stage stage) {
-        initialize();
-
-        scene = setLayout();
-
-        actions(stage);
-
-        ThemeManager.getTheme(scene);
-        stage.setScene(scene);
-        stage.setTitle("DigiVerse - Register");
-
     }
 
 }
