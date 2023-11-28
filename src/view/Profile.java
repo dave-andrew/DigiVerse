@@ -45,7 +45,7 @@ public class Profile extends VBox {
     private PasswordField oldPasswordField, newPasswordField, confirmPasswordField;
     private LoggedUser loggedUser;
     private HBox editContainer, buttonContainer, changeButtonContainer, profileLayout, birthdayContainer, emailContainer;
-    private Label errorLbl;
+    private Label errorLbl, errorLbl2;
     private VBox profileContainer, profileContent;
 
     private VBox nameBirthday;
@@ -56,6 +56,8 @@ public class Profile extends VBox {
     private StackPane mainPane;
     private HBox leftNav;
     private Button iconBtn;
+
+    private VBox updateProfileContainer, updatePasswordContainer;
 
     public Profile(ImageView profileNav, HBox leftNav, Button iconBtn, StackPane mainPane) {
         this.loggedUser = LoggedUser.getInstance();
@@ -94,11 +96,27 @@ public class Profile extends VBox {
 
         this.getChildren().add(bannerContainer);
 
+        this.updateProfileContainer = new VBox(20);
+        this.updateProfileContainer.setAlignment(Pos.TOP_CENTER);
+        this.updateProfileContainer.getStyleClass().add("card");
+        this.updateProfileContainer.setMaxWidth(600);
+        VBox.setMargin(updateProfileContainer, new Insets(0, 0, 150, 0));
+
+        this.updatePasswordContainer = new VBox(20);
+        this.updatePasswordContainer.setAlignment(Pos.TOP_CENTER);
+        this.updatePasswordContainer.getStyleClass().add("card");
+        this.updatePasswordContainer.setMaxWidth(600);
+        VBox.setMargin(updatePasswordContainer, new Insets(0, 0, 150, 0));
+
         this.errorLbl = new Label();
         this.errorLbl.setStyle("-fx-text-fill: red;");
 
+        this.errorLbl2 = new Label();
+        this.errorLbl2.setStyle("-fx-text-fill: red;");
+
         this.updateProfileBtn = new Button("Update Profile");
         this.updateProfileBtn.getStyleClass().add("primary-button");
+        this.updateProfileBtn.setStyle("-fx-text-fill: white;");
 
         this.cancelBtn = new Button("Cancel");
         this.cancelBtn.getStyleClass().add("secondary-button");
@@ -123,6 +141,7 @@ public class Profile extends VBox {
 
         this.updatePasswordBtn = new Button("Update Password");
         this.updatePasswordBtn.getStyleClass().add("primary-button");
+        this.updatePasswordBtn.setStyle("-fx-text-fill: white;");
 
         this.cancelPasswordBtn = new Button("Cancel");
         this.cancelPasswordBtn.getStyleClass().add("secondary-button");
@@ -233,6 +252,8 @@ public class Profile extends VBox {
 
         profileContainer.getChildren().add(line);
 
+        this.updateProfileContainer.getChildren().addAll(nameField, emailField, birthdayField, errorLbl, buttonContainer);
+        this.updatePasswordContainer.getChildren().addAll(oldPasswordField, newPasswordField, confirmPasswordField, errorLbl2, changeButtonContainer);
 
         this.prefWidthProperty().bind(this.widthProperty());
         this.setAlignment(Pos.TOP_LEFT);
@@ -277,9 +298,7 @@ public class Profile extends VBox {
                 loggedUser.setEmail(emailField.getText());
                 loggedUser.setAge(String.valueOf(birthdayField.getValue()));
 
-                birthdayContainer.getChildren().add(birthday);
-
-                profileContainer.getChildren().removeAll(nameField, emailField, birthdayField, errorLbl, buttonContainer);
+                profileContainer.getChildren().removeAll(updateProfileContainer);
 
                 profileContainer.getChildren().add(profileContent);
                 return;
@@ -289,7 +308,7 @@ public class Profile extends VBox {
         });
 
         this.cancelBtn.setOnMouseClicked(e -> {
-            profileContainer.getChildren().removeAll(nameField, emailField, birthdayField, errorLbl, buttonContainer);
+            profileContainer.getChildren().removeAll(updateProfileContainer);
             profileContainer.getChildren().add(profileContent);
         });
 
@@ -297,16 +316,16 @@ public class Profile extends VBox {
             String message = this.userController.updatePassword(oldPasswordField.getText(), newPasswordField.getText(), confirmPasswordField.getText());
 
             if(message.equals("Success")) {
-                profileContainer.getChildren().removeAll(oldPasswordField, newPasswordField, confirmPasswordField, errorLbl, changeButtonContainer);
+                profileContainer.getChildren().removeAll(updatePasswordContainer);
                 profileContainer.getChildren().add(profileContent);
                 return;
             }
 
-            errorLbl.setText(message);
+            errorLbl2.setText(message);
         });
 
         this.cancelPasswordBtn.setOnMouseClicked(e -> {
-            profileContainer.getChildren().removeAll(oldPasswordField, newPasswordField, confirmPasswordField, errorLbl, changeButtonContainer);
+            profileContainer.getChildren().removeAll(updatePasswordContainer);
             profileContainer.getChildren().add(profileContent);
         });
     }
@@ -347,9 +366,8 @@ public class Profile extends VBox {
         editProfileContainer.setOnMouseClicked(e -> {
             this.errorLbl.setText("");
             profileContainer.getChildren().remove(profileContent);
-            profileContainer.getChildren().removeAll(oldPasswordField, newPasswordField, confirmPasswordField, errorLbl, changeButtonContainer);
-            profileContainer.getChildren().removeAll(nameField, emailField, birthdayField, errorLbl, buttonContainer);
-            profileContainer.getChildren().addAll(nameField, emailField, birthdayField, errorLbl, buttonContainer);
+            profileContainer.getChildren().removeAll(updateProfileContainer, updatePasswordContainer);
+            profileContainer.getChildren().addAll(updateProfileContainer);
         });
 
         VBox.setMargin(editProfileContainer, new Insets(0, 0, 400, 0));
@@ -394,11 +412,10 @@ public class Profile extends VBox {
         passwordContainer.getStyleClass().add("border-button");
 
         passwordContainer.setOnMouseClicked(e -> {
-            this.errorLbl.setText("");
+            this.errorLbl2.setText("");
             profileContainer.getChildren().remove(profileContent);
-            profileContainer.getChildren().removeAll(nameField, emailField, birthdayField, errorLbl, buttonContainer);
-            profileContainer.getChildren().removeAll(oldPasswordField, newPasswordField, confirmPasswordField, errorLbl, changeButtonContainer);
-            profileContainer.getChildren().addAll(oldPasswordField, newPasswordField, confirmPasswordField, errorLbl, changeButtonContainer);
+            profileContainer.getChildren().removeAll(updateProfileContainer, updatePasswordContainer);
+            profileContainer.getChildren().addAll(updatePasswordContainer);
         });
 
         VBox.setMargin(passwordContainer, new Insets(0, 0, 400, 0));
