@@ -1,32 +1,28 @@
 package database;
 
 import model.Classroom;
-import model.ClassroomMember;
 import model.LoggedUser;
-import model.User;
 
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.util.ArrayList;
 
 public class ClassQuery {
-    private LoggedUser loggedUser;
 
-    private Connect connect;
+    private final LoggedUser loggedUser;
+    private final Connect connect;
 
     public ClassQuery() {
-        loggedUser = LoggedUser.getInstance();
+        this.loggedUser = LoggedUser.getInstance();
         this.connect = Connect.getConnection();
     }
 
     public void createClass(Classroom classroom) {
-
         String query = "INSERT INTO msclass VALUES (?, ?, ?, ?, ?, NULL)";
         String query2 = "INSERT INTO class_member VALUES (?, ?, ?)";
 
-        PreparedStatement ps = connect.prepareStatement(query);
-        PreparedStatement ps2 = connect.prepareStatement(query2);
-        try {
+        try (PreparedStatement ps = connect.prepareStatement(query);) {
+            assert ps != null;
             ps.setString(1, classroom.getClassId());
             ps.setString(2, classroom.getClassName());
             ps.setString(3, classroom.getClassDesc());
@@ -34,35 +30,36 @@ public class ClassQuery {
             ps.setString(5, classroom.getClassSubject());
 
             ps.executeUpdate();
-
-            ps2.setString(1, classroom.getClassId());
-            ps2.setString(2, loggedUser.getId());
-            ps2.setString(3, "Teacher");
-
-            ps2.executeUpdate();
-
         } catch (Exception e) {
             throw new RuntimeException(e);
         }
 
+        try (PreparedStatement ps = connect.prepareStatement(query2)) {
+            assert ps != null;
+            ps.setString(1, classroom.getClassId());
+            ps.setString(2, loggedUser.getId());
+            ps.setString(3, "Teacher");
+
+            ps.executeUpdate();
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
     }
 
     public ArrayList<Classroom> getUserClassrooom() {
         ArrayList<Classroom> classrooms = new ArrayList<>();
 
         String query = "SELECT * FROM msclass WHERE ClassID IN (SELECT ClassID FROM class_member WHERE UserID = ?)";
-
-        PreparedStatement ps = connect.prepareStatement(query);
-        try {
+        try (PreparedStatement ps = connect.prepareStatement(query)) {
+            assert ps != null;
             ps.setString(1, loggedUser.getId());
 
-            try(var rs = ps.executeQuery()) {
-                while(rs.next()) {
+            try (var rs = ps.executeQuery()) {
+                while (rs.next()) {
                     classrooms.add(new Classroom(rs.getString("ClassID"), rs.getString("ClassName"), rs.getString("ClassDesc"), rs.getString("ClassCode"), rs.getString("ClassSubject"), rs.getBlob("ClassImage")));
                 }
             }
-        } catch (Exception e) {
-//            throw new RuntimeException(e);
+        } catch (Exception ignored) {
         }
 
         return classrooms;
@@ -72,27 +69,32 @@ public class ClassQuery {
         String checkGroupClassCode = "SELECT * FROM msclass WHERE ClassCode = ?";
         String query = "INSERT INTO class_member VALUES (?, ?, ?)";
 
-        PreparedStatement checkGroupCode = connect.prepareStatement(checkGroupClassCode);
-        PreparedStatement ps = connect.prepareStatement(query);
-        try {
-            assert checkGroupCode != null;
-            checkGroupCode.setString(1, classCode);
-            ResultSet rs = checkGroupCode.executeQuery();
-            if(!rs.next()){
-                return "no data";
-            }
-
+        String classId;
+        try (PreparedStatement ps = connect.prepareStatement(checkGroupClassCode)) {
             assert ps != null;
-            ps.setString(1, rs.getString("ClassID"));
+
+            try (ResultSet rs = ps.executeQuery()) {
+                ps.setString(1, classCode);
+                if (rs.next()) {
+                    classId = rs.getString("ClassID");
+                } else {
+                    return "no data";
+                }
+            }
+        } catch (Exception e) {
+            return "ingroup";
+        }
+
+        try (PreparedStatement ps = connect.prepareStatement(query)) {
+            assert ps != null;
+            ps.setString(1, classId);
             ps.setString(2, loggedUser.getId());
             ps.setString(3, "Student");
 
             ps.executeUpdate();
-
-            return rs.getString("ClassID");
+            return classId;
         } catch (Exception e) {
             return "ingroup";
-//            throw new RuntimeException(e);
         }
     }
 }

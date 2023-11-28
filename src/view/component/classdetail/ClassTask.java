@@ -4,28 +4,26 @@ import controller.TaskController;
 import helper.StageManager;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
-import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Priority;
 import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
-import javafx.stage.Stage;
 import model.Classroom;
 import model.Task;
+import view.component.classdetail.component.TaskItem;
 import view.homeview.AddTask;
 import view.homeview.task.TaskBase;
-import view.component.classdetail.component.TaskItem;
 
 import java.util.ArrayList;
 
 public class ClassTask extends ClassBase {
 
-    private TaskController taskController;
-    private StackPane mainPane;
-    private String userRole;
+    private final StackPane mainPane;
+    private final String userRole;
 
+    private TaskController taskController;
     private HBox container;
     private VBox taskContainer, taskListContainer;
 
@@ -69,7 +67,7 @@ public class ClassTask extends ClassBase {
     }
 
     private void actions() {
-        if(this.userRole.equals("Teacher")) {
+        if (this.userRole.equals("Teacher")) {
             this.addTaskBtn.setOnMouseClicked(e -> {
 
                 new AddTask(StageManager.getInstance(), this.classroom);
@@ -90,7 +88,7 @@ public class ClassTask extends ClassBase {
         HBox titleContainer = new HBox(title, spacer);
         titleContainer.setAlignment(Pos.TOP_CENTER);
 
-        if(this.userRole.equals("Teacher")) {
+        if (this.userRole.equals("Teacher")) {
             this.addTaskBtn = new Button("+ Create Task");
             this.addTaskBtn.getStyleClass().add("primary-button");
             this.addTaskBtn.setStyle("-fx-text-fill: white");
@@ -105,7 +103,7 @@ public class ClassTask extends ClassBase {
 
         ArrayList<Task> tasks = this.taskController.getClassroomTask(this.classroom.getClassId());
 
-        if(tasks.isEmpty()) {
+        if (tasks.isEmpty()) {
             Label empty = new Label("No task yet! Chill dulu gak sih?");
             empty.getStyleClass().add("empty");
 

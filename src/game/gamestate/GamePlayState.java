@@ -20,7 +20,7 @@ public class GamePlayState extends GameBaseState {
     public void onUpdate(long now) {
         if (game.getPlayer().getState() instanceof PlayerNoLiveState) {
             game.setBatchTimer(game.getInitialTimer());
-            this.game.changeState(this.game.overState);
+            this.game.changeState(this.game.getOverState());
             return;
         }
 

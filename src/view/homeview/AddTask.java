@@ -5,11 +5,6 @@ import helper.DateManager;
 import helper.ScreenManager;
 import helper.ThemeManager;
 import javafx.geometry.Insets;
-import model.Forum;
-import model.LoggedUser;
-import model.Task;
-import view.Profile;
-import view.component.TimeSpinner;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
@@ -21,32 +16,23 @@ import javafx.scene.layout.Priority;
 import javafx.scene.layout.VBox;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
-import javafx.util.StringConverter;
 import model.Classroom;
+import view.Profile;
+import view.component.TimeSpinner;
 
 import java.time.LocalDate;
-import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
 
 public class AddTask extends BorderPane {
 
-    private Classroom classroom;
-    private Stage stage;
-    private TaskController taskController;
+    private final Classroom classroom;
+    private final Stage stage;
+    private final TaskController taskController;
 
     private Stage dialogStage;
-    private Scene dialogScene;
 
-    private BorderPane root;
-
-    //    NAVBAR
-    private HBox leftNav;
-    private Image closeImg;
-    private ImageView close;
-    private Label title, errorLbl;
-    private Button joinBtn;
-    private Button closeBtn;
+    private Label errorLbl;
 
     //  CENTER FORM
     private TextField titleField;
@@ -72,12 +58,12 @@ public class AddTask extends BorderPane {
         errorLbl = new Label();
         errorLbl.setStyle("-fx-text-fill: red;");
 
-        this.root = new BorderPane();
-        this.root.setRight(rightBar());
-        this.root.setTop(navBar());
-        this.root.setCenter(center());
+        BorderPane root = new BorderPane();
+        root.setRight(rightBar());
+        root.setTop(navBar());
+        root.setCenter(center());
 
-        dialogScene = new Scene(root, ScreenManager.SCREEN_WIDTH, ScreenManager.SCREEN_HEIGHT);
+        Scene dialogScene = new Scene(root, ScreenManager.SCREEN_WIDTH, ScreenManager.SCREEN_HEIGHT);
         dialogStage.setScene(dialogScene);
 
         ThemeManager.getTheme(dialogScene);
@@ -123,18 +109,19 @@ public class AddTask extends BorderPane {
     private HBox navBar() {
         HBox container = new HBox();
 
-        leftNav = new HBox(20);
+        //    NAVBAR
+        HBox leftNav = new HBox(20);
 
-        closeImg = new Image("file:resources/icons/close.png");
-        close = new ImageView(closeImg);
+        Image closeImg = new Image("file:resources/icons/close.png");
+        ImageView close = new ImageView(closeImg);
         close.setFitWidth(20);
         close.setPreserveRatio(true);
 
-        closeBtn = new Button();
+        Button closeBtn = new Button();
         closeBtn.setGraphic(close);
         closeBtn.getStyleClass().add("image-button");
 
-        title = new Label("Create New Task");
+        Label title = new Label("Create New Task");
         title.getStyleClass().add("title");
         title.setPadding(new Insets(10, 0, 10, 0));
 
@@ -215,7 +202,7 @@ public class AddTask extends BorderPane {
         VBox spacer = new VBox();
         VBox.setVgrow(spacer, Priority.ALWAYS);
 
-        joinBtn = new Button("Create Task");
+        Button joinBtn = new Button("Create Task");
         joinBtn.getStyleClass().add("primary-button");
         joinBtn.setStyle("-fx-text-fill: white;");
         joinBtn.setPrefWidth(300);

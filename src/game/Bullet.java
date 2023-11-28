@@ -4,30 +4,22 @@ import game.bullet.BulletBaseState;
 import game.bullet.BulletMoveState;
 import game.bullet.BulletStopState;
 import helper.Collider;
-import javafx.animation.AnimationTimer;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.Pane;
-
-import java.util.ArrayList;
 
 public class Bullet extends ImageView {
 
     private double posX;
     private double posY;
 
-    private int direction;
+    private final int direction;
+    private final int speed;
 
-    private int speed;
 
-    private Image sprite;
-
-//    Bullet States
+    //    Bullet States
     private BulletBaseState currentState;
-    public BulletMoveState moveState;
-    public BulletStopState stopState;
-
-//    private long lastTimeFrame = 0;
+    private final BulletStopState stopState;
 
     private Collider collider;
 
@@ -38,12 +30,12 @@ public class Bullet extends ImageView {
 
         this.direction = direction;
 
-        this.moveState = new BulletMoveState(this);
+        BulletMoveState moveState = new BulletMoveState(this);
         this.stopState = new BulletStopState(this);
 
         this.currentState = moveState;
 
-        this.sprite = new Image("file:resources/game/bullet.png");
+        Image sprite = new Image("file:resources/game/bullet.png");
         this.setImage(sprite);
 
         this.collider = new Collider(posX, posY, sprite.getWidth());
@@ -95,5 +87,9 @@ public class Bullet extends ImageView {
 
     public int getDirection() {
         return this.direction;
+    }
+
+    public BulletStopState getStopState() {
+        return stopState;
     }
 }

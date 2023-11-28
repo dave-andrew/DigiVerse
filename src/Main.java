@@ -3,9 +3,7 @@ import helper.ScreenManager;
 import helper.StageManager;
 import helper.ThemeManager;
 import helper.Toast;
-import javafx.animation.PauseTransition;
 import javafx.application.Application;
-import javafx.application.Platform;
 import javafx.concurrent.Service;
 import javafx.concurrent.Task;
 import javafx.geometry.Pos;
@@ -16,7 +14,6 @@ import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
-import javafx.util.Duration;
 import model.LoggedUser;
 import view.Home;
 import view.Login;
@@ -27,12 +24,15 @@ public class Main extends Application {
     private AuthController authController;
 
     private Scene scene;
-    private BorderPane borderPane;
+
+    public static void main(String[] args) {
+        launch(args);
+    }
 
     private Scene initialize() {
         authController = new AuthController();
 
-        borderPane = new BorderPane();
+        BorderPane borderPane = new BorderPane();
 
         VBox loading = new VBox();
         loading.setAlignment(Pos.CENTER);
@@ -86,9 +86,8 @@ public class Main extends Application {
         service.start();
     }
 
-
     @Override
-    public void start(Stage stage) throws Exception {
+    public void start(Stage stage) {
         Stage primaryStage = StageManager.getInstance();
         scene = initialize();
         primaryStage.setScene(scene);
@@ -97,9 +96,5 @@ public class Main extends Application {
         primaryStage.getIcons().add(new Image("file:resources/icons/app_logo.png"));
         stage.initStyle(StageStyle.UTILITY);
         primaryStage.show();
-    }
-
-    public static void main(String[] args) {
-        launch(args);
     }
 }

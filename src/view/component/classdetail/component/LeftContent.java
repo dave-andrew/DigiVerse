@@ -12,18 +12,13 @@ import model.Classroom;
 
 public class LeftContent extends HBox {
 
-    private String role;
-    private Classroom classroom;
-
-    private VBox container;
-    private Label classCodeTitle, classCode;
+    private final Label classCode;
 
     public LeftContent(String role, Classroom classroom) {
-        this.role = role;
-        this.classroom = classroom;
 
-        container = new VBox();
+        VBox container = new VBox();
 
+        Label classCodeTitle;
         if (role.equals("Teacher")) {
             classCodeTitle = new Label("Class Code:");
             classCode = new Label(classroom.getClassCode());

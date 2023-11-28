@@ -13,18 +13,14 @@ import javafx.stage.Stage;
 
 public class JoinClassNav extends HBox {
 
-    private HBox leftNav;
-    private Image closeImg;
-    private ImageView close;
-    private Label title;
     private Button joinBtn;
     private Button closeBtn;
 
     private void initialize() {
-        leftNav = new HBox(20);
+        HBox leftNav = new HBox(20);
 
-        closeImg = new Image("file:resources/icons/close.png");
-        close = new ImageView(closeImg);
+        Image closeImg = new Image("file:resources/icons/close.png");
+        ImageView close = new ImageView(closeImg);
         close.setFitWidth(17);
         close.setFitHeight(17);
 
@@ -32,7 +28,7 @@ public class JoinClassNav extends HBox {
         closeBtn.setGraphic(close);
         closeBtn.getStyleClass().add("image-button");
 
-        title = new Label("Join Class");
+        Label title = new Label("Join Class");
         title.getStyleClass().add("title");
         title.setPadding(new Insets(15, 0, 15, 0));
 
@@ -58,7 +54,7 @@ public class JoinClassNav extends HBox {
         });
     }
 
-    public JoinClassNav(Stage stage) {
+    public JoinClassNav() {
         initialize();
         actions();
         this.getStyleClass().add("nav-bar");

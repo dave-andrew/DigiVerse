@@ -11,27 +11,23 @@ import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.VBox;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
-import javafx.stage.StageStyle;
 import view.component.ChangeAccountBox;
 import view.component.classroom.GroupCodeForm;
 import view.component.classroom.JoinClassNav;
 
 public class JoinClass {
 
-    private ClassController classController;
+    private final Stage dialogStage;
 
+    private ClassController classController;
     private Scene scene;
     private BorderPane borderPane;
-
     private VBox mainVbox;
     private JoinClassNav topBar;
-
     private VBox userInfoBox;
     private GroupCodeForm classFormBox;
     private VBox joinInfo;
-    private Label joinInfoSub, lbl1, lbl2, errorLbl;
-    private VBox joinInfoList;
-    private Stage dialogStage;
+    private Label errorLbl;
 
     public JoinClass(Stage ownerStage) {
         initialize(ownerStage);
@@ -53,7 +49,7 @@ public class JoinClass {
 
         borderPane = new BorderPane();
         mainVbox = new VBox(20);
-        topBar = new JoinClassNav(stage);
+        topBar = new JoinClassNav();
 
         errorLbl = new Label();
         errorLbl.setStyle("-fx-text-fill: red;");
@@ -70,12 +66,12 @@ public class JoinClass {
         joinInfo = new VBox(5);
         joinInfo.setPadding(new Insets(20));
 
-        joinInfoSub = new Label("To join using group class code:");
+        Label joinInfoSub = new Label("To join using group class code:");
 
-        joinInfoList = new VBox(2);
+        VBox joinInfoList = new VBox(2);
 
-        lbl1 = new Label("• Use an authorized account");
-        lbl2 = new Label("• Use a maximum of 10 letters of group code.");
+        Label lbl1 = new Label("• Use an authorized account");
+        Label lbl2 = new Label("• Use a maximum of 10 letters of group code.");
 
         joinInfoSub.setStyle("-fx-font-size: 17px;");
         lbl1.setStyle("-fx-font-size: 14px; -fx-font-family: 'Nunito Light'");
@@ -105,7 +101,7 @@ public class JoinClass {
         topBar.getJoinBtn().setOnMouseClicked(e -> {
             String message = classController.checkJoinClass(classFormBox.getGroupCode());
 
-            if(message.equals("Class Joined!")) {
+            if (message.equals("Class Joined!")) {
                 dialogStage.close();
             }
 

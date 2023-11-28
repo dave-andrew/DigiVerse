@@ -10,7 +10,7 @@ public class Comment {
     private String replyid;
     private String text;
     private String userid;
-    private User user;
+    private final User user;
     private final String createdAt;
 
     public Comment(String id, String text, String userid, User user, String createdAt) {

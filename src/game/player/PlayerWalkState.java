@@ -36,7 +36,7 @@ public class PlayerWalkState extends PlayerBaseState {
 
         if (InputManager.getPressedKeys().contains(KeyCode.UP) || InputManager.getPressedKeys().contains(KeyCode.DOWN) ||
                 InputManager.getPressedKeys().contains(KeyCode.RIGHT) || InputManager.getPressedKeys().contains(KeyCode.LEFT)) {
-            player.changeState(player.shootState);
+            player.changeState(player.getShootState());
             return;
         }
 
@@ -46,7 +46,7 @@ public class PlayerWalkState extends PlayerBaseState {
     @Override
     public void spriteManager(double velocityX, double velocityY, int frame) {
         if (InputManager.getPressedKeys().isEmpty()) {
-            player.changeState(player.standState);
+            player.changeState(player.getStandState());
             return;
         }
 

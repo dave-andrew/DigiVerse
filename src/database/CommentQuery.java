@@ -2,28 +2,27 @@ package database;
 
 import model.*;
 
-import java.sql.Connection;
 import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 
 public class CommentQuery {
 
-    private Connect con;
+    private final Connect connect;
 
     public CommentQuery() {
-        this.con = Connect.getConnection();
+        this.connect = Connect.getConnection();
     }
 
     public ForumComment createForumComment(ForumComment forumComment) {
-
         String query = "INSERT INTO mscomment VALUES (?, NULL, ?, ?, ?)";
         String query2 = "INSERT INTO forum_comment VALUES (?, ?)";
 
-        try (PreparedStatement ps = con.prepareStatement(query);
-            PreparedStatement ps2 = con.prepareStatement(query2)) {
-
+        try (PreparedStatement ps = connect.prepareStatement(query);
+             PreparedStatement ps2 = connect.prepareStatement(query2)) {
             assert ps != null;
+
             ps.setString(1, forumComment.getId());
             ps.setString(2, forumComment.getText());
             ps.setString(3, forumComment.getUserid());
@@ -43,8 +42,7 @@ public class CommentQuery {
         }
     }
 
-    public ArrayList<ForumComment> getForumComments(String forumid, int offset) {
-
+    public ArrayList<ForumComment> getForumComments(String forumId, int offset) {
         ArrayList<ForumComment> forumCommentList = new ArrayList<>();
 
         String query = "SELECT * FROM forum_comment\n" +
@@ -55,14 +53,13 @@ public class CommentQuery {
                 "ORDER BY mscomment.CreatedAt DESC\n" +
                 "LIMIT 5 OFFSET ?";
 
-        try (PreparedStatement ps = con.prepareStatement(query)) {
-
+        try (PreparedStatement ps = connect.prepareStatement(query)) {
             assert ps != null;
-            ps.setString(1, forumid);
+            ps.setString(1, forumId);
             ps.setInt(2, offset * 5);
 
-            try(var rs = ps.executeQuery()) {
-                while(rs.next()) {
+            try (ResultSet rs = ps.executeQuery()) {
+                while (rs.next()) {
 
                     User user = new User(
                             rs.getString("UserID"),
@@ -92,24 +89,21 @@ public class CommentQuery {
                     );
 
                     forumCommentList.add(forumComment);
-
                 }
             }
 
             return forumCommentList;
-
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
     }
 
     public TaskComment createTaskComment(TaskComment taskComment) {
-
         String query = "INSERT INTO mscomment VALUES (?, NULL, ?, ?, ?)";
         String query2 = "INSERT INTO task_comment VALUES (?, ?)";
 
-        try (PreparedStatement ps = con.prepareStatement(query);
-            PreparedStatement ps2 = con.prepareStatement(query2)) {
+        try (PreparedStatement ps = connect.prepareStatement(query);
+             PreparedStatement ps2 = connect.prepareStatement(query2)) {
 
             assert ps != null;
             ps.setString(1, taskComment.getId());
@@ -141,14 +135,13 @@ public class CommentQuery {
                 "WHERE task_comment.TaskID = ?\n" +
                 "ORDER BY mscomment.CreatedAt DESC";
 
-        try (PreparedStatement ps = con.prepareStatement(query)) {
+        try (PreparedStatement ps = connect.prepareStatement(query)) {
 
             assert ps != null;
             ps.setString(1, taskid);
 
-            try (var rs = ps.executeQuery()) {
+            try (ResultSet rs = ps.executeQuery()) {
                 while (rs.next()) {
-
                     User user = new User(
                             rs.getString("UserID"),
                             rs.getString("Username"),
@@ -166,7 +159,7 @@ public class CommentQuery {
                             rs.getString("DeadlineAt"),
                             rs.getString("CreatedAt"),
                             rs.getBoolean("Scored")
-                            );
+                    );
 
                     TaskComment taskComment = new TaskComment(
                             rs.getString("CommentID"),
@@ -179,7 +172,6 @@ public class CommentQuery {
                     );
 
                     taskList.add(taskComment);
-
                 }
             }
 
@@ -208,14 +200,13 @@ public class CommentQuery {
                 ") OR mscomment.UserID = ?)\n" +
                 "ORDER BY mscomment.CreatedAt DESC";
 
-        try (PreparedStatement ps = con.prepareStatement(query)) {
-
+        try (PreparedStatement ps = connect.prepareStatement(query)) {
             assert ps != null;
             ps.setString(1, taskid);
             ps.setString(2, taskid);
             ps.setString(3, LoggedUser.getInstance().getId());
 
-            try (var rs = ps.executeQuery()) {
+            try (ResultSet rs = ps.executeQuery()) {
                 while (rs.next()) {
 
                     User user = new User(
@@ -235,7 +226,7 @@ public class CommentQuery {
                             rs.getString("DeadlineAt"),
                             rs.getString("CreatedAt"),
                             rs.getBoolean("Scored")
-                            );
+                    );
 
                     TaskComment taskComment = new TaskComment(
                             rs.getString("CommentID"),
@@ -248,7 +239,6 @@ public class CommentQuery {
                     );
 
                     taskList.add(taskComment);
-
                 }
             }
 
@@ -260,11 +250,9 @@ public class CommentQuery {
     }
 
     public TaskComment replyComment(TaskComment replyComment) {
-
         String query = "INSERT INTO mscomment VALUES (?, ?, ?, ?, ?)";
 
-        try (PreparedStatement ps = con.prepareStatement(query)) {
-
+        try (PreparedStatement ps = connect.prepareStatement(query)) {
             assert ps != null;
             ps.setString(1, replyComment.getId());
             ps.setString(2, replyComment.getReplyid());
@@ -289,7 +277,7 @@ public class CommentQuery {
                 "WHERE mscomment.ReplyID = ?\n" +
                 "ORDER BY mscomment.CreatedAt DESC";
 
-        try (PreparedStatement ps = con.prepareStatement(query)) {
+        try (PreparedStatement ps = connect.prepareStatement(query)) {
 
             assert ps != null;
             ps.setString(1, commentid);

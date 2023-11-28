@@ -8,16 +8,13 @@ import view.OfflineGame;
 
 public class PauseMenu extends VBox {
 
-    private Button resumeButton, settingButton, exitButton;
-    private Label pauseLabel;
-
     public PauseMenu(OfflineGame game, VBox settingMenu) {
 
-        resumeButton = new Button("Resume");
-        settingButton = new Button("Setting");
-        exitButton = new Button("Exit");
+        Button resumeButton = new Button("Resume");
+        Button settingButton = new Button("Setting");
+        Button exitButton = new Button("Exit");
 
-        pauseLabel = new Label("Pause Menu");
+        Label pauseLabel = new Label("Pause Menu");
         pauseLabel.getStyleClass().add("title");
 
         this.getChildren().add(pauseLabel);
@@ -33,7 +30,7 @@ public class PauseMenu extends VBox {
 
         resumeButton.setOnAction(e -> {
             game.getRoot().getChildren().remove(game.getPauseMenu());
-            game.changeState(game.playState);
+            game.changeState(game.getPlayState());
         });
 
         settingButton.setOnAction(e -> {

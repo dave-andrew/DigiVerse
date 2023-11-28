@@ -17,7 +17,7 @@ import javafx.stage.Stage;
 
 public class Login {
 
-    private AuthController authController = new AuthController();
+    private final AuthController authController = new AuthController();
 
     private Scene scene;
     private BorderPane borderPane;
@@ -27,7 +27,6 @@ public class Login {
     private PasswordField passwordTxt;
     private Button loginBtn, registerLink;
 
-    private Image image;
     private ImageView loginImage;
 
     private VBox vbox;
@@ -37,6 +36,17 @@ public class Login {
     private CheckBox rememberMe;
 
     private Label errorLbl;
+
+    public Login(Stage stage) {
+        initialize();
+
+        scene = setLayout();
+
+        actions(stage);
+
+        stage.setScene(scene);
+        stage.setTitle("DigiVerse - Login");
+    }
 
     private void initialize() {
         borderPane = new BorderPane();
@@ -64,7 +74,7 @@ public class Login {
         rememberMe.setScaleX(0.6);
         rememberMe.setScaleY(0.6);
 
-        image = new Image("file:resources/image/auth_image2.png");
+        Image image = new Image("file:resources/image/auth_image2.png");
 
         loginImage = new ImageView(image);
 
@@ -132,16 +142,5 @@ public class Login {
         registerLink.setOnAction(e -> {
             new Register(stage);
         });
-    }
-
-    public Login(Stage stage) {
-        initialize();
-
-        scene = setLayout();
-
-        actions(stage);
-
-        stage.setScene(scene);
-        stage.setTitle("DigiVerse - Login");
     }
 }

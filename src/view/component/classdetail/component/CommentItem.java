@@ -17,9 +17,9 @@ import java.util.ArrayList;
 
 public class CommentItem extends HBox {
 
-    private Comment comment;
+    private final Comment comment;
 
-    private CommentController commentController;
+    private final CommentController commentController;
 
     private Label replyBtn;
     private CommentTextField commentTextField;

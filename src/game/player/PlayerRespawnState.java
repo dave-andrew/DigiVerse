@@ -25,7 +25,7 @@ public class PlayerRespawnState extends PlayerBaseState {
         player.setY(player.getPosY());
 
         player.setImage(player.getSprite());
-        player.changeState(player.standState);
+        player.changeState(player.getStandState());
     }
 
     @Override

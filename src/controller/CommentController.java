@@ -10,7 +10,7 @@ import java.util.ArrayList;
 
 public class CommentController {
 
-    private CommentQuery commentQuery;
+    private final CommentQuery commentQuery;
 
     public CommentController() {
         this.commentQuery = new CommentQuery();

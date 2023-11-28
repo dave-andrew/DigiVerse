@@ -36,7 +36,7 @@ public class GameLevelUpState extends GameBaseState {
         if(InputManager.getPressedKeys().contains(KeyCode.SPACE)) {
             game.getRoot().getChildren().remove(guiView);
             game.cleanUp();
-            game.changeState(game.playState);
+            game.changeState(game.getPlayState());
         }
     }
 }

@@ -1,18 +1,16 @@
 package view.component.classdetail;
 
-import controller.ForumController;
 import controller.MemberController;
 import helper.ImageManager;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.control.Label;
-import javafx.scene.control.ScrollPane;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
-import javafx.scene.input.Clipboard;
-import javafx.scene.input.ClipboardContent;
-import javafx.scene.layout.*;
-import javafx.scene.paint.Color;
+import javafx.scene.layout.HBox;
+import javafx.scene.layout.Priority;
+import javafx.scene.layout.StackPane;
+import javafx.scene.layout.VBox;
 import javafx.scene.shape.Rectangle;
 import model.Classroom;
 import view.component.classdetail.component.LeftContent;
@@ -23,14 +21,17 @@ public class ClassForum extends ClassBase {
     private HBox forumContainer;
     private VBox forumContent;
     private StackPane forumStack;
-    private Image classImage;
-    private ImageView classBanner;
-    private Label className, classDesc;
+    private HBox forumHBox;
 
+    public ClassForum(Classroom classroom) {
+        super(classroom);
 
-    HBox forumHBox;
-    LeftContent leftContent;
-    RightContent rightContent;
+        init();
+        setLayout();
+
+        this.setContent(forumContainer);
+        this.setPannable(false);
+    }
 
     private void setLayout() {
 
@@ -60,18 +61,19 @@ public class ClassForum extends ClassBase {
         blueBackground.setArcHeight(20);
         blueBackground.isSmooth();
 
-        classBanner = new ImageView();
+        ImageView classBanner = new ImageView();
 
         if (classroom == null || classroom.getClassImage() == null) {
             forumStack.getChildren().add(blueBackground);
         } else {
-            classImage = ImageManager.convertBlobImage(classroom.getClassImage());
+            Image classImage = ImageManager.convertBlobImage(classroom.getClassImage());
             classBanner.setImage(classImage);
             forumStack.getChildren().add(classBanner);
         }
 
         classBanner.getStyleClass().add("class-banner");
 
+        Label className;
         if (classroom == null) {
             className = new Label("Something Unexpected Happened");
 
@@ -81,7 +83,7 @@ public class ClassForum extends ClassBase {
         } else {
             className = new Label(classroom.getClassName());
             className.setStyle("-fx-text-fill: white; -fx-font-size: 40px; -fx-font-family: 'Nunito'");
-            classDesc = new Label(classroom.getClassDesc());
+            Label classDesc = new Label(classroom.getClassDesc());
             classDesc.setStyle("-fx-text-fill: white; -fx-font-size: 20px");
 
             VBox labelsVBox = new VBox(className, classDesc);
@@ -92,13 +94,12 @@ public class ClassForum extends ClassBase {
 //            forumHBox.setStyle("-fx-background-color: #f5f5f5");
 
 
-
             HBox leftContentContainer = new HBox();
             String userRole = new MemberController().getRole(classroom.getClassId());
-            leftContent = new LeftContent(userRole, this.classroom);
+            LeftContent leftContent = new LeftContent(userRole, this.classroom);
             leftContentContainer.getChildren().add(leftContent);
 
-            rightContent = new RightContent(classroom);
+            RightContent rightContent = new RightContent(classroom);
             HBox.setHgrow(rightContent, Priority.ALWAYS);
             rightContent.setPadding(new Insets(0, 0, 40, 0));
 
@@ -106,15 +107,5 @@ public class ClassForum extends ClassBase {
 //            forumContent.setStyle("-fx-background-color: #000000");
         }
 
-    }
-
-    public ClassForum(Classroom classroom) {
-        super(classroom);
-
-        init();
-        setLayout();
-
-        this.setContent(forumContainer);
-        this.setPannable(false);
     }
 }

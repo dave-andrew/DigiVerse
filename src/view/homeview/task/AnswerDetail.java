@@ -19,13 +19,13 @@ import java.util.concurrent.atomic.AtomicInteger;
 
 public class AnswerDetail extends HBox {
 
-    private MemberController memberController;
-    private AnswerController answerController;
+    private final MemberController memberController;
+    private final AnswerController answerController;
 
-    private Task task;
-    private Classroom classroom;
+    private final Task task;
+    private final Classroom classroom;
 
-    private VBox memberContainer, fileContainer;
+    private VBox fileContainer;
     private VBox memberList;
 
     public AnswerDetail(Task task, Classroom classroom) {
@@ -38,12 +38,12 @@ public class AnswerDetail extends HBox {
     }
 
     private void init() {
-        this.memberContainer = new VBox();
+        VBox memberContainer = new VBox();
         this.memberList = new VBox();
         this.memberList.setPadding(new Insets(20));
 
-        this.memberContainer.setPrefWidth(500);
-        this.memberContainer.setStyle("-fx-border-color: transparent #e0e0e0 transparent transparent;");
+        memberContainer.setPrefWidth(500);
+        memberContainer.setStyle("-fx-border-color: transparent #e0e0e0 transparent transparent;");
 
         ScrollPane scrollPane = new ScrollPane();
         scrollPane.setContent(memberList);
@@ -51,7 +51,7 @@ public class AnswerDetail extends HBox {
         scrollPane.setPannable(true);
         scrollPane.vbarPolicyProperty().setValue(ScrollPane.ScrollBarPolicy.NEVER);
 
-        this.memberContainer.getChildren().add(scrollPane);
+        memberContainer.getChildren().add(scrollPane);
 
         this.fileContainer = new VBox();
         this.fileContainer.setPadding(new Insets(20));

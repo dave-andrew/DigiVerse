@@ -10,7 +10,7 @@ import java.util.List;
 
 public class FileController {
 
-    private FileQuery fileQuery;
+    private final FileQuery fileQuery;
 
     public FileController() {
         this.fileQuery = new FileQuery();

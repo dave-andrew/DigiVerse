@@ -16,7 +16,7 @@ public class BulletMoveState extends BulletBaseState {
     public void onUpdate(double deltaTime, int direction) {
         if (bullet.getPosX() > ScreenManager.SCREEN_WIDTH || bullet.getPosX() < 0 ||
                 bullet.getPosY() > ScreenManager.SCREEN_HEIGHT || bullet.getPosY() < 0) {
-            bullet.changeState(bullet.stopState);
+            bullet.changeState(bullet.getStopState());
             return;
         }
 

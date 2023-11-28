@@ -1,7 +1,6 @@
 package view;
 
 import controller.AuthController;
-import controller.ClassController;
 import helper.ImageManager;
 import helper.ScreenManager;
 import helper.StageManager;
@@ -30,14 +29,9 @@ import java.util.Objects;
 
 public class Home {
 
-    private LoggedUser loggedUser;
-
-    private AuthController authController;
-    private ClassController classController;
-
     public static ArrayList<Classroom> teacherClassList = new ArrayList<>();
     public static ArrayList<Classroom> studentClassList = new ArrayList<>();
-
+    private final AuthController authController;
     private Scene scene;
     private BorderPane borderPane;
     private GridPane classGrid;
@@ -46,13 +40,10 @@ public class Home {
 
     private HBox leftNav, rightNav;
 
-    private Image iconImg, plusImg;
-    private ImageView icon, plus, userImg, leftArrow;
+    private ImageView userImg;
+    private ImageView leftArrow;
     private Button iconBtn;
-    private Image logoutImage;
     private ImageView logoutIcon;
-
-    private Label title;
 
 
     private StackPane mainPane, sp;
@@ -64,6 +55,18 @@ public class Home {
 
     private ContextMenu plusMenu;
     private MenuItem createClass, joinClass;
+    private boolean toggleSideBar = true;
+
+    public Home(Stage stage) {
+        this.authController = new AuthController();
+
+        initialize();
+        scene = setLayout();
+        actions(stage);
+
+        stage.setScene(scene);
+        stage.setTitle("DigiVerse");
+    }
 
     private HBox sideNavItem(String imagePath, String label) {
         HBox hbox = new HBox(10);
@@ -93,7 +96,7 @@ public class Home {
 
     private void initialize() {
 
-        loggedUser = LoggedUser.getInstance();
+        LoggedUser loggedUser = LoggedUser.getInstance();
 
         borderPane = new BorderPane();
         mainPane = new StackPane();
@@ -106,8 +109,8 @@ public class Home {
         scrollPane = new ScrollPane();
         mainPane.getChildren().add(scrollPane);
 
-        iconImg = new Image("file:resources/icons/logo.png");
-        icon = new ImageView(iconImg);
+        Image iconImg = new Image("file:resources/icons/logo.png");
+        ImageView icon = new ImageView(iconImg);
         iconBtn = new Button();
         iconBtn.setGraphic(icon);
         icon.setFitHeight(40);
@@ -117,8 +120,8 @@ public class Home {
         classGrid = new ClassroomList(mainPane, leftNav, iconBtn);
         scrollPane.setContent(classGrid);
 
-        plusImg = new Image("file:resources/icons/plus.png");
-        plus = new ImageView(plusImg);
+        Image plusImg = new Image("file:resources/icons/plus.png");
+        ImageView plus = new ImageView(plusImg);
         plus.setFitWidth(20);
         plus.setFitHeight(20);
         plus.setPreserveRatio(true);
@@ -173,7 +176,7 @@ public class Home {
         rightNav.getChildren().addAll(themeSwitchButton, plusBtn, userBtn);
         rightNav.setAlignment(Pos.CENTER_RIGHT);
 
-        this.logoutImage = new Image("file:resources/icons/logout.png");
+        Image logoutImage = new Image("file:resources/icons/logout.png");
         this.logoutIcon = new ImageView(logoutImage);
         this.logoutIcon.setFitWidth(20);
         this.logoutIcon.setFitHeight(20);
@@ -339,7 +342,7 @@ public class Home {
 
         toggleSide.setOnMouseClicked(e -> {
 
-            if(toggleSideBar) {
+            if (toggleSideBar) {
                 closeSidebar();
                 sideBar.getChildren().remove(homeSideNav);
                 sideBar.getChildren().remove(calenderSideNav);
@@ -353,8 +356,6 @@ public class Home {
         });
 
     }
-
-    private boolean toggleSideBar = true;
 
     void closeSidebar() {
         sp.setTranslateX(0);
@@ -373,7 +374,6 @@ public class Home {
         Timeline timeline = new Timeline(start, end);
         timeline.play();
     }
-
 
     void openSidebar() {
 
@@ -423,18 +423,6 @@ public class Home {
         this.authController.removeAuth();
 
         new Login(StageManager.getInstance());
-    }
-
-    public Home(Stage stage) {
-        this.authController = new AuthController();
-        this.classController = new ClassController();
-
-        initialize();
-        scene = setLayout();
-        actions(stage);
-
-        stage.setScene(scene);
-        stage.setTitle("DigiVerse");
     }
 
 }

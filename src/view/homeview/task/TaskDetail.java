@@ -35,13 +35,13 @@ import java.util.Date;
 
 public class TaskDetail extends HBox {
 
-    private AnswerController answerController;
-    private CommentController commentController;
+    private final AnswerController answerController;
+    private final CommentController commentController;
 
     private VBox mainContent, sideContent, fileContainer;
     private HBox innerMainContent;
-    private Task task;
-    private String userRole;
+    private final Task task;
+    private final String userRole;
 
     private Button submitBtn, markAsDoneBtn;
     private Label submitStatus;

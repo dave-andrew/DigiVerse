@@ -10,33 +10,27 @@ import view.OfflineGame;
 
 public class SettingMenu extends VBox {
 
-    private Slider musicSlider, SFXSlider;
-    private Button applyButton, backButton;
+    private final Label fps60Label;
+    private final double originalMusicVolume;
+    private final double originalTargetFPS;
     private VBox pauseMenu;
-
-    private Label musicLabel, SFXLabel, resolutionLabel, fps60Label, fps144Label;
-
-    private Label settingsLabel;
-
-    private double originalMusicVolume;
-    private double originalSFXVolume;
-    private double originalTargetFPS;
+    private Label fps144Label;
 
     public SettingMenu(OfflineGame game) {
-        musicSlider = new Slider();
-        SFXSlider = new Slider();
+        Slider musicSlider = new Slider();
+        Slider SFXSlider = new Slider();
 
-        settingsLabel = new Label("Settings");
+        Label settingsLabel = new Label("Settings");
         settingsLabel.getStyleClass().add("title");
 
         this.getChildren().add(settingsLabel);
 
-        applyButton = new Button("Apply");
-        backButton = new Button("Back");
+        Button applyButton = new Button("Apply");
+        Button backButton = new Button("Back");
 
-        musicLabel = new Label("Music Volume");
-        SFXLabel = new Label("SFX Volume");
-        resolutionLabel = new Label("Resolution");
+        Label musicLabel = new Label("Music Volume");
+        Label SFXLabel = new Label("SFX Volume");
+        Label resolutionLabel = new Label("Resolution");
 
         fps60Label = new Label("60 FPS");
         fps60Label.getStyleClass().add("fps-card");
@@ -85,7 +79,6 @@ public class SettingMenu extends VBox {
         applyButton.getStyleClass().add("primary-button");
 
         originalMusicVolume = game.getMediaPlayer().getVolume();
-        originalSFXVolume = game.getMediaPlayer().getVolume();
         originalTargetFPS = game.getTargetFPS();
 
         applyButton.setOnAction(e -> {

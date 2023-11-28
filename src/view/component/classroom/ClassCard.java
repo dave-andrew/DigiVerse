@@ -17,11 +17,8 @@ import java.util.ArrayList;
 
 public class ClassCard extends StackPane {
 
-    private TaskController taskController;
-
     public ClassCard(Classroom classroom) {
-
-        this.taskController = new TaskController();
+        TaskController taskController = new TaskController();
 
         this.setPrefSize(300, 250);
         this.getStyleClass().add("class-card");
@@ -46,7 +43,7 @@ public class ClassCard extends StackPane {
         VBox spacer = new VBox();
         spacer.setPadding(new Insets(10));
 
-        ArrayList<Task> pendingTask = this.taskController.fetchClassroomPendingTask(classroom.getClassId());
+        ArrayList<Task> pendingTask = taskController.fetchClassroomPendingTask(classroom.getClassId());
 
         for (Task task : pendingTask) {
 

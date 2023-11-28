@@ -11,19 +11,17 @@ import model.ClassroomMember;
 
 public class MemberItem extends HBox {
 
-    private Image profileImg;
-    private ImageView profile;
-
     public MemberItem(ClassroomMember member, int idx) {
+        Image profileImg;
         if(member.getUser().getBlobProfile() != null) {
             profileImg = member.getUser().getProfile();
         } else {
             profileImg = new Image("file:resources/icons/user.png");
         }
 
-        this.profile = new ImageView(profileImg);
-        this.profile.setFitWidth(35);
-        this.profile.setFitHeight(35);
+        ImageView profile = new ImageView(profileImg);
+        profile.setFitWidth(35);
+        profile.setFitHeight(35);
 
         ImageManager.makeCircular(profile, 17.5);
 

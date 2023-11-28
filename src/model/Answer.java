@@ -16,15 +16,6 @@ public class Answer {
     private List<File> fileList;
     private String createdAt;
 
-    public Answer(String id, String taskid, String userid, List<File> fileList, int score, String createdAt) {
-        this.id = id;
-        this.taskid = taskid;
-        this.userid = userid;
-        this.score = score;
-        this.fileList = fileList;
-        this.createdAt = createdAt;
-    }
-
     public Answer(String taskid, String userid, List<File> fileList, int score) {
         this.id = UUID.randomUUID().toString();
         this.taskid = taskid;

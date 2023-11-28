@@ -28,12 +28,12 @@ public class PlayerDeadState extends PlayerBaseState{
         this.lastTimeFrame += deltaTime;
 
         if(player.getLives() == -1 && frame == 200) {
-            player.changeState(player.noLiveState);
+            player.changeState(player.getNoLiveState());
             return;
         }
 
         if(frame == 200) {
-            player.changeState(player.respawnState);
+            player.changeState(player.getRespawnState());
             return;
         }
 

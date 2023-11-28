@@ -5,17 +5,12 @@ import helper.ThemeManager;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
-import javafx.scene.control.Button;
 import javafx.scene.control.Label;
-import javafx.scene.image.Image;
-import javafx.scene.image.ImageView;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
-import javafx.stage.StageStyle;
-import model.LoggedUser;
 import view.component.ChangeAccountBox;
 import view.component.classroom.CreateClassForm;
 import view.component.classroom.CreateClassNav;
@@ -45,7 +40,7 @@ public class CreateClass {
 
         borderPane = new BorderPane();
         mainVbox = new VBox(20);
-        topBar = new CreateClassNav(dialogStage);
+        topBar = new CreateClassNav();
 
         userInfoBox = new ChangeAccountBox(dialogStage);
         userInfoBox.setAlignment(Pos.CENTER_LEFT);

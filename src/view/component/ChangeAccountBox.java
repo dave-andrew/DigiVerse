@@ -17,37 +17,41 @@ import view.Login;
 
 public class ChangeAccountBox extends VBox {
 
-    private LoggedUser loggedUser;
+    private final Stage dialogStage;
     private AuthController authController;
-    private Stage dialogStage;
-
-    private VBox userBox;
-    private HBox userHbox;
-    private Label userInfoLbl, userNameLbl, userEmailLbl;
-    private ImageView userImg;
+    private Label userNameLbl;
+    private Label userEmailLbl;
     private Button changeAccountBtn;
 
+    public ChangeAccountBox(Stage dialogStage) {
+        this.dialogStage = dialogStage;
+        initialize();
+        actions();
+
+        this.setPrefWidth(800);
+    }
+
     private void initialize() {
-        loggedUser = LoggedUser.getInstance();
+        LoggedUser loggedUser = LoggedUser.getInstance();
         authController = new AuthController();
 
         this.setSpacing(10);
 
-        userBox = new VBox();
-        userHbox = new HBox(10);
+        VBox userBox = new VBox();
+        HBox userHbox = new HBox(10);
 
-        userInfoLbl = new Label("Logged As:");
+        Label userInfoLbl = new Label("Logged As:");
         userInfoLbl.setStyle("-fx-font-size: 20px;");
 
         Image image = new Image("file:resources/icons/user.png");
-        userImg = new ImageView(image);
+        ImageView userImg = new ImageView(image);
         userImg.setFitWidth(40);
         userImg.setFitHeight(40);
 
-        if(loggedUser != null) {
+        if (loggedUser != null) {
             userNameLbl = new Label(loggedUser.getUsername());
             userEmailLbl = new Label(loggedUser.getEmail());
-            if(loggedUser.getProfile() != null) {
+            if (loggedUser.getProfile() != null) {
                 userImg.setImage(loggedUser.getProfile());
             }
         }
@@ -80,14 +84,6 @@ public class ChangeAccountBox extends VBox {
             new Login(StageManager.getInstance());
             dialogStage.close();
         });
-    }
-
-    public ChangeAccountBox(Stage dialogStage) {
-        this.dialogStage = dialogStage;
-        initialize();
-        actions();
-
-        this.setPrefWidth(800);
     }
 
 }

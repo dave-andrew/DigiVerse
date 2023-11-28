@@ -5,7 +5,7 @@ import model.Task;
 
 public class TaskNav extends HBox {
 
-    private Task task;
+    private final Task task;
 
     public TaskNav(Task task) {
         this.task = task;

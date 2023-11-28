@@ -6,7 +6,7 @@ import java.io.File;
 
 public class UserController {
 
-    private UserQuery userQuery;
+    private final UserQuery userQuery;
 
     public UserController() {
         this.userQuery = new UserQuery();

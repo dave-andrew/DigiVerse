@@ -1,15 +1,16 @@
 package view.homeview;
 
-import controller.AuthController;
 import controller.ClassController;
 import controller.MemberController;
 import javafx.geometry.Insets;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
-import javafx.scene.control.ScrollPane;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
-import javafx.scene.layout.*;
+import javafx.scene.layout.BorderPane;
+import javafx.scene.layout.GridPane;
+import javafx.scene.layout.HBox;
+import javafx.scene.layout.StackPane;
 import model.Classroom;
 import view.Home;
 import view.component.classroom.ClassCard;
@@ -18,15 +19,12 @@ import java.util.ArrayList;
 
 public class ClassroomList extends GridPane {
 
-    private ClassController classController;
-    private int index = 0;
-    private void init() {
-        classController = new ClassController();
-    }
+    private final HBox leftNav;
+    private final StackPane mainPane;
+    private final Button iconBtn;
 
-    private HBox leftNav;
-    private StackPane mainPane;
-    private Button iconBtn;
+    private ClassController classController;
+
     public ClassroomList(StackPane mainPane, HBox leftNav, Button iconBtn) {
         this.leftNav = leftNav;
         this.mainPane = mainPane;
@@ -47,13 +45,14 @@ public class ClassroomList extends GridPane {
                 mainPane.getChildren().clear();
                 mainPane.getChildren().add(classDetail);
 
-                if(userRole.equals("Teacher")) {
+                if (userRole.equals("Teacher")) {
                     Home.teacherClassList.add(classroom);
                 } else {
                     Home.studentClassList.add(classroom);
                 }
             });
 
+            int index = 0;
             this.add(sp, index % 4, index / 4);
             index++;
         }
@@ -62,6 +61,10 @@ public class ClassroomList extends GridPane {
         this.setPadding(new Insets(20));
         this.setHgap(20);
         this.setVgap(20);
+    }
+
+    private void init() {
+        classController = new ClassController();
     }
 
     private void setLeftNav(Classroom classroom) {

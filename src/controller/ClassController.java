@@ -9,7 +9,7 @@ import java.util.ArrayList;
 
 public class ClassController {
 
-    private ClassQuery classQuery;
+    private final ClassQuery classQuery;
 
     public ClassController() {
         this.classQuery = new ClassQuery();
