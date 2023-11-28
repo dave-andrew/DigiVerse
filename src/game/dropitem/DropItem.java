@@ -7,31 +7,27 @@ import game.dropitem.state.DropItemSpawnState;
 import helper.Collider;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
-import javafx.scene.layout.Pane;
 
-public class DropItem extends ImageView {
+public abstract class DropItem extends ImageView {
 
+    private final DropItemDespawnState despawnState;
     protected Collider collider;
     protected Enemy enemy;
-
     protected Image sprite;
-
     protected double posX;
     protected double posY;
 
-//    Item State
+    //    Item State
     private DropItemBaseState currentState;
-    public DropItemSpawnState spawnState;
-    public DropItemDespawnState despawnState;
 
 
     public DropItem(Enemy enemy, double posX, double posY) {
         this.enemy = enemy;
 
-        this.spawnState = new DropItemSpawnState(enemy, this);
-        this.despawnState = new DropItemDespawnState(enemy, this);
+        DropItemSpawnState spawnState = new DropItemSpawnState(enemy.getGame(), enemy, this);
+        this.despawnState = new DropItemDespawnState(enemy.getGame(), enemy, this);
 
-        this.currentState = this.spawnState;
+        this.currentState = spawnState;
 
         this.posX = posX;
         this.posY = posY;
@@ -65,4 +61,7 @@ public class DropItem extends ImageView {
         return this.currentState;
     }
 
+    public DropItemDespawnState getDespawnState() {
+        return despawnState;
+    }
 }

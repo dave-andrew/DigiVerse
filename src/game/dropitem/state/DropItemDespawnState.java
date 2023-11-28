@@ -2,12 +2,13 @@ package game.dropitem.state;
 
 import game.Enemy;
 import game.dropitem.DropItem;
+import view.OfflineGame;
 
 public class DropItemDespawnState extends DropItemBaseState {
 
 
-    public DropItemDespawnState(Enemy enemy, DropItem dropItem) {
-        super(enemy, dropItem);
+    public DropItemDespawnState(OfflineGame game, Enemy enemy, DropItem dropItem) {
+        super(game, enemy, dropItem);
     }
 
     @Override
