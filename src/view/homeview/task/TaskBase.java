@@ -9,20 +9,15 @@ import model.Task;
 
 public class TaskBase extends BorderPane {
 
-    private Task task;
-    private Classroom classroom;
-    private String userRole;
+    private final String userRole;
 
     private Button taskButton, answer;
 
-    private TaskDetail taskDetail;
-    private AnswerDetail answerDetail;
-    private ScrollPane taskDetailScrollPane;
+    private final TaskDetail taskDetail;
+    private final AnswerDetail answerDetail;
 
     public TaskBase(Task task, Classroom classroom, String userRole) {
-        this.task = task;
         this.userRole = userRole;
-        this.classroom = classroom;
 
         this.taskDetail = new TaskDetail(task, userRole);
         this.answerDetail = new AnswerDetail(task, classroom);
@@ -36,12 +31,12 @@ public class TaskBase extends BorderPane {
             actions();
         }
 
-        this.taskDetailScrollPane = new ScrollPane();
-        this.taskDetailScrollPane.setContent(taskDetail);
+        ScrollPane taskDetailScrollPane = new ScrollPane();
+        taskDetailScrollPane.setContent(taskDetail);
 
-        this.taskDetailScrollPane.setFitToWidth(true);
+        taskDetailScrollPane.setFitToWidth(true);
 
-        this.setCenter(this.taskDetailScrollPane);
+        this.setCenter(taskDetailScrollPane);
     }
 
     private HBox setTopNav() {
