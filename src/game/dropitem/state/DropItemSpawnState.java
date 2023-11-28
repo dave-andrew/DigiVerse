@@ -54,7 +54,7 @@ public class DropItemSpawnState extends DropItemBaseState {
             } else if(dropItem instanceof Nuke) {
                 OfflineGame.enemyList.forEach(enemy -> {
                     if(!(enemy.getState() instanceof EnemyDeadState)) {
-                        enemy.changeState(enemy.deadState);
+                        enemy.changeState(enemy.despawnState);
                     }
                 });
             } else if(dropItem instanceof Cartwheel) {

@@ -16,6 +16,7 @@ import javafx.scene.input.DragEvent;
 import javafx.scene.input.Dragboard;
 import javafx.scene.input.TransferMode;
 import javafx.scene.layout.*;
+import javafx.scene.paint.Color;
 import javafx.stage.FileChooser;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
@@ -58,6 +59,7 @@ public class UploadFileModal {
         mainVbox.getStyleClass().add("modal");
 
         scene = new Scene(mainVbox, 600, 600);
+        scene.setFill(Color.TRANSPARENT);
         ThemeManager.getTheme(scene);
         dialogStage.setScene(scene);
     }
@@ -68,8 +70,8 @@ public class UploadFileModal {
 
         Image uploadImg = new Image("file:resources/icons/close.png");
         ImageView uploadIcon = new ImageView(uploadImg);
-        uploadIcon.setFitWidth(10);
-        uploadIcon.setFitHeight(10);
+        uploadIcon.setFitWidth(12);
+        uploadIcon.setFitHeight(12);
 
         HBox closeBox = new HBox();
         closeBox.setAlignment(Pos.CENTER);
@@ -111,6 +113,7 @@ public class UploadFileModal {
         });
 
         this.uploadBtn = new Button("+ Upload");
+        this.uploadBtn.setStyle("-fx-text-fill: white");
         uploadBtn.prefWidthProperty().bind(mainVbox.widthProperty());
         VBox.setMargin(mainVbox, new Insets(0, 0, 20, 0));
 
@@ -133,6 +136,8 @@ public class UploadFileModal {
         Label fileLabel = new Label("Files:");
 
         fileContainer.getChildren().addAll(fileLabel, files);
+
+        fileContainer.getStyleClass().add("top-border");
 
         this.fileGrid = new GridPane();
         fileGrid.setHgap(10);

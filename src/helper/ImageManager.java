@@ -85,6 +85,14 @@ public class ImageManager {
         }
         return sprites;
     }
+    public static ArrayList<Image> spider(String baseString) {
+        ArrayList<Image> sprites = new ArrayList<>();
+        for (int i = 1; i <= 4; i++) {
+            sprites.add(new Image("file:resources/game/enemy/" + baseString + "-" + i + ".png"));
+        }
+        return sprites;
+    }
+
 
     public static ArrayList<Image> importGroundSprites(String baseString) {
         ArrayList<Image> sprites = new ArrayList<>();

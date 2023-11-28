@@ -73,8 +73,8 @@ public class AddTask extends BorderPane {
         errorLbl.setStyle("-fx-text-fill: red;");
 
         this.root = new BorderPane();
-        this.root.setTop(navBar());
         this.root.setRight(rightBar());
+        this.root.setTop(navBar());
         this.root.setCenter(center());
 
         dialogScene = new Scene(root, ScreenManager.SCREEN_WIDTH, ScreenManager.SCREEN_HEIGHT);
@@ -113,6 +113,7 @@ public class AddTask extends BorderPane {
         errorContainer.getChildren().add(errorLbl);
 
         content.getChildren().addAll(title, titleField, description, descriptionField, errorContainer);
+        content.getStyleClass().add("card");
 
         center.getChildren().addAll(content);
 
@@ -135,12 +136,9 @@ public class AddTask extends BorderPane {
 
         title = new Label("Create New Task");
         title.getStyleClass().add("title");
-
-        joinBtn = new Button("Add Task");
-        joinBtn.getStyleClass().add("primary-button");
+        title.setPadding(new Insets(10, 0, 10, 0));
 
         HBox.setHgrow(title, Priority.ALWAYS);
-        HBox.setHgrow(joinBtn, Priority.NEVER);
 
         leftNav.getChildren().addAll(closeBtn, title);
         leftNav.setAlignment(Pos.CENTER_LEFT);
@@ -150,12 +148,10 @@ public class AddTask extends BorderPane {
             this.dialogStage.close();
         });
 
-        joinBtn.setOnAction(e -> {
-            submitForm();
-        });
 
-        container.getChildren().addAll(leftNav, joinBtn);
+        container.getChildren().addAll(leftNav);
         container.getStyleClass().add("nav-bar");
+        container.setAlignment(Pos.CENTER);
 
         return container;
     }
@@ -185,7 +181,6 @@ public class AddTask extends BorderPane {
         Label dateTimeLabel = new Label("Deadline");
         this.datePicker = new DatePicker();
 
-        // Set the default value of the DatePicker to today
         datePicker.setValue(LocalDate.now());
 
         Profile.DateFormatter(datePicker);
@@ -217,7 +212,23 @@ public class AddTask extends BorderPane {
         scoreBox.setAlignment(Pos.CENTER_LEFT);
         scoreBox.setPadding(new Insets(30, 40, 0, 40));
 
-        rightBar.getChildren().addAll(dateTimeContainer, scoreBox);
+        VBox spacer = new VBox();
+        VBox.setVgrow(spacer, Priority.ALWAYS);
+
+        joinBtn = new Button("Create Task");
+        joinBtn.getStyleClass().add("primary-button");
+        joinBtn.setStyle("-fx-text-fill: white;");
+        joinBtn.setPrefWidth(300);
+
+        VBox.setMargin(joinBtn, new Insets(0, 0, 50, 0));
+
+        joinBtn.setOnAction(e -> {
+            submitForm();
+        });
+
+
+        rightBar.getChildren().addAll(dateTimeContainer, scoreBox, spacer, joinBtn);
+        rightBar.setAlignment(Pos.CENTER);
 
         rightBar.getStyleClass().add("side-nav");
 

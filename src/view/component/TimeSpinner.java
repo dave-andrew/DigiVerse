@@ -12,10 +12,6 @@ import javafx.scene.input.InputEvent;
 import javafx.util.StringConverter;
 
 public class TimeSpinner extends Spinner<LocalTime> {
-
-    // Mode represents the unit that is currently being edited.
-    // For convenience expose methods for incrementing and decrementing that
-    // unit, and for selecting the appropriate portion in a spinner's editor
     enum Mode {
 
         HOURS {

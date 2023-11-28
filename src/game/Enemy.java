@@ -8,9 +8,11 @@ import helper.Collider;
 import helper.ImageManager;
 import helper.ItemManager;
 import javafx.animation.AnimationTimer;
+import javafx.scene.effect.DropShadow;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.Pane;
+import javafx.scene.paint.Color;
 
 import java.util.ArrayList;
 
@@ -18,6 +20,7 @@ public class Enemy extends ImageView {
 
     private Player player;
 
+    private int health;
     private double posX;
     private double posY;
 
@@ -38,12 +41,15 @@ public class Enemy extends ImageView {
     private final ArrayList<Image> diedSprites;
 
     private final Pane root;
-
-    public Enemy(Pane root, double posX, double posY, Player player, String type) {
+    private String type;
+    public Enemy(Pane root, double posX, double posY, Player player, String type, int health) {
 
         this.player = player;
+        this.type = type;
+        this.speed = (type.equals("spider")) ? 5 : 3;
 
         this.root = root;
+        this.health = health;
 
         initSprite(type);
 
@@ -56,7 +62,6 @@ public class Enemy extends ImageView {
         this.setX(posX);
         this.setY(posY);
 
-        this.speed = 3;
         this.sprite = new Image("file:resources/game/enemy/soldier-1.png");
 
         this.collider = new Collider(posX, posY, sprite.getWidth());
@@ -72,6 +77,15 @@ public class Enemy extends ImageView {
 
         this.setScaleX(2);
         this.setScaleY(2);
+
+        DropShadow dropShadow = new DropShadow();
+        dropShadow.setRadius(5.0);
+        dropShadow.setOffsetX(-5.0);
+        dropShadow.setOffsetY(5.0);
+        dropShadow.setColor(Color.rgb(0, 0, 0, 0.4));
+
+        this.setEffect(dropShadow);
+
     }
 
     public ArrayList<Image> getDiedSprites() {
@@ -85,6 +99,8 @@ public class Enemy extends ImageView {
             this.spriteList = ImageManager.importEnemySprites("mummy");
         } else if(type.equals("bug")) {
             this.spriteList = ImageManager.importEnemySprites("bug");
+        } else if(type.equals("spider")) {
+            this.spriteList = ImageManager.spider("spider");
         }
     }
 
@@ -143,5 +159,17 @@ public class Enemy extends ImageView {
 
     public Pane getRoot() {
         return root;
+    }
+
+    public int getHealth() {
+        return health;
+    }
+
+    public void setHealth(int health) {
+        this.health = health;
+    }
+
+    public String getType() {
+        return type;
     }
 }

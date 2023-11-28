@@ -39,11 +39,31 @@
 }
 
 .text-area {
-    -fx-background-color: #2E2E2E;
-    -fx-border-color: #404040;
-    -fx-border-radius: 5px;
-    -fx-border-width: 1px;
+    -fx-background-insets: 0;
+    -fx-background-color: transparent, #2E2E2E, transparent, #2E2E2E;
+    -fx-background-radius: 5px;
     -fx-text-fill: #FFFFFF;
+    -fx-border-radius: 5px;
+    -fx-border-color: #404040;
+    -fx-wrap-text: true;
+}
+
+.text-area .content {
+    -fx-background-color: transparent, #2E2E2E, transparent, #2E2E2E;
+}
+
+.text-area:focused .content {
+    -fx-background-color: transparent, #2E2E2E, transparent, #2E2E2E;
+}
+
+.text-area:focused {
+    -fx-highlight-fill: #404040;
+}
+
+.text-area .content {
+    -fx-padding: 10px;
+    -fx-text-fill: #4f4f4f;
+    -fx-highlight-fill: #2f2f2f;
 }
 
 .combo-box {
@@ -87,8 +107,8 @@
 }
 
 .spinner .text-field {
-    -fx-background-color: #263238; /* Dark background color */
-    -fx-border-color: #37474f; /* Dark border color */
+    -fx-background-color: #2E2E2E;
+    -fx-border-color: #484848;
     -fx-border-width: 1;
 }
 
@@ -133,6 +153,91 @@
     -fx-font-size: 12px;
 }
 
+.date-picker {
+    -fx-background-color: #2E2E2E;
+    -fx-background-radius: 5px;
+    -fx-border-color: #2E2E2E;
+    -fx-border-radius: 5px;
+    -fx-border-width: 1;
+}
+
+.date-picker-popup {
+    -fx-background-color: #2E2E2E;
+    -fx-background-radius: 10px;
+    -fx-border-color: #2E2E2E;
+    -fx-border-radius: 10px;
+    -fx-border-width: 1;
+}
+
+.date-picker .arrow-button {
+    -fx-background-color: #2E2E2E;
+    -fx-border-color: #404040;
+    -fx-border-radius: 5px;
+    -fx-border-width: 1px;
+}
+
+.date-picker .arrow-button:hover {
+    -fx-background-color: #333333;
+}
+
+.date-picker .date-cell {
+    -fx-background-color: #2E2E2E;
+    -fx-border-color: #2E2E2E;
+    -fx-border-width: 2px;
+    -fx-padding: 5px;
+}
+
+.date-picker .date-cell:hover {
+    -fx-background-color: #3a3a3a;
+}
+
+.date-picker .month-year-pane {
+    -fx-background-color: #F5F5F5;
+}
+
+.date-picker .spinner {
+    -fx-background-color: #F5F5F5;
+}
+
+.date-picker .date-cell:selected {
+    -fx-background-color: #333333;
+}
+
+.date-picker-popup  {
+    -fx-background-color: #333333;
+    -fx-border-color: #404040;
+    -fx-border-radius: 10px;
+    -fx-background-radius: 10px;
+    -fx-border-width: 1px;
+}
+
+.date-picker-popup .month-year-pane {
+    -fx-background-color: #333333;
+    -fx-text-fill: #333;
+}
+
+.date-picker-popup > .month-year-pane > .spinner {
+    -fx-background-color: #333333;
+}
+
+.spinner .increment-arrow-button {
+    -fx-background-color: #333333;
+    -fx-border-color: #404040;
+    -fx-border-radius: 5px 5px 0 0;
+    -fx-border-width: 1px;
+}
+
+.spinner .decrement-arrow-button {
+    -fx-background-color: #333333;
+    -fx-border-color: #404040;
+    -fx-border-radius: 0 0 5px 5px;
+    -fx-border-width: 1px;
+}
+
+.spinner .increment-arrow-button:hover,
+.spinner .decrement-arrow-button:hover {
+    -fx-background-color: #2E2E2E;
+}
 
 /* ============================== */
 
@@ -364,17 +469,21 @@
 }
 
 .modal {
-    -fx-background-color: rgba(0,0,0,0.8);
-    -fx-border-width: 2px;
-    -fx-border-color: #111111;
     -fx-background-color: #333333;
+    -fx-border-color: #5a5a5a;
+    -fx-border-width: 1px;
+    -fx-border-radius: 5px;
+    -fx-background-radius: 5px;
+    -fx-padding: 20px;
 }
 
 .upload-box {
     -fx-border-style: dashed;
-    -fx-border-color: #111111;
-    -fx-border-width: 1px;
+    -fx-border-color: #1f1f1f;
     -fx-background-color: #444444;
+    -fx-border-width: 2px;
+    -fx-border-radius: 10px;
+    -fx-background-radius: 10px;
 }
 
 .calendar-item {
@@ -480,6 +589,12 @@
     -fx-padding: 0 0 10px 0;
 }
 
+.top-border {
+    -fx-border-color: #5a5a5a transparent transparent transparent;
+    -fx-border-width: 1px;
+    -fx-padding: 10px 0 0 0;
+}
+
 .left-border {
     -fx-border-color: transparent transparent transparent #5a5a5a;
     -fx-border-width: 3px;
@@ -488,4 +603,8 @@
 .reply-bg {
     -fx-background-color: #2f2f2f;
     -fx-background-radius: 7px;
+}
+
+.side-nav-item.active {
+    -fx-background-color: #006985;
 }
