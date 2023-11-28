@@ -95,10 +95,12 @@ public class TaskDetail extends HBox {
 
         VBox detail = new VBox();
         detail.getChildren().addAll(taskName, postedBy);
+        HBox.setHgrow(detail, Priority.ALWAYS);
 
         this.commentListContainer = new VBox(10);
         this.commentListContainer.setAlignment(Pos.CENTER_LEFT);
         HBox.setHgrow(commentListContainer, Priority.ALWAYS);
+        this.commentListContainer.setPadding(new Insets(20, 0, 0, 0));
 
         Label score;
         if (task.isScored()) {
@@ -127,26 +129,33 @@ public class TaskDetail extends HBox {
 
         detail.getChildren().add(scoreDeadlineBox);
 
+        scoreDeadlineBox.getStyleClass().add("bottom-border");
+
         Line line = new Line();
         line.setStroke(Color.valueOf("#E0E0E0"));
         line.endXProperty().bind(detail.widthProperty());
         line.endXProperty().bind(innerMainContent.widthProperty().subtract(75));
 
-        VBox.setMargin(line, new Insets(20, 0, 20, 0));
+//        detail.getStyleClass().add("bottom-border");
 
-        detail.getChildren().add(line);
+//        VBox.setMargin(line, new Insets(20, 0, 20, 0));
+
+//        detail.getChildren().add(line);
+
+        HBox taskDescContainer = new HBox();
+        taskDescContainer.setAlignment(Pos.CENTER_LEFT);
+
+        taskDescContainer.getStyleClass().add("bottom-border");
+        taskDescContainer.setPadding(new Insets(20, 0, 20, 0));
 
         Label taskDesc = new Label(task.getDescription());
+        HBox.setHgrow(taskDesc, Priority.ALWAYS);
+        taskDesc.setPadding(new Insets(10, 0, 5, 0));
         taskDesc.setWrapText(true);
-        detail.getChildren().add(taskDesc);
 
-        Line line2 = new Line();
-        line2.setStroke(Color.valueOf("#E0E0E0"));
-        line2.endXProperty().bind(detail.widthProperty());
-        line2.endXProperty().bind(innerMainContent.widthProperty().subtract(75));
+        taskDescContainer.getChildren().add(taskDesc);
 
-        VBox.setMargin(line2, new Insets(20, 0, 20, 0));
-        detail.getChildren().add(line2);
+        detail.getChildren().add(taskDescContainer);
 
         VBox userComment = new VBox();
         userComment.setAlignment(Pos.CENTER_LEFT);
@@ -230,8 +239,6 @@ public class TaskDetail extends HBox {
         innerMainContent.getChildren().addAll(imgStack, detail);
         innerMainContent.setAlignment(Pos.TOP_LEFT);
 
-        innerMainContent.prefWidthProperty().bind(this.widthProperty().subtract(600));
-
         mainContent.getChildren().add(innerMainContent);
         mainContent.getStyleClass().add("card");
         mainContent.setAlignment(Pos.TOP_LEFT);
@@ -241,7 +248,6 @@ public class TaskDetail extends HBox {
         HBox.setMargin(sideContent, new Insets(0, 0, 0, 50));
 
         this.getChildren().addAll(mainContent, sideContent);
-        this.prefWidthProperty().bind(this.widthProperty());
     }
 
     private void setSideContent() {
@@ -388,13 +394,11 @@ public class TaskDetail extends HBox {
             Date deadline = dateFormat.parse(deadlineString);
 
             if (now.compareTo(deadline) > 0) {
-                // Deadline has passed
                 Toast.makeText(StageManager.getInstance(), "Deadline has passed\nYou can't submit this task anymore", 2000, 500, 500);
                 return false;
             }
 
         } catch (ParseException e) {
-            // Handle the ParseException
             e.printStackTrace();
         }
         return true;
