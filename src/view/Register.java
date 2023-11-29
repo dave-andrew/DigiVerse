@@ -107,6 +107,15 @@ public class Register extends VBox {
 
         loginLink = new Button("Already have an account? Login here!");
         loginLink.getStyleClass().add("link-button");
+        loginLink.setStyle("-fx-font-size: 14px");
+
+        loginLink.setOnMouseEntered(e -> {
+            loginLink.setStyle("-fx-font-size: 14px;-fx-text-fill: #1E90FF;");
+        });
+
+        loginLink.setOnMouseExited(e -> {
+            loginLink.setStyle("-fx-font-size: 14px;-fx-text-fill: #000000;");
+        });
 
         image = new Image("file:resources/image/auth_image.png");
 
