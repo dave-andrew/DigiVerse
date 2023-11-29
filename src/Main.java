@@ -3,9 +3,7 @@ import helper.ScreenManager;
 import helper.StageManager;
 import helper.ThemeManager;
 import helper.Toast;
-import javafx.animation.PauseTransition;
 import javafx.application.Application;
-import javafx.application.Platform;
 import javafx.concurrent.Service;
 import javafx.concurrent.Task;
 import javafx.geometry.Pos;
@@ -16,10 +14,9 @@ import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
-import javafx.util.Duration;
 import model.LoggedUser;
 import view.Home;
-import view.Login;
+import view.LoginView;
 import view.OfflineGame;
 
 public class Main extends Application {
@@ -77,7 +74,7 @@ public class Main extends Application {
                 Toast.makeText(StageManager.getInstance(), "Welcome back, " + LoggedUser.getInstance().getUsername() + "!", 2000, 500, 500);
                 new Home(StageManager.getInstance());
             } else if (message.equals("false")) {
-                new Login(StageManager.getInstance());
+                new LoginView(StageManager.getInstance());
             } else {
                 new OfflineGame(StageManager.getInstance());
             }

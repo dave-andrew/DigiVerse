@@ -16,15 +16,14 @@ import javafx.scene.image.ImageView;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
+import javafx.scene.shape.Rectangle;
 import javafx.scene.text.Font;
 import javafx.stage.Stage;
 
-public class Register {
+public class Register extends VBox {
 
     private AuthController authController = new AuthController();
 
-    private Scene scene;
-    private BorderPane borderPane;
     private Label subTitle;
     private Label nameLbl, emailLbl, passwordLbl, confirmPasswordLbl, agelbl;
     private TextField nameTxt, emailTxt;
@@ -35,16 +34,16 @@ public class Register {
     private Image image;
     private ImageView registerImage;
 
-    private VBox vbox;
+    private VBox vbox, loginVBox;
 
     private VBox nameVbox, emailVbox, passwordVbox, confirmPasswordVbox, ageVbox, registerVbox;
 
     private Button loginLink;
 
     private Label errorLbl;
+    private BorderPane root;
 
     private void initialize() {
-        borderPane = new BorderPane();
         subTitle = new Label("Be the change, sign in to make it happen!");
         nameLbl = new Label("Name:");
         emailLbl = new Label("Email:");
@@ -69,6 +68,8 @@ public class Register {
 
         registerBtn = new Button("Register");
         registerBtn.getStyleClass().add("primary-button");
+        registerBtn.setStyle("-fx-text-fill: white;");
+
         loginLink = new Button("Already have an account? Login here!");
         loginLink.getStyleClass().add("link-button");
 
@@ -79,7 +80,7 @@ public class Register {
         vbox = new VBox(10);
     }
 
-    private Scene setLayout() {
+    private void setLayout() {
 
         Font font = Font.loadFont("file:resources/fonts/LindenHill-Italic.ttf", 40);
         subTitle.setFont(font);
@@ -99,29 +100,30 @@ public class Register {
 
         vbox.getChildren().addAll(subTitle, nameVbox, emailVbox, passwordVbox, confirmPasswordVbox, ageVbox, registerVbox, errorLbl);
         vbox.setAlignment(Pos.CENTER);
-        vbox.setPadding(new Insets(-130, 100, 0, 0));
-        borderPane.setRight(vbox);
 
         StackPane imagePane = new StackPane();
         imagePane.setPrefSize(400, ScreenManager.SCREEN_HEIGHT);
 
-        registerImage.setFitWidth(450);
+        Rectangle rect = new Rectangle();
+        rect.setHeight(ScreenManager.SCREEN_HEIGHT);
+        rect.setWidth(600);
+        rect.setArcHeight(20);
+        rect.setArcWidth(20);
+
         registerImage.setFitHeight(ScreenManager.SCREEN_HEIGHT);
+
+        registerImage.setClip(rect);
 
         imagePane.getChildren().add(registerImage);
 
-        borderPane.setLeft(imagePane);
-
-        BorderPane.setAlignment(vbox, Pos.CENTER_RIGHT);
-
-        scene = new Scene(borderPane, ScreenManager.SCREEN_WIDTH, ScreenManager.SCREEN_HEIGHT);
-        ThemeManager.getTheme(scene);
-        return scene;
+        this.getChildren().addAll(vbox);
+        this.setMaxWidth(500);
+        this.setAlignment(Pos.CENTER);
     }
 
     private void actions(Stage stage) {
         loginLink.setOnAction(e -> {
-            new Login(stage);
+            root.setCenter(loginVBox);
         });
 
         registerBtn.setOnAction(e -> {
@@ -135,23 +137,20 @@ public class Register {
 
             if(output.equals("Register Success!")) {
                 errorLbl.setStyle("-fx-text-fill: green;-fx-font-weight: bold;");
-                new Login(stage);
+                root.setCenter(loginVBox);
             }
             errorLbl.setText(output);
         });
     }
 
-    public Register(Stage stage) {
+    public Register(Stage stage, VBox vbox, BorderPane borderPane) {
+        this.loginVBox = vbox;
+        this.root = borderPane;
         initialize();
-
-        scene = setLayout();
-
+        setLayout();
         actions(stage);
 
-        ThemeManager.getTheme(scene);
-        stage.setScene(scene);
         stage.setTitle("DigiVerse - Register");
-
     }
 
 }

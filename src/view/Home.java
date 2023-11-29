@@ -422,7 +422,7 @@ public class Home {
 
         this.authController.removeAuth();
 
-        new Login(StageManager.getInstance());
+        new LoginView(StageManager.getInstance());
     }
 
     public Home(Stage stage) {
