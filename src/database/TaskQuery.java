@@ -1,8 +1,9 @@
 package database;
 
+import database.connection.Connect;
+import enums.ToastType;
 import helper.DateManager;
-import helper.StageManager;
-import helper.Toast;
+import helper.toast.ToastBuilder;
 import model.Classroom;
 import model.LoggedUser;
 import model.Task;
@@ -45,7 +46,7 @@ public class TaskQuery {
 
             ps2.executeUpdate();
 
-            Toast.makeText(StageManager.getInstance(), "Task Created!", 2000, 500, 500);
+            ToastBuilder.buildNormal(ToastType.NORMAL).setText("Task Created!").build();
 
             return task;
         } catch (Exception e) {

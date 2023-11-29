@@ -1,9 +1,8 @@
 package database;
 
+import database.connection.Connect;
 import model.Classroom;
-import model.ClassroomMember;
 import model.LoggedUser;
-import model.User;
 
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;

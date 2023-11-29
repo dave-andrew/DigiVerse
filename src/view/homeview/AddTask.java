@@ -5,9 +5,6 @@ import helper.DateManager;
 import helper.ScreenManager;
 import helper.ThemeManager;
 import javafx.geometry.Insets;
-import model.Forum;
-import model.LoggedUser;
-import model.Task;
 import view.Profile;
 import view.component.TimeSpinner;
 import javafx.geometry.Pos;
@@ -21,7 +18,6 @@ import javafx.scene.layout.Priority;
 import javafx.scene.layout.VBox;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
-import javafx.util.StringConverter;
 import model.Classroom;
 
 import java.time.LocalDate;

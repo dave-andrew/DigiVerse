@@ -1,8 +1,6 @@
 package view.component.classroom;
 
 import controller.ClassController;
-import helper.StageManager;
-import helper.Toast;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.control.Button;
@@ -13,7 +11,6 @@ import javafx.scene.layout.HBox;
 import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
-import view.Home;
 
 import java.util.ArrayList;
 

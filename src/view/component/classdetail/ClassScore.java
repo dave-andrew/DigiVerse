@@ -3,8 +3,8 @@ package view.component.classdetail;
 import controller.AnswerController;
 import controller.MemberController;
 import controller.TaskController;
-import helper.StageManager;
-import helper.Toast;
+import enums.ToastType;
+import helper.toast.ToastBuilder;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.control.Button;
@@ -16,7 +16,6 @@ import javafx.scene.image.ImageView;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Priority;
 import javafx.scene.layout.VBox;
-import javafx.scene.text.TextAlignment;
 import model.Classroom;
 import model.ClassroomMember;
 import model.Task;
@@ -24,7 +23,6 @@ import view.component.classdetail.component.MemberItem;
 
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.concurrent.atomic.AtomicInteger;
 
 public class ClassScore extends HBox {
 
@@ -246,7 +244,7 @@ public class ClassScore extends HBox {
 
                 saveBtn.setOnMouseClicked(e -> {
                     if(this.answerController.scoreAnswer(taskTitle, selectedMember.getUser().getId(), taskScoreInput.getText())) {
-                        Toast.makeText(StageManager.getInstance(), "Score saved!", 2000, 500, 500);
+                        ToastBuilder.buildNormal(ToastType.NORMAL).setText("Score saved!").build();
                         container.getChildren().removeAll(taskScoreInput, saveBtn);
                         Label scoreInput = new Label(taskScoreInput.getText());
                         scoreInput.setPrefWidth(60);

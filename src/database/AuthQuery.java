@@ -1,16 +1,14 @@
 package database;
 
+import database.connection.Connect;
 import helper.DateManager;
-import helper.StageManager;
 import model.LoggedUser;
 import model.User;
-import view.OfflineGame;
 
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
 
 public class AuthQuery {
 

@@ -1,6 +1,4 @@
-package database;
-import helper.StageManager;
-import view.OfflineGame;
+package database.connection;
 
 import java.sql.*;
 /**
@@ -26,8 +24,8 @@ public final class Connect {
 	private final String DATABASE = "DigiVerse"; // change with the database name that you use
 	private final String HOST = "localhost:3306"; // change with your MySQL host, the default port is 3306
 	private final String CONECTION = String.format("jdbc:mysql://%s/%s", HOST, DATABASE);
-	
 	private Connection con;
+	private  ConnectionChecker connectionChecker;
 	private static Statement st;
 	private static Connect connect;
 	
@@ -41,13 +39,22 @@ public final class Connect {
             Class.forName("com.mysql.cj.jdbc.Driver");
             con = DriverManager.getConnection(CONECTION, USERNAME, PASSWORD);  
             st = con.createStatement();
+		    System.out.println("Connected to the database!");
         } catch(Exception e) {
-//        	e.printStackTrace()
-        	System.out.println("Failed to connect the database, the system is terminated!");
-//        	System.exit(0);
+        	System.out.println("Failed to connect the database!");
         }
     }
-    
+
+	public void reconnect() {
+		try {
+			Class.forName("com.mysql.cj.jdbc.Driver");
+			con = DriverManager.getConnection(CONECTION, USERNAME, PASSWORD);
+			st = con.createStatement();
+		} catch (Exception e) {
+			System.out.println("Failed to connect the database, the system is terminated!");
+		}
+	}
+
 	/**
 	* This method is used for get instance from Connect class
 	* @return Connect This returns instance from Connect class
@@ -59,24 +66,6 @@ public final class Connect {
 		*   - Otherwise, just assign the previous instance of this class
 		*/
 		return connect = (connect == null) ? new Connect() : connect;
-    }
-
-    public static ResultSet executeQuery(String query) {
-        ResultSet rs = null;
-    	try {
-            rs = st.executeQuery(query);
-        } catch(Exception e) {
-        	e.printStackTrace();
-        }
-        return rs;
-    }
-
-    public void executeUpdate(String query) {
-    	try {
-			st.executeUpdate(query);
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
     }
 
     public PreparedStatement prepareStatement(String query) {
@@ -95,5 +84,4 @@ public final class Connect {
 	public Connection getConnect() {
 		return con;
 	}
-
 }

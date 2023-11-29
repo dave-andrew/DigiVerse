@@ -1,8 +1,6 @@
 package controller;
 
 import database.TaskQuery;
-import helper.StageManager;
-import helper.Toast;
 import model.LoggedUser;
 import model.Task;
 

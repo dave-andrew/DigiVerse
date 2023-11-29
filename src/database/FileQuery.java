@@ -1,9 +1,9 @@
 package database;
 
-import helper.StageManager;
-import helper.Toast;
+import database.connection.Connect;
+import enums.ToastType;
+import helper.toast.ToastBuilder;
 import model.Answer;
-import model.LoggedUser;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -100,8 +100,7 @@ public class FileQuery {
             }
 
             con.commit();
-            Toast.makeText(StageManager.getInstance(), "Answer uploaded successfully!", 2000, 500, 500);
-
+            ToastBuilder.buildNormal(ToastType.NORMAL).setText("Answer uploaded successfully!").build();
         } catch (Exception e) {
             try {
                 if (con != null) {
