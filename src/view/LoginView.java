@@ -3,6 +3,9 @@ package view;
 import controller.AuthController;
 import helper.ScreenManager;
 import helper.ThemeManager;
+import javafx.animation.KeyFrame;
+import javafx.animation.KeyValue;
+import javafx.animation.Timeline;
 import javafx.animation.TranslateTransition;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
@@ -130,9 +133,9 @@ public class LoginView {
         loginBannerContainer.setPrefWidth(ScreenManager.SCREEN_WIDTH / 2);
         loginBannerContainer.prefHeightProperty().bind(borderPane.heightProperty());
 
-        Label welcomeToLabel = new Label("Welcome to");
-        welcomeToLabel.setStyle("-fx-text-fill: white;-fx-font-size: 25px;");
-        welcomeToLabel.setPadding(new Insets(0, 0, 100, 0));
+//        Label welcomeToLabel = new Label("Welcome to");
+//        welcomeToLabel.setStyle("-fx-text-fill: white;-fx-font-size: 25px;");
+//        welcomeToLabel.setPadding(new Insets(0, 0, 100, 0));
 
         Image appIcon = new Image("file:resources/icons/logo.png");
         ImageView appIconView = new ImageView(appIcon);
@@ -141,15 +144,15 @@ public class LoginView {
         appIconView.setFitHeight(100);
         appIconView.setPreserveRatio(true);
 
-        Label appDescription = new Label("HFDKSJLHFDSJKHFDSKJHFKDSJ HFJKDSHLKJFDSHJKFDS");
+        Label appDescription = new Label("Candles shine when burnt");
         appDescription.setMaxWidth(400);
         appDescription.setWrapText(true);
         appDescription.setAlignment(Pos.CENTER);
         appDescription.setTextAlignment(TextAlignment.CENTER);
-        appDescription.setStyle("-fx-text-fill: white;");
+        appDescription.setStyle("-fx-text-fill: white;-fx-font-size: 24px");
         appDescription.setPadding(new Insets(150, 0, 0, 0));
 
-        loginBannerContainer.getChildren().addAll(welcomeToLabel, appIconView, appDescription);
+        loginBannerContainer.getChildren().addAll(appIconView, appDescription);
 
         root.getChildren().add(loginBannerContainer);
     }
@@ -159,10 +162,49 @@ public class LoginView {
 
         registerLink = new Button("Don't have an account? Register here!");
         registerLink.getStyleClass().add("link-button");
+        registerLink.setStyle("-fx-font-size: 14px");
+
+        registerLink.setOnMouseEntered(e -> {
+            registerLink.setStyle("-fx-font-size: 14px; -fx-text-fill: #1f90ff;");
+        });
+
+        registerLink.setOnMouseExited(e -> {
+            registerLink.setStyle("-fx-font-size: 14px; -fx-text-fill: black;");
+        });
 
         loginBtn = new Button("Start Journey");
         loginBtn.getStyleClass().add("primary-button");
         loginBtn.setStyle("-fx-text-fill: white;");
+        loginBtn.setPrefWidth(260);
+        loginBtn.setPrefHeight(40);
+
+        loginBtn.setOnMouseEntered(e -> {
+            loginBtn.setStyle("-fx-effect: dropshadow(three-pass-box, rgba(0, 0, 0, 0.5), 5, 0, 0, 0);-fx-text-fill: white;");
+
+            Timeline timeline = new Timeline();
+
+            KeyValue kv = new KeyValue(loginBtn.scaleXProperty(), 1.1);
+            KeyValue kv2 = new KeyValue(loginBtn.scaleYProperty(), 1.1);
+
+            KeyFrame kf = new KeyFrame(Duration.millis(100), kv, kv2);
+
+            timeline.getKeyFrames().add(kf);
+            timeline.play();
+        });
+
+        loginBtn.setOnMouseExited(e -> {
+            loginBtn.setStyle("-fx-effect: null;-fx-text-fill: white;");
+
+            Timeline timeline = new Timeline();
+
+            KeyValue kv = new KeyValue(loginBtn.scaleXProperty(), 1);
+            KeyValue kv2 = new KeyValue(loginBtn.scaleYProperty(), 1);
+
+            KeyFrame kf = new KeyFrame(Duration.millis(100), kv, kv2);
+
+            timeline.getKeyFrames().add(kf);
+            timeline.play();
+        });
 
         emailVbox = new VBox();
         passwordVbox = new VBox();
@@ -176,8 +218,8 @@ public class LoginView {
         passwordTxt = new PasswordField();
 
         rememberMe = new CheckBox("Remember me");
-        rememberMe.setScaleX(0.6);
-        rememberMe.setScaleY(0.6);
+        rememberMe.setScaleX(0.8);
+        rememberMe.setScaleY(0.8);
 
         image = new Image("file:resources/image/auth_image2.png");
 
@@ -202,12 +244,12 @@ public class LoginView {
 
     private Circle createBackerPuffs(double x, double y, double radius) {
         Circle puff = new Circle(x, y, radius);
-        puff.setStyle("-fx-fill: #00a0d7;");
+        puff.setStyle("-fx-fill: #006fff;");
         return puff;
     }
 
     private void setLayout() {
-        Font font = Font.loadFont("file:resources/fonts/LindenHill-Italic.ttf", 40);
+        Font font = Font.loadFont("file:resources/fonts/VT323-Regular.ttf", 36);
         subTitle.setFont(font);
 
         errorLbl.setStyle("-fx-text-fill: red;");
@@ -227,9 +269,10 @@ public class LoginView {
         vbox.getChildren().addAll(subTitle, emailVbox, passwordVbox, rememberMeVbox, loginVbox, errorLbl);
         vbox.setAlignment(Pos.CENTER);
 
-        vbox.setMaxWidth(500);
+        vbox.setMaxWidth(600);
+        vbox.setPadding(new Insets(0, 0, 0, 50));
 
-        borderPane.setCenter(vbox);
+        borderPane.setLeft(vbox);
 
         loginImage.setFitHeight(ScreenManager.SCREEN_HEIGHT);
 
@@ -253,7 +296,7 @@ public class LoginView {
         });
 
         registerLink.setOnAction(e -> {
-            borderPane.setCenter(registerVBox);
+            borderPane.setLeft(registerVBox);
         });
     }
 

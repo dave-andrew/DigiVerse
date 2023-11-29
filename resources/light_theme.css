@@ -255,6 +255,11 @@
 .link-button {
     -fx-background-color: transparent;
     -fx-padding: 7px 30px;
+    -fx-cursor: hand;
+}
+
+.link-button:hover {
+    -fx-background-color: transparent;
 }
 
 .small-checkbox .box {

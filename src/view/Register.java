@@ -4,6 +4,9 @@ import controller.AuthController;
 import helper.ScreenManager;
 import helper.StageManager;
 import helper.ThemeManager;
+import javafx.animation.KeyFrame;
+import javafx.animation.KeyValue;
+import javafx.animation.Timeline;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
@@ -19,6 +22,7 @@ import javafx.scene.layout.VBox;
 import javafx.scene.shape.Rectangle;
 import javafx.scene.text.Font;
 import javafx.stage.Stage;
+import javafx.util.Duration;
 
 public class Register extends VBox {
 
@@ -70,6 +74,37 @@ public class Register extends VBox {
         registerBtn.getStyleClass().add("primary-button");
         registerBtn.setStyle("-fx-text-fill: white;");
 
+        registerBtn.setPrefWidth(260);
+        registerBtn.setPrefHeight(40);
+
+        registerBtn.setOnMouseEntered(e -> {
+            registerBtn.setStyle("-fx-effect: dropshadow(three-pass-box, rgba(0, 0, 0, 0.5), 5, 0, 0, 0);-fx-text-fill: white;");
+
+            Timeline timeline = new Timeline();
+
+            KeyValue kv = new KeyValue(registerBtn.scaleXProperty(), 1.1);
+            KeyValue kv2 = new KeyValue(registerBtn.scaleYProperty(), 1.1);
+
+            KeyFrame kf = new KeyFrame(Duration.millis(100), kv, kv2);
+
+            timeline.getKeyFrames().add(kf);
+            timeline.play();
+        });
+
+        registerBtn.setOnMouseExited(e -> {
+            registerBtn.setStyle("-fx-effect: null;-fx-text-fill: white;");
+
+            Timeline timeline = new Timeline();
+
+            KeyValue kv = new KeyValue(registerBtn.scaleXProperty(), 1);
+            KeyValue kv2 = new KeyValue(registerBtn.scaleYProperty(), 1);
+
+            KeyFrame kf = new KeyFrame(Duration.millis(100), kv, kv2);
+
+            timeline.getKeyFrames().add(kf);
+            timeline.play();
+        });
+
         loginLink = new Button("Already have an account? Login here!");
         loginLink.getStyleClass().add("link-button");
 
@@ -82,7 +117,7 @@ public class Register extends VBox {
 
     private void setLayout() {
 
-        Font font = Font.loadFont("file:resources/fonts/LindenHill-Italic.ttf", 40);
+        Font font = Font.loadFont("file:resources/fonts/VT323-Regular.ttf", 30);
         subTitle.setFont(font);
 
         errorLbl.setStyle("-fx-text-fill: red;-fx-font-weight: bold;");
@@ -100,6 +135,7 @@ public class Register extends VBox {
 
         vbox.getChildren().addAll(subTitle, nameVbox, emailVbox, passwordVbox, confirmPasswordVbox, ageVbox, registerVbox, errorLbl);
         vbox.setAlignment(Pos.CENTER);
+        vbox.setPadding(new Insets(0, 0, 0, 50));
 
         StackPane imagePane = new StackPane();
         imagePane.setPrefSize(400, ScreenManager.SCREEN_HEIGHT);
@@ -117,13 +153,12 @@ public class Register extends VBox {
         imagePane.getChildren().add(registerImage);
 
         this.getChildren().addAll(vbox);
-        this.setMaxWidth(500);
         this.setAlignment(Pos.CENTER);
     }
 
     private void actions(Stage stage) {
         loginLink.setOnAction(e -> {
-            root.setCenter(loginVBox);
+            root.setLeft(loginVBox);
         });
 
         registerBtn.setOnAction(e -> {
@@ -137,7 +172,7 @@ public class Register extends VBox {
 
             if(output.equals("Register Success!")) {
                 errorLbl.setStyle("-fx-text-fill: green;-fx-font-weight: bold;");
-                root.setCenter(loginVBox);
+                root.setLeft(loginVBox);
             }
             errorLbl.setText(output);
         });
