@@ -1,10 +1,14 @@
 package view.gameview;
 
+import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.Slider;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.scene.layout.HBox;
+import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
 import view.OfflineGame;
 
@@ -23,13 +27,14 @@ public class SettingMenu extends VBox {
     private double originalTargetFPS;
 
     public SettingMenu(OfflineGame game) {
+
+        StackPane stackPane = new StackPane();
+
         musicSlider = new Slider();
         SFXSlider = new Slider();
 
         settingsLabel = new Label("Settings");
         settingsLabel.getStyleClass().add("title");
-
-        this.getChildren().add(settingsLabel);
 
         applyButton = new Button("Apply");
         backButton = new Button("Back");
@@ -83,6 +88,7 @@ public class SettingMenu extends VBox {
 
         applyButton.setPrefWidth(250);
         applyButton.getStyleClass().add("primary-button");
+        applyButton.setStyle("-fx-text-fill: white;");
 
         originalMusicVolume = game.getMediaPlayer().getVolume();
         originalSFXVolume = game.getMediaPlayer().getVolume();
@@ -110,7 +116,23 @@ public class SettingMenu extends VBox {
         HBox buttonContainer = new HBox(20);
         buttonContainer.getChildren().addAll(backButton, applyButton);
 
-        this.getChildren().addAll(musicContainer, SFXContainer, resolutionContainer, buttonContainer);
+        Image image = new Image("file:resources/game/gui/setting-menu.png");
+        ImageView imageView = new ImageView(image);
+
+        imageView.setFitWidth(500);
+        imageView.setFitHeight(400);
+
+        stackPane.getChildren().add(imageView);
+
+        VBox settingMenu = new VBox(40);
+        settingMenu.setAlignment(Pos.CENTER);
+        settingMenu.setPrefSize(500, 400);
+        settingMenu.setPadding(new Insets(50));
+        settingMenu.getChildren().addAll(settingsLabel, musicContainer, SFXContainer, resolutionContainer, buttonContainer);
+
+        stackPane.getChildren().add(settingMenu);
+
+        this.getChildren().addAll(stackPane);
         this.setSpacing(40);
         this.setAlignment(Pos.CENTER);
     }
