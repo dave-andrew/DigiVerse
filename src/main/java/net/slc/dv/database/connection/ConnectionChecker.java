@@ -1,24 +1,25 @@
 package net.slc.dv.database.connection;
 
+import lombok.Getter;
 import net.slc.dv.helper.ObservableVariable;
 
 import java.sql.SQLException;
+import java.util.concurrent.Executors;
+import java.util.concurrent.TimeUnit;
 
-public class ConnectionChecker implements Runnable {
+public class ConnectionChecker {
 
     private final Connect connect;
+    @Getter
     private final ObservableVariable<Boolean> isConnected;
-    private final int CONNECTION_CHECK_INTERVAL = 1000;
 
     public ConnectionChecker() {
         this.connect = Connect.getConnection();
         this.isConnected = new ObservableVariable<>(null);
 
-        Thread thread = new Thread(this);
-        thread.setDaemon(true);
-        thread.start();
-
         this.checkConnectionChange();
+        Executors.newSingleThreadScheduledExecutor()
+                .scheduleAtFixedRate(this::checkConnection, 0, 1000, TimeUnit.MILLISECONDS);
     }
 
     private void checkConnectionChange() {
@@ -33,10 +34,7 @@ public class ConnectionChecker implements Runnable {
     }
 
     private void checkConnection() {
-        // System.out.println("Checking connection...");
         try {
-            Thread.sleep(CONNECTION_CHECK_INTERVAL);
-
             if (connect.getConnect() == null || !connect.getConnect().isValid(5)) {
                 this.connect.reconnect();
                 isConnected.setValue(false);
@@ -44,19 +42,9 @@ public class ConnectionChecker implements Runnable {
             }
 
             isConnected.setValue(true);
-        } catch (SQLException | InterruptedException e) {
+        } catch (SQLException e) {
             e.printStackTrace();
         }
     }
 
-    public ObservableVariable<Boolean> getIsConnected() {
-        return isConnected;
-    }
-
-    @Override
-    public void run() {
-        do {
-            this.checkConnection();
-        } while (true);
-    }
 }
