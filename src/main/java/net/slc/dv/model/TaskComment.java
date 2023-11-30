@@ -1,6 +1,11 @@
 package net.slc.dv.model;
 
-public class TaskComment extends Comment{
+import lombok.Getter;
+import lombok.Setter;
+
+@Getter
+@Setter
+public class TaskComment extends Comment {
 
     private String taskid;
     private Task task;
@@ -21,19 +26,4 @@ public class TaskComment extends Comment{
         super(replyid, text, userid, user);
     }
 
-    public String getTaskid() {
-        return taskid;
-    }
-
-    public void setTaskid(String taskid) {
-        this.taskid = taskid;
-    }
-
-    public Task getTask() {
-        return task;
-    }
-
-    public void setTask(Task task) {
-        this.task = task;
-    }
 }

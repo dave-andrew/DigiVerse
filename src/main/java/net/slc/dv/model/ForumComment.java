@@ -1,6 +1,11 @@
 package net.slc.dv.model;
 
-public class ForumComment extends Comment{
+import lombok.Getter;
+import lombok.Setter;
+
+@Getter
+@Setter
+public class ForumComment extends Comment {
 
     private String forumid;
     private Forum forum;
@@ -17,20 +22,4 @@ public class ForumComment extends Comment{
         this.forumid = forumid;
     }
 
-
-    public String getForumid() {
-        return forumid;
-    }
-
-    public void setForumid(String forumid) {
-        this.forumid = forumid;
-    }
-
-    public Forum getForum() {
-        return forum;
-    }
-
-    public void setForum(Forum forum) {
-        this.forum = forum;
-    }
 }

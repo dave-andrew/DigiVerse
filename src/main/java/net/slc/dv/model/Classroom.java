@@ -1,8 +1,13 @@
 package net.slc.dv.model;
 
+import lombok.Getter;
+import lombok.Setter;
+
 import java.sql.Blob;
 import java.util.UUID;
 
+@Getter
+@Setter
 public class Classroom {
 
     private String classId;
@@ -29,51 +34,4 @@ public class Classroom {
         this.classSubject = classSubject;
     }
 
-    public String getClassId() {
-        return classId;
-    }
-
-    public void setClassId(String classId) {
-        this.classId = classId;
-    }
-
-    public String getClassName() {
-        return className;
-    }
-
-    public void setClassName(String className) {
-        this.className = className;
-    }
-
-    public String getClassDesc() {
-        return classDesc;
-    }
-
-    public void setClassDesc(String classDesc) {
-        this.classDesc = classDesc;
-    }
-
-    public String getClassCode() {
-        return classCode;
-    }
-
-    public void setClassCode(String classCode) {
-        this.classCode = classCode;
-    }
-
-    public String getClassSubject() {
-        return classSubject;
-    }
-
-    public void setClassSubject(String classSubject) {
-        this.classSubject = classSubject;
-    }
-
-    public Blob getClassImage() {
-        return classImage;
-    }
-
-    public void setClassImage(Blob classImage) {
-        this.classImage = classImage;
-    }
 }

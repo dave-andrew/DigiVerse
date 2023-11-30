@@ -1,12 +1,15 @@
 package net.slc.dv.model;
 
+import lombok.Getter;
+import lombok.Setter;
 import net.slc.dv.helper.DateManager;
 
 import java.io.File;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
+@Getter
+@Setter
 public class Answer {
 
     private String id;
@@ -25,51 +28,4 @@ public class Answer {
         this.createdAt = DateManager.getNow();
     }
 
-    public String getId() {
-        return id;
-    }
-
-    public void setId(String id) {
-        this.id = id;
-    }
-
-    public String getTaskid() {
-        return taskid;
-    }
-
-    public void setTaskid(String taskid) {
-        this.taskid = taskid;
-    }
-
-    public String getUserid() {
-        return userid;
-    }
-
-    public void setUserid(String userid) {
-        this.userid = userid;
-    }
-
-    public int getScore() {
-        return score;
-    }
-
-    public void setScore(int score) {
-        this.score = score;
-    }
-
-    public List<File> getFileList() {
-        return fileList;
-    }
-
-    public void setFileList(List<File> fileList) {
-        this.fileList = fileList;
-    }
-
-    public String getCreatedAt() {
-        return createdAt;
-    }
-
-    public void setCreatedAt(String createdAt) {
-        this.createdAt = createdAt;
-    }
 }

@@ -1,10 +1,14 @@
 package net.slc.dv.model;
 
-import net.slc.dv.helper.ImageManager;
 import javafx.scene.image.Image;
+import lombok.Getter;
+import lombok.Setter;
+import net.slc.dv.helper.ImageManager;
 
 import java.sql.Blob;
 
+@Getter
+@Setter
 public class LoggedUser extends User {
 
     private static LoggedUser loggedUser;
@@ -32,15 +36,8 @@ public class LoggedUser extends User {
         return loggedUser;
     }
 
-    public Image getProfileImage() {
-        return profileImage;
-    }
-
-    public void setProfileImage(Image image) {
-        this.profileImage = image;
-    }
-
     public void logout() {
         loggedUser = null;
     }
+
 }

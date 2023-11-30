@@ -1,17 +1,21 @@
 package net.slc.dv.model;
 
+import lombok.Getter;
+import lombok.Setter;
 import net.slc.dv.helper.DateManager;
 
 import java.util.UUID;
 
+@Getter
+@Setter
 public class Comment {
 
+    private final User user;
+    private final String createdAt;
     private String id;
     private String replyid;
     private String text;
     private String userid;
-    private final User user;
-    private final String createdAt;
 
     public Comment(String id, String text, String userid, User user, String createdAt) {
         this.id = id;
@@ -38,43 +42,4 @@ public class Comment {
         this.createdAt = DateManager.getNow();
     }
 
-    public String getId() {
-        return id;
-    }
-
-    public void setId(String id) {
-        this.id = id;
-    }
-
-    public String getText() {
-        return text;
-    }
-
-    public void setText(String text) {
-        this.text = text;
-    }
-
-    public String getUserid() {
-        return userid;
-    }
-
-    public void setUserid(String userid) {
-        this.userid = userid;
-    }
-
-    public User getUser() {
-        return user;
-    }
-
-    public String getCreatedAt() {
-        return createdAt;
-    }
-
-    public String getReplyid() {
-        return replyid;
-    }
-
-    public void setReplyid(String replyid) {
-        this.replyid = replyid;
-    }
 }

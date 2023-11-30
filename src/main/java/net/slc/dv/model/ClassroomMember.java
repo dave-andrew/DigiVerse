@@ -1,5 +1,8 @@
 package net.slc.dv.model;
 
+import lombok.Data;
+
+@Data
 public class ClassroomMember {
 
     private String classId;
@@ -12,28 +15,4 @@ public class ClassroomMember {
         this.role = role;
     }
 
-
-    public String getClassId() {
-        return classId;
-    }
-
-    public void setClassId(String classId) {
-        this.classId = classId;
-    }
-
-    public User getUser() {
-        return user;
-    }
-
-    public void setUser(User user) {
-        this.user = user;
-    }
-
-    public String getRole() {
-        return role;
-    }
-
-    public void setRole(String role) {
-        this.role = role;
-    }
 }

@@ -1,9 +1,13 @@
 package net.slc.dv.model;
 
+import lombok.Getter;
+import lombok.Setter;
 import net.slc.dv.helper.DateManager;
 
 import java.util.UUID;
 
+@Getter
+@Setter
 public class Task {
 
     private String id;
@@ -51,75 +55,4 @@ public class Task {
         this.classroom = classroom;
     }
 
-    public String getId() {
-        return id;
-    }
-
-    public void setId(String id) {
-        this.id = id;
-    }
-
-    public String getUserid() {
-        return userid;
-    }
-
-    public void setUserid(String userid) {
-        this.userid = userid;
-    }
-
-    public User getUser() {
-        return user;
-    }
-
-    public void setUser(User user) {
-        this.user = user;
-    }
-
-    public String getTitle() {
-        return title;
-    }
-
-    public void setTitle(String title) {
-        this.title = title;
-    }
-
-    public String getDescription() {
-        return description;
-    }
-
-    public void setDescription(String description) {
-        this.description = description;
-    }
-
-    public String getDeadlineAt() {
-        return deadlineAt;
-    }
-
-    public void setDeadlineAt(String deadlineAt) {
-        this.deadlineAt = deadlineAt;
-    }
-
-    public String getCreatedAt() {
-        return createdAt;
-    }
-
-    public void setCreatedAt(String createdAt) {
-        this.createdAt = createdAt;
-    }
-
-    public boolean isScored() {
-        return scored;
-    }
-
-    public void setScored(boolean scored) {
-        this.scored = scored;
-    }
-
-    public Classroom getClassroom() {
-        return classroom;
-    }
-
-    public void setClassroom(Classroom classroom) {
-        this.classroom = classroom;
-    }
 }
