@@ -20,6 +20,8 @@ import net.slc.dv.model.Classroom;
 import net.slc.dv.view.Profile;
 import net.slc.dv.view.component.TimeSpinner;
 import net.slc.dv.view.component.classtask.CreateFileTask;
+import net.slc.dv.view.component.classtask.CreateQuestionTask;
+import net.slc.dv.view.homeview.task.enums.TaskCenter;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -28,9 +30,6 @@ import java.time.format.DateTimeFormatter;
 
 public class AddTask extends BorderPane {
 
-	enum CenterType {
-		QUESTION, FILE
-	}
 	private Classroom classroom;
 	private Stage stage;
 	private TaskController taskController;
@@ -51,15 +50,17 @@ public class AddTask extends BorderPane {
 	private CheckBox scored;
 	private DatePicker datePicker;
 	private TimeSpinner timeSpinner;
-	private CenterType centerType;
+	private TaskCenter centerType;
 	private CreateFileTask createFileTask;
+	private CreateQuestionTask createQuestionTask;
 
 	public AddTask(Stage stage, Classroom classroom) {
 		this.classroom = classroom;
 		this.stage = stage;
 		this.taskController = new TaskController();
-		this.centerType = CenterType.FILE;
+		this.centerType = TaskCenter.FILE;
 		this.createFileTask = new CreateFileTask();
+		this.createQuestionTask = new CreateQuestionTask();
 		init();
 
 	}
@@ -68,7 +69,6 @@ public class AddTask extends BorderPane {
 		this.dialogStage = new Stage();
 		dialogStage.initModality(Modality.APPLICATION_MODAL);
 		dialogStage.initOwner(stage);
-//        dialogStage.initStyle(StageStyle.TRANSPARENT);
 
 		this.root = new BorderPane();
 		this.root.setRight(rightBar());
@@ -85,18 +85,13 @@ public class AddTask extends BorderPane {
 	}
 
 	private void changeCenter() {
-		if(this.centerType == CenterType.FILE) {
+		if(this.centerType == TaskCenter.FILE) {
 			this.root.setCenter(this.createFileTask.getRoot());
 		}
 		else {
-			this.root.setCenter(centerQuestion());
+			this.root.setCenter(this.createQuestionTask.getRoot());
 		}
 	}
-
-	private VBox centerQuestion() {
-		return new VBox();
-	}
-
 
 	private HBox navBar() {
 		close = ImageViewBuilder.create()
@@ -206,11 +201,11 @@ public class AddTask extends BorderPane {
 				.setStyle("-fx-text-fill: white;")
 				.setPrefWidth(300)
 				.setOnAction(e -> {
-					if(this.centerType == CenterType.FILE) {
-						this.centerType = CenterType.QUESTION;
+					if(this.centerType == TaskCenter.FILE) {
+						this.centerType = TaskCenter.QUESTION;
 					}
 					else {
-						this.centerType = CenterType.FILE;
+						this.centerType = TaskCenter.FILE;
 					}
 
 					this.changeCenter();

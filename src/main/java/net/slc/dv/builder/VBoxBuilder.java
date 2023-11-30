@@ -49,6 +49,11 @@ public class VBoxBuilder {
         return this;
     }
 
+    public VBoxBuilder removeChildren(Node... nodes) {
+        this.vBox.getChildren().removeAll(nodes);
+
+        return this;
+    }
 
     public VBoxBuilder setAlignment(Pos pos) {
         this.vBox.setAlignment(pos);
