@@ -8,13 +8,14 @@ public class ConnectionChecker implements Runnable {
 
     private final Connect connect;
     private final ObservableVariable<Boolean> isConnected;
-    private final int CONNECTION_CHECK_INTERVAL = 10000;
+    private final int CONNECTION_CHECK_INTERVAL = 1000;
 
     public ConnectionChecker() {
         this.connect = Connect.getConnection();
         this.isConnected = new ObservableVariable<>(null);
 
         Thread thread = new Thread(this);
+        thread.setDaemon(true);
         thread.start();
 
         this.checkConnectionChange();
@@ -32,7 +33,7 @@ public class ConnectionChecker implements Runnable {
     }
 
     private void checkConnection() {
-        System.out.println("Checking connection...");
+        // System.out.println("Checking connection...");
         try {
             Thread.sleep(CONNECTION_CHECK_INTERVAL);
 

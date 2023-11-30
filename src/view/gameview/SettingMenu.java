@@ -25,6 +25,9 @@ public class SettingMenu extends VBox {
         Slider musicSlider = new Slider();
         Slider SFXSlider = new Slider();
 
+        musicSlider.setPrefWidth(200);
+        SFXSlider.setPrefWidth(200);
+
         Label settingsLabel = new Label("Settings");
         settingsLabel.getStyleClass().add("title");
 
@@ -80,7 +83,7 @@ public class SettingMenu extends VBox {
             game.getMediaPlayer().setVolume(newVolume);
         });
 
-        applyButton.setPrefWidth(250);
+        applyButton.setPrefWidth(150);
         applyButton.getStyleClass().add("primary-button");
         applyButton.setStyle("-fx-text-fill: white;");
 
@@ -92,7 +95,7 @@ public class SettingMenu extends VBox {
             game.getPauseMenu().getChildren().add(pauseMenu);
         });
 
-        backButton.setPrefWidth(250);
+        backButton.setPrefWidth(150);
         backButton.getStyleClass().add("secondary-button");
 
         backButton.setOnAction(e -> {
@@ -118,10 +121,10 @@ public class SettingMenu extends VBox {
         stackPane.getChildren().add(imageView);
 
         VBox settingMenu = new VBox(40);
-        settingMenu.setAlignment(Pos.CENTER);
         settingMenu.setPrefSize(500, 400);
-        settingMenu.setPadding(new Insets(50));
+        settingMenu.setPadding(new Insets(20));
         settingMenu.getChildren().addAll(settingsLabel, musicContainer, SFXContainer, resolutionContainer, buttonContainer);
+        settingMenu.setAlignment(Pos.CENTER);
 
         stackPane.getChildren().add(settingMenu);
 
