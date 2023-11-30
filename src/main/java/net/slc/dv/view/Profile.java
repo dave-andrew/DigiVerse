@@ -303,7 +303,7 @@ public class Profile extends VBox {
 
                 loggedUser.setUsername(nameField.getText());
                 loggedUser.setEmail(emailField.getText());
-                loggedUser.setAge(String.valueOf(birthdayField.getValue()));
+                loggedUser.setDob(String.valueOf(birthdayField.getValue()));
 
                 profileContainer.getChildren().removeAll(updateProfileContainer);
 
