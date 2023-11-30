@@ -6,58 +6,59 @@ import javafx.scene.layout.HBox;
 import javafx.scene.layout.Priority;
 
 public class LabelBuilder {
-	private Label label;
-	private LabelBuilder(String text) {
-		this.label = new Label(text);
-	}
+    private final Label label;
 
-	private LabelBuilder(Label label) {
-		this.label = label;
-	}
+    private LabelBuilder(String text) {
+        this.label = new Label(text);
+    }
 
-	public static LabelBuilder create() {
-		return new LabelBuilder("");
-	}
+    private LabelBuilder(Label label) {
+        this.label = label;
+    }
 
-	public static LabelBuilder create(String text) {
-		return new LabelBuilder(text);
-	}
+    public static LabelBuilder create() {
+        return new LabelBuilder("");
+    }
 
-	public static LabelBuilder create(Label label) {
-		return new LabelBuilder(label);
-	}
+    public static LabelBuilder create(String text) {
+        return new LabelBuilder(text);
+    }
 
-	public LabelBuilder setStyle(String style){
-		this.label.setStyle(style);
+    public static LabelBuilder create(Label label) {
+        return new LabelBuilder(label);
+    }
 
-		return this;
-	}
+    public LabelBuilder setStyle(String style) {
+        this.label.setStyle(style);
 
-	public LabelBuilder setStyleClass(String styleClass){
-		this.label.getStyleClass().add(styleClass);
+        return this;
+    }
 
-		return this;
-	}
+    public LabelBuilder setStyleClass(String styleClass) {
+        this.label.getStyleClass().add(styleClass);
 
-	public LabelBuilder setPadding(int padding1, int padding2, int padding3, int padding4) {
-		this.label.setPadding(new Insets(padding1, padding2, padding3, padding4));
+        return this;
+    }
 
-		return this;
-	}
+    public LabelBuilder setPadding(int padding1, int padding2, int padding3, int padding4) {
+        this.label.setPadding(new Insets(padding1, padding2, padding3, padding4));
 
-	public LabelBuilder setMargin(int margin1, int margin2, int margin3, int margin4) {
-		HBox.setMargin(this.label, new Insets(margin1, margin2, margin3, margin4));
+        return this;
+    }
 
-		return this;
-	}
+    public LabelBuilder setMargin(int margin1, int margin2, int margin3, int margin4) {
+        HBox.setMargin(this.label, new Insets(margin1, margin2, margin3, margin4));
 
-	public LabelBuilder setHgrow(Priority priority) {
-		HBox.setHgrow(this.label, priority);
+        return this;
+    }
 
-		return this;
-	}
+    public LabelBuilder setHgrow(Priority priority) {
+        HBox.setHgrow(this.label, priority);
 
-	public Label build() {
-		return this.label;
-	}
+        return this;
+    }
+
+    public Label build() {
+        return this.label;
+    }
 }
