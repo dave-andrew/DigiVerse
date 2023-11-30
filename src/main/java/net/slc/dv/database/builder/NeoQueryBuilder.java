@@ -25,6 +25,10 @@ public class NeoQueryBuilder {
 
     private Map<String, String> valueMap;
 
+    private String orderBy;
+    private String limit;
+    private String offset;
+
 
     public NeoQueryBuilder(QueryType queryType) {
         this.queryType = queryType;
@@ -72,6 +76,21 @@ public class NeoQueryBuilder {
         return this;
     }
 
+    public NeoQueryBuilder orderBy(String orderBy) {
+        this.orderBy = orderBy;
+        return this;
+    }
+
+    public NeoQueryBuilder limit(String limit) {
+        this.limit = limit;
+        return this;
+    }
+
+    public NeoQueryBuilder offset(String offset) {
+        this.offset = offset;
+        return this;
+    }
+
     public Results getResults() throws SQLException {
         Connect connect = Connect.getConnection();
 
@@ -88,7 +107,19 @@ public class NeoQueryBuilder {
 
                 query.append("FROM ").append(table).append(" ");
                 if (conditionList != null) {
-                    query.append("WHERE ").append(this.buildConditions());
+                    query.append("WHERE ").append(this.buildConditions()).append(" ");
+                }
+
+                if (orderBy != null) {
+                    query.append("ORDER BY ").append(orderBy);
+                }
+
+                if (limit != null) {
+                    query.append("LIMIT ").append(limit);
+                }
+
+                if (offset != null) {
+                    query.append("OFFSET ").append(offset);
                 }
 
                 PreparedStatement statement = connect.prepareStatement(query.toString());
@@ -221,8 +252,6 @@ public class NeoQueryBuilder {
             }
         });
     }
-
-
 
 
     private static class Condition {
