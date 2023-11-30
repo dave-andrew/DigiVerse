@@ -60,7 +60,7 @@ public class Enemy extends ImageView {
 
         this.sprite = new Image("file:resources/game/enemy/soldier-1.png");
 
-        this.collider = new Collider(posX, posY, sprite.getWidth());
+        this.collider = new Collider(posX, posY);
 
         EnemyMoveState moveState = new EnemyMoveState(this);
         this.deadState = new EnemyDeadState(this);

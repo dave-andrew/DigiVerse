@@ -34,7 +34,7 @@ public class Bullet extends ImageView {
         Image sprite = new Image("file:resources/game/bullet.png");
         this.setImage(sprite);
 
-        this.collider = new Collider(posX, posY, sprite.getWidth());
+        this.collider = new Collider(posX, posY);
 
         root.getChildren().add(this);
         this.setX(posX);

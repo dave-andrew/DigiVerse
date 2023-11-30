@@ -42,7 +42,7 @@ public abstract class DropItem extends ImageView {
         this.sprite = image;
         this.setImage(sprite);
 
-        this.collider = new Collider(posX, posY, sprite.getWidth());
+        this.collider = new Collider(posX, posY);
 
         this.setScaleX(2);
         this.setScaleY(2);

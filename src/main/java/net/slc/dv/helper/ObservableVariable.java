@@ -1,12 +1,15 @@
 package net.slc.dv.helper;
 
 import javafx.application.Platform;
+import lombok.Getter;
 
 import java.util.ArrayList;
 import java.util.function.Consumer;
 
 public class ObservableVariable<T> {
     private final ArrayList<Consumer<T>> listeners = new ArrayList<>();
+
+    @Getter
     private T value;
 
     public ObservableVariable(T value) {
@@ -25,10 +28,6 @@ public class ObservableVariable<T> {
         for (Consumer<T> listener : listeners) {
             Platform.runLater(() -> listener.accept(value));
         }
-    }
-
-    public T getValue() {
-        return value;
     }
 
     public void setValue(T newValue) {

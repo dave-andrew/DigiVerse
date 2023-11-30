@@ -6,9 +6,7 @@ import javafx.scene.image.ImageView;
 import javafx.scene.image.WritableImage;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.StackPane;
-import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
-import javafx.scene.paint.Paint;
 import javafx.scene.shape.Circle;
 
 import java.io.ByteArrayInputStream;
@@ -85,6 +83,7 @@ public class ImageManager {
         }
         return sprites;
     }
+
     public static ArrayList<Image> spider(String baseString) {
         ArrayList<Image> sprites = new ArrayList<>();
         for (int i = 1; i <= 4; i++) {

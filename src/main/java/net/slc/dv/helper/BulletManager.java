@@ -1,11 +1,13 @@
 package net.slc.dv.helper;
 
+import lombok.Getter;
 import net.slc.dv.game.Bullet;
 
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
+@Getter
 public class BulletManager {
 
     private static BulletManager instance;
@@ -20,10 +22,6 @@ public class BulletManager {
 
     private BulletManager() {
         this.bulletList = Collections.synchronizedList(new ArrayList<>());
-    }
-
-    public List<Bullet> getBulletList() {
-        return bulletList;
     }
 
     public void addBulletList(Bullet newBullet) {

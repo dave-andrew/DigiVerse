@@ -84,7 +84,7 @@ public class Player extends ImageView {
         this.sprite = new Image("file:resources/game/player/down-1.png");
         this.setImage(this.sprite);
 
-        this.collider = new Collider(posX, posY, sprite.getWidth());
+        this.collider = new Collider(posX, posY);
 
         this.setScaleX(2);
         this.setScaleY(2);

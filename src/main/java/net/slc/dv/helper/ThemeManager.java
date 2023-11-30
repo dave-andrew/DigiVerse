@@ -9,9 +9,9 @@ import javafx.util.Duration;
 
 public class ThemeManager {
 
-    private static String theme = "light";
     public static final String LIGHT_THEME = "file:resources/light_theme.css";
     public static final String DARK_THEME = "file:resources/dark_theme.css";
+    private static String theme = "light";
 
     public static void getTheme(Scene scene) {
         scene.getStylesheets().clear();
@@ -21,8 +21,6 @@ public class ThemeManager {
             scene.getStylesheets().add(DARK_THEME);
         }
     }
-
-    private ImageView moon, sun;
 
     public static void toggleTheme(Scene scene, ToggleButton toggleButton) {
         FadeTransition fadeOut = new FadeTransition(Duration.millis(250), scene.getRoot());
