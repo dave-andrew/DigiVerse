@@ -1,3 +1,5 @@
+package main;
+
 import controller.AuthController;
 import database.connection.ConnectionChecker;
 import enums.ToastType;
@@ -26,13 +28,12 @@ public class Main extends Application {
 	private AuthController authController;
 	private ConnectionChecker connectionChecker;
 	private Scene scene;
-	private BorderPane borderPane;
 	private String currentScene;
 
 	private Scene initialize() {
 		authController = new AuthController();
 
-		borderPane = new BorderPane();
+		BorderPane borderPane = new BorderPane();
 
 		VBox loading = new VBox();
 		loading.setAlignment(Pos.CENTER);
@@ -74,7 +75,7 @@ public class Main extends Application {
 		service.setOnSucceeded(e -> {
 			this.connectionChecker = new ConnectionChecker();
 
-			this.connectionChecker.getIsConnected().addListener(value -> sceneHandler(value));
+			this.connectionChecker.getIsConnected().addListener(this::sceneHandler);
 		});
 
 		service.start();
@@ -125,10 +126,8 @@ public class Main extends Application {
 		}
 	}
 
-
-
 	@Override
-	public void start(Stage stage) throws Exception {
+	public void start(Stage stage) {
 		Stage primaryStage = StageManager.getInstance();
 		scene = initialize();
 		primaryStage.setScene(scene);
