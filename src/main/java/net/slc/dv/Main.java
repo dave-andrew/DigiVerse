@@ -2,7 +2,6 @@ package net.slc.dv;
 
 import net.slc.dv.controller.AuthController;
 import net.slc.dv.database.connection.ConnectionChecker;
-import net.slc.dv.enums.ToastType;
 import net.slc.dv.helper.ScreenManager;
 import net.slc.dv.helper.StageManager;
 import net.slc.dv.helper.ThemeManager;
@@ -92,14 +91,14 @@ public class Main extends Application {
 				return;
 			}
 
-			ToastBuilder.buildNormal(ToastType.BUTTON).setText("You are offline!").build();
+			ToastBuilder.buildNormal().setText("You are offline!").build();
 			this.currentScene = "offline";
 			new OfflineGame(stage);
 			return;
 		}
 
 		if (this.currentScene != null && this.currentScene.equals("offline")) {
-			ToastBuilder.buildButton(ToastType.BUTTON)
+			ToastBuilder.buildButton()
 					.setButtonText("Redirect")
 					.setButtonAction(toast -> this.redirectConnected(message))
 					.setOnClickClose(true)
@@ -114,7 +113,7 @@ public class Main extends Application {
 
 	private void redirectConnected(String message) {
 		if (message.equals("true")) {
-			ToastBuilder.buildNormal(ToastType.NORMAL).setText("Welcome back, " + LoggedUser.getInstance().getUsername() + "!").build();
+			ToastBuilder.buildNormal().setText("Welcome back, " + LoggedUser.getInstance().getUsername() + "!").build();
 			this.currentScene = "home";
 			new Home(StageManager.getInstance());
 			return;

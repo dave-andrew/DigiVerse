@@ -1,7 +1,6 @@
 package net.slc.dv.controller;
 
 import net.slc.dv.database.AnswerQuery;
-import net.slc.dv.enums.ToastType;
 import net.slc.dv.helper.toast.ToastBuilder;
 
 import java.io.File;
@@ -43,7 +42,7 @@ public class AnswerController {
 
             Files.copy(file.toPath(), targetFilePath, StandardCopyOption.REPLACE_EXISTING);
 
-            ToastBuilder.buildNormal(ToastType.NORMAL).setText("File Downloaded!").build();
+            ToastBuilder.buildNormal().setText("File Downloaded!").build();
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -62,7 +61,7 @@ public class AnswerController {
                 Files.copy(file.toPath(), targetFilePath, StandardCopyOption.REPLACE_EXISTING);
             }
 
-            ToastBuilder.buildNormal(ToastType.NORMAL).setText("Files Downloaded!").build();
+            ToastBuilder.buildNormal().setText("Files Downloaded!").build();
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -78,17 +77,17 @@ public class AnswerController {
 
     public boolean scoreAnswer(String taskid, String userid, String score) {
         if(score.isEmpty()) {
-            ToastBuilder.buildNormal(ToastType.NORMAL).setText("Score cannot be empty!").build();
+            ToastBuilder.buildNormal().setText("Score cannot be empty!").build();
             return false;
         }
 
         if(!score.matches("[0-9]+")) {
-            ToastBuilder.buildNormal(ToastType.NORMAL).setText("Score must be a number!").build();
+            ToastBuilder.buildNormal().setText("Score must be a number!").build();
             return false;
         }
 
         if(Integer.parseInt(score) < 0 || Integer.parseInt(score) > 100) {
-            ToastBuilder.buildNormal(ToastType.NORMAL).setText("Score must be between 0 and 100!").build();
+            ToastBuilder.buildNormal().setText("Score must be between 0 and 100!").build();
             return false;
         }
 

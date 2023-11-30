@@ -3,7 +3,6 @@ package net.slc.dv.view.component.classdetail;
 import net.slc.dv.controller.AnswerController;
 import net.slc.dv.controller.MemberController;
 import net.slc.dv.controller.TaskController;
-import net.slc.dv.enums.ToastType;
 import net.slc.dv.helper.toast.ToastBuilder;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
@@ -243,7 +242,7 @@ public class ClassScore extends HBox {
 
                 saveBtn.setOnMouseClicked(e -> {
                     if (this.answerController.scoreAnswer(taskTitle, selectedMember.getUser().getId(), taskScoreInput.getText())) {
-                        ToastBuilder.buildNormal(ToastType.NORMAL).setText("Score saved!").build();
+                        ToastBuilder.buildNormal().setText("Score saved!").build();
                         container.getChildren().removeAll(taskScoreInput, saveBtn);
                         Label scoreInput = new Label(taskScoreInput.getText());
                         scoreInput.setPrefWidth(60);

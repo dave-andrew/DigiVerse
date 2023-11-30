@@ -1,7 +1,6 @@
 package net.slc.dv.database;
 
 import net.slc.dv.database.connection.Connect;
-import net.slc.dv.enums.ToastType;
 import net.slc.dv.helper.toast.ToastBuilder;
 import net.slc.dv.model.Answer;
 
@@ -100,7 +99,7 @@ public class FileQuery {
             }
 
             connection.commit();
-            ToastBuilder.buildNormal(ToastType.NORMAL).setText("Answer uploaded successfully!").build();
+            ToastBuilder.buildNormal().setText("Answer uploaded successfully!").build();
         } catch (Exception e) {
             try {
                 if (connection != null) {

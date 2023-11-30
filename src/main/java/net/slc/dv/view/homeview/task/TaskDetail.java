@@ -2,7 +2,6 @@ package net.slc.dv.view.homeview.task;
 
 import net.slc.dv.controller.AnswerController;
 import net.slc.dv.controller.CommentController;
-import net.slc.dv.enums.ToastType;
 import net.slc.dv.helper.DateManager;
 import net.slc.dv.helper.ImageManager;
 import net.slc.dv.helper.toast.ToastBuilder;
@@ -392,7 +391,7 @@ public class TaskDetail extends HBox {
             Date deadline = dateFormat.parse(deadlineString);
 
             if (now.compareTo(deadline) > 0) {
-                ToastBuilder.buildNormal(ToastType.NORMAL).setText("Deadline has passed\nYou can't submit this task anymore").build();
+                ToastBuilder.buildNormal().setText("Deadline has passed\nYou can't submit this task anymore").build();
                 return false;
             }
 

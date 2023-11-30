@@ -1,7 +1,6 @@
 package net.slc.dv.database;
 
 import net.slc.dv.database.connection.Connect;
-import net.slc.dv.enums.ToastType;
 import net.slc.dv.helper.toast.ToastBuilder;
 import net.slc.dv.model.Classroom;
 import net.slc.dv.model.Forum;
@@ -68,7 +67,7 @@ public class ForumQuery {
 
             ps2.executeUpdate();
 
-            ToastBuilder.buildNormal(ToastType.NORMAL).setText("Forum Posted!").build();
+            ToastBuilder.buildNormal().setText("Forum Posted!").build();
 
             return forum;
         } catch (Exception e) {
