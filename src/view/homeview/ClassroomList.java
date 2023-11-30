@@ -52,9 +52,7 @@ public class ClassroomList extends GridPane {
                 }
             });
 
-            int index = 0;
-            this.add(sp, index % 4, index / 4);
-            index++;
+            this.add(sp, 0, 0);
         }
 
         this.prefWidthProperty().bind(mainPane.widthProperty().subtract(10));

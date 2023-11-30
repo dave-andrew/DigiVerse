@@ -1,5 +1,6 @@
 package database;
 
+import database.connection.Connect;
 import model.*;
 
 import java.sql.PreparedStatement;

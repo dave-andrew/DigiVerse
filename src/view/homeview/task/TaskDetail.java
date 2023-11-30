@@ -2,13 +2,12 @@ package view.homeview.task;
 
 import controller.AnswerController;
 import controller.CommentController;
+import enums.ToastType;
 import helper.DateManager;
 import helper.ImageManager;
-import helper.StageManager;
-import helper.Toast;
+import helper.toast.ToastBuilder;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
-import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
@@ -20,7 +19,6 @@ import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Line;
-import javafx.stage.Stage;
 import model.LoggedUser;
 import model.Task;
 import model.TaskComment;
@@ -394,7 +392,7 @@ public class TaskDetail extends HBox {
             Date deadline = dateFormat.parse(deadlineString);
 
             if (now.compareTo(deadline) > 0) {
-                Toast.makeText(StageManager.getInstance(), "Deadline has passed\nYou can't submit this task anymore", 2000, 500, 500);
+                ToastBuilder.buildNormal(ToastType.NORMAL).setText("Deadline has passed\nYou can't submit this task anymore").build();
                 return false;
             }
 

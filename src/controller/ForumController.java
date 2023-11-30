@@ -2,7 +2,7 @@ package controller;
 
 import database.ForumQuery;
 import helper.StageManager;
-import helper.Toast;
+import helper.toast.Toast;
 import model.Forum;
 import model.LoggedUser;
 

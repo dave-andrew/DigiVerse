@@ -1,10 +1,14 @@
 package view.gameview;
 
+import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.Slider;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.scene.layout.HBox;
+import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
 import view.OfflineGame;
 
@@ -17,6 +21,7 @@ public class SettingMenu extends VBox {
     private Label fps144Label;
 
     public SettingMenu(OfflineGame game) {
+        StackPane stackPane = new StackPane();
         Slider musicSlider = new Slider();
         Slider SFXSlider = new Slider();
 
@@ -77,6 +82,7 @@ public class SettingMenu extends VBox {
 
         applyButton.setPrefWidth(250);
         applyButton.getStyleClass().add("primary-button");
+        applyButton.setStyle("-fx-text-fill: white;");
 
         originalMusicVolume = game.getMediaPlayer().getVolume();
         originalTargetFPS = game.getTargetFPS();
@@ -103,7 +109,23 @@ public class SettingMenu extends VBox {
         HBox buttonContainer = new HBox(20);
         buttonContainer.getChildren().addAll(backButton, applyButton);
 
-        this.getChildren().addAll(musicContainer, SFXContainer, resolutionContainer, buttonContainer);
+        Image image = new Image("file:resources/game/gui/setting-menu.png");
+        ImageView imageView = new ImageView(image);
+
+        imageView.setFitWidth(500);
+        imageView.setFitHeight(400);
+
+        stackPane.getChildren().add(imageView);
+
+        VBox settingMenu = new VBox(40);
+        settingMenu.setAlignment(Pos.CENTER);
+        settingMenu.setPrefSize(500, 400);
+        settingMenu.setPadding(new Insets(50));
+        settingMenu.getChildren().addAll(settingsLabel, musicContainer, SFXContainer, resolutionContainer, buttonContainer);
+
+        stackPane.getChildren().add(settingMenu);
+
+        this.getChildren().addAll(stackPane);
         this.setSpacing(40);
         this.setAlignment(Pos.CENTER);
     }

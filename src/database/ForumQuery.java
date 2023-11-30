@@ -1,7 +1,8 @@
 package database;
 
-import helper.StageManager;
-import helper.Toast;
+import database.connection.Connect;
+import enums.ToastType;
+import helper.toast.ToastBuilder;
 import model.Classroom;
 import model.Forum;
 import model.User;
@@ -67,7 +68,7 @@ public class ForumQuery {
 
             ps2.executeUpdate();
 
-            Toast.makeText(StageManager.getInstance(), "Forum Posted!", 2000, 500, 500);
+            ToastBuilder.buildNormal(ToastType.NORMAL).setText("Forum Posted!").build();
 
             return forum;
         } catch (Exception e) {

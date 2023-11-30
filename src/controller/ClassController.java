@@ -16,11 +16,11 @@ public class ClassController {
     }
 
     public String checkCreateClass(String className, String classDesc, String classCode, String classSubject) {
-        if(className.isEmpty() || classDesc.isEmpty() || classCode.isEmpty() || classSubject.isEmpty()) {
+        if (className.isEmpty() || classDesc.isEmpty() || classCode.isEmpty() || classSubject.isEmpty()) {
             return "Please fill all the fields!";
         }
 
-        if(classCode.length() > 8) {
+        if (classCode.length() > 8) {
             return "Class code must be less than 8 characters!";
         }
 
@@ -32,16 +32,16 @@ public class ClassController {
     }
 
     public String checkJoinClass(String groupCode) {
-        if(groupCode.isEmpty()) {
+        if (groupCode.isEmpty()) {
             return "Please fill the group code!";
         }
         String classroom = classQuery.joinClass(groupCode);
 
-        if(classroom.equals("no data")) {
+        if (classroom.equals("no data")) {
             return "Group code not found!";
         }
 
-        if(classroom.equals("ingroup")) {
+        if (classroom.equals("ingroup")) {
             return "You are already in the group!";
         }
 
@@ -49,6 +49,6 @@ public class ClassController {
     }
 
     public ArrayList<Classroom> getUserClassroom() {
-        return classQuery.getUserClassrooom();
+        return classQuery.getUserClassroom();
     }
 }

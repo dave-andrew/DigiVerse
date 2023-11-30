@@ -1,8 +1,10 @@
 import controller.AuthController;
+import database.connection.ConnectionChecker;
+import enums.ToastType;
 import helper.ScreenManager;
 import helper.StageManager;
 import helper.ThemeManager;
-import helper.Toast;
+import helper.toast.ToastBuilder;
 import javafx.application.Application;
 import javafx.concurrent.Service;
 import javafx.concurrent.Task;
@@ -16,85 +18,128 @@ import javafx.stage.Stage;
 import javafx.stage.StageStyle;
 import model.LoggedUser;
 import view.Home;
-import view.Login;
+import view.LoginView;
 import view.OfflineGame;
 
 public class Main extends Application {
 
-    private AuthController authController;
+	private AuthController authController;
+	private ConnectionChecker connectionChecker;
+	private Scene scene;
+	private BorderPane borderPane;
+	private String currentScene;
 
-    private Scene scene;
+	private Scene initialize() {
+		authController = new AuthController();
 
-    public static void main(String[] args) {
-        launch(args);
-    }
+		borderPane = new BorderPane();
 
-    private Scene initialize() {
-        authController = new AuthController();
+		VBox loading = new VBox();
+		loading.setAlignment(Pos.CENTER);
 
-        BorderPane borderPane = new BorderPane();
+		ProgressBar progressBar = new ProgressBar();
+		progressBar.setPrefWidth(300);
 
-        VBox loading = new VBox();
-        loading.setAlignment(Pos.CENTER);
+		simulateLoading(progressBar);
 
-        ProgressBar progressBar = new ProgressBar();
-        progressBar.setPrefWidth(300);
+		loading.getChildren().add(progressBar);
 
-        simulateLoading(progressBar);
+		borderPane.setCenter(loading);
 
-        loading.getChildren().add(progressBar);
+		scene = new Scene(borderPane, ScreenManager.SCREEN_WIDTH, ScreenManager.SCREEN_HEIGHT);
+		ThemeManager.getTheme(scene);
 
-        borderPane.setCenter(loading);
+		return scene;
+	}
 
-        scene = new Scene(borderPane, ScreenManager.SCREEN_WIDTH, ScreenManager.SCREEN_HEIGHT);
-        ThemeManager.getTheme(scene);
+	private void simulateLoading(ProgressBar progressBar) {
+		Service<Void> service = new Service<>() {
+			@Override
+			protected Task<Void> createTask() {
+				return new Task<>() {
+					@Override
+					protected Void call() throws Exception {
+						for (int i = 0; i <= 100; i++) {
+							updateProgress(i, 100);
+							Thread.sleep(20);
+						}
+						return null;
+					}
+				};
+			}
+		};
 
-        return scene;
-    }
+		progressBar.progressProperty().bind(service.progressProperty());
 
-    private void simulateLoading(ProgressBar progressBar) {
-        Service<Void> service = new Service<>() {
-            @Override
-            protected Task<Void> createTask() {
-                return new Task<>() {
-                    @Override
-                    protected Void call() throws Exception {
-                        for (int i = 0; i <= 100; i++) {
-                            updateProgress(i, 100);
-                            Thread.sleep(20);
-                        }
-                        return null;
-                    }
-                };
-            }
-        };
+		service.setOnSucceeded(e -> {
+			this.connectionChecker = new ConnectionChecker();
 
-        progressBar.progressProperty().bind(service.progressProperty());
+			this.connectionChecker.getIsConnected().addListener(value -> sceneHandler(value));
+		});
 
-        service.setOnSucceeded(e -> {
-            String message = authController.checkAuth();
-            if (message.equals("true")) {
-                Toast.makeText(StageManager.getInstance(), "Welcome back, " + LoggedUser.getInstance().getUsername() + "!", 2000, 500, 500);
-                new Home(StageManager.getInstance());
-            } else if (message.equals("false")) {
-                new Login(StageManager.getInstance());
-            } else {
-                new OfflineGame(StageManager.getInstance());
-            }
-        });
+		service.start();
+	}
 
-        service.start();
-    }
+	private void sceneHandler(boolean value) {
+		String message = authController.checkAuth();
+		Stage stage = StageManager.getInstance();
 
-    @Override
-    public void start(Stage stage) {
-        Stage primaryStage = StageManager.getInstance();
-        scene = initialize();
-        primaryStage.setScene(scene);
+		if (!value) {
+			if(this.currentScene == null) {
+				this.currentScene = "offline";
+				new OfflineGame(stage);
+				return;
+			}
 
-        primaryStage.setTitle("DigiVerse");
-        primaryStage.getIcons().add(new Image("file:resources/icons/app_logo.png"));
-        stage.initStyle(StageStyle.UTILITY);
-        primaryStage.show();
-    }
+			ToastBuilder.buildNormal(ToastType.BUTTON).setText("You are offline!").build();
+			this.currentScene = "offline";
+			new OfflineGame(stage);
+			return;
+		}
+
+		if (this.currentScene != null && this.currentScene.equals("offline")) {
+			ToastBuilder.buildButton(ToastType.BUTTON)
+					.setButtonText("Redirect")
+					.setButtonAction(toast -> this.redirectConnected(message))
+					.setOnClickClose(true)
+					.setText("You are online!")
+					.setFadeOutDelay(1000000)
+					.build();
+			return;
+		}
+
+		this.redirectConnected(message);
+	}
+
+	private void redirectConnected(String message) {
+		if (message.equals("true")) {
+			ToastBuilder.buildNormal(ToastType.NORMAL).setText("Welcome back, " + LoggedUser.getInstance().getUsername() + "!").build();
+			this.currentScene = "home";
+			new Home(StageManager.getInstance());
+			return;
+		}
+
+		if (message.equals("false")) {
+			this.currentScene = "login";
+			new LoginView(StageManager.getInstance());
+		}
+	}
+
+
+
+	@Override
+	public void start(Stage stage) throws Exception {
+		Stage primaryStage = StageManager.getInstance();
+		scene = initialize();
+		primaryStage.setScene(scene);
+
+		primaryStage.setTitle("DigiVerse");
+		primaryStage.getIcons().add(new Image("file:resources/icons/app_logo.png"));
+		stage.initStyle(StageStyle.UTILITY);
+		primaryStage.show();
+	}
+
+	public static void main(String[] args) {
+		launch(args);
+	}
 }

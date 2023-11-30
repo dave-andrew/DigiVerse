@@ -78,14 +78,10 @@ public class OfflineGame {
         this.pauseMenu = new VBox(40);
         this.pauseMenu.setAlignment(Pos.CENTER);
         this.pauseMenu.setPrefSize(500, 400);
-        pauseMenu.setPadding(new Insets(50));
-        pauseMenu.setStyle("-fx-background-color: white;-fx-background-radius: 10;");
 
         this.settingMenu = new VBox(40);
         this.settingMenu.setAlignment(Pos.CENTER);
         this.settingMenu.setPrefSize(500, 400);
-        settingMenu.setPadding(new Insets(50));
-        settingMenu.setStyle("-fx-background-color: white;-fx-background-radius: 10;");
 
         this.scene = new Scene(root, ScreenManager.SCREEN_WIDTH, ScreenManager.SCREEN_HEIGHT);
         player = Player.getInstance();
@@ -251,7 +247,6 @@ public class OfflineGame {
 
                 if (batchTimer <= 0) {
                     batchTimer = INITIAL_TIMER_VALUE;
-                    double elapsedTimer = 0;
                     this.changeState(this.gameLevelUpState);
                     timerLabel.setText("Time: " + batchTimer + "s");
                 }

@@ -1,5 +1,6 @@
 package database;
 
+import database.connection.Connect;
 import model.LoggedUser;
 
 import java.io.File;

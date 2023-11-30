@@ -10,17 +10,13 @@ import javafx.scene.layout.Pane;
 
 public class Bullet extends ImageView {
 
-    private double posX;
-    private double posY;
-
     private final int direction;
     private final int speed;
-
-
+    private final BulletStopState stopState;
+    private double posX;
+    private double posY;
     //    Bullet States
     private BulletBaseState currentState;
-    private final BulletStopState stopState;
-
     private Collider collider;
 
     public Bullet(Pane root, double posX, double posY, int direction) {

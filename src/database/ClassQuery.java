@@ -1,5 +1,6 @@
 package database;
 
+import database.connection.Connect;
 import model.Classroom;
 import model.LoggedUser;
 
@@ -46,7 +47,7 @@ public class ClassQuery {
         }
     }
 
-    public ArrayList<Classroom> getUserClassrooom() {
+    public ArrayList<Classroom> getUserClassroom() {
         ArrayList<Classroom> classrooms = new ArrayList<>();
 
         String query = "SELECT * FROM msclass WHERE ClassID IN (SELECT ClassID FROM class_member WHERE UserID = ?)";
@@ -72,9 +73,9 @@ public class ClassQuery {
         String classId;
         try (PreparedStatement ps = connect.prepareStatement(checkGroupClassCode)) {
             assert ps != null;
+            ps.setString(1, classCode);
 
             try (ResultSet rs = ps.executeQuery()) {
-                ps.setString(1, classCode);
                 if (rs.next()) {
                     classId = rs.getString("ClassID");
                 } else {

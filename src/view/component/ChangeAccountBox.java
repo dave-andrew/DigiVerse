@@ -13,7 +13,7 @@ import javafx.scene.layout.Priority;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 import model.LoggedUser;
-import view.Login;
+import view.LoginView;
 
 public class ChangeAccountBox extends VBox {
 
@@ -81,7 +81,7 @@ public class ChangeAccountBox extends VBox {
 
             this.authController.removeAuth();
 
-            new Login(StageManager.getInstance());
+            new LoginView(StageManager.getInstance());
             dialogStage.close();
         });
     }

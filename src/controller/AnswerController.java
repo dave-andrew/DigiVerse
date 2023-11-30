@@ -1,9 +1,8 @@
 package controller;
 
 import database.AnswerQuery;
-import helper.StageManager;
-import helper.Toast;
-import model.Task;
+import enums.ToastType;
+import helper.toast.ToastBuilder;
 
 import java.io.File;
 import java.io.IOException;
@@ -44,7 +43,7 @@ public class AnswerController {
 
             Files.copy(file.toPath(), targetFilePath, StandardCopyOption.REPLACE_EXISTING);
 
-            Toast.makeText(StageManager.getInstance(), "File Downloaded!", 2000, 500, 500);
+            ToastBuilder.buildNormal(ToastType.NORMAL).setText("File Downloaded!").build();
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -63,7 +62,7 @@ public class AnswerController {
                 Files.copy(file.toPath(), targetFilePath, StandardCopyOption.REPLACE_EXISTING);
             }
 
-            Toast.makeText(StageManager.getInstance(), "Files Downloaded!", 2000, 500, 500);
+            ToastBuilder.buildNormal(ToastType.NORMAL).setText("Files Downloaded!").build();
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -79,17 +78,17 @@ public class AnswerController {
 
     public boolean scoreAnswer(String taskid, String userid, String score) {
         if(score.isEmpty()) {
-            Toast.makeText(StageManager.getInstance(), "Score cannot be empty!", 2000, 500, 500);
+            ToastBuilder.buildNormal(ToastType.NORMAL).setText("Score cannot be empty!").build();
             return false;
         }
 
         if(!score.matches("[0-9]+")) {
-            Toast.makeText(StageManager.getInstance(), "Score must be a number!", 2000, 500, 500);
+            ToastBuilder.buildNormal(ToastType.NORMAL).setText("Score must be a number!").build();
             return false;
         }
 
         if(Integer.parseInt(score) < 0 || Integer.parseInt(score) > 100) {
-            Toast.makeText(StageManager.getInstance(), "Score must be between 0 and 100!", 2000, 500, 500);
+            ToastBuilder.buildNormal(ToastType.NORMAL).setText("Score must be between 0 and 100!").build();
             return false;
         }
 
