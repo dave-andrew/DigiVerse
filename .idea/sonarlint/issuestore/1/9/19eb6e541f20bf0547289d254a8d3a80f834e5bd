@@ -1,26 +1,0 @@
-
-D
-java:S1604À"(Make this anonymous inner class a lambda(êİÌûÿÿÿÿ
-k	java:S116È"URename this field "TARGET_FPS" to match the regular expression '^[a-z][a-zA-Z0-9]*$'.(äıÛ
-q	java:S116É"\Rename this field "TARGET_FRAME_TIME" to match the regular expression '^[a-z][a-zA-Z0-9]*$'.(âï¨S
-y	java:S116Ô"^Rename this field "INITIAL_TIMER_VALUE" to match the regular expression '^[a-z][a-zA-Z0-9]*$'.(ƒŠªÊşÿÿÿÿ
-=
-java:S1170Ô"!Make this final field static too.(ƒŠªÊşÿÿÿÿ
-C
-java:S1659A"(Declare "timerLabel" on a separate line.(ÀşÚ¦ûÿÿÿÿ
-w
-java:S1450Õ"[Remove the "elapsedTimer" field and declare it as a local variable in the relevant methods.(à˜ÎŞÿÿÿÿÿ
-?
-java:S23867"Make this member "protected".(Ù§ßñüÿÿÿÿ8·İ…ØÁ1
-H
-java:S1172•",Remove this unused method parameter "stage".(»Ë®Òúÿÿÿÿ
-i
-java:S3776¦"RRefactor this method to reduce its Cognitive Complexity from 21 to the 15 allowed.(Ë¯šÁ
-5
-java:S2119Í"Save and re-use this "Random".(”ØÿÖ
-4
-java:S2119Ù"Save and re-use this "Random".(¼İÅf
-K
-java:S10686"0Remove this unused "inputManager" private field.(¦¶‚±üÿÿÿÿ
-L
-java:S1068Õ"0Remove this unused "elapsedTimer" private field.(à˜ÎŞÿÿÿÿÿ
