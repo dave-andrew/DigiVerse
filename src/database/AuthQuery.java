@@ -5,6 +5,7 @@ import helper.DateManager;
 import model.LoggedUser;
 import model.User;
 
+import java.net.InetAddress;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -60,7 +61,12 @@ public class AuthQuery {
     public boolean rememberMe(User user) {
         String query = "INSERT INTO authcheck VALUES (?, ?, ?)";
 
-        String computerName = System.getenv("COMPUTERNAME");
+        String computerName;
+        try {
+            computerName = InetAddress.getLocalHost().getHostName();
+        } catch (Exception e) {
+            computerName = System.getenv("COMPUTERNAME");
+        }
 
         LocalDateTime now = LocalDateTime.now();
         now = now.plusDays(1);
@@ -85,7 +91,13 @@ public class AuthQuery {
 
         String query = "SELECT * FROM authcheck AS a JOIN msuser AS u ON a.UserID = u.UserID WHERE a.DeviceName = ?";
         try (PreparedStatement ps = connect.prepareStatement(query)) {
-            String computerName = System.getenv("COMPUTERNAME");
+            String computerName;
+            try {
+                computerName = InetAddress.getLocalHost().getHostName();
+            } catch (Exception e) {
+                computerName = System.getenv("COMPUTERNAME");
+            }
+
             if (ps != null) {
                 ps.setString(1, computerName);
             } else {

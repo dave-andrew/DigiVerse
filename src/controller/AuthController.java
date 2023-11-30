@@ -4,6 +4,7 @@ import database.AuthQuery;
 import model.LoggedUser;
 import model.User;
 
+import java.net.InetAddress;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 
@@ -30,7 +31,7 @@ public class AuthController {
             return "Password must be greater than 8 characters!";
         }
 
-        if(!email.contains("@") && !email.contains(".")) {
+        if (!email.contains("@") && !email.contains(".")) {
             return "Invalid email format!";
         }
 
@@ -48,18 +49,18 @@ public class AuthController {
     }
 
     public String checkLogin(String email, String pass, boolean remember) {
-        if(email.isEmpty() || pass.isEmpty()) {
+        if (email.isEmpty() || pass.isEmpty()) {
             return "Please fill all the fields!";
         }
 
         User user = authQuery.login(email, pass);
 
 
-        if(user == null) {
+        if (user == null) {
             return "Email or password is incorrect!";
         }
 
-        if(remember) {
+        if (remember) {
             authQuery.rememberMe(user);
         }
 
@@ -72,6 +73,13 @@ public class AuthController {
     }
 
     public void removeAuth() {
-        authQuery.deleteAuthData(System.getenv("COMPUTERNAME"));
+        String computerName;
+        try {
+            computerName = InetAddress.getLocalHost().getHostName();
+        } catch (Exception e) {
+            computerName = System.getenv("COMPUTERNAME");
+        }
+
+        authQuery.deleteAuthData(computerName);
     }
 }
