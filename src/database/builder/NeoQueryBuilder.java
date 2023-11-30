@@ -4,10 +4,7 @@ import database.connection.Connect;
 
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
-import java.util.StringJoiner;
+import java.util.*;
 import java.util.concurrent.atomic.AtomicInteger;
 
 public class NeoQueryBuilder {
@@ -61,8 +58,14 @@ public class NeoQueryBuilder {
         return this;
     }
 
-    public NeoQueryBuilder values(Map<String, String> values) {
-        this.valueMap = values;
+    public NeoQueryBuilder values(String key, String value) {
+        if (this.valueMap == null) {
+            this.valueMap = new HashMap<>();
+            this.valueMap.put(key, value);
+        } else {
+            this.valueMap.put(key, value);
+        }
+
         return this;
     }
 
