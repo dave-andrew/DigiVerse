@@ -1,5 +1,6 @@
 package database;
 
+import database.builder.QueryBuilder;
 import database.connection.Connect;
 import helper.DateManager;
 import model.LoggedUser;
@@ -18,10 +19,10 @@ public class AuthQuery {
         this.connect = Connect.getConnection();
     }
 
-    public boolean register(User user) {
+    public void register(User user) {
         String query = "INSERT INTO msuser VALUES (?, ?, ?, ?, ?, NULL)";
 
-        PreparedStatement ps = connect.prepareStatement(query);
+        PreparedStatement ps = new QueryBuilder().into("msuser").values("(?, ?, ?, ?, ?, NULL)").insert();
         try {
             assert ps != null;
             ps.setString(1, user.getId());
@@ -30,13 +31,7 @@ public class AuthQuery {
             ps.setString(4, user.getPassword());
             ps.setString(5, user.getDob());
 
-            int rows = ps.executeUpdate();
-
-            if(rows > 0) {
-                return true;
-            } else {
-                return false;
-            }
+            ps.executeUpdate();
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
