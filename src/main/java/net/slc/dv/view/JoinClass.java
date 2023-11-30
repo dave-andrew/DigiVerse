@@ -30,14 +30,15 @@ public class JoinClass {
     private Label errorLbl;
 
     public JoinClass(Stage ownerStage) {
-        initialize(ownerStage);
-        setLayout();
-        setActions();
-
         this.dialogStage = new Stage();
         dialogStage.initModality(Modality.APPLICATION_MODAL);
         dialogStage.initOwner(ownerStage);
 //        dialogStage.initStyle(StageStyle.TRANSPARENT);
+
+        initialize(ownerStage);
+        setLayout();
+        setActions();
+
         dialogStage.setScene(scene);
 
         dialogStage.setTitle("Join Class");

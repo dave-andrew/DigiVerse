@@ -1,10 +1,5 @@
 package net.slc.dv.view.homeview.task;
 
-import net.slc.dv.controller.AnswerController;
-import net.slc.dv.controller.CommentController;
-import net.slc.dv.helper.DateManager;
-import net.slc.dv.helper.ImageManager;
-import net.slc.dv.helper.toast.ToastBuilder;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.control.Button;
@@ -18,6 +13,11 @@ import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Line;
+import net.slc.dv.controller.AnswerController;
+import net.slc.dv.controller.CommentController;
+import net.slc.dv.helper.DateManager;
+import net.slc.dv.helper.ImageManager;
+import net.slc.dv.helper.toast.ToastBuilder;
 import net.slc.dv.model.LoggedUser;
 import net.slc.dv.model.Task;
 import net.slc.dv.model.TaskComment;
@@ -34,12 +34,10 @@ public class TaskDetail extends HBox {
 
     private final AnswerController answerController;
     private final CommentController commentController;
-
-    private VBox mainContent, sideContent, fileContainer;
-    private HBox innerMainContent;
     private final Task task;
     private final String userRole;
-
+    private VBox mainContent, sideContent, fileContainer;
+    private HBox innerMainContent;
     private Button submitBtn, markAsDoneBtn;
     private Label submitStatus;
     private Button downloadBtn;
@@ -87,7 +85,7 @@ public class TaskDetail extends HBox {
 
         String createDate = DateManager.ddMMMyy(task.getCreatedAt());
 
-        Label postedBy = new Label("Posted by: " + task.getUser().getUsername() + " • " + createDate);
+        Label postedBy = new Label("Posted by: " + task.getUser().getUsername() + " \u2022 " + createDate);
         VBox.setMargin(postedBy, new Insets(20, 0, 0, 0));
 
         VBox detail = new VBox();
@@ -162,12 +160,12 @@ public class TaskDetail extends HBox {
 
         userComment.getChildren().add(commentTitle);
 
-        if(userRole.equals("Student")) {
+        if (userRole.equals("Student")) {
             HBox commentInputContainer = new HBox(10);
             commentInputContainer.setPadding(new Insets(10, 10, 10, 10));
 
             ImageView userImg;
-            if(LoggedUser.getInstance().getProfileImage() == null) {
+            if (LoggedUser.getInstance().getProfileImage() == null) {
                 userImg = new ImageView(new Image("file:resources/icons/user.png"));
 
                 userImg.setFitWidth(30);
@@ -188,9 +186,8 @@ public class TaskDetail extends HBox {
             commentInputContainer.getChildren().add(commentInput);
 
             commentInput.setOnKeyPressed(e -> {
-                if(e.getCode().toString().equals("ENTER")) {
+                if (e.getCode().toString().equals("ENTER")) {
                     TaskComment newTaskComment = this.commentController.createTaskComment(commentInput.getText(), task.getId(), LoggedUser.getInstance().getId());
-
 
 
                     HBox commentItem = new CommentItem(newTaskComment);
@@ -205,7 +202,7 @@ public class TaskDetail extends HBox {
             detail.getChildren().add(userComment);
         }
 
-        if(this.userRole.equals("Teacher")) {
+        if (this.userRole.equals("Teacher")) {
             ArrayList<TaskComment> taskCommentList = this.commentController.getTaskComments(task.getId());
 
             for (TaskComment taskComment : taskCommentList) {
@@ -217,7 +214,7 @@ public class TaskDetail extends HBox {
 
                 commentListContainer.getChildren().add(commentContainer);
             }
-        } else if(this.userRole.equals("Student")) {
+        } else if (this.userRole.equals("Student")) {
             ArrayList<TaskComment> taskCommentList = this.commentController.getStudentTaskComments(task.getId());
 
             for (TaskComment taskComment : taskCommentList) {
@@ -277,7 +274,7 @@ public class TaskDetail extends HBox {
 
         submitContainer.getChildren().addAll(submitStatusContainer, submitBtn, markAsDoneBtn);
 
-        if(this.userRole.equals("Student")) {
+        if (this.userRole.equals("Student")) {
 
             sideContent.getChildren().addAll(submitContainer);
             sideContent.setAlignment(Pos.TOP_CENTER);
@@ -352,7 +349,7 @@ public class TaskDetail extends HBox {
     private void actions() {
         this.submitBtn.setOnAction(e -> {
 
-            if(!checkDeadline()) {
+            if (!checkDeadline()) {
                 return;
             }
 
@@ -362,17 +359,17 @@ public class TaskDetail extends HBox {
 
         this.markAsDoneBtn.setOnMouseClicked(e -> {
 
-            if(!checkDeadline()) {
+            if (!checkDeadline()) {
                 return;
             }
 
             ArrayList<File> fileList = fetchAnswer();
 
-            if(submitStatus.getText().equals("Not Submitted")) {
+            if (submitStatus.getText().equals("Not Submitted")) {
                 this.answerController.markAsDone(task.getId(), LoggedUser.getInstance().getId());
                 this.submitStatus.setText("Submitted");
                 this.sideContent.getChildren().add(fileContainer);
-            } else if(submitStatus.getText().equals("Submitted") && fileList.isEmpty()) {
+            } else if (submitStatus.getText().equals("Submitted") && fileList.isEmpty()) {
                 this.answerController.markUndone(task.getId(), LoggedUser.getInstance().getId());
                 this.submitStatus.setText("Not Submitted");
                 this.sideContent.getChildren().remove(fileContainer);

@@ -1,17 +1,14 @@
 package net.slc.dv.game;
 
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import net.slc.dv.enums.PowerUp;
 import net.slc.dv.game.player.*;
 import net.slc.dv.helper.Collider;
 import net.slc.dv.helper.ImageManager;
-import net.slc.dv.helper.InputManager;
 import net.slc.dv.helper.ScreenManager;
-import javafx.scene.image.Image;
-import javafx.scene.image.ImageView;
-import javafx.scene.input.KeyCode;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.concurrent.ConcurrentHashMap;
 
 public class Player extends ImageView {

@@ -1,27 +1,25 @@
 package net.slc.dv.game.enemy;
 
+import javafx.scene.media.Media;
+import javafx.scene.media.MediaPlayer;
 import net.slc.dv.game.Enemy;
 import net.slc.dv.game.dropitem.*;
 import net.slc.dv.helper.ItemManager;
-import javafx.scene.media.Media;
-import javafx.scene.media.MediaPlayer;
 import net.slc.dv.view.OfflineGame;
 
 import java.io.File;
 import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Random;
 
 public class EnemyDeadState extends EnemyBaseState {
 
-    private double lastTimeFrame = 0;
-    private int frame = 0;
-
     private final List<DropItem> dropItems = new ArrayList<>();
     private final ItemManager itemManager = ItemManager.getInstance();
-
     private final MediaPlayer mediaPlayer;
+    private final Random random = new Random();
+    private double lastTimeFrame = 0;
+    private int frame = 0;
 
     public EnemyDeadState(Enemy enemy) {
         super(enemy);
@@ -61,8 +59,6 @@ public class EnemyDeadState extends EnemyBaseState {
         }
     }
 
-    private final Random random = new Random();
-
     public void createDropItems() {
         double[] dropItemWeights = {0.1, 0.1, 0.1, 0.1, 0.1, 0.1, 0.1};
 
@@ -97,10 +93,8 @@ public class EnemyDeadState extends EnemyBaseState {
                         break;
                 }
 
-                if (newDropItem != null) {
-                    dropItems.add(newDropItem);
-                     itemManager.addDropItem(newDropItem);
-                }
+                dropItems.add(newDropItem);
+                itemManager.addDropItem(newDropItem);
                 break;
             }
         }

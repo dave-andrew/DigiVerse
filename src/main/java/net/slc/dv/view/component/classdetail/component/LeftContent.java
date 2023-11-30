@@ -7,7 +7,6 @@ import javafx.scene.input.ClipboardContent;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Priority;
 import javafx.scene.layout.VBox;
-import javafx.scene.text.Font;
 import net.slc.dv.model.Classroom;
 
 public class LeftContent extends HBox {
@@ -15,7 +14,6 @@ public class LeftContent extends HBox {
     private final Label classCode;
 
     public LeftContent(String role, Classroom classroom) {
-
         VBox container = new VBox();
 
         Label classCodeTitle;

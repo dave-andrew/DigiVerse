@@ -1,10 +1,5 @@
 package net.slc.dv.view;
 
-import net.slc.dv.controller.MemberController;
-import net.slc.dv.controller.TaskController;
-import net.slc.dv.controller.UserController;
-import net.slc.dv.helper.ImageManager;
-import net.slc.dv.helper.StageManager;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.control.*;
@@ -16,6 +11,11 @@ import javafx.scene.shape.Line;
 import javafx.scene.shape.Rectangle;
 import javafx.stage.FileChooser;
 import javafx.util.StringConverter;
+import net.slc.dv.controller.MemberController;
+import net.slc.dv.controller.TaskController;
+import net.slc.dv.controller.UserController;
+import net.slc.dv.helper.ImageManager;
+import net.slc.dv.helper.StageManager;
 import net.slc.dv.model.Classroom;
 import net.slc.dv.model.LoggedUser;
 import net.slc.dv.model.Task;
@@ -70,7 +70,7 @@ public class Profile extends VBox {
 
     public static void DateFormatter(DatePicker birthdayField) {
         birthdayField.setConverter(new StringConverter<>() {
-            DateTimeFormatter dateFormatter = DateTimeFormatter.ofPattern("dd MMMM yyyy");
+            final DateTimeFormatter dateFormatter = DateTimeFormatter.ofPattern("dd MMMM yyyy");
 
             @Override
             public String toString(LocalDate date) {

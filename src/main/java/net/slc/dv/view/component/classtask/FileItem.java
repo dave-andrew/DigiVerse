@@ -17,14 +17,14 @@ public class FileItem extends HBox {
 
     public FileItem(File file) {
 
-        if(getFileType(file).equals("pdf")) {
+        if (getFileType(file).equals("pdf")) {
             Image img = new Image("file:resources/icons/pdf.png");
             ImageView imgView = new ImageView(img);
             imgView.setFitWidth(20);
             imgView.setFitHeight(20);
 
             this.getChildren().add(imgView);
-        } else if(getFileType(file).equals("png") || getFileType(file).equals("jpg") || getFileType(file).equals("jpeg")) {
+        } else if (getFileType(file).equals("png") || getFileType(file).equals("jpg") || getFileType(file).equals("jpeg")) {
             Image img = new Image("file:resources/icons/image.png");
             ImageView imgView = new ImageView(img);
             imgView.setFitWidth(20);

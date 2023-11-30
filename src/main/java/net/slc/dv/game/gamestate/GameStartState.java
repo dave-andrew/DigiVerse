@@ -3,13 +3,12 @@ package net.slc.dv.game.gamestate;
 import net.slc.dv.helper.ImageManager;
 import net.slc.dv.helper.InputManager;
 import net.slc.dv.helper.ScreenManager;
-import javafx.scene.Scene;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.KeyCode;
 import net.slc.dv.view.OfflineGame;
 
-public class GameStartState extends GameBaseState{
+public class GameStartState extends GameBaseState {
 
     private ImageView guiView;
 

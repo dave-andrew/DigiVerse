@@ -23,7 +23,6 @@ import javafx.scene.layout.VBox;
 import net.slc.dv.model.*;
 
 import javafx.util.Duration;
-import java.util.Collections;
 import java.util.List;
 
 public class RightContent extends VBox {
@@ -44,11 +43,8 @@ public class RightContent extends VBox {
         this.getChildren().add(Container("post", "", user));
 
         List<Forum> forumList = this.forumController.getClassroomForum(classroom.getClassId());
-
         for (Forum forum : forumList) {
-
             VBox forumContainer = forumContainer(forum);
-
             this.getChildren().add(forumContainer);
         }
     }
@@ -57,7 +53,6 @@ public class RightContent extends VBox {
         VBox forumContainer = new VBox();
 
         HBox post = Container("display", forum.getText(), forum.getUser());
-
         forumContainer.getChildren().add(post);
 
         VBox line = new VBox();
@@ -65,16 +60,13 @@ public class RightContent extends VBox {
         line.getStyleClass().add("bottom-border");
 
         VBox.setMargin(line, new Insets(10, 0, 10, 0));
-
         forumContainer.getChildren().add(line);
 
         VBox commentContainer = new VBox();
-
         forumContainer.getChildren().add(commentContainer);
 
         HBox commentInput = commentInput(forum, commentContainer);
         commentInput.getStyleClass().add("bottom-border");
-
         forumContainer.getChildren().add(commentInput);
 
         HBox dropDownComment = new HBox();

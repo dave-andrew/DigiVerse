@@ -1,6 +1,5 @@
 package net.slc.dv.view.component.classroom;
 
-import net.slc.dv.controller.ClassController;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.control.Button;
@@ -15,6 +14,12 @@ public class JoinClassNav extends HBox {
 
     private Button joinBtn;
     private Button closeBtn;
+
+    public JoinClassNav() {
+        initialize();
+        actions();
+        this.getStyleClass().add("nav-bar");
+    }
 
     private void initialize() {
         HBox leftNav = new HBox(20);
@@ -52,12 +57,6 @@ public class JoinClassNav extends HBox {
             Stage currentStage = (Stage) getScene().getWindow();
             currentStage.close();
         });
-    }
-
-    public JoinClassNav() {
-        initialize();
-        actions();
-        this.getStyleClass().add("nav-bar");
     }
 
     public Button getJoinBtn() {

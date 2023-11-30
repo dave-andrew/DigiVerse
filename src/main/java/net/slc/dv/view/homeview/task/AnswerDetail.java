@@ -1,7 +1,5 @@
 package net.slc.dv.view.homeview.task;
 
-import net.slc.dv.controller.AnswerController;
-import net.slc.dv.controller.MemberController;
 import javafx.geometry.Insets;
 import javafx.scene.control.Label;
 import javafx.scene.control.ScrollPane;
@@ -10,6 +8,8 @@ import javafx.scene.image.ImageView;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
+import net.slc.dv.controller.AnswerController;
+import net.slc.dv.controller.MemberController;
 import net.slc.dv.model.Classroom;
 import net.slc.dv.model.ClassroomMember;
 import net.slc.dv.model.Task;
@@ -27,6 +27,7 @@ public class AnswerDetail extends HBox {
 
     private VBox fileContainer;
     private VBox memberList;
+    private int idx = 1;
 
     public AnswerDetail(Task task, Classroom classroom) {
         this.memberController = new MemberController();
@@ -68,12 +69,10 @@ public class AnswerDetail extends HBox {
 
     }
 
-    private int idx = 1;
-
     private void fetchMember() {
 
         memberController.getClassMember(classroom.getClassId()).forEach(member -> {
-            if(member.getRole().equals("Student")) {
+            if (member.getRole().equals("Student")) {
                 MemberItem memberItem = new MemberItem(member, idx);
                 memberList.getChildren().add(memberItem);
 
@@ -107,7 +106,7 @@ public class AnswerDetail extends HBox {
 
             HBox fileItem = new HBox();
 
-            if(answer.getName().endsWith(".pdf")) {
+            if (answer.getName().endsWith(".pdf")) {
                 Image image = new Image("file:resources/icons/pdf.png");
                 ImageView icon = new ImageView(image);
 
@@ -116,7 +115,7 @@ public class AnswerDetail extends HBox {
 
                 fileItem.getChildren().addAll(icon);
 
-            } else if(answer.getName().endsWith(".png") || answer.getName().endsWith(".jpg") || answer.getName().endsWith(".jpeg")) {
+            } else if (answer.getName().endsWith(".png") || answer.getName().endsWith(".jpg") || answer.getName().endsWith(".jpeg")) {
 
                 Image image = new Image("file:resources/icons/image.png");
                 ImageView icon = new ImageView(image);

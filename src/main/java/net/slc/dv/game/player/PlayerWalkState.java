@@ -2,7 +2,6 @@ package net.slc.dv.game.player;
 
 import net.slc.dv.game.Player;
 import net.slc.dv.helper.InputManager;
-import net.slc.dv.helper.ScreenManager;
 import javafx.scene.input.KeyCode;
 import javafx.scene.layout.Pane;
 

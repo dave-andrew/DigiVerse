@@ -1,10 +1,5 @@
 package net.slc.dv.view;
 
-import net.slc.dv.controller.AuthController;
-import net.slc.dv.helper.ImageManager;
-import net.slc.dv.helper.ScreenManager;
-import net.slc.dv.helper.StageManager;
-import net.slc.dv.helper.ThemeManager;
 import javafx.animation.Interpolator;
 import javafx.animation.KeyFrame;
 import javafx.animation.KeyValue;
@@ -18,6 +13,11 @@ import javafx.scene.image.ImageView;
 import javafx.scene.layout.*;
 import javafx.stage.Stage;
 import javafx.util.Duration;
+import net.slc.dv.controller.AuthController;
+import net.slc.dv.helper.ImageManager;
+import net.slc.dv.helper.ScreenManager;
+import net.slc.dv.helper.StageManager;
+import net.slc.dv.helper.ThemeManager;
 import net.slc.dv.model.Classroom;
 import net.slc.dv.model.LoggedUser;
 import net.slc.dv.view.homeview.Calendar;

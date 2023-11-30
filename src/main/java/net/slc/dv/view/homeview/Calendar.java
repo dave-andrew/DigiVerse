@@ -146,7 +146,7 @@ public class Calendar extends VBox {
                     ArrayList<Task> taskList = fetchTask(day, yearMonth.getMonthValue(), yearMonth.getYear());
 
                     for (Task task : taskList) {
-                        Label taskTitle = new Label(" • " + task.getTitle());
+                        Label taskTitle = new Label(" \u2022 " + task.getTitle());
                         taskTitle.setWrapText(true);
                         taskTitle.setMaxWidth(150);
                         taskTitle.setPadding(new Insets(0, 0, 0, 5));

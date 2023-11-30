@@ -1,13 +1,13 @@
 package net.slc.dv.game.player;
 
-import net.slc.dv.enums.PowerUp;
-import net.slc.dv.game.Bullet;
-import net.slc.dv.game.Player;
-import net.slc.dv.helper.InputManager;
 import javafx.scene.input.KeyCode;
 import javafx.scene.layout.Pane;
 import javafx.scene.media.Media;
 import javafx.scene.media.MediaPlayer;
+import net.slc.dv.enums.PowerUp;
+import net.slc.dv.game.Bullet;
+import net.slc.dv.game.Player;
+import net.slc.dv.helper.InputManager;
 
 import java.io.File;
 import java.util.ArrayList;

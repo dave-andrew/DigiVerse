@@ -22,7 +22,6 @@ public class MemberItem extends HBox {
         ImageView profile = new ImageView(profileImg);
         profile.setFitWidth(35);
         profile.setFitHeight(35);
-
         ImageManager.makeCircular(profile, 17.5);
 
         HBox userBox = new HBox();

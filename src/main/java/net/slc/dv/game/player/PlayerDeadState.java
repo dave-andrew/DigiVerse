@@ -1,13 +1,9 @@
 package net.slc.dv.game.player;
 
-import net.slc.dv.game.Player;
 import javafx.scene.layout.Pane;
-import javafx.scene.media.Media;
-import javafx.scene.media.MediaPlayer;
+import net.slc.dv.game.Player;
 
-import java.io.File;
-
-public class PlayerDeadState extends PlayerBaseState{
+public class PlayerDeadState extends PlayerBaseState {
 
     private double lastTimeFrame = 0;
     private int frame = 0;
@@ -27,24 +23,24 @@ public class PlayerDeadState extends PlayerBaseState{
     public void onUpdate(double deltaTime, Pane root) {
         this.lastTimeFrame += deltaTime;
 
-        if(player.getLives() == -1 && frame == 200) {
+        if (player.getLives() == -1 && frame == 200) {
             player.changeState(player.getNoLiveState());
             return;
         }
 
-        if(frame == 200) {
+        if (frame == 200) {
             player.changeState(player.getRespawnState());
             return;
         }
 
         if (lastTimeFrame > 2) {
             this.frame++;
-            if(this.frame < 5){
+            if (this.frame < 5) {
                 this.lastTimeFrame = 0;
             }
         }
 
-        if(frame < 5) {
+        if (frame < 5) {
             player.setSprite(player.getDiedSprites().get(frame));
             player.setImage(player.getSprite());
         } else {

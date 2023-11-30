@@ -64,22 +64,34 @@ public class ClassDetailNav extends HBox {
     }
 
     private void actions() {
-        forum.setOnAction(e -> setActive(classForum));
-        task.setOnAction(e -> setActive(classTask));
-        member.setOnAction(e -> setActive(classMember));
-        score.setOnAction(e -> setActive(classScore));
+        forum.setOnAction(e -> forumActive(classForum));
+        task.setOnAction(e -> taskActive(classTask));
+        member.setOnAction(e -> memberActive(classMember));
+        score.setOnAction(e -> scoreActive(classScore));
     }
 
-    private void setActive(ClassBase classBase) {
+    private void forumActive(ClassBase classBase) {
         clearStyle();
         this.parent.setCenter(classBase);
         forum.getStyleClass().add("active");
     }
 
-    private void setActive(Pane classBase) {
+    private void taskActive(ClassBase classBase) {
         clearStyle();
         this.parent.setCenter(classBase);
-        forum.getStyleClass().add("active");
+        task.getStyleClass().add("active");
+    }
+
+    private void memberActive(ClassBase classBase) {
+        clearStyle();
+        this.parent.setCenter(classBase);
+        member.getStyleClass().add("active");
+    }
+
+    private void scoreActive(Pane classBase) {
+        clearStyle();
+        this.parent.setCenter(classBase);
+        score.getStyleClass().add("active");
     }
 
 }

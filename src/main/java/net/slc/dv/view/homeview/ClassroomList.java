@@ -33,6 +33,9 @@ public class ClassroomList extends GridPane {
 
         ArrayList<Classroom> classroomList = classController.getUserClassroom();
 
+        int columnCount = 0;
+        int maxColumns = 4;
+
         for (Classroom classroom : classroomList) {
             StackPane sp = new ClassCard(classroom);
 
@@ -52,7 +55,13 @@ public class ClassroomList extends GridPane {
                 }
             });
 
-            this.add(sp, 0, 0);
+            this.add(sp, columnCount % maxColumns, columnCount / maxColumns);
+
+            columnCount++;
+
+            if (columnCount % maxColumns == 0) {
+                this.addRow(columnCount / maxColumns);
+            }
         }
 
         this.prefWidthProperty().bind(mainPane.widthProperty().subtract(10));

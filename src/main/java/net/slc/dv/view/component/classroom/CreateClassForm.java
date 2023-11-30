@@ -1,6 +1,5 @@
 package net.slc.dv.view.component.classroom;
 
-import net.slc.dv.controller.ClassController;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.control.Button;
@@ -11,29 +10,52 @@ import javafx.scene.layout.HBox;
 import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
+import net.slc.dv.controller.ClassController;
 
 import java.util.ArrayList;
 
 public class CreateClassForm extends VBox {
 
     private final Stage dialogStage;
-
+    private final Label errorLbl;
+    private final ArrayList<String> subjects = new ArrayList<>();
     private ClassController classController;
-
     private Label classNameLbl;
     private Label classDescLbl;
     private Label classCodeLbl;
     private Label classSubjectLbl;
-    private final Label errorLbl;
     private TextField classNameField, classDescField, classCodeField;
     private ComboBox<String> classSubjectField;
-
     private VBox classNameBox, classDescBox, classCodeBox, classSubjectBox;
-
     private HBox btnBox;
     private Button createBtn, cancelBtn;
 
-    private final ArrayList<String> subjects = new ArrayList<>();
+    public CreateClassForm(Stage dialogStage, Label errorLbl) {
+        this.dialogStage = dialogStage;
+        this.errorLbl = errorLbl;
+        initialize();
+        actions();
+
+        cancelBtn.getStyleClass().add("secondary-button");
+        createBtn.getStyleClass().add("primary-button");
+        createBtn.setStyle("-fx-text-fill: white");
+
+        btnBox.getChildren().addAll(cancelBtn, createBtn);
+        btnBox.setPadding(new Insets(30, 0, 0, 0));
+        btnBox.setAlignment(Pos.CENTER_RIGHT);
+
+        classSubjectField.getItems().addAll(subjects);
+        classSubjectField.getSelectionModel().selectFirst();
+
+        classNameBox.getChildren().addAll(classNameLbl, classNameField);
+        classDescBox.getChildren().addAll(classDescLbl, classDescField);
+        classCodeBox.getChildren().addAll(classCodeLbl, classCodeField);
+        classSubjectBox.getChildren().addAll(classSubjectLbl, classSubjectField);
+
+        btnBox.setPadding(new Insets(0, 0, 10, 0));
+
+        this.getChildren().addAll(classNameBox, classDescBox, classCodeBox, classSubjectBox, errorLbl, btnBox);
+    }
 
     private void initialize() {
         classController = new ClassController();
@@ -81,7 +103,7 @@ public class CreateClassForm extends VBox {
 
             String message = classController.checkCreateClass(className, classDesc, classCode, classSubject);
 
-            if(message.equals("Create Class Success!")) {
+            if (message.equals("Create Class Success!")) {
                 dialogStage.close();
             }
 
@@ -89,33 +111,6 @@ public class CreateClassForm extends VBox {
         });
 
         cancelBtn.setOnAction(e -> dialogStage.close());
-    }
-
-    public CreateClassForm(Stage dialogStage, Label errorLbl) {
-        this.dialogStage = dialogStage;
-        this.errorLbl = errorLbl;
-        initialize();
-        actions();
-
-        cancelBtn.getStyleClass().add("secondary-button");
-        createBtn.getStyleClass().add("primary-button");
-        createBtn.setStyle("-fx-text-fill: white");
-
-        btnBox.getChildren().addAll(cancelBtn, createBtn);
-        btnBox.setPadding(new Insets(30, 0, 0, 0));
-        btnBox.setAlignment(Pos.CENTER_RIGHT);
-
-        classSubjectField.getItems().addAll(subjects);
-        classSubjectField.getSelectionModel().selectFirst();
-
-        classNameBox.getChildren().addAll(classNameLbl, classNameField);
-        classDescBox.getChildren().addAll(classDescLbl, classDescField);
-        classCodeBox.getChildren().addAll(classCodeLbl, classCodeField);
-        classSubjectBox.getChildren().addAll(classSubjectLbl, classSubjectField);
-
-        btnBox.setPadding(new Insets(0, 0, 10, 0));
-
-        this.getChildren().addAll(classNameBox, classDescBox, classCodeBox, classSubjectBox, errorLbl, btnBox);
     }
 
 }

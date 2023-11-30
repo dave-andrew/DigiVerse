@@ -14,6 +14,12 @@ public class CreateClassNav extends HBox {
 
     private Button closeBtn;
 
+    public CreateClassNav() {
+        initialize();
+        actions();
+        this.getStyleClass().add("nav-bar");
+    }
+
     private void initialize() {
         HBox leftNav = new HBox(20);
 
@@ -50,12 +56,6 @@ public class CreateClassNav extends HBox {
             Stage createClassStage = (Stage) getScene().getWindow();
             createClassStage.close();
         });
-    }
-
-    public CreateClassNav() {
-        initialize();
-        actions();
-        this.getStyleClass().add("nav-bar");
     }
 
 }

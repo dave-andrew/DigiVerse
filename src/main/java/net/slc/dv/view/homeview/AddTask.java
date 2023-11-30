@@ -1,10 +1,5 @@
 package net.slc.dv.view.homeview;
 
-import net.slc.dv.controller.TaskController;
-import net.slc.dv.helper.DateManager;
-import net.slc.dv.helper.ScreenManager;
-import net.slc.dv.helper.ThemeManager;
-import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
@@ -16,210 +11,217 @@ import javafx.scene.layout.Priority;
 import javafx.scene.layout.VBox;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
+import net.slc.dv.builder.*;
+import net.slc.dv.controller.TaskController;
+import net.slc.dv.helper.DateManager;
+import net.slc.dv.helper.ScreenManager;
+import net.slc.dv.helper.ThemeManager;
 import net.slc.dv.model.Classroom;
 import net.slc.dv.view.Profile;
 import net.slc.dv.view.component.TimeSpinner;
+import net.slc.dv.view.component.classtask.CreateFileTask;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
 
 public class AddTask extends BorderPane {
 
-    private final Classroom classroom;
-    private final Stage stage;
-    private final TaskController taskController;
+	enum CenterType {
+		QUESTION, FILE
+	}
+	private Classroom classroom;
+	private Stage stage;
+	private TaskController taskController;
 
-    private Stage dialogStage;
+	private Stage dialogStage;
+	private Scene dialogScene;
 
-    private Label errorLbl;
+	private BorderPane root;
 
-    //  CENTER FORM
-    private TextField titleField;
-    private TextArea descriptionField;
-    private CheckBox scored;
-    private DatePicker datePicker;
-    private TimeSpinner timeSpinner;
+	//    NAVBAR
+	private HBox leftNav;
+	private ImageView close;
+	private Label title;
+	private Button joinBtn;
+	private Button closeBtn;
 
-    public AddTask(Stage stage, Classroom classroom) {
-        this.classroom = classroom;
-        this.stage = stage;
-        this.taskController = new TaskController();
-        init();
+	//  CENTER FORM
+	private CheckBox scored;
+	private DatePicker datePicker;
+	private TimeSpinner timeSpinner;
+	private CenterType centerType;
+	private CreateFileTask createFileTask;
 
-    }
+	public AddTask(Stage stage, Classroom classroom) {
+		this.classroom = classroom;
+		this.stage = stage;
+		this.taskController = new TaskController();
+		this.centerType = CenterType.FILE;
+		this.createFileTask = new CreateFileTask();
+		init();
 
-    private void init() {
-        this.dialogStage = new Stage();
-        dialogStage.initModality(Modality.APPLICATION_MODAL);
-        dialogStage.initOwner(stage);
+	}
+
+	private void init() {
+		this.dialogStage = new Stage();
+		dialogStage.initModality(Modality.APPLICATION_MODAL);
+		dialogStage.initOwner(stage);
 //        dialogStage.initStyle(StageStyle.TRANSPARENT);
 
-        errorLbl = new Label();
-        errorLbl.setStyle("-fx-text-fill: red;");
+		this.root = new BorderPane();
+		this.root.setRight(rightBar());
+		this.root.setTop(navBar());
+		this.changeCenter();
 
-        BorderPane root = new BorderPane();
-        root.setRight(rightBar());
-        root.setTop(navBar());
-        root.setCenter(center());
+		dialogScene = new Scene(root, ScreenManager.SCREEN_WIDTH, ScreenManager.SCREEN_HEIGHT);
+		dialogStage.setScene(dialogScene);
 
-        Scene dialogScene = new Scene(root, ScreenManager.SCREEN_WIDTH, ScreenManager.SCREEN_HEIGHT);
-        dialogStage.setScene(dialogScene);
+		ThemeManager.getTheme(dialogScene);
 
-        ThemeManager.getTheme(dialogScene);
+		dialogStage.setTitle("Add Task");
+		dialogStage.showAndWait();
+	}
 
-        dialogStage.setTitle("Add Task");
-        dialogStage.showAndWait();
-    }
+	private void changeCenter() {
+		if(this.centerType == CenterType.FILE) {
+			this.root.setCenter(this.createFileTask.getRoot());
+		}
+		else {
+			this.root.setCenter(centerQuestion());
+		}
+	}
 
-    private VBox center() {
-        HBox center = new HBox();
-        center.setAlignment(Pos.CENTER);
-
-        VBox container = new VBox(center);
-        container.setAlignment(Pos.CENTER);
-
-        VBox content = new VBox(5);
-
-        Label title = new Label("Task Title");
-        this.titleField = new TextField();
-
-        Label description = new Label("Task Description");
-        this.descriptionField = new TextArea();
-        VBox.setMargin(description, new Insets(30, 0, 0, 0));
-
-        Label addFileBtn = new Label();
-        VBox.setMargin(addFileBtn, new Insets(100, 0, 0, 0));
-
-        container.getChildren().add(addFileBtn);
-
-        HBox errorContainer = new HBox();
-        errorContainer.setAlignment(Pos.CENTER);
-
-        errorContainer.getChildren().add(errorLbl);
-
-        content.getChildren().addAll(title, titleField, description, descriptionField, errorContainer);
-        content.getStyleClass().add("card");
-
-        center.getChildren().addAll(content);
-
-        return container;
-    }
-
-    private HBox navBar() {
-        HBox container = new HBox();
-
-        //    NAVBAR
-        HBox leftNav = new HBox(20);
-
-        Image closeImg = new Image("file:resources/icons/close.png");
-        ImageView close = new ImageView(closeImg);
-        close.setFitWidth(20);
-        close.setPreserveRatio(true);
-
-        Button closeBtn = new Button();
-        closeBtn.setGraphic(close);
-        closeBtn.getStyleClass().add("image-button");
-
-        Label title = new Label("Create New Task");
-        title.getStyleClass().add("title");
-        title.setPadding(new Insets(10, 0, 10, 0));
-
-        HBox.setHgrow(title, Priority.ALWAYS);
-
-        leftNav.getChildren().addAll(closeBtn, title);
-        leftNav.setAlignment(Pos.CENTER_LEFT);
-        HBox.setHgrow(leftNav, Priority.ALWAYS);
-
-        closeBtn.setOnAction(e -> {
-            this.dialogStage.close();
-        });
+	private VBox centerQuestion() {
+		return new VBox();
+	}
 
 
-        container.getChildren().addAll(leftNav);
-        container.getStyleClass().add("nav-bar");
-        container.setAlignment(Pos.CENTER);
+	private HBox navBar() {
+		close = ImageViewBuilder.create()
+				.setImage(new Image("file:resources/icons/close.png"))
+				.setFitWidth(20)
+				.setPreserveRatio(true)
+				.build();
 
-        return container;
-    }
+		closeBtn = ButtonBuilder.create()
+				.setGraphic(close)
+				.setStyleClass("image-button")
+				.setOnAction(e -> dialogStage.close())
+				.build();
 
-    private void submitForm() {
-        String title = this.titleField.getText();
-        String description = this.descriptionField.getText();
-        LocalDate deadline = this.datePicker.getValue();
-        LocalTime time = this.timeSpinner.getValue();
-        boolean scored = this.scored.isSelected();
+		title = LabelBuilder.create("Create New Task")
+				.setStyleClass("title")
+				.setPadding(10, 0, 10, 0)
+				.setHgrow(Priority.ALWAYS)
+				.build();
 
-        String deadlineAt = DateManager.formatDate(deadline, time);
+		leftNav = HBoxBuilder.create()
+				.addChildren(closeBtn, title)
+				.setAlignment(Pos.CENTER_LEFT)
+				.setHgrow(Priority.ALWAYS)
+				.setSpacing(20)
+				.build();
 
-        if (title.isEmpty() || description.isEmpty()) {
-            errorLbl.setText("Please fill all the fields");
-            return;
-        }
+		return HBoxBuilder.create()
+				.addChildren(leftNav)
+				.setStyleClass("nav-bar")
+				.setAlignment(Pos.CENTER)
+				.build();
+	}
 
-        this.taskController.createTask(title, description, deadlineAt, scored, classroom.getClassId());
+	private void submitForm() {
+		String title = this.createFileTask.getTitleField().getText();
+		String description = this.createFileTask.getDescriptionField().getText();
+		LocalDate deadline = this.datePicker.getValue();
+		LocalTime time = this.timeSpinner.getValue();
+		boolean scored = this.scored.isSelected();
 
-        dialogStage.close();
-    }
+		String deadlineAt = DateManager.formatDate(deadline, time);
 
-    private VBox rightBar() {
-        VBox rightBar = new VBox();
-        VBox dateTimeContainer = new VBox();
-        Label dateTimeLabel = new Label("Deadline");
-        this.datePicker = new DatePicker();
+		if (title.isEmpty() || description.isEmpty()) {
+			this.createFileTask.getErrorLbl().setText("Please fill all the fields");
+			return;
+		}
 
-        datePicker.setValue(LocalDate.now());
+		this.taskController.createTask(title, description, deadlineAt, scored, classroom.getClassId());
 
-        Profile.DateFormatter(datePicker);
+		dialogStage.close();
+	}
 
-        this.timeSpinner = new TimeSpinner();
-        timeSpinner.getValueFactory().setValue(LocalTime.of(23, 59, 59));
+	private VBox rightBar() {
+		Label dateTimeLabel = new Label("Deadline");
+		this.datePicker = new DatePicker();
 
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("hh:mm:ss a");
+		datePicker.setValue(LocalDate.now());
 
-        timeSpinner.valueProperty().addListener((obs, oldTime, newTime) -> {
-            timeSpinner.getEditor().setText(newTime.format(formatter));
-        });
+		Profile.DateFormatter(datePicker);
 
-        VBox dateTimeBox = new VBox();
-        dateTimeBox.getChildren().addAll(dateTimeLabel, datePicker, timeSpinner);
-        dateTimeBox.setSpacing(10);
-        dateTimeBox.setAlignment(Pos.CENTER_LEFT);
-        dateTimeBox.setPadding(new Insets(30, 40, 0, 40));
+		this.timeSpinner = new TimeSpinner();
+		timeSpinner.getValueFactory().setValue(LocalTime.of(23, 59, 59));
 
-        dateTimeContainer.getChildren().addAll(dateTimeBox);
+		DateTimeFormatter formatter = DateTimeFormatter.ofPattern("hh:mm:ss a");
 
-        Label scoreLabel = new Label("Scored");
-        this.scored = new CheckBox();
-        scored.setSelected(false);
+		timeSpinner.valueProperty().addListener((obs, oldTime, newTime) -> {
+			timeSpinner.getEditor().setText(newTime.format(formatter));
+		});
 
-        VBox scoreBox = new VBox();
-        scoreBox.getChildren().addAll(scoreLabel, scored);
-        scoreBox.setSpacing(10);
-        scoreBox.setAlignment(Pos.CENTER_LEFT);
-        scoreBox.setPadding(new Insets(30, 40, 0, 40));
+		VBox dateTimeBox = VBoxBuilder.create()
+				.addChildren(dateTimeLabel, datePicker, timeSpinner)
+				.setSpacing(10)
+				.setAlignment(Pos.CENTER_LEFT)
+				.setPadding(30, 40, 0, 40)
+				.build();
 
-        VBox spacer = new VBox();
-        VBox.setVgrow(spacer, Priority.ALWAYS);
+		VBox dateTimeContainer = VBoxBuilder.create()
+				.addChildren(dateTimeBox)
+				.build();
 
-        Button joinBtn = new Button("Create Task");
-        joinBtn.getStyleClass().add("primary-button");
-        joinBtn.setStyle("-fx-text-fill: white;");
-        joinBtn.setPrefWidth(300);
+		Label scoreLabel = new Label("Scored");
+		this.scored = new CheckBox();
+		scored.setSelected(false);
 
-        VBox.setMargin(joinBtn, new Insets(0, 0, 50, 0));
+		VBox scoreBox = VBoxBuilder.create()
+				.addChildren(scoreLabel, scored)
+				.setSpacing(10)
+				.setAlignment(Pos.CENTER_LEFT)
+				.setPadding(30, 40, 0, 40)
+				.build();
 
-        joinBtn.setOnAction(e -> {
-            submitForm();
-        });
+		VBox spacer = VBoxBuilder.create()
+				.setVgrow(Priority.ALWAYS)
+				.build();
 
+		joinBtn = ButtonBuilder.create("Create Task")
+				.setStyleClass("primary-button")
+				.setStyle("-fx-text-fill: white;")
+				.setPrefWidth(300)
+				.setOnAction(e -> this.submitForm())
+				.setVMargin(0, 0, 50, 0)
+				.build();
 
-        rightBar.getChildren().addAll(dateTimeContainer, scoreBox, spacer, joinBtn);
-        rightBar.setAlignment(Pos.CENTER);
+		Button questionBtn = ButtonBuilder.create("Create Question")
+				.setStyleClass("primary-button")
+				.setStyle("-fx-text-fill: white;")
+				.setPrefWidth(300)
+				.setOnAction(e -> {
+					if(this.centerType == CenterType.FILE) {
+						this.centerType = CenterType.QUESTION;
+					}
+					else {
+						this.centerType = CenterType.FILE;
+					}
 
-        rightBar.getStyleClass().add("side-nav");
+					this.changeCenter();
+				})
+				.build();
 
-        return rightBar;
-    }
+		return VBoxBuilder.create()
+				.addChildren(questionBtn, dateTimeContainer, scoreBox, spacer, joinBtn)
+				.setAlignment(Pos.CENTER)
+				.setStyleClass("side-nav")
+				.build();
+	}
 
 }

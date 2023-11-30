@@ -10,11 +10,9 @@ import net.slc.dv.model.Task;
 public class TaskBase extends BorderPane {
 
     private final String userRole;
-
-    private Button taskButton, answer;
-
     private final TaskDetail taskDetail;
     private final AnswerDetail answerDetail;
+    private Button taskButton, answer;
 
     public TaskBase(Task task, Classroom classroom, String userRole) {
         this.userRole = userRole;
@@ -26,7 +24,7 @@ public class TaskBase extends BorderPane {
     }
 
     private void init() {
-        if(this.userRole.equals("Teacher")) {
+        if (this.userRole.equals("Teacher")) {
             this.setTop(setTopNav());
             actions();
         }

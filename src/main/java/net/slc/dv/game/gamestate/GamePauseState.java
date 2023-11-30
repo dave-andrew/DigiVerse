@@ -1,27 +1,17 @@
 package net.slc.dv.game.gamestate;
 
-import net.slc.dv.helper.InputManager;
 import net.slc.dv.helper.ScreenManager;
-import javafx.geometry.Insets;
-import javafx.scene.control.Button;
-import javafx.scene.control.Slider;
-import javafx.scene.control.Spinner;
-import javafx.scene.input.KeyCode;
-import javafx.scene.layout.VBox;
 import net.slc.dv.view.OfflineGame;
 import net.slc.dv.view.gameview.PauseMenu;
 import net.slc.dv.view.gameview.SettingMenu;
 
 public class GamePauseState extends GameBaseState {
 
-    private PauseMenu pauseMenu;
-    private SettingMenu settingMenu;
-
     public GamePauseState(OfflineGame game) {
         super(game);
 
-        settingMenu = new SettingMenu(game);
-        pauseMenu = new PauseMenu(game, settingMenu);
+        SettingMenu settingMenu = new SettingMenu(game);
+        PauseMenu pauseMenu = new PauseMenu(game, settingMenu);
         settingMenu.setPauseMenu(pauseMenu);
 
         game.getPauseMenu().getChildren().addAll(pauseMenu);

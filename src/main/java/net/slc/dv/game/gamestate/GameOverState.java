@@ -10,7 +10,7 @@ import net.slc.dv.view.OfflineGame;
 
 public class GameOverState extends GameBaseState {
 
-    private ImageView guiView;
+    private final ImageView guiView;
 
     public GameOverState(OfflineGame game) {
         super(game);

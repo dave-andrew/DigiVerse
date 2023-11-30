@@ -1,9 +1,5 @@
 package net.slc.dv.view.component.classtask;
 
-import net.slc.dv.controller.AnswerController;
-import net.slc.dv.controller.FileController;
-import net.slc.dv.helper.StageManager;
-import net.slc.dv.helper.ThemeManager;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
@@ -24,6 +20,10 @@ import javafx.stage.FileChooser;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
+import net.slc.dv.controller.AnswerController;
+import net.slc.dv.controller.FileController;
+import net.slc.dv.helper.StageManager;
+import net.slc.dv.helper.ThemeManager;
 import net.slc.dv.model.LoggedUser;
 
 import java.io.File;

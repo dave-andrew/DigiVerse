@@ -1,16 +1,11 @@
 package net.slc.dv.game.player;
 
-import net.slc.dv.game.Bullet;
+import javafx.scene.input.KeyCode;
+import javafx.scene.layout.Pane;
 import net.slc.dv.game.Player;
-import net.slc.dv.game.bullet.BulletStopState;
 import net.slc.dv.helper.BulletManager;
 import net.slc.dv.helper.InputManager;
 import net.slc.dv.helper.ScreenManager;
-import javafx.scene.input.KeyCode;
-import javafx.scene.layout.Pane;
-
-import java.util.ArrayList;
-import java.util.Iterator;
 
 public abstract class PlayerBaseState {
 
@@ -75,7 +70,7 @@ public abstract class PlayerBaseState {
 
         }
 
-        if(player.getPosX() + velocityX * deltaTime >= ScreenManager.SCREEN_WIDTH - 32 &&
+        if (player.getPosX() + velocityX * deltaTime >= ScreenManager.SCREEN_WIDTH - 32 &&
                 velocityX > 0) {
             velocityX = 0;
         }
@@ -89,7 +84,7 @@ public abstract class PlayerBaseState {
             velocityY = 0;
         }
 
-        if(player.getPosY() + velocityY * deltaTime >= ScreenManager.SCREEN_HEIGHT - 32 &&
+        if (player.getPosY() + velocityY * deltaTime >= ScreenManager.SCREEN_HEIGHT - 32 &&
                 velocityY > 0) {
             velocityY = 0;
         }

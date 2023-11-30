@@ -1,8 +1,6 @@
 package net.slc.dv.game.gamestate;
 
 import net.slc.dv.game.player.PlayerNoLiveState;
-import net.slc.dv.helper.InputManager;
-import javafx.scene.input.KeyCode;
 import net.slc.dv.view.OfflineGame;
 
 public class GamePlayState extends GameBaseState {

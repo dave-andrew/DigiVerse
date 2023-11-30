@@ -1,9 +1,9 @@
 package net.slc.dv.game.player;
 
-import net.slc.dv.game.Player;
 import javafx.scene.layout.Pane;
+import net.slc.dv.game.Player;
 
-public class PlayerNoLiveState extends PlayerBaseState{
+public class PlayerNoLiveState extends PlayerBaseState {
     public PlayerNoLiveState(Player player) {
         super(player);
     }
