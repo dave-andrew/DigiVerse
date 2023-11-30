@@ -81,6 +81,10 @@ public class NeoQueryBuilder {
         return this;
     }
 
+    public NeoQueryBuilder limit(int limit) {
+        return this.limit(String.valueOf(limit));
+    }
+
     public NeoQueryBuilder limit(String limit) {
         this.limit = limit;
         return this;
