@@ -1,13 +1,5 @@
 package net.slc.dv.view.homeview;
 
-import javafx.geometry.Insets;
-import builder.*;
-import controller.TaskController;
-import helper.DateManager;
-import helper.ScreenManager;
-import helper.ThemeManager;
-import view.Profile;
-import view.component.TimeSpinner;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
@@ -19,7 +11,7 @@ import javafx.scene.layout.Priority;
 import javafx.scene.layout.VBox;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
-import net.slc.dv.builder.ButtonBuilder;
+import net.slc.dv.builder.*;
 import net.slc.dv.controller.TaskController;
 import net.slc.dv.helper.DateManager;
 import net.slc.dv.helper.ScreenManager;
@@ -27,8 +19,7 @@ import net.slc.dv.helper.ThemeManager;
 import net.slc.dv.model.Classroom;
 import net.slc.dv.view.Profile;
 import net.slc.dv.view.component.TimeSpinner;
-import model.Classroom;
-import view.component.classtask.CreateFileTask;
+import net.slc.dv.view.component.classtask.CreateFileTask;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;

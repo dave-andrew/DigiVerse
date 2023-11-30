@@ -1,4 +1,4 @@
-package builder;
+package net.slc.dv.builder;
 
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;

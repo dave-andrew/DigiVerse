@@ -1,4 +1,4 @@
-module DigiVerse.main {
+module DigiVerse {
     requires javafx.base;
     requires javafx.controls;
     requires javafx.fxml;
@@ -12,5 +12,4 @@ module DigiVerse.main {
     requires java.sql;
 
     opens net.slc.dv;
-    exports net.slc.dv;
 }

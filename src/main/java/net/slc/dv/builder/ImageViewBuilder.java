@@ -1,4 +1,4 @@
-package builder;
+package net.slc.dv.builder;
 
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;

@@ -9,7 +9,7 @@ import java.sql.SQLException;
 public class ConnectionChecker implements Runnable {
 
     private final Connect connect;
-    @Getter
+
     private final ObservableVariable<Boolean> isConnected;
     private final int CONNECTION_CHECK_INTERVAL = 1000;
 

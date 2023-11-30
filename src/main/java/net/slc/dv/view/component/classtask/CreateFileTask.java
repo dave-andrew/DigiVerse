@@ -1,14 +1,14 @@
-package view.component.classtask;
+package net.slc.dv.view.component.classtask;
 
-import builder.HBoxBuilder;
-import builder.LabelBuilder;
-import builder.VBoxBuilder;
 import javafx.geometry.Pos;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
+import net.slc.dv.builder.HBoxBuilder;
+import net.slc.dv.builder.LabelBuilder;
+import net.slc.dv.builder.VBoxBuilder;
 
 public class CreateFileTask {
 
