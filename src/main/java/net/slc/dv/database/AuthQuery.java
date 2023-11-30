@@ -66,7 +66,7 @@ public class AuthQuery {
         }
     }
 
-    public boolean rememberMe(User user) {
+    public void rememberMe(User user) {
         String computerName;
         try {
             computerName = InetAddress.getLocalHost().getHostName();
@@ -81,10 +81,7 @@ public class AuthQuery {
                     .values("UserID", user.getId())
                     .values("expired", DateManager.formatDate(LocalDateTime.now().plusDays(1)));
 
-            Results results = closer.add(queryBuilder.getResults());
-            ResultSet set = closer.add(results.getResultSet());
-
-            return set.next();
+            closer.add(queryBuilder.getResults());
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
@@ -100,7 +97,7 @@ public class AuthQuery {
         }
 
         try (Closer closer = new Closer()) {
-            NeoQueryBuilder queryBuilder = new NeoQueryBuilder(QueryType.DELETE)
+            NeoQueryBuilder queryBuilder = new NeoQueryBuilder(QueryType.SELECT)
                     .table("authcheck")
                     .join("authcheck", "UserID", "msuser", "UserID")
                     .condition("DeviceName", "=", computerName);
