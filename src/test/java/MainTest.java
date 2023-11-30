@@ -1,5 +1,6 @@
 import net.slc.dv.database.builder.NeoQueryBuilder;
 import net.slc.dv.database.builder.Results;
+import net.slc.dv.database.builder.enums.QueryType;
 import net.slc.dv.helper.Closer;
 
 import java.sql.ResultSet;
@@ -21,7 +22,7 @@ public class MainTest {
 
     private void select() {
         try (Closer closer = new Closer()) {
-            Results results = closer.add(new NeoQueryBuilder(NeoQueryBuilder.QueryType.SELECT)
+            Results results = closer.add(new NeoQueryBuilder(QueryType.SELECT)
                     .table("msuser")
                     .condition("UserEmail", "=", "dep@gmail.com")
                     .condition("UserPassword", "=", "hello1234")
@@ -38,7 +39,7 @@ public class MainTest {
 
     private void insert() {
         try (Closer closer = new Closer()) {
-            closer.add(new NeoQueryBuilder(NeoQueryBuilder.QueryType.INSERT)
+            closer.add(new NeoQueryBuilder(QueryType.INSERT)
                     .table("msuser")
                     .values("UserID", UUID.randomUUID().toString())
                     .values("UserName", "Tester123")
@@ -54,7 +55,7 @@ public class MainTest {
 
     private void update() {
         try (Closer closer = new Closer()) {
-            closer.add(new NeoQueryBuilder(NeoQueryBuilder.QueryType.UPDATE)
+            closer.add(new NeoQueryBuilder(QueryType.UPDATE)
                     .table("msuser")
                     .values("UserName", "Tester456")
                     .condition("UserName", "=", "Tester123")
@@ -67,7 +68,7 @@ public class MainTest {
 
     private void delete() {
         try (Closer closer = new Closer()) {
-            closer.add(new NeoQueryBuilder(NeoQueryBuilder.QueryType.DELETE)
+            closer.add(new NeoQueryBuilder(QueryType.DELETE)
                     .table("msuser")
                     .condition("UserName", "=", "Tester456")
                     .getResults());

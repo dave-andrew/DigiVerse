@@ -1,5 +1,8 @@
 package net.slc.dv.database.builder;
 
+import net.slc.dv.database.builder.enums.ConditionCompareType;
+import net.slc.dv.database.builder.enums.ConditionJoinType;
+import net.slc.dv.database.builder.enums.QueryType;
 import net.slc.dv.database.connection.Connect;
 
 import java.sql.PreparedStatement;
@@ -219,46 +222,8 @@ public class NeoQueryBuilder {
         });
     }
 
-    public enum QueryType {
-        SELECT,
-        INSERT,
-        DELETE,
-        UPDATE
-    }
 
-    public enum ConditionJoinType {
-        AND,
-        OR
-    }
 
-    public enum ConditionCompareType {
-        EQUAL("="),
-        NOT_EQUAL("!="),
-        GREATER_THAN(">"),
-        LESS_THAN("<"),
-        GREATER_THAN_EQUAL(">="),
-        LESS_THAN_EQUAL("<=");
-
-        private final String symbol;
-
-        ConditionCompareType(String symbol) {
-            this.symbol = symbol;
-        }
-
-        public static ConditionCompareType fromString(String symbol) {
-            for (ConditionCompareType type : ConditionCompareType.values()) {
-                if (type.symbol.equals(symbol)) {
-                    return type;
-                }
-            }
-
-            return null;
-        }
-
-        public String getSymbol() {
-            return this.symbol;
-        }
-    }
 
     private static class Condition {
         private final String column;
