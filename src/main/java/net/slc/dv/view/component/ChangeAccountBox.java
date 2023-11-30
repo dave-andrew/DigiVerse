@@ -1,0 +1,93 @@
+package net.slc.dv.view.component;
+
+import javafx.geometry.Pos;
+import javafx.scene.control.Button;
+import javafx.scene.control.Label;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
+import javafx.scene.layout.HBox;
+import javafx.scene.layout.Priority;
+import javafx.scene.layout.VBox;
+import javafx.stage.Stage;
+import net.slc.dv.controller.AuthController;
+import net.slc.dv.helper.ImageManager;
+import net.slc.dv.helper.StageManager;
+import net.slc.dv.model.LoggedUser;
+import net.slc.dv.view.LoginView;
+
+public class ChangeAccountBox extends VBox {
+
+    private LoggedUser loggedUser;
+    private AuthController authController;
+    private Stage dialogStage;
+
+    private VBox userBox;
+    private HBox userHbox;
+    private Label userInfoLbl, userNameLbl, userEmailLbl;
+    private ImageView userImg;
+    private Button changeAccountBtn;
+
+    public ChangeAccountBox(Stage dialogStage) {
+        this.dialogStage = dialogStage;
+        initialize();
+        actions();
+
+        this.setPrefWidth(800);
+    }
+
+    private void initialize() {
+        loggedUser = LoggedUser.getInstance();
+        authController = new AuthController();
+
+        this.setSpacing(10);
+
+        userBox = new VBox();
+        userHbox = new HBox(10);
+
+        userInfoLbl = new Label("Logged As:");
+        userInfoLbl.setStyle("-fx-font-size: 20px;");
+
+        Image image = new Image("file:resources/icons/user.png");
+        userImg = new ImageView(image);
+        userImg.setFitWidth(40);
+        userImg.setFitHeight(40);
+
+        if (loggedUser != null) {
+            userNameLbl = new Label(loggedUser.getUsername());
+            userEmailLbl = new Label(loggedUser.getEmail());
+            if (loggedUser.getProfile() != null) {
+                userImg.setImage(loggedUser.getProfile());
+            }
+        }
+
+        ImageManager.makeCircular(userImg, 20);
+
+        changeAccountBtn = new Button("Change Account");
+        changeAccountBtn.getStyleClass().add("secondary-button");
+
+        HBox spacer = new HBox();
+        HBox.setHgrow(spacer, Priority.ALWAYS);
+
+        userBox.getChildren().addAll(userNameLbl, userEmailLbl);
+        userHbox.getChildren().addAll(userImg, userBox, spacer, changeAccountBtn);
+        userHbox.setAlignment(Pos.CENTER_LEFT);
+
+        HBox titleBox = new HBox();
+        titleBox.getChildren().add(userInfoLbl);
+        titleBox.getStyleClass().add("bottom-border");
+
+        this.getChildren().addAll(titleBox, userHbox);
+    }
+
+    private void actions() {
+        changeAccountBtn.setOnAction(e -> {
+            LoggedUser.getInstance().logout();
+
+            this.authController.removeAuth();
+
+            new LoginView(StageManager.getInstance());
+            dialogStage.close();
+        });
+    }
+
+}
