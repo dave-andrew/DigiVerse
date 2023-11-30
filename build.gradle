@@ -1,0 +1,54 @@
+plugins {
+    id 'java'
+    id 'application'
+    id 'org.openjfx.javafxplugin' version '0.0.13'
+}
+
+group 'net.slc.dv'
+version '1.0.0'
+
+sourceCompatibility = '11'
+targetCompatibility = '11'
+
+repositories {
+    mavenCentral()
+    mavenLocal()
+}
+
+application {
+    mainModule = 'net.slc.dv'
+    mainClass = 'net.slc.dv.Main'
+}
+
+javafx {
+    version = '17.0.9'
+    modules = ['javafx.controls', 'javafx.fxml', 'javafx.web', 'javafx.media']
+}
+
+dependencies {
+    annotationProcessor 'org.projectlombok:lombok:1.18.20'
+
+    implementation('org.controlsfx:controlsfx:11.1.1')
+    implementation('com.dlsc.formsfx:formsfx-core:11.5.0') {
+        exclude(group: 'org.openjfx')
+    }
+    implementation('org.kordamp.ikonli:ikonli-javafx:12.3.1')
+    implementation('org.kordamp.bootstrapfx:bootstrapfx-core:0.4.0')
+
+    // javafx
+    implementation group: 'org.openjfx', name: 'javafx', version: '17.0.9'
+    implementation group: 'org.openjfx', name: 'javafx-base', version: '17.0.9', classifier: 'win'
+    implementation group: 'org.openjfx', name: 'javafx-base', version: '17.0.9', classifier: 'mac'
+    implementation group: 'org.openjfx', name: 'javafx-controls', version: '17.0.9', classifier: 'win'
+    implementation group: 'org.openjfx', name: 'javafx-controls', version: '17.0.9', classifier: 'mac'
+    implementation group: 'org.openjfx', name: 'javafx-graphics', version: '17.0.9', classifier: 'win'
+    implementation group: 'org.openjfx', name: 'javafx-graphics', version: '17.0.9', classifier: 'mac'
+
+    // lombok
+    implementation 'org.projectlombok:lombok:1.18.20'
+    // jetbrains annotations
+    implementation 'org.jetbrains:annotations:20.1.0'
+
+    // mysql java connector
+    implementation 'mysql:mysql-connector-java:8.0.28'
+}
