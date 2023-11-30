@@ -1,6 +1,5 @@
 package database;
 
-import database.builder.QueryBuilder;
 import database.connection.Connect;
 import helper.DateManager;
 import model.LoggedUser;
@@ -22,7 +21,7 @@ public class AuthQuery {
     public void register(User user) {
         String query = "INSERT INTO msuser VALUES (?, ?, ?, ?, ?, NULL)";
 
-        PreparedStatement ps = new QueryBuilder().into("msuser").values("(?, ?, ?, ?, ?, NULL)").insert();
+        PreparedStatement ps = connect.prepareStatement(query);
         try {
             assert ps != null;
             ps.setString(1, user.getId());
