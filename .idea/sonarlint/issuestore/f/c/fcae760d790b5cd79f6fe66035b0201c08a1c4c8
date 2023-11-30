@@ -1,14 +1,0 @@
-
-`	java:S112+"FDefine and throw a dedicated exception instead of using a generic one.(Ò‚Òéüÿÿÿÿ
-`	java:S112\"FDefine and throw a dedicated exception instead of using a generic one.(Ò‚Òéüÿÿÿÿ
-\	java:S112Š"FDefine and throw a dedicated exception instead of using a generic one.(Ú†óÉ
-W
-java:S1126%"AReplace this if-then-else statement by a single return statement.(Ã¼Œ
-W
-java:S1126V"AReplace this if-then-else statement by a single return statement.(Ã¼Œ
-F
-java:S1128"0Remove this unused import 'helper.StageManager'.(Şı
-H
-java:S1128"-Remove this unused import 'view.OfflineGame'.(ñÁ®ÿÿÿÿÿ
-U
-java:S1128"?Remove this unused import 'java.time.format.DateTimeFormatter'.(‰÷÷ª
