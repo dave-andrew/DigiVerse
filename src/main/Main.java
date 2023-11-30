@@ -1,3 +1,5 @@
+package main;
+
 import controller.AuthController;
 import database.connection.ConnectionChecker;
 import enums.ToastType;

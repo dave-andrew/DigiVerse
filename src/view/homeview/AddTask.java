@@ -1,5 +1,6 @@
 package view.homeview;
 
+import builder.ButtonBuilder;
 import controller.TaskController;
 import helper.DateManager;
 import helper.ScreenManager;
@@ -211,19 +212,24 @@ public class AddTask extends BorderPane {
         VBox spacer = new VBox();
         VBox.setVgrow(spacer, Priority.ALWAYS);
 
-        joinBtn = new Button("Create Task");
-        joinBtn.getStyleClass().add("primary-button");
-        joinBtn.setStyle("-fx-text-fill: white;");
-        joinBtn.setPrefWidth(300);
+
+        joinBtn = ButtonBuilder.create("Create Task")
+                .setStyleClass("primary-button")
+                .setStyle("-fx-text-fill: white;")
+                .setPrefWidth(300)
+                .build();
+
+        Button questionBtn = ButtonBuilder.create("Create Question")
+                .setStyleClass("primary-button")
+                .setStyle("-fx-text-fill: white;")
+                .setPrefWidth(300)
+                .setOnAction(e -> submitForm())
+                .build();
 
         VBox.setMargin(joinBtn, new Insets(0, 0, 50, 0));
 
-        joinBtn.setOnAction(e -> {
-            submitForm();
-        });
 
-
-        rightBar.getChildren().addAll(dateTimeContainer, scoreBox, spacer, joinBtn);
+        rightBar.getChildren().addAll(questionBtn, dateTimeContainer, scoreBox, spacer, joinBtn);
         rightBar.setAlignment(Pos.CENTER);
 
         rightBar.getStyleClass().add("side-nav");
