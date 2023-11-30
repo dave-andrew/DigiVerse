@@ -1,7 +1,8 @@
 package net.slc.dv.database.builder.enums;
 
-import net.slc.dv.database.builder.NeoQueryBuilder;
+import lombok.Getter;
 
+@Getter
 public enum ConditionCompareType {
     EQUAL("="),
     NOT_EQUAL("!="),
@@ -22,12 +23,7 @@ public enum ConditionCompareType {
                 return type;
             }
         }
-
         return null;
-    }
-
-    public String getSymbol() {
-        return this.symbol;
     }
 
 }
