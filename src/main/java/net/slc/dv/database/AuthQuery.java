@@ -1,6 +1,8 @@
 package net.slc.dv.database;
 
-import net.slc.dv.database.builder.QueryBuilder;
+import net.slc.dv.database.builder.NeoQueryBuilder;
+import net.slc.dv.database.builder.Results;
+import net.slc.dv.database.builder.enums.QueryType;
 import net.slc.dv.database.connection.Connect;
 import net.slc.dv.helper.Closer;
 import net.slc.dv.helper.DateManager;
@@ -8,7 +10,7 @@ import net.slc.dv.model.LoggedUser;
 import net.slc.dv.model.User;
 
 import java.net.InetAddress;
-import java.sql.PreparedStatement;
+import java.sql.Blob;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.time.LocalDateTime;
@@ -23,42 +25,48 @@ public class AuthQuery {
 
     public void register(User user) {
         try (Closer closer = new Closer()) {
-            PreparedStatement ps = closer.add(new QueryBuilder().into("msuser").values("(?, ?, ?, ?, ?, NULL)").insert());
-            ps.setString(1, user.getId());
-            ps.setString(2, user.getUsername());
-            ps.setString(3, user.getEmail());
-            ps.setString(4, user.getPassword());
-            ps.setString(5, user.getDob());
+            NeoQueryBuilder queryBuilder = new NeoQueryBuilder(QueryType.INSERT)
+                    .table("msuser")
+                    .values("UserID", user.getId())
+                    .values("UserName", user.getUsername())
+                    .values("UserEmail", user.getEmail())
+                    .values("UserPassword", user.getPassword())
+                    .values("UserDOB", user.getDob());
 
-            ps.executeUpdate();
+            closer.add(queryBuilder.getResults());
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
     }
 
     public User login(String email, String pass) {
-        String query = "SELECT * FROM msuser WHERE UserEmail = ? AND UserPassword = ? LIMIT 1";
+        try (Closer closer = new Closer()) {
+            NeoQueryBuilder queryBuilder = new NeoQueryBuilder(QueryType.SELECT)
+                    .table("msuser")
+                    .condition("UserEmail", "=", email)
+                    .condition("UserPassword", "=", pass)
+                    .limit(1);
 
-        try (PreparedStatement ps = connect.prepareStatement(query)) {
-            assert ps != null;
-            ps.setString(1, email);
-            ps.setString(2, pass);
-
-            try (ResultSet rs = ps.executeQuery()) {
-                if (rs.next()) {
-                    return new User(rs.getString("UserID"), rs.getString("UserName"), rs.getString("UserEmail"), rs.getString("UserPassword"), rs.getString("UserDOB"), rs.getBlob("UserProfile"));
-                } else {
-                    return null;
-                }
+            Results results = closer.add(queryBuilder.getResults());
+            ResultSet set = closer.add(results.getResultSet());
+            if (!set.next()) {
+                return null;
             }
+
+            String userID = set.getString("UserID");
+            String userName = set.getString("UserName");
+            String userEmail = set.getString("UserEmail");
+            String userPassword = set.getString("UserPassword");
+            String userDOB = set.getString("UserDOB");
+            Blob userProfile = set.getBlob("UserProfile");
+
+            return new User(userID, userName, userEmail, userPassword, userDOB, userProfile);
         } catch (SQLException e) {
-            return null;
+            throw new RuntimeException(e);
         }
     }
 
     public boolean rememberMe(User user) {
-        String query = "INSERT INTO authcheck VALUES (?, ?, ?)";
-
         String computerName;
         try {
             computerName = InetAddress.getLocalHost().getHostName();
@@ -66,19 +74,17 @@ public class AuthQuery {
             computerName = System.getenv("COMPUTERNAME");
         }
 
-        LocalDateTime now = LocalDateTime.now();
-        now = now.plusDays(1);
-        String formattedDate = DateManager.formatDate(now);
+        try (Closer closer = new Closer()) {
+            NeoQueryBuilder queryBuilder = new NeoQueryBuilder(QueryType.INSERT)
+                    .table("authcheck")
+                    .values("DeviceName", computerName)
+                    .values("UserID", user.getId())
+                    .values("expired", DateManager.formatDate(LocalDateTime.now().plusDays(1)));
 
-        try (PreparedStatement ps = connect.prepareStatement(query)) {
-            assert ps != null;
-            ps.setString(1, computerName);
-            ps.setString(2, user.getId());
-            ps.setString(3, formattedDate);
+            Results results = closer.add(queryBuilder.getResults());
+            ResultSet set = closer.add(results.getResultSet());
 
-            int rows = ps.executeUpdate();
-
-            return rows > 0;
+            return set.next();
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
@@ -86,51 +92,56 @@ public class AuthQuery {
 
     public String checkAuth() {
         LocalDateTime now = LocalDateTime.now();
+        String computerName;
+        try {
+            computerName = InetAddress.getLocalHost().getHostName();
+        } catch (Exception e) {
+            computerName = System.getenv("COMPUTERNAME");
+        }
 
-        String query = "SELECT * FROM authcheck AS a JOIN msuser AS u ON a.UserID = u.UserID WHERE a.DeviceName = ?";
-        try (PreparedStatement ps = connect.prepareStatement(query)) {
-            String computerName;
-            try {
-                computerName = InetAddress.getLocalHost().getHostName();
-            } catch (Exception e) {
-                computerName = System.getenv("COMPUTERNAME");
-            }
+        try (Closer closer = new Closer()) {
+            NeoQueryBuilder queryBuilder = new NeoQueryBuilder(QueryType.DELETE)
+                    .table("authcheck")
+                    .join("authcheck", "UserID", "msuser", "UserID")
+                    .condition("DeviceName", "=", computerName);
 
-            if (ps != null) {
-                ps.setString(1, computerName);
-            } else {
-                return "error";
-            }
-
-            try (ResultSet rs = ps.executeQuery()) {
-                if (rs.next()) {
-                    LocalDateTime expiredDate = DateManager.parseDate(rs.getString("expired"));
-                    if (now.isAfter(expiredDate)) {
-                        deleteAuthData(computerName);
-                        return "false";
-                    } else {
-                        User user = new User(rs.getString("UserID"), rs.getString("UserName"), rs.getString("UserEmail"), rs.getString("UserPassword"), rs.getString("UserDOB"), rs.getBlob("UserProfile"));
-                        LoggedUser.initialize(user);
-                        return "true";
-                    }
-                } else {
+            Results results = closer.add(queryBuilder.getResults());
+            ResultSet set = closer.add(results.getResultSet());
+            if (set.next()) {
+                String expired = set.getString("expired");
+                LocalDateTime expiredDate = DateManager.parseDate(expired);
+                if (now.isAfter(expiredDate)) {
+                    deleteAuthData(computerName);
                     return "false";
                 }
+
+                String userID = set.getString("UserID");
+                String userName = set.getString("UserName");
+                String userEmail = set.getString("UserEmail");
+                String userPassword = set.getString("UserPassword");
+                String userDOB = set.getString("UserDOB");
+                Blob userProfile = set.getBlob("UserProfile");
+                User user = new User(userID, userName, userEmail, userPassword, userDOB, userProfile);
+                LoggedUser.initialize(user);
+                return "true";
             }
+
+            return "false";
         } catch (SQLException e) {
+            e.printStackTrace();
             return "error";
         }
     }
 
     public void deleteAuthData(String deviceName) {
-        String deleteQuery = "DELETE FROM authcheck WHERE DeviceName = ?";
+        try (Closer closer = new Closer()) {
+            NeoQueryBuilder queryBuilder = new NeoQueryBuilder(QueryType.DELETE)
+                    .table("authcheck")
+                    .condition("DeviceName", "=", deviceName);
 
-        try (PreparedStatement deleteStatement = connect.prepareStatement(deleteQuery)) {
-            assert deleteStatement != null;
-            deleteStatement.setString(1, deviceName);
-            deleteStatement.executeUpdate();
+            closer.add(queryBuilder.getResults());
         } catch (SQLException e) {
-            throw new RuntimeException("Error while deleting expired data: " + e.getMessage());
+            throw new RuntimeException(e);
         }
     }
 
