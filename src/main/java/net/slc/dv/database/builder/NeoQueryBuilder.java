@@ -1,5 +1,7 @@
 package net.slc.dv.database.builder;
 
+import lombok.AllArgsConstructor;
+import lombok.Getter;
 import net.slc.dv.database.builder.enums.ConditionCompareType;
 import net.slc.dv.database.builder.enums.ConditionJoinType;
 import net.slc.dv.database.builder.enums.QueryType;
@@ -17,6 +19,7 @@ public class NeoQueryBuilder {
 
     private String table;
     private List<String> columns;
+    private List<Join> joins;
 
 
     private List<Condition> conditionList;
@@ -41,6 +44,17 @@ public class NeoQueryBuilder {
 
     public NeoQueryBuilder columns(String... columns) {
         this.columns = List.of(columns);
+        return this;
+    }
+
+    public NeoQueryBuilder join(String sourceTable, String sourceColumn, String targetTable, String targetColumn) {
+        if (this.joins == null) {
+            this.joins = new ArrayList<>();
+            this.joins.add(new Join(sourceTable, targetTable, sourceColumn, targetColumn));
+        } else {
+            this.joins.add(new Join(sourceTable, targetTable, sourceColumn, targetColumn));
+        }
+
         return this;
     }
 
@@ -170,6 +184,10 @@ public class NeoQueryBuilder {
         }
 
         query.append("FROM ").append(table).append(" ");
+        if (joins != null) {
+            query.append("JOIN ").append(this.buildJoin()).append(" ");
+        }
+
         if (conditionList != null) {
             query.append("WHERE ").append(this.buildConditions()).append(" ");
         }
@@ -198,6 +216,10 @@ public class NeoQueryBuilder {
     private String buildDeleteQuery() {
         StringBuilder query = new StringBuilder();
         query.append("DELETE FROM ").append(table).append(" ");
+        if (joins != null) {
+            query.append("JOIN ").append(this.buildJoin()).append(" ");
+        }
+
         if (conditionList != null) {
             query.append("WHERE ").append(this.buildConditions());
         }
@@ -207,9 +229,14 @@ public class NeoQueryBuilder {
 
     private String buildUpdateQuery() {
         StringBuilder query = new StringBuilder();
-        query.append("UPDATE ").append(table).append(" SET ").append(this.buildUpdateValues());
+        query.append("UPDATE ").append(table).append(" ");
+        if (joins != null) {
+            query.append("JOIN ").append(this.buildJoin()).append(" ");
+        }
+
+        query.append("SET ").append(this.buildUpdateValues()).append(" ");
         if (conditionList != null) {
-            query.append(" WHERE ").append(this.buildConditions());
+            query.append("WHERE ").append(this.buildConditions());
         }
 
         return query.toString();
@@ -219,6 +246,15 @@ public class NeoQueryBuilder {
         StringJoiner stringJoiner = new StringJoiner(", ");
         for (String column : this.columns) {
             stringJoiner.add(column);
+        }
+
+        return stringJoiner.toString();
+    }
+
+    private String buildJoin() {
+        StringJoiner stringJoiner = new StringJoiner(", ");
+        for (Join join : this.joins) {
+            stringJoiner.add(join.getTargetTable() + " ON " + join.buildCondition());
         }
 
         return stringJoiner.toString();
@@ -287,27 +323,25 @@ public class NeoQueryBuilder {
     }
 
 
+    @AllArgsConstructor
+    @Getter
     private static class Condition {
         private final String column;
         private final ConditionCompareType compareType;
         private final String value;
+    }
 
-        public Condition(String column, ConditionCompareType compareType, String value) {
-            this.column = column;
-            this.compareType = compareType;
-            this.value = value;
-        }
+    @AllArgsConstructor
+    @Getter
+    private static class Join {
+        private final String sourceTable;
+        private final String targetTable;
 
-        public String getColumn() {
-            return column;
-        }
+        private final String sourceColumn;
+        private final String targetColumn;
 
-        public ConditionCompareType getCompareType() {
-            return compareType;
-        }
-
-        public String getValue() {
-            return value;
+        public String buildCondition() {
+            return sourceTable + "." + sourceColumn + " = " + targetTable + "." + targetColumn;
         }
     }
 }

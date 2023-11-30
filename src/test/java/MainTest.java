@@ -11,6 +11,7 @@ public class MainTest {
 
     public MainTest() {
         this.select();
+        this.selectJoin();
         this.insert();
         this.update();
         this.delete();
@@ -31,6 +32,24 @@ public class MainTest {
             ResultSet set = results.getResultSet();
             while (set.next()) {
                 System.out.println(set.getString("UserID"));
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
+    private void selectJoin() {
+        try (Closer closer = new Closer()) {
+            Results results = closer.add(new NeoQueryBuilder(QueryType.SELECT)
+                    .table("msuser")
+                    .join("msuser", "UserID", "authcheck", "UserID")
+                    .condition("UserEmail", "=", "dep@gmail.com")
+                    .condition("UserPassword", "=", "hello1234")
+                    .getResults());
+
+            ResultSet set = results.getResultSet();
+            while (set.next()) {
+                System.out.println(set.getString("DeviceName"));
             }
         } catch (SQLException e) {
             e.printStackTrace();
