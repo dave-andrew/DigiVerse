@@ -268,7 +268,7 @@ public class NeoQueryBuilder {
 
     private String buildUpdateValues() {
         StringJoiner stringJoiner = new StringJoiner(", ");
-        for (String column : this.columns) {
+        for (String column : this.valueMap.keySet()) {
             stringJoiner.add(column + " = ?");
         }
 
