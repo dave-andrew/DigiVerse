@@ -93,93 +93,122 @@ public class NeoQueryBuilder {
 
     public Results getResults() throws SQLException {
         Connect connect = Connect.getConnection();
+        PreparedStatement statement;
 
-        StringBuilder query = new StringBuilder();
         switch (queryType) {
-            case SELECT: {
-                query.append("SELECT ");
-
-                if (this.columns == null) {
-                    query.append("* ");
-                } else {
-                    query.append(this.buildColumns()).append(" ");
-                }
-
-                query.append("FROM ").append(table).append(" ");
-                if (conditionList != null) {
-                    query.append("WHERE ").append(this.buildConditions()).append(" ");
-                }
-
-                if (orderBy != null) {
-                    query.append("ORDER BY ").append(orderBy);
-                }
-
-                if (limit != null) {
-                    query.append("LIMIT ").append(limit);
-                }
-
-                if (offset != null) {
-                    query.append("OFFSET ").append(offset);
-                }
-
-                PreparedStatement statement = connect.prepareStatement(query.toString());
-                if (conditionList != null) {
-                    this.applyConditions(statement);
-                }
-
-                assert statement != null;
-                System.out.println(statement);
-                return new Results(statement, statement.executeQuery());
-            }
-            case INSERT: {
-                query.append("INSERT INTO ").append(table).append(" ");
-                query.append("(").append(this.buildInsertColumns()).append(") ");
-                query.append("VALUES (").append(this.buildInsertValues()).append(")");
-
-                PreparedStatement statement = connect.prepareStatement(query.toString());
-                this.applyValues(statement);
-
-                assert statement != null;
-                statement.execute();
-
-                return new Results(statement, null);
-            }
-            case DELETE: {
-                query.append("DELETE FROM ").append(table).append(" ");
-                if (conditionList != null) {
-                    query.append("WHERE ").append(this.buildConditions());
-                }
-
-                PreparedStatement statement = connect.prepareStatement(query.toString());
-                if (conditionList != null) {
-                    this.applyConditions(statement);
-                }
-
-                assert statement != null;
-                statement.execute();
-
-                return new Results(statement, null);
-            }
-            case UPDATE: {
-                query.append("UPDATE ").append(table).append(" SET ").append(this.buildUpdateValues());
-                if (conditionList != null) {
-                    query.append(" WHERE ").append(this.buildConditions());
-                }
-
-                PreparedStatement statement = connect.prepareStatement(query.toString());
-                this.applyValues(statement);
-                if (conditionList != null) {
-                    this.applyConditions(statement);
-                }
-
-                assert statement != null;
-                statement.execute();
-
-                return new Results(statement, null);
-            }
+            case SELECT:
+                statement = buildSelectStatement(connect);
+                break;
+            case INSERT:
+                statement = buildInsertStatement(connect);
+                break;
+            case DELETE:
+                statement = buildDeleteStatement(connect);
+                break;
+            case UPDATE:
+                statement = buildUpdateStatement(connect);
+                break;
             default:
-                throw new RuntimeException();
+                throw new RuntimeException("Invalid queryType: " + queryType);
         }
+
+        assert statement != null;
+        return executeQuery(statement);
+    }
+
+    private PreparedStatement buildSelectStatement(Connect connect) {
+        String sql = buildSelectQuery();
+        PreparedStatement statement = connect.prepareStatement(sql);
+        applyConditions(statement);
+        return statement;
+    }
+
+    private PreparedStatement buildInsertStatement(Connect connect) {
+        String sql = buildInsertQuery();
+        PreparedStatement statement = connect.prepareStatement(sql);
+        applyValues(statement);
+        return statement;
+    }
+
+    private PreparedStatement buildDeleteStatement(Connect connect) {
+        String sql = buildDeleteQuery();
+        PreparedStatement statement = connect.prepareStatement(sql);
+        applyConditions(statement);
+        return statement;
+    }
+
+    private PreparedStatement buildUpdateStatement(Connect connect) {
+        String sql = buildUpdateQuery();
+        PreparedStatement statement = connect.prepareStatement(sql);
+        applyValues(statement);
+        applyConditions(statement);
+        return statement;
+    }
+
+    private Results executeQuery(PreparedStatement statement) throws SQLException {
+        System.out.println(statement);
+        if (queryType == QueryType.SELECT) {
+            return new Results(statement, statement.executeQuery());
+        } else {
+            statement.execute();
+            return new Results(statement, null);
+        }
+    }
+
+    private String buildSelectQuery() {
+        StringBuilder query = new StringBuilder();
+        query.append("SELECT ");
+
+        if (this.columns == null) {
+            query.append("* ");
+        } else {
+            query.append(this.buildColumns()).append(" ");
+        }
+
+        query.append("FROM ").append(table).append(" ");
+        if (conditionList != null) {
+            query.append("WHERE ").append(this.buildConditions()).append(" ");
+        }
+
+        if (orderBy != null) {
+            query.append("ORDER BY ").append(orderBy);
+        }
+
+        if (limit != null) {
+            query.append("LIMIT ").append(limit);
+        }
+
+        if (offset != null) {
+            query.append("OFFSET ").append(offset);
+        }
+
+        return query.toString();
+    }
+
+    private String buildInsertQuery() {
+        return "INSERT INTO " + table + " " +
+                "(" + this.buildInsertColumns() + ") " +
+                "VALUES (" + this.buildInsertValues() + ")";
+    }
+
+    private String buildDeleteQuery() {
+        StringBuilder query = new StringBuilder();
+        query.append("DELETE FROM ").append(table).append(" ");
+        if (conditionList != null) {
+            query.append("WHERE ").append(this.buildConditions());
+        }
+
+        return query.toString();
+    }
+
+    private String buildUpdateQuery() {
+        StringBuilder query = new StringBuilder();
+        query.append("UPDATE ").append(table).append(" SET ").append(this.buildUpdateValues());
+        if (conditionList != null) {
+            query.append(" WHERE ").append(this.buildConditions());
+        }
+
+        return query.toString();
     }
 
     private String buildColumns() {
