@@ -4,6 +4,7 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import net.slc.dv.database.builder.enums.ConditionCompareType;
 import net.slc.dv.database.builder.enums.ConditionJoinType;
+import net.slc.dv.database.builder.enums.OrderByType;
 import net.slc.dv.database.builder.enums.QueryType;
 import net.slc.dv.database.connection.Connect;
 
@@ -28,7 +29,7 @@ public class NeoQueryBuilder {
 
     private Map<String, String> valueMap;
 
-    private String orderBy;
+    private OrderBy orderBy;
     private String limit;
     private String offset;
 
@@ -37,16 +38,37 @@ public class NeoQueryBuilder {
         this.queryType = queryType;
     }
 
+    /**
+     * Set the table name
+     *
+     * @param table Table name
+     * @return NeoQueryBuilder
+     */
     public NeoQueryBuilder table(String table) {
         this.table = table;
         return this;
     }
 
+    /**
+     * Set the columns to be selected
+     *
+     * @param columns Columns to be selected
+     * @return NeoQueryBuilder
+     */
     public NeoQueryBuilder columns(String... columns) {
         this.columns = List.of(columns);
         return this;
     }
 
+    /**
+     * Add or set join to the query
+     *
+     * @param sourceTable  The source table
+     * @param sourceColumn The source column
+     * @param targetTable  The target table
+     * @param targetColumn The target column
+     * @return NeoQueryBuilder
+     */
     public NeoQueryBuilder join(String sourceTable, String sourceColumn, String targetTable, String targetColumn) {
         if (this.joins == null) {
             this.joins = new ArrayList<>();
@@ -58,11 +80,28 @@ public class NeoQueryBuilder {
         return this;
     }
 
+    /**
+     * Add or set a WHERE condition to the query
+     *
+     * @param column      The column to be compared
+     * @param compareType The {@link ConditionCompareType} to be used
+     * @param value       The value to be compared
+     * @return NeoQueryBuilder
+     */
     public NeoQueryBuilder condition(String column, String compareType, String value) {
         ConditionCompareType conditionCompareType = ConditionCompareType.fromString(compareType);
         return this.condition(column, conditionCompareType, value);
     }
 
+
+    /**
+     * Add or set a WHERE condition to the query
+     *
+     * @param column      The column to be compared
+     * @param compareType The {@link ConditionCompareType} to be used
+     * @param value       The value to be compared
+     * @return NeoQueryBuilder
+     */
     public NeoQueryBuilder condition(String column, ConditionCompareType compareType, String value) {
         if (this.conditionList == null) {
             this.conditionList = new ArrayList<>();
@@ -74,41 +113,96 @@ public class NeoQueryBuilder {
         return this;
     }
 
+    /**
+     * Set the condition join type
+     *
+     * @param conditionJoinType The {@link ConditionJoinType} to be used
+     * @return NeoQueryBuilder
+     */
     public NeoQueryBuilder conditionJoinType(ConditionJoinType conditionJoinType) {
         this.conditionJoinType = conditionJoinType;
         return this;
     }
 
-    public NeoQueryBuilder values(String key, String value) {
+    /**
+     * Add or set a value to be inserted or updated
+     *
+     * @param column The column name
+     * @param value  The value
+     * @return NeoQueryBuilder
+     */
+    public NeoQueryBuilder values(String column, String value) {
         if (this.valueMap == null) {
             this.valueMap = new HashMap<>();
-            this.valueMap.put(key, value);
+            this.valueMap.put(column, value);
         } else {
-            this.valueMap.put(key, value);
+            this.valueMap.put(column, value);
         }
 
         return this;
     }
 
-    public NeoQueryBuilder orderBy(String orderBy) {
-        this.orderBy = orderBy;
+    /**
+     * Set the order by column and order
+     *
+     * @param orderBy The column to be ordered
+     * @param order   The {@link OrderByType} to be used
+     * @return NeoQueryBuilder
+     */
+    public NeoQueryBuilder orderBy(String orderBy, String order) {
+        return this.orderBy(orderBy, OrderByType.fromString(order));
+    }
+
+    /**
+     * Set the order by column and order
+     *
+     * @param orderBy The column to be ordered
+     * @param order   The {@link OrderByType} to be used
+     * @return NeoQueryBuilder
+     */
+    public NeoQueryBuilder orderBy(String orderBy, OrderByType order) {
+        this.orderBy = new OrderBy(orderBy, order);
         return this;
     }
 
+    /**
+     * Set the selection limit
+     *
+     * @param limit The limit
+     * @return NeoQueryBuilder
+     */
     public NeoQueryBuilder limit(int limit) {
         return this.limit(String.valueOf(limit));
     }
 
+    /**
+     * Set the selection limit
+     *
+     * @param limit The limit
+     * @return NeoQueryBuilder
+     */
     public NeoQueryBuilder limit(String limit) {
         this.limit = limit;
         return this;
     }
 
+    /**
+     * Set the selection offset
+     *
+     * @param offset The offset
+     * @return NeoQueryBuilder
+     */
     public NeoQueryBuilder offset(String offset) {
         this.offset = offset;
         return this;
     }
 
+    /**
+     * Execute the query
+     *
+     * @return {@link Results}
+     * @throws SQLException If an error occurs
+     */
     public Results getResults() throws SQLException {
         Connect connect = Connect.getConnection();
         PreparedStatement statement;
@@ -329,6 +423,13 @@ public class NeoQueryBuilder {
         private final String column;
         private final ConditionCompareType compareType;
         private final String value;
+    }
+
+    @AllArgsConstructor
+    @Getter
+    private static class OrderBy {
+        private final String column;
+        private final OrderByType order;
     }
 
     @AllArgsConstructor
