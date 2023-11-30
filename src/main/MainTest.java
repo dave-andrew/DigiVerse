@@ -6,8 +6,6 @@ import helper.Closer;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.HashMap;
-import java.util.Map;
 
 public class MainTest {
 
@@ -21,14 +19,11 @@ public class MainTest {
 
     private void query() {
         try (Closer closer = new Closer()) {
-            Map<String, String> condition = new HashMap<>();
-            condition.put("UserEmail", "dep@gmail.com");
-            condition.put("UserPassword", "hello1234");
-
             Results results = closer.add(new NeoQueryBuilder(NeoQueryBuilder.QueryType.SELECT)
                     .table("msuser")
-                    .condition(condition, NeoQueryBuilder.ConditionType.AND)
-                    .build());
+                    .condition("UserEmail", "=", "dep@gmail.com")
+                    .condition("UserPassword", "=", "hello1234")
+                    .getResults());
 
             ResultSet set = results.getResultSet();
             while (set.next()) {

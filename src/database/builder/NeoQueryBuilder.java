@@ -4,7 +4,7 @@ import database.connection.Connect;
 
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
-import java.util.HashMap;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.StringJoiner;
@@ -18,11 +18,13 @@ public class NeoQueryBuilder {
     private String table;
     private List<String> columns;
 
-    private ConditionType biConditionJoinType;
-    private Map<ConditionType, Map<String, String>> conditionMap;
-    private String conditionString;
+
+    private List<Condition> conditionList;
+    private ConditionJoinType conditionJoinType;
+
 
     private Map<String, String> valueMap;
+
 
     public NeoQueryBuilder(QueryType queryType) {
         this.queryType = queryType;
@@ -38,20 +40,24 @@ public class NeoQueryBuilder {
         return this;
     }
 
-    public NeoQueryBuilder condition(Map<String, String> condition, ConditionType conditionType) {
-        this.conditionMap = new HashMap<>();
-        this.conditionMap.put(conditionType, condition);
+    public NeoQueryBuilder condition(String column, String compareType, String value) {
+        ConditionCompareType conditionCompareType = ConditionCompareType.fromString(compareType);
+        return this.condition(column, conditionCompareType, value);
+    }
+
+    public NeoQueryBuilder condition(String column, ConditionCompareType compareType, String value) {
+        if (this.conditionList == null) {
+            this.conditionList = new ArrayList<>();
+            this.conditionList.add(new Condition(column, compareType, value));
+        } else {
+            this.conditionList.add(new Condition(column, compareType, value));
+        }
 
         return this;
     }
 
-    public NeoQueryBuilder biConditionJoinType(ConditionType conditionType) {
-        this.biConditionJoinType = conditionType;
-        return this;
-    }
-
-    public NeoQueryBuilder conditionString(String conditionString) {
-        this.conditionString = conditionString;
+    public NeoQueryBuilder conditionJoinType(ConditionJoinType conditionJoinType) {
+        this.conditionJoinType = conditionJoinType;
         return this;
     }
 
@@ -60,7 +66,7 @@ public class NeoQueryBuilder {
         return this;
     }
 
-    public Results build() throws SQLException {
+    public Results getResults() throws SQLException {
         Connect connect = Connect.getConnection();
 
         StringBuilder query = new StringBuilder();
@@ -75,16 +81,17 @@ public class NeoQueryBuilder {
                 }
 
                 query.append("FROM ").append(table).append(" ");
-                if (conditionMap != null) {
+                if (conditionList != null) {
                     query.append("WHERE ").append(this.buildConditions());
                 }
 
                 PreparedStatement statement = connect.prepareStatement(query.toString());
-                if (conditionMap != null) {
+                if (conditionList != null) {
                     this.applyConditions(statement);
                 }
 
                 assert statement != null;
+                System.out.println(statement);
                 return new Results(statement, statement.executeQuery());
             }
             case INSERT: {
@@ -102,12 +109,12 @@ public class NeoQueryBuilder {
             }
             case DELETE: {
                 query.append("DELETE FROM ").append(table).append(" ");
-                if (conditionMap != null) {
+                if (conditionList != null) {
                     query.append("WHERE ").append(this.buildConditions());
                 }
 
                 PreparedStatement statement = connect.prepareStatement(query.toString());
-                if (conditionMap != null) {
+                if (conditionList != null) {
                     this.applyConditions(statement);
                 }
 
@@ -118,13 +125,13 @@ public class NeoQueryBuilder {
             }
             case UPDATE: {
                 query.append("UPDATE ").append(table).append(" SET ").append(this.buildUpdateValues());
-                if (conditionMap != null) {
+                if (conditionList != null) {
                     query.append(" WHERE ").append(this.buildConditions());
                 }
 
                 PreparedStatement statement = connect.prepareStatement(query.toString());
                 this.applyValues(statement);
-                if (conditionMap != null) {
+                if (conditionList != null) {
                     this.applyConditions(statement);
                 }
 
@@ -157,104 +164,28 @@ public class NeoQueryBuilder {
     }
 
     private String buildConditions() {
-        if (this.conditionString != null) {
-            return this.conditionString;
-        }
-
-        boolean containsBothType = this.conditionMap.containsKey(ConditionType.OR) && this.conditionMap.containsKey(ConditionType.AND);
-        if (!containsBothType) {
-            StringJoiner stringJoiner;
-            if (this.conditionMap.containsKey(ConditionType.OR)) {
-                stringJoiner = new StringJoiner(" OR ");
-            } else {
-                stringJoiner = new StringJoiner(" AND ");
-            }
-
-            conditionMap.values().forEach(it ->
-                    it.keySet().forEach(col -> {
-                        String condition = col + " = ?";
-                        stringJoiner.add(condition);
-                    })
-            );
-            return stringJoiner.toString();
-        }
-
-        StringBuilder stringBuilder = new StringBuilder();
-
-        this.conditionMap.entrySet().stream()
-                .filter(it -> it.getKey().equals(ConditionType.OR))
-                .forEach(it -> {
-                    StringJoiner stringJoiner = new StringJoiner(" OR ");
-                    it.getValue().keySet().forEach(col -> {
-                        String condition = col + " = ?";
-                        stringJoiner.add(condition);
-                    });
-
-                    stringBuilder.append("(").append(stringJoiner).append(")");
-                });
-
-        if (this.biConditionJoinType == null || this.biConditionJoinType.equals(ConditionType.AND)) {
-            stringBuilder.append(" AND ");
+        StringJoiner stringJoiner;
+        if (conditionJoinType == null || conditionJoinType == ConditionJoinType.AND) {
+            stringJoiner = new StringJoiner(" AND ");
         } else {
-            stringBuilder.append(" OR ");
+            stringJoiner = new StringJoiner(" OR ");
         }
 
-        this.conditionMap.entrySet().stream()
-                .filter(it -> it.getKey().equals(ConditionType.AND))
-                .forEach(it -> {
-                    StringJoiner stringJoiner = new StringJoiner(" AND ");
-                    it.getValue().keySet().forEach(col -> {
-                        String condition = col + " = ?";
-                        stringJoiner.add(condition);
-                    });
+        for (Condition condition : this.conditionList) {
+            stringJoiner.add(condition.getColumn() + " " + condition.getCompareType().getSymbol() + " ?");
+        }
 
-                    stringBuilder.append("(").append(stringJoiner).append(")");
-                });
-
-        return stringBuilder.toString();
+        return stringJoiner.toString();
     }
 
     private void applyConditions(PreparedStatement preparedStatement) {
-        if (this.conditionString != null) {
-            return;
-        }
-
-        boolean containsBothType = this.conditionMap.containsKey(ConditionType.OR) && this.conditionMap.containsKey(ConditionType.AND);
-        if (!containsBothType) {
-            conditionMap.values().forEach(it ->
-                    it.values().forEach(val -> {
-                        try {
-                            preparedStatement.setString(index.getAndIncrement(), val);
-                        } catch (SQLException e) {
-                            throw new RuntimeException(e);
-                        }
-                    })
-            );
-            return;
-        }
-
-        this.conditionMap.entrySet().stream()
-                .filter(it -> it.getKey().equals(ConditionType.OR))
-                .forEach(it ->
-                        it.getValue().values().forEach(val -> {
-                            try {
-                                preparedStatement.setString(index.getAndIncrement(), val);
-                            } catch (SQLException e) {
-                                throw new RuntimeException(e);
-                            }
-                        })
-                );
-        this.conditionMap.entrySet().stream()
-                .filter(it -> it.getKey().equals(ConditionType.AND))
-                .forEach(it ->
-                        it.getValue().values().forEach(val -> {
-                            try {
-                                preparedStatement.setString(index.getAndIncrement(), val);
-                            } catch (SQLException e) {
-                                throw new RuntimeException(e);
-                            }
-                        })
-                );
+        this.conditionList.forEach(condition -> {
+            try {
+                preparedStatement.setString(index.getAndIncrement(), condition.getValue());
+            } catch (SQLException e) {
+                throw new RuntimeException(e);
+            }
+        });
     }
 
     private String buildInsertValues() {
@@ -292,8 +223,61 @@ public class NeoQueryBuilder {
         UPDATE
     }
 
-    public enum ConditionType {
+    public enum ConditionJoinType {
         AND,
         OR
+    }
+
+    public enum ConditionCompareType {
+        EQUAL("="),
+        NOT_EQUAL("!="),
+        GREATER_THAN(">"),
+        LESS_THAN("<"),
+        GREATER_THAN_EQUAL(">="),
+        LESS_THAN_EQUAL("<=");
+
+        private final String symbol;
+
+        ConditionCompareType(String symbol) {
+            this.symbol = symbol;
+        }
+
+        public static ConditionCompareType fromString(String symbol) {
+            for (ConditionCompareType type : ConditionCompareType.values()) {
+                if (type.symbol.equals(symbol)) {
+                    return type;
+                }
+            }
+
+            return null;
+        }
+
+        public String getSymbol() {
+            return this.symbol;
+        }
+    }
+
+    private static class Condition {
+        private final String column;
+        private final ConditionCompareType compareType;
+        private final String value;
+
+        public Condition(String column, ConditionCompareType compareType, String value) {
+            this.column = column;
+            this.compareType = compareType;
+            this.value = value;
+        }
+
+        public String getColumn() {
+            return column;
+        }
+
+        public ConditionCompareType getCompareType() {
+            return compareType;
+        }
+
+        public String getValue() {
+            return value;
+        }
     }
 }
