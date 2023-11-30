@@ -68,12 +68,13 @@ public class NeoQueryBuilder {
             case SELECT: {
                 query.append("SELECT ");
 
-                if (this.columns != null) {
+                if (this.columns == null) {
+                    query.append("* ");
+                } else {
                     query.append(this.buildColumns()).append(" ");
                 }
 
-                query.append("FROM ").append(table);
-
+                query.append("FROM ").append(table).append(" ");
                 if (conditionMap != null) {
                     query.append("WHERE ").append(this.buildConditions());
                 }
@@ -87,11 +88,8 @@ public class NeoQueryBuilder {
                 return new Results(statement, statement.executeQuery());
             }
             case INSERT: {
-                query.append("INSERT INTO ").append(table);
-                if (this.columns != null) {
-                    query.append(" (").append(this.buildColumns()).append(") ");
-                }
-
+                query.append("INSERT INTO ").append(table).append(" ");
+                query.append("(").append(this.buildInsertColumns()).append(") ");
                 query.append("VALUES (").append(this.buildInsertValues()).append(")");
 
                 PreparedStatement statement = connect.prepareStatement(query.toString());
@@ -103,9 +101,9 @@ public class NeoQueryBuilder {
                 return new Results(statement, null);
             }
             case DELETE: {
-                query.append("DELETE FROM ").append(table);
+                query.append("DELETE FROM ").append(table).append(" ");
                 if (conditionMap != null) {
-                    query.append(" WHERE ").append(this.buildConditions());
+                    query.append("WHERE ").append(this.buildConditions());
                 }
 
                 PreparedStatement statement = connect.prepareStatement(query.toString());
@@ -143,6 +141,15 @@ public class NeoQueryBuilder {
     private String buildColumns() {
         StringJoiner stringJoiner = new StringJoiner(", ");
         for (String column : this.columns) {
+            stringJoiner.add(column);
+        }
+
+        return stringJoiner.toString();
+    }
+
+    private String buildInsertColumns() {
+        StringJoiner stringJoiner = new StringJoiner(" , ");
+        for (String column : this.valueMap.keySet()) {
             stringJoiner.add(column);
         }
 
