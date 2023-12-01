@@ -15,97 +15,113 @@ import java.util.List;
 
 @Getter
 public class TrueFalseQuestion implements Question {
-	private final VBox root;
-	private final TextArea questionField;
-	private final List<TextField> answerFields;
-	private final ComboBox<String> answerKey;
+    private final VBox root;
+    private final TextArea questionField;
+    private final List<TextField> answerFields;
+    private final ComboBox<String> answerKey;
 
-	public TrueFalseQuestion() {
-		Label questionLbl = LabelBuilder.create("Enter Question Here")
-			.build();
+    public TrueFalseQuestion() {
+        Label questionLbl = LabelBuilder.create("Enter Question Here")
+                .build();
 
-		this.questionField = TextAreaBuilder.create()
-			.setPromptText("Enter Question Here")
-			.build();
+        this.questionField = TextAreaBuilder.create()
+                .setPromptText("Enter Question Here")
+                .setWrapText(true)
+                .setMaxHeight(200)
+                .build();
 
-		this.answerFields = new ArrayList<>();
+        VBox questionContainer = VBoxBuilder.create()
+                .addChildren(questionLbl, questionField)
+                .setSpacing(10)
+                .build();
 
-		Label answerLbl = LabelBuilder.create("Enter Answers Here")
-			.build();
+        this.answerFields = new ArrayList<>();
 
-		List<HBox> answerFields = List.of(
-			createFieldLabelPair("True", "Enter Choice Here"),
-			createFieldLabelPair("True", "Enter Choice Here"));
+        Label answerLbl = LabelBuilder.create("Enter Answers Here")
+                .build();
 
-		GridPane answerGrid = GridPaneBuilder.create()
-			.addChildren(answerFields.get(0), 0, 0)
-			.addChildren(answerFields.get(1), 1, 0)
-			.setHGap(5)
-			.setVGap(5)
-			.build();
+        List<HBox> answerFields = List.of(
+                createFieldLabelPair("True", "Enter Choice Here"),
+                createFieldLabelPair("False", "Enter Choice Here"));
 
-
-		VBox answerContainer = VBoxBuilder.create()
-			.addChildren(answerLbl, answerGrid)
-			.build();
-
-
-		answerKey = ComboBoxBuilder.<String>create()
-			.setItems("True", "False")
-			.setValue("True")
-			.build();
+        GridPane answerGrid = GridPaneBuilder.create()
+                .addChildren(answerFields.get(0), 0, 0)
+                .addChildren(answerFields.get(1), 1, 0)
+                .setHGap(20)
+                .setVGap(5)
+                .build();
 
 
-		this.root = VBoxBuilder.create()
-			.addChildren(questionLbl, questionField, answerContainer, answerKey)
-			.setSpacing(5)
-			.build();
-	}
+        VBox answerContainer = VBoxBuilder.create()
+                .addChildren(answerLbl, answerGrid)
+                .setSpacing(10)
+                .build();
 
-	private HBox createFieldLabelPair(String label, String promptText) {
-		Label lbl = LabelBuilder.create(label)
-			.build();
+        Label answerKeyLbl = LabelBuilder.create("Answer Key")
+                .build();
 
-		TextField field = TextFieldBuilder.create()
-			.setPromptText(promptText)
-			.build();
+        answerKey = ComboBoxBuilder.<String>create()
+                .setItems("True", "False")
+                .setValue("True")
+                .build();
 
-		answerFields.add(field);
+        HBox answerKey = HBoxBuilder.create()
+                .addChildren(answerKeyLbl, this.answerKey)
+                .setSpacing(10)
+                .build();
 
-		return HBoxBuilder.create()
-			.addChildren(lbl, field)
-			.build();
-	}
+        this.root = VBoxBuilder.create()
+                .addChildren(questionContainer, answerContainer, answerKey)
+                .setSpacing(30)
+                .build();
+    }
 
-	@Override
-	public QuestionType getQuestionType() {
-		return QuestionType.TRUE_FALSE;
-	}
+    private HBox createFieldLabelPair(String label, String promptText) {
+        Label lbl = LabelBuilder.create(label)
+                .build();
 
-	@Override
-	public String getQuestionText() {
-		return this.questionField.getText();
-	}
+        TextField field = TextFieldBuilder.create()
+                .setPromptText(promptText)
+                .build();
 
-	@Override
-	public String getQuestionAnswer() {
-		StringBuilder questionAnswer = new StringBuilder();
+        answerFields.add(field);
 
-		for (int i = 0; i < answerFields.size(); i++) {
-			if (answerFields.get(i).getText().isEmpty()) {
-				questionAnswer.append(" ");
-			} else {
-				questionAnswer.append(answerFields.get(i).getText());
-			}
-			if (i != answerFields.size() - 1) {
-				questionAnswer.append(";");
-			}
-		}
-		return questionAnswer.toString();
-	}
+        return HBoxBuilder.create()
+                .addChildren(lbl, field)
+                .setAlignment(Pos.CENTER_LEFT)
+                .setSpacing(10)
+                .build();
+    }
 
-	@Override
-	public String getQuestionKey() {
-		return this.answerKey.getValue();
-	}
+    @Override
+    public QuestionType getQuestionType() {
+        return QuestionType.TRUE_FALSE;
+    }
+
+    @Override
+    public String getQuestionText() {
+        return this.questionField.getText();
+    }
+
+    @Override
+    public String getQuestionAnswer() {
+        StringBuilder questionAnswer = new StringBuilder();
+
+        for (int i = 0; i < answerFields.size(); i++) {
+            if (answerFields.get(i).getText().isEmpty()) {
+                questionAnswer.append(" ");
+            } else {
+                questionAnswer.append(answerFields.get(i).getText());
+            }
+            if (i != answerFields.size() - 1) {
+                questionAnswer.append(";");
+            }
+        }
+        return questionAnswer.toString();
+    }
+
+    @Override
+    public String getQuestionKey() {
+        return this.answerKey.getValue();
+    }
 }

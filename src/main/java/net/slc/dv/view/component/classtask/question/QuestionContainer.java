@@ -61,7 +61,7 @@ public class QuestionContainer {
 	public VBox getRoot() {
 		this.questionContainer = VBoxBuilder.create()
 				.addChildren(questionTypeContainer, getContent())
-				.setSpacing(5)
+				.setSpacing(30)
 				.build();
 
 		this.root = VBoxBuilder.create()
