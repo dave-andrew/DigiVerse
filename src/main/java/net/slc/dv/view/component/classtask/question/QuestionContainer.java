@@ -1,5 +1,6 @@
 package net.slc.dv.view.component.classtask.question;
 
+import javafx.geometry.Pos;
 import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
@@ -10,6 +11,7 @@ import net.slc.dv.builder.*;
 import net.slc.dv.enums.QuestionType;
 import net.slc.dv.interfaces.QuestionBox;
 
+import java.util.List;
 import java.util.function.Consumer;
 
 @Getter
@@ -24,8 +26,8 @@ public class QuestionContainer {
 
 	public QuestionContainer(Consumer<QuestionContainer> consumer) {
 		this.errorLbl = LabelBuilder.create()
-			.setStyle("-fx-text-fill: red;")
-			.build();
+				.setStyle("-fx-text-fill: red;")
+				.build();
 
 		this.questionSelect = ComboBoxBuilder.<String>create()
 			.setItems(
@@ -40,17 +42,20 @@ public class QuestionContainer {
 			})
 			.build();
 
-		Label questionLbl = LabelBuilder.create("Question Type")
-			.build();
+		Label questionLbl = LabelBuilder
+				.create("Question Type")
+				.setStyle("-fx-font-size: 18px;")
+				.build();
 
 		Button closeButton = ButtonBuilder.create("Close")
 			.setOnAction(e -> consumer.accept(this))
 			.build();
 
 		this.questionTypeContainer = HBoxBuilder.create()
-			.addChildren(questionLbl, questionSelect, closeButton)
-			.setSpacing(5)
-			.build();
+				.addChildren(questionLbl, questionSelect, closeButton)
+				.setAlignment(Pos.CENTER_LEFT)
+				.setSpacing(10)
+				.build();
 
 	}
 
@@ -72,15 +77,15 @@ public class QuestionContainer {
 
 	public VBox getRoot() {
 		this.questionContainer = VBoxBuilder.create()
-			.addChildren(questionTypeContainer, getContent())
-			.setSpacing(5)
-			.build();
+				.addChildren(questionTypeContainer, getContent())
+				.setSpacing(5)
+				.build();
 
 		this.root = VBoxBuilder.create()
-			.addChildren(questionContainer, errorLbl)
-			.setSpacing(5)
-			.setStyleClass("card")
-			.build();
+				.addChildren(questionContainer, errorLbl)
+				.setSpacing(5)
+				.setStyleClass("card")
+				.build();
 
 		return root;
 	}

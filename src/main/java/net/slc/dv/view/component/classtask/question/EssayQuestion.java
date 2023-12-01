@@ -23,8 +23,13 @@ public class EssayQuestion implements QuestionBox {
 				.setPromptText("Enter Question Here")
 				.build();
 
-		this.root = VBoxBuilder.create()
+		VBox questionContainer = VBoxBuilder.create()
 				.addChildren(questionLbl, questionField)
+				.setSpacing(10)
+				.build();
+
+		this.root = VBoxBuilder.create()
+				.addChildren(questionContainer)
 				.setSpacing(5)
 				.build();
 	}

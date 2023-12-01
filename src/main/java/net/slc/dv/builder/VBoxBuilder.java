@@ -37,8 +37,14 @@ public class VBoxBuilder {
         return this;
     }
 
-    public VBoxBuilder setPadding(int padding1, int padding2, int padding3, int padding4) {
-        this.vBox.setPadding(new Insets(padding1, padding2, padding3, padding4));
+    public VBoxBuilder setPadding(int top, int right, int bottom, int left) {
+        this.vBox.setPadding(new Insets(top, right, bottom, left));
+
+        return this;
+    }
+
+    public VBoxBuilder setPadding(int padding) {
+        this.vBox.setPadding(new Insets(padding));
 
         return this;
     }

@@ -1,5 +1,6 @@
 package net.slc.dv.view.component.classtask.question;
 
+import javafx.geometry.Pos;
 import javafx.scene.control.*;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
@@ -23,43 +24,57 @@ public class TrueFalseQuestion implements QuestionBox {
 		Label questionLbl = LabelBuilder.create("Enter Question Here")
 			.build();
 
-		this.questionField = TextAreaBuilder.create()
-			.setPromptText("Enter Question Here")
-			.build();
+        this.questionField = TextAreaBuilder.create()
+                .setPromptText("Enter Question Here")
+                .setWrapText(true)
+                .setMaxHeight(200)
+                .build();
+
+        VBox questionContainer = VBoxBuilder.create()
+                .addChildren(questionLbl, questionField)
+                .setSpacing(10)
+                .build();
 
 		this.answerFields = new ArrayList<>();
 
 		Label answerLbl = LabelBuilder.create("Enter Answers Here")
 			.build();
 
-		List<HBox> answerFields = List.of(
-			createFieldLabelPair("True", "Enter Choice Here"),
-			createFieldLabelPair("True", "Enter Choice Here"));
+        List<HBox> answerFields = List.of(
+                createFieldLabelPair("True", "Enter Choice Here"),
+                createFieldLabelPair("False", "Enter Choice Here"));
 
-		GridPane answerGrid = GridPaneBuilder.create()
-			.addChildren(answerFields.get(0), 0, 0)
-			.addChildren(answerFields.get(1), 1, 0)
-			.setHGap(5)
-			.setVGap(5)
-			.build();
+        GridPane answerGrid = GridPaneBuilder.create()
+                .addChildren(answerFields.get(0), 0, 0)
+                .addChildren(answerFields.get(1), 1, 0)
+                .setHGap(20)
+                .setVGap(5)
+                .build();
 
 
-		VBox answerContainer = VBoxBuilder.create()
-			.addChildren(answerLbl, answerGrid)
-			.build();
+        VBox answerContainer = VBoxBuilder.create()
+                .addChildren(answerLbl, answerGrid)
+                .setSpacing(10)
+                .build();
 
+        Label answerKeyLbl = LabelBuilder.create("Answer Key")
+                .build();
 
 		answerKey = ComboBoxBuilder.<String>create()
 			.setItems("True", "False")
 			.setValue("True")
 			.build();
 
+        HBox answerKey = HBoxBuilder.create()
+                .addChildren(answerKeyLbl, this.answerKey)
+                .setSpacing(10)
+                .build();
 
-		this.root = VBoxBuilder.create()
-			.addChildren(questionLbl, questionField, answerContainer, answerKey)
-			.setSpacing(5)
-			.build();
-	}
+        this.root = VBoxBuilder.create()
+                .addChildren(questionContainer, answerContainer, answerKey)
+                .setSpacing(30)
+                .build();
+    }
 
 	private HBox createFieldLabelPair(String label, String promptText) {
 		Label lbl = LabelBuilder.create(label)
@@ -71,10 +86,12 @@ public class TrueFalseQuestion implements QuestionBox {
 
 		answerFields.add(field);
 
-		return HBoxBuilder.create()
-			.addChildren(lbl, field)
-			.build();
-	}
+        return HBoxBuilder.create()
+                .addChildren(lbl, field)
+                .setAlignment(Pos.CENTER_LEFT)
+                .setSpacing(10)
+                .build();
+    }
 
 	@Override
 	public QuestionType getQuestionType() {
@@ -97,7 +114,7 @@ public class TrueFalseQuestion implements QuestionBox {
 				questionAnswer.append(answerFields.get(i).getText());
 			}
 			if (i != answerFields.size() - 1) {
-				questionAnswer.append("|");
+				questionAnswer.append(";");
 			}
 		}
 		return questionAnswer.toString();

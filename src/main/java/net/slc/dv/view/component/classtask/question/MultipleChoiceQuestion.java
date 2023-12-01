@@ -1,5 +1,8 @@
 package net.slc.dv.view.component.classtask.question;
 
+import javafx.beans.binding.Bindings;
+import javafx.geometry.Pos;
+import javafx.scene.Node;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextArea;
@@ -14,6 +17,7 @@ import net.slc.dv.interfaces.QuestionBox;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.Callable;
 
 @Getter
 public class MultipleChoiceQuestion implements QuestionBox {
@@ -24,62 +28,80 @@ public class MultipleChoiceQuestion implements QuestionBox {
 
 	public MultipleChoiceQuestion() {
 		Label questionLbl = LabelBuilder.create("Enter Question Here")
-				.build();
+			.build();
 
-		this.questionField = TextAreaBuilder.create()
-				.setPromptText("Enter Question Here")
-				.build();
+        this.questionField = TextAreaBuilder.create()
+                .setPromptText("Enter Question Here")
+                .setWrapText(true)
+                .setMaxHeight(200)
+                .build();
+
+        VBox questionContainer = VBoxBuilder.create()
+                .addChildren(questionLbl, questionField)
+                .setSpacing(10)
+                .build();
 
 		Label answerLbl = LabelBuilder.create("Enter Answers Here")
-				.build();
+			.build();
 
 		this.answerFields = new ArrayList<>();
 
 		List<HBox> answerFields = List.of(
-				createFieldLabelPair("A", "Enter Choice Here"),
-				createFieldLabelPair("B", "Enter Choice Here"),
-				createFieldLabelPair("C", "Enter Choice Here"),
-				createFieldLabelPair("D", "Enter Choice Here"));
+			createFieldLabelPair("A", "Enter Choice Here"),
+			createFieldLabelPair("B", "Enter Choice Here"),
+			createFieldLabelPair("C", "Enter Choice Here"),
+			createFieldLabelPair("D", "Enter Choice Here"));
 
 		GridPane answerGrid = GridPaneBuilder.create()
-				.addChildren(answerFields.get(0), 0, 0)
-				.addChildren(answerFields.get(1), 1, 0)
-				.addChildren(answerFields.get(2), 0, 1)
-				.addChildren(answerFields.get(3), 1, 1)
-				.setHGap(5)
-				.setVGap(5)
-				.build();
+			.addChildren(answerFields.get(0), 0, 0)
+			.addChildren(answerFields.get(1), 1, 0)
+			.addChildren(answerFields.get(2), 0, 1)
+			.addChildren(answerFields.get(3), 1, 1)
+			.setHGap(5)
+			.setVGap(5)
+			.build();
 
-		VBox answerContainer = VBoxBuilder.create()
-				.addChildren(answerLbl, answerGrid)
-				.build();
+        VBox answerContainer = VBoxBuilder.create()
+                .addChildren(answerLbl, answerGrid)
+                .setSpacing(10)
+                .build();
 
-		answerKey = ComboBoxBuilder.<String>create()
-				.setItems("True", "False")
-				.setValue("True")
-				.build();
+        Label answerKeyLbl = LabelBuilder.create("Answer Key")
+                .build();
 
+        answerKey = ComboBoxBuilder.<String>create()
+                .setItems("A", "B", "C", "D")
+                .setValue("A")
+                .build();
 
-		this.root = VBoxBuilder.create()
-				.addChildren(questionLbl, questionField, answerContainer, answerKey)
-				.setSpacing(5)
-				.build();
-	}
+        HBox answerKey = HBoxBuilder.create()
+                .addChildren(answerKeyLbl, this.answerKey)
+                .setSpacing(10)
+                .setAlignment(Pos.CENTER_LEFT)
+                .build();
+
+        this.root = VBoxBuilder.create()
+                .addChildren(questionContainer, answerContainer, answerKey)
+                .setSpacing(30)
+                .build();
+    }
 
 	private HBox createFieldLabelPair(String label, String promptText) {
 		Label lbl = LabelBuilder.create(label)
-				.build();
+			.build();
 
 		TextField field = TextFieldBuilder.create()
-				.setPromptText(promptText)
-				.build();
+			.setPromptText(promptText)
+			.build();
 
 		answerFields.add(field);
 
-		return HBoxBuilder.create()
-				.addChildren(lbl, field)
-				.build();
-	}
+        return HBoxBuilder.create()
+                .addChildren(lbl, field)
+                .setAlignment(Pos.CENTER_LEFT)
+                .setSpacing(10)
+                .build();
+    }
 
 	@Override
 	public QuestionType getQuestionType() {
@@ -102,7 +124,7 @@ public class MultipleChoiceQuestion implements QuestionBox {
 				questionAnswer.append(answerFields.get(i).getText());
 			}
 			if (i != answerFields.size() - 1) {
-				questionAnswer.append("|");
+				questionAnswer.append(",");
 			}
 		}
 

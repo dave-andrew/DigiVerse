@@ -34,6 +34,12 @@ public class ImageViewBuilder {
         return this;
     }
 
+    public ImageViewBuilder setFitHeight(double height) {
+        this.imageView.setFitHeight(height);
+
+        return this;
+    }
+
     public ImageViewBuilder setPreserveRatio(boolean preserveRatio) {
         this.imageView.setPreserveRatio(preserveRatio);
 
