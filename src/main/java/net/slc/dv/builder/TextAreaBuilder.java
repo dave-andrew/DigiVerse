@@ -14,6 +14,16 @@ public class TextAreaBuilder {
 		return new TextAreaBuilder();
 	}
 
+	public TextAreaBuilder setWrapText(boolean wrapText) {
+		this.textArea.setWrapText(wrapText);
+		return this;
+	}
+
+	public TextAreaBuilder setMaxHeight(double maxHeight) {
+		this.textArea.setMaxHeight(maxHeight);
+		return this;
+	}
+
 	public TextAreaBuilder setPromptText(String promptText) {
 		this.textArea.setPromptText(promptText);
 		return this;

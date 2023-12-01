@@ -1,5 +1,8 @@
 package net.slc.dv.view.component.classtask.question;
 
+import javafx.beans.binding.Bindings;
+import javafx.geometry.Pos;
+import javafx.scene.Node;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextArea;
@@ -14,6 +17,7 @@ import net.slc.dv.interfaces.Question;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.Callable;
 
 @Getter
 public class MultipleChoiceQuestion implements Question {
@@ -28,6 +32,13 @@ public class MultipleChoiceQuestion implements Question {
 
 		this.questionField = TextAreaBuilder.create()
 			.setPromptText("Enter Question Here")
+			.setWrapText(true)
+			.setMaxHeight(200)
+			.build();
+
+		VBox questionContainer = VBoxBuilder.create()
+			.addChildren(questionLbl, questionField)
+			.setSpacing(5)
 			.build();
 
 		Label answerLbl = LabelBuilder.create("Enter Answers Here")
@@ -46,7 +57,7 @@ public class MultipleChoiceQuestion implements Question {
 			.addChildren(answerFields.get(1), 1, 0)
 			.addChildren(answerFields.get(2), 0, 1)
 			.addChildren(answerFields.get(3), 1, 1)
-			.setHGap(5)
+			.setHGap(20)
 			.setVGap(5)
 			.build();
 
@@ -54,15 +65,23 @@ public class MultipleChoiceQuestion implements Question {
 			.addChildren(answerLbl, answerGrid)
 			.build();
 
-		answerKey = ComboBoxBuilder.<String>create()
-			.setItems("True", "False")
-			.setValue("True")
+		Label answerKeyLbl = LabelBuilder.create("Answer Key")
 			.build();
 
+		answerKey = ComboBoxBuilder.<String>create()
+			.setItems("A", "B", "C", "D")
+			.setValue("A")
+			.build();
+
+		HBox answerKey = HBoxBuilder.create()
+			.addChildren(answerKeyLbl, this.answerKey)
+			.setSpacing(10)
+			.setAlignment(Pos.CENTER_LEFT)
+			.build();
 
 		this.root = VBoxBuilder.create()
-			.addChildren(questionLbl, questionField, answerContainer, answerKey)
-			.setSpacing(5)
+			.addChildren(questionContainer, answerContainer, answerKey)
+			.setSpacing(10)
 			.build();
 	}
 
@@ -78,6 +97,8 @@ public class MultipleChoiceQuestion implements Question {
 
 		return HBoxBuilder.create()
 			.addChildren(lbl, field)
+			.setAlignment(Pos.CENTER_LEFT)
+			.setSpacing(10)
 			.build();
 	}
 

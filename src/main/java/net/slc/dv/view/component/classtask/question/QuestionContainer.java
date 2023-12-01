@@ -1,16 +1,13 @@
 package net.slc.dv.view.component.classtask.question;
 
-import javafx.scene.Node;
+import javafx.geometry.Pos;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
-import javafx.scene.control.TextArea;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import lombok.Getter;
 import net.slc.dv.builder.*;
 import net.slc.dv.enums.QuestionType;
-
-import java.util.List;
 
 @Getter
 public class QuestionContainer {
@@ -36,12 +33,15 @@ public class QuestionContainer {
 				})
 				.build();
 
-		Label questionLbl = LabelBuilder.create("Question Type")
+		Label questionLbl = LabelBuilder
+				.create("Question Type")
+				.setStyle("-fx-font-size: 18px;")
 				.build();
 
 		this.questionTypeContainer = HBoxBuilder.create()
 				.addChildren(questionLbl, questionSelect)
-				.setSpacing(5)
+				.setAlignment(Pos.CENTER_LEFT)
+				.setSpacing(10)
 				.build();
 
 	}

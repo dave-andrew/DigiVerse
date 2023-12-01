@@ -49,6 +49,12 @@ public class ButtonBuilder {
         return this;
     }
 
+    public ButtonBuilder bindPrefWidth(VBox vBox) {
+        this.button.prefWidthProperty().bind(vBox.widthProperty());
+
+        return this;
+    }
+
     public ButtonBuilder setPrefWidth(int width) {
         this.button.setPrefWidth(width);
 
