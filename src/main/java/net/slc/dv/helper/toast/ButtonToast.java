@@ -1,6 +1,7 @@
 package net.slc.dv.helper.toast;
 
 import javafx.scene.control.Button;
+import net.slc.dv.builder.ButtonBuilder;
 
 import java.util.function.Consumer;
 
@@ -15,7 +16,11 @@ public class ButtonToast extends Toast {
     }
 
     public ButtonToast setButtonText(String text) {
-        this.button = new Button(text);
+        this.button = ButtonBuilder
+                .create(text)
+                .setStyleClass("primary-button")
+                .setStyle("-fx-text-fill: white;")
+                .build();
         return this;
     }
 
@@ -41,7 +46,7 @@ public class ButtonToast extends Toast {
             }
         });
 
-        root.getChildren().add(button);
+        box.getChildren().add(button);
         super.build();
     }
 }
