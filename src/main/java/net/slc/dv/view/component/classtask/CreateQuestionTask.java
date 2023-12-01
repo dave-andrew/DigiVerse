@@ -1,5 +1,7 @@
 package net.slc.dv.view.component.classtask;
 
+import javafx.geometry.Insets;
+import javafx.geometry.Pos;
 import javafx.scene.Node;
 import javafx.scene.control.Button;
 import javafx.scene.control.ScrollPane;
@@ -38,12 +40,17 @@ public class CreateQuestionTask {
             .build();
 
         this.container = VBoxBuilder.create()
-            .addChildren(questionContainers.stream().map((questionContainer) -> questionContainer.getRoot()).toArray(Node[]::new))
+            .addChildren(questionContainers.stream().map(QuestionContainer::getRoot).toArray(Node[]::new))
             .addChildren(addQuestionBtn)
+            .setAlignment(Pos.CENTER)
+            .setPadding(40, 80, 0, 80)
+            .setSpacing(30)
             .build();
 
         this.root = ScrollPaneBuilder.create()
             .setContent(container)
+            .setPannable(true)
+            .setFitToWidth(true)
             .build();
 
     }
