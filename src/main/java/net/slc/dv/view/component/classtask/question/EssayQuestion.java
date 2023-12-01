@@ -8,10 +8,10 @@ import net.slc.dv.builder.LabelBuilder;
 import net.slc.dv.builder.TextAreaBuilder;
 import net.slc.dv.builder.VBoxBuilder;
 import net.slc.dv.enums.QuestionType;
-import net.slc.dv.interfaces.Question;
+import net.slc.dv.interfaces.QuestionBox;
 
 @Getter
-public class EssayQuestion implements Question {
+public class EssayQuestion implements QuestionBox {
 	private final VBox root;
 	private final TextArea questionField;
 

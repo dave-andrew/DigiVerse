@@ -10,13 +10,13 @@ import javafx.scene.layout.VBox;
 import lombok.Getter;
 import net.slc.dv.builder.*;
 import net.slc.dv.enums.QuestionType;
-import net.slc.dv.interfaces.Question;
+import net.slc.dv.interfaces.QuestionBox;
 
 import java.util.ArrayList;
 import java.util.List;
 
 @Getter
-public class MultipleChoiceQuestion implements Question {
+public class MultipleChoiceQuestion implements QuestionBox {
 	private final VBox root;
 	private final TextArea questionField;
 	private final List<TextField> answerFields;
@@ -24,61 +24,61 @@ public class MultipleChoiceQuestion implements Question {
 
 	public MultipleChoiceQuestion() {
 		Label questionLbl = LabelBuilder.create("Enter Question Here")
-			.build();
+				.build();
 
 		this.questionField = TextAreaBuilder.create()
-			.setPromptText("Enter Question Here")
-			.build();
+				.setPromptText("Enter Question Here")
+				.build();
 
 		Label answerLbl = LabelBuilder.create("Enter Answers Here")
-			.build();
+				.build();
 
 		this.answerFields = new ArrayList<>();
 
 		List<HBox> answerFields = List.of(
-			createFieldLabelPair("A", "Enter Choice Here"),
-			createFieldLabelPair("B", "Enter Choice Here"),
-			createFieldLabelPair("C", "Enter Choice Here"),
-			createFieldLabelPair("D", "Enter Choice Here"));
+				createFieldLabelPair("A", "Enter Choice Here"),
+				createFieldLabelPair("B", "Enter Choice Here"),
+				createFieldLabelPair("C", "Enter Choice Here"),
+				createFieldLabelPair("D", "Enter Choice Here"));
 
 		GridPane answerGrid = GridPaneBuilder.create()
-			.addChildren(answerFields.get(0), 0, 0)
-			.addChildren(answerFields.get(1), 1, 0)
-			.addChildren(answerFields.get(2), 0, 1)
-			.addChildren(answerFields.get(3), 1, 1)
-			.setHGap(5)
-			.setVGap(5)
-			.build();
+				.addChildren(answerFields.get(0), 0, 0)
+				.addChildren(answerFields.get(1), 1, 0)
+				.addChildren(answerFields.get(2), 0, 1)
+				.addChildren(answerFields.get(3), 1, 1)
+				.setHGap(5)
+				.setVGap(5)
+				.build();
 
 		VBox answerContainer = VBoxBuilder.create()
-			.addChildren(answerLbl, answerGrid)
-			.build();
+				.addChildren(answerLbl, answerGrid)
+				.build();
 
 		answerKey = ComboBoxBuilder.<String>create()
-			.setItems("True", "False")
-			.setValue("True")
-			.build();
+				.setItems("True", "False")
+				.setValue("True")
+				.build();
 
 
 		this.root = VBoxBuilder.create()
-			.addChildren(questionLbl, questionField, answerContainer, answerKey)
-			.setSpacing(5)
-			.build();
+				.addChildren(questionLbl, questionField, answerContainer, answerKey)
+				.setSpacing(5)
+				.build();
 	}
 
 	private HBox createFieldLabelPair(String label, String promptText) {
 		Label lbl = LabelBuilder.create(label)
-			.build();
+				.build();
 
 		TextField field = TextFieldBuilder.create()
-			.setPromptText(promptText)
-			.build();
+				.setPromptText(promptText)
+				.build();
 
 		answerFields.add(field);
 
 		return HBoxBuilder.create()
-			.addChildren(lbl, field)
-			.build();
+				.addChildren(lbl, field)
+				.build();
 	}
 
 	@Override
@@ -102,7 +102,7 @@ public class MultipleChoiceQuestion implements Question {
 				questionAnswer.append(answerFields.get(i).getText());
 			}
 			if (i != answerFields.size() - 1) {
-				questionAnswer.append(",");
+				questionAnswer.append("|");
 			}
 		}
 

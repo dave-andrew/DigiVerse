@@ -1,6 +1,5 @@
 package net.slc.dv.view.component.classtask.question;
 
-import javafx.geometry.Pos;
 import javafx.scene.control.*;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
@@ -8,13 +7,13 @@ import javafx.scene.layout.VBox;
 import lombok.Getter;
 import net.slc.dv.builder.*;
 import net.slc.dv.enums.QuestionType;
-import net.slc.dv.interfaces.Question;
+import net.slc.dv.interfaces.QuestionBox;
 
 import java.util.ArrayList;
 import java.util.List;
 
 @Getter
-public class TrueFalseQuestion implements Question {
+public class TrueFalseQuestion implements QuestionBox {
 	private final VBox root;
 	private final TextArea questionField;
 	private final List<TextField> answerFields;
@@ -98,7 +97,7 @@ public class TrueFalseQuestion implements Question {
 				questionAnswer.append(answerFields.get(i).getText());
 			}
 			if (i != answerFields.size() - 1) {
-				questionAnswer.append(";");
+				questionAnswer.append("|");
 			}
 		}
 		return questionAnswer.toString();

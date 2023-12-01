@@ -37,9 +37,7 @@ public class Home {
     private GridPane classGrid;
 
     private HBox navBar, homeSideNav, calenderSideNav, logOutBtn;
-
     private HBox leftNav, rightNav;
-
     private ImageView userImg;
     private ImageView leftArrow;
     private Button iconBtn;

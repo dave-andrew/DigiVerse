@@ -1,10 +1,13 @@
 package net.slc.dv.controller;
 
 import net.slc.dv.database.TaskQuery;
+import net.slc.dv.enums.TaskType;
 import net.slc.dv.model.LoggedUser;
+import net.slc.dv.model.Question;
 import net.slc.dv.model.Task;
 
 import java.util.ArrayList;
+import java.util.List;
 
 public class TaskController {
 
@@ -14,15 +17,27 @@ public class TaskController {
         this.taskQuery = new TaskQuery();
     }
 
-    public void createTask(String title, String description, String deadlineAt, boolean scored, String classid) {
-
+    public void createFileTask(String title, String description, String deadlineAt, boolean scored, String classId) {
         if(title.isEmpty() || description.isEmpty() || deadlineAt.isEmpty()) {
             return;
         }
 
-        Task newTask = new Task(LoggedUser.getInstance().getId(), LoggedUser.getInstance(), title, description, deadlineAt, scored);
+        Task newTask = new Task(LoggedUser.getInstance(), title, description, deadlineAt, scored, TaskType.FILE);
 
-        this.taskQuery.createTask(newTask, classid);
+
+        this.taskQuery.createFileTask(newTask, classId);
+    }
+
+    public void createQuestionTask(List<Question> questions, String title, String description, String deadlineAt, boolean scored, String classId) {
+        if(questions.isEmpty() || deadlineAt.isEmpty()) {
+            return;
+        }
+
+        Task newTask = new Task(LoggedUser.getInstance(), title, description, deadlineAt, scored, TaskType.QUESTION);
+
+        questions.forEach(question -> question.setTaskID(newTask.getId()));
+
+        this.taskQuery.createQuestionTask(newTask, questions, classId);
     }
 
     public ArrayList<Task> getClassroomTask(String classid) {

@@ -17,6 +17,7 @@ import net.slc.dv.helper.DateManager;
 import net.slc.dv.helper.ScreenManager;
 import net.slc.dv.helper.ThemeManager;
 import net.slc.dv.model.Classroom;
+import net.slc.dv.model.Question;
 import net.slc.dv.view.Profile;
 import net.slc.dv.view.component.TimeSpinner;
 import net.slc.dv.view.component.classtask.CreateFileTask;
@@ -24,9 +25,9 @@ import net.slc.dv.view.component.classtask.CreateQuestionTask;
 import net.slc.dv.view.homeview.task.enums.TaskCenter;
 
 import java.time.LocalDate;
-import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
+import java.util.List;
 
 public class AddTask extends BorderPane {
 
@@ -51,8 +52,8 @@ public class AddTask extends BorderPane {
 	private DatePicker datePicker;
 	private TimeSpinner timeSpinner;
 	private TaskCenter centerType;
-	private CreateFileTask createFileTask;
-	private CreateQuestionTask createQuestionTask;
+	private final CreateFileTask createFileTask;
+	private final CreateQuestionTask createQuestionTask;
 
 	public AddTask(Stage stage, Classroom classroom) {
 		this.classroom = classroom;
@@ -126,7 +127,16 @@ public class AddTask extends BorderPane {
 				.build();
 	}
 
-	private void submitForm() {
+
+	private void createTask(){
+		if(this.centerType == TaskCenter.FILE) {
+			this.submitFormFile();
+		}
+		else {
+			this.submitFormTest();
+		}
+	}
+	private void submitFormFile() {
 		String title = this.createFileTask.getTitleField().getText();
 		String description = this.createFileTask.getDescriptionField().getText();
 		LocalDate deadline = this.datePicker.getValue();
@@ -140,9 +150,32 @@ public class AddTask extends BorderPane {
 			return;
 		}
 
-		this.taskController.createTask(title, description, deadlineAt, scored, classroom.getClassId());
+		this.taskController.createFileTask(title, description, deadlineAt, scored, classroom.getClassId());
 
 		dialogStage.close();
+	}
+
+
+	private void submitFormTest() {
+		String title = this.createFileTask.getTitleField().getText();
+		String description = this.createFileTask.getDescriptionField().getText();
+		List<Question> questions = this.createQuestionTask.getQuestions();
+
+		LocalDate deadline = this.datePicker.getValue();
+		LocalTime time = this.timeSpinner.getValue();
+		boolean scored = this.scored.isSelected();
+
+		String deadlineAt = DateManager.formatDate(deadline, time);
+
+		//TODo: check if all fields are filled
+		if (false) {
+			this.createFileTask.getErrorLbl().setText("Please fill all the fields");
+			return;
+		}
+
+
+		this.taskController.createQuestionTask(questions, "hello", "hello", deadlineAt, scored, classroom.getClassId());
+
 	}
 
 	private VBox rightBar() {
@@ -192,7 +225,7 @@ public class AddTask extends BorderPane {
 				.setStyleClass("primary-button")
 				.setStyle("-fx-text-fill: white;")
 				.setPrefWidth(300)
-				.setOnAction(e -> this.submitForm())
+				.setOnAction(e -> this.createTask())
 				.setVMargin(0, 0, 50, 0)
 				.build();
 
@@ -200,16 +233,7 @@ public class AddTask extends BorderPane {
 				.setStyleClass("primary-button")
 				.setStyle("-fx-text-fill: white;")
 				.setPrefWidth(300)
-				.setOnAction(e -> {
-					if(this.centerType == TaskCenter.FILE) {
-						this.centerType = TaskCenter.QUESTION;
-					}
-					else {
-						this.centerType = TaskCenter.FILE;
-					}
-
-					this.changeCenter();
-				})
+				.setOnAction(e -> this.changeTaskType())
 				.build();
 
 		return VBoxBuilder.create()
@@ -217,6 +241,17 @@ public class AddTask extends BorderPane {
 				.setAlignment(Pos.CENTER)
 				.setStyleClass("side-nav")
 				.build();
+	}
+
+	private void changeTaskType(){
+		if(this.centerType == TaskCenter.FILE) {
+			this.centerType = TaskCenter.TEST;
+		}
+		else {
+			this.centerType = TaskCenter.FILE;
+		}
+
+		this.changeCenter();
 	}
 
 }

@@ -55,7 +55,7 @@
 }
 
 .text-area:focused {
-    -fx-highlight-fill: transparent;
+    /*-fx-highlight-fill: transparent;*/
 }
 
 .text-area .content {

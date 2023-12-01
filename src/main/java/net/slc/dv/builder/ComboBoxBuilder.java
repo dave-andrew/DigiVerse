@@ -6,7 +6,7 @@ import javafx.scene.control.ComboBox;
 
 public class ComboBoxBuilder<T> {
 
-	private ComboBox<T> comboBox;
+	private final ComboBox<T> comboBox;
 	private ComboBoxBuilder() {
 		this.comboBox = new ComboBox<>();
 	}
@@ -19,7 +19,8 @@ public class ComboBoxBuilder<T> {
 		return this;
 	}
 
-	public ComboBoxBuilder<T> setItems(T... items) {
+	@SafeVarargs
+	public final ComboBoxBuilder<T> setItems(T... items) {
 		this.comboBox.getItems().addAll(items);
 		return this;
 	}

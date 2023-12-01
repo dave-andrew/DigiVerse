@@ -57,7 +57,7 @@ public class ClassQuery {
 
             try (var rs = ps.executeQuery()) {
                 while (rs.next()) {
-                    classrooms.add(new Classroom(rs.getString("ClassID"), rs.getString("ClassName"), rs.getString("ClassDesc"), rs.getString("ClassCode"), rs.getString("ClassSubject"), rs.getBlob("ClassImage")));
+                    classrooms.add(new Classroom(rs));
                 }
             }
         } catch (Exception ignored) {
