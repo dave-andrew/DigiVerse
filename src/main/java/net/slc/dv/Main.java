@@ -81,7 +81,6 @@ public class Main extends Application {
 	}
 
 	private void sceneHandler(boolean value) {
-		String message = authController.checkAuth();
 		Stage stage = StageManager.getInstance();
 
 		if (!value) {
@@ -96,6 +95,8 @@ public class Main extends Application {
 			new OfflineGame(stage);
 			return;
 		}
+
+		String message = authController.checkAuth();
 
 		if (this.currentScene != null && this.currentScene.equals("offline")) {
 			ToastBuilder.buildButton()
