@@ -12,6 +12,14 @@ repositories {
     mavenLocal()
 }
 
+configurations {
+    extraLibs
+}
+
+tasks.withType(JavaCompile).configureEach {
+    options.encoding = 'UTF-8'
+}
+
 application {
     mainModule = 'net.slc.dv'
     mainClass = 'net.slc.dv.Main'
@@ -41,11 +49,30 @@ dependencies {
     implementation group: 'org.openjfx', name: 'javafx-graphics', version: '17.0.9', classifier: 'win'
     implementation group: 'org.openjfx', name: 'javafx-graphics', version: '17.0.9', classifier: 'mac'
 
+    // mysql java connector
+    extraLibs 'mysql:mysql-connector-java:8.0.33'
+
     // lombok
     implementation 'org.projectlombok:lombok:1.18.30'
+
     // jetbrains annotations
     implementation 'org.jetbrains:annotations:24.1.0'
 
-    // mysql java connector
-    implementation 'mysql:mysql-connector-java:8.0.33'
+    configurations.compileOnly.extendsFrom(configurations.extraLibs)
+}
+
+java {
+    modularity.inferModulePath.set(true)
+}
+
+jar {
+    manifest {
+        attributes 'Main-Class': 'net.slc.dv.Main'
+        attributes 'Automatic-Module-Name': moduleName
+    }
+
+    duplicatesStrategy = DuplicatesStrategy.INCLUDE
+    from {
+        configurations.extraLibs.collect { it.isDirectory() ? it : zipTree(it) }
+    }
 }

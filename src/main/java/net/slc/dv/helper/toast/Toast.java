@@ -5,6 +5,7 @@ import javafx.animation.KeyValue;
 import javafx.animation.PauseTransition;
 import javafx.animation.Timeline;
 import javafx.geometry.Insets;
+import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Priority;
@@ -24,6 +25,7 @@ public class Toast {
 
     protected Stage toastStage;
     protected HBox root;
+    protected VBox box;
     private int fadeInDelay = 500;
     private int toastDelay = 2000;
     private int fadeOutDelay = 500;
@@ -42,8 +44,7 @@ public class Toast {
         errorStage.setY(0);
 
         Text text = new Text(errorMsg);
-        text.setFont(Font.font("Verdana", 18));
-        text.setFill(Color.RED); // Set the text color for error messages
+        text.setFill(Color.RED);
 
         VBox box = new VBox(text);
         VBox.setVgrow(box, Priority.NEVER);
@@ -119,8 +120,9 @@ public class Toast {
         text.setFont(Font.font("Nunito", 18));
         text.setFill(Color.BLACK);
 
-        VBox box = new VBox(text);
+        this.box = new VBox(text);
         VBox.setVgrow(box, Priority.NEVER);
+        box.setAlignment(Pos.CENTER);
         box.setStyle("-fx-background-radius: 5px; -fx-background-color: rgba(255, 255, 255, 1); -fx-padding: 10px 30px; -fx-min-width: 210px; -fx-effect: dropshadow(gaussian, grey, 15.0, 0.5, 0, 0);");
 
         VBox spacer = new VBox();
@@ -131,7 +133,7 @@ public class Toast {
         root.setOpacity(0);
 
         root.getChildren().removeAll();
-        root.getChildren().add(new StackPane(box, spacer));
+        root.getChildren().add(box);
 
         return this;
     }

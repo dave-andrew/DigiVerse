@@ -19,7 +19,6 @@ import javafx.stage.Stage;
 import javafx.util.Duration;
 import net.slc.dv.controller.AuthController;
 import net.slc.dv.helper.ScreenManager;
-import net.slc.dv.helper.ThemeManager;
 
 public class LoginView {
 
@@ -158,13 +157,9 @@ public class LoginView {
         registerLink.getStyleClass().add("link-button");
         registerLink.setStyle("-fx-font-size: 14px");
 
-        registerLink.setOnMouseEntered(e -> {
-            registerLink.setStyle("-fx-font-size: 14px; -fx-text-fill: #1f90ff;");
-        });
+        registerLink.setOnMouseEntered(e -> registerLink.setStyle("-fx-font-size: 14px; -fx-text-fill: #1f90ff;"));
 
-        registerLink.setOnMouseExited(e -> {
-            registerLink.setStyle("-fx-font-size: 14px; -fx-text-fill: black;");
-        });
+        registerLink.setOnMouseExited(e -> registerLink.setStyle("-fx-font-size: 14px; -fx-text-fill: black;"));
 
         loginBtn = new Button("Start Journey");
         loginBtn.getStyleClass().add("primary-button");
@@ -270,7 +265,8 @@ public class LoginView {
 
         loginImage.setFitHeight(ScreenManager.SCREEN_HEIGHT);
 
-        ThemeManager.getTheme(scene);
+        scene.getStylesheets().add("file:resources/light_theme.css");
+//        ThemeManager.getTheme(scene);
     }
 
     private void actions(Stage stage) {
