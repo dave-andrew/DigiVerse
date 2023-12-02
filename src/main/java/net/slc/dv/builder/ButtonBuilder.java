@@ -73,6 +73,12 @@ public class ButtonBuilder {
         return this;
     }
 
+    public ButtonBuilder setPrefSize(int width, int height) {
+        this.button.setPrefSize(width, height);
+
+        return this;
+    }
+
     public Button build() {
         return this.button;
     }

@@ -37,7 +37,7 @@ public class CreateQuestionTask {
 
 		questionContainers = new ArrayList<>();
 
-		questionContainers.add(new QuestionContainer());
+		questionContainers.add(new QuestionContainer(this::removeQuestion));
 
 		this.container = VBoxBuilder.create()
 				.addChildren(questionContainers.stream().map(QuestionContainer::getRoot).toArray(Node[]::new))
@@ -48,7 +48,7 @@ public class CreateQuestionTask {
 
 		this.addQuestionBtn = ButtonBuilder
 				.create()
-				.setOnAction(e -> addQuestion())
+				.setOnAction(e -> addNewQuestion())
 				.setStyleClass("primary-button")
 				.setGraphic(imageView)
 				.bindPrefWidth(container)
@@ -85,7 +85,7 @@ public class CreateQuestionTask {
 				.build();
 	}
 
-	public List<Question> getQuestions(){
+	public List<Question> getQuestions() {
 		List<QuestionContainer> questionContainers = this.questionContainers;
 		List<Question> questionList = new ArrayList<>();
 		questionContainers.forEach(questionContainer -> {

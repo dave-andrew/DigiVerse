@@ -13,8 +13,10 @@ import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Line;
+import net.slc.dv.builder.ButtonBuilder;
 import net.slc.dv.controller.AnswerController;
 import net.slc.dv.controller.CommentController;
+import net.slc.dv.enums.TaskType;
 import net.slc.dv.helper.DateManager;
 import net.slc.dv.helper.ImageManager;
 import net.slc.dv.helper.toast.ToastBuilder;
@@ -261,11 +263,26 @@ public class TaskDetail extends HBox {
 
         submitStatusContainer.getChildren().addAll(submitTitle, spacer, submitStatus);
 
-        this.submitBtn = new Button("+ Upload File");
-        submitBtn.getStyleClass().add("primary-button");
-        submitBtn.setStyle("-fx-text-fill: #fff;");
-        submitBtn.setPrefSize(300, 40);
-        VBox.setMargin(submitBtn, new Insets(30, 0, 0, 0));
+        if (this.task.getTaskType() == TaskType.FILE) {
+            this.submitBtn = ButtonBuilder.create("+ Upload File")
+                    .setStyleClass("primary-button")
+                    .setStyle("-fx-text-fill: #fff;")
+                    .setPrefSize(300, 40)
+                    .setOnAction(e -> this.uploadFile())
+                    .setVMargin(30, 0, 0, 0)
+                    .setVMargin(30, 0, 0, 0)
+                    .build();
+        }
+        else {
+            this.submitBtn = ButtonBuilder.create("+ Do Test")
+                    .setStyleClass("primary-button")
+                    .setStyle("-fx-text-fill: #fff;")
+                    .setPrefSize(300, 40)
+                    .setOnAction(e -> this.doTest())
+                    .setVMargin(30, 0, 0, 0)
+                    .setVMargin(30, 0, 0, 0)
+                    .build();
+        }
 
         this.markAsDoneBtn = new Button("Mark as Done");
         markAsDoneBtn.getStyleClass().add("secondary-button");
@@ -322,6 +339,19 @@ public class TaskDetail extends HBox {
         fetchAnswer();
     }
 
+    private void uploadFile(){
+        if (!checkDeadline()) {
+            return;
+        }
+
+        new UploadFileModal(task.getId(), fileContainer, sideContent, downloadBtn);
+        fetchAnswer();
+    }
+
+    private void doTest(){
+
+    }
+
     private ArrayList<File> fetchAnswer() {
         if (this.answerController.checkAnswer(this.task.getId(), LoggedUser.getInstance().getId())) {
             submitStatus.setText("Submitted");
@@ -347,15 +377,6 @@ public class TaskDetail extends HBox {
     }
 
     private void actions() {
-        this.submitBtn.setOnAction(e -> {
-
-            if (!checkDeadline()) {
-                return;
-            }
-
-            new UploadFileModal(task.getId(), fileContainer, sideContent, downloadBtn);
-            fetchAnswer();
-        });
 
         this.markAsDoneBtn.setOnMouseClicked(e -> {
 
