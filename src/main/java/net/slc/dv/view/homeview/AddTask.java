@@ -18,7 +18,7 @@ import net.slc.dv.helper.ScreenManager;
 import net.slc.dv.helper.ThemeManager;
 import net.slc.dv.model.Classroom;
 import net.slc.dv.model.Question;
-import net.slc.dv.view.Profile;
+import net.slc.dv.view.home.component.Profile;
 import net.slc.dv.view.component.TimeSpinner;
 import net.slc.dv.view.component.classtask.CreateFileTask;
 import net.slc.dv.view.component.classtask.CreateQuestionTask;

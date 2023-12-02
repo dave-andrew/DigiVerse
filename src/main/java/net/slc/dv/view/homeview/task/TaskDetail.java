@@ -19,12 +19,14 @@ import net.slc.dv.controller.CommentController;
 import net.slc.dv.enums.TaskType;
 import net.slc.dv.helper.DateManager;
 import net.slc.dv.helper.ImageManager;
+import net.slc.dv.helper.StageManager;
 import net.slc.dv.helper.toast.ToastBuilder;
 import net.slc.dv.model.LoggedUser;
 import net.slc.dv.model.Task;
 import net.slc.dv.model.TaskComment;
 import net.slc.dv.view.component.classdetail.component.CommentItem;
 import net.slc.dv.view.component.classtask.UploadFileModal;
+import net.slc.dv.view.component.classtask.test.Test;
 
 import java.io.File;
 import java.text.ParseException;
@@ -349,7 +351,7 @@ public class TaskDetail extends HBox {
     }
 
     private void doTest(){
-
+        new Test(StageManager.getInstance(), this.task);
     }
 
     private ArrayList<File> fetchAnswer() {
@@ -364,9 +366,7 @@ public class TaskDetail extends HBox {
 
             if (!fileList.isEmpty()) {
                 downloadBtn.getStyleClass().add("primary-button");
-                downloadBtn.setOnMouseClicked(e -> {
-                    this.answerController.downloadAllAnswer(fileList);
-                });
+                downloadBtn.setOnMouseClicked(e -> this.answerController.downloadAllAnswer(fileList));
             }
 
             return fileList;

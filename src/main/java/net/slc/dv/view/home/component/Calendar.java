@@ -1,4 +1,4 @@
-package net.slc.dv.view.homeview;
+package net.slc.dv.view.home.component;
 
 import net.slc.dv.controller.MemberController;
 import net.slc.dv.controller.TaskController;
@@ -13,6 +13,7 @@ import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
 import net.slc.dv.model.Classroom;
 import net.slc.dv.model.Task;
+import net.slc.dv.view.homeview.ClassroomDetail;
 import net.slc.dv.view.homeview.task.TaskBase;
 
 import java.time.LocalDateTime;

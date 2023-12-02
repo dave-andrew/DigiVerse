@@ -19,6 +19,7 @@ import javafx.stage.Stage;
 import javafx.util.Duration;
 import net.slc.dv.controller.AuthController;
 import net.slc.dv.helper.ScreenManager;
+import net.slc.dv.view.home.Home;
 
 public class LoginView {
 

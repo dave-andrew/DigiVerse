@@ -18,7 +18,7 @@ import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
 import net.slc.dv.model.LoggedUser;
-import net.slc.dv.view.Home;
+import net.slc.dv.view.home.Home;
 import net.slc.dv.view.LoginView;
 import net.slc.dv.view.OfflineGame;
 

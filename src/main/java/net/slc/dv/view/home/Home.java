@@ -1,4 +1,4 @@
-package net.slc.dv.view;
+package net.slc.dv.view.home;
 
 import javafx.animation.Interpolator;
 import javafx.animation.KeyFrame;
@@ -13,6 +13,10 @@ import javafx.scene.image.ImageView;
 import javafx.scene.layout.*;
 import javafx.stage.Stage;
 import javafx.util.Duration;
+import net.slc.dv.builder.ButtonBuilder;
+import net.slc.dv.builder.HBoxBuilder;
+import net.slc.dv.builder.ImageViewBuilder;
+import net.slc.dv.builder.LabelBuilder;
 import net.slc.dv.controller.AuthController;
 import net.slc.dv.helper.ImageManager;
 import net.slc.dv.helper.ScreenManager;
@@ -20,7 +24,11 @@ import net.slc.dv.helper.StageManager;
 import net.slc.dv.helper.ThemeManager;
 import net.slc.dv.model.Classroom;
 import net.slc.dv.model.LoggedUser;
-import net.slc.dv.view.homeview.Calendar;
+import net.slc.dv.view.CreateClass;
+import net.slc.dv.view.JoinClass;
+import net.slc.dv.view.LoginView;
+import net.slc.dv.view.home.component.Profile;
+import net.slc.dv.view.home.component.Calendar;
 import net.slc.dv.view.homeview.ClassroomList;
 
 import java.util.ArrayList;
@@ -66,21 +74,22 @@ public class Home {
         stage.setTitle("DigiVerse");
     }
 
-    private HBox sideNavItem(String imagePath, String label) {
-        HBox hbox = new HBox(10);
+    private HBox sideNavItem(String imagePath, String labelString) {
+        ImageView icon = ImageViewBuilder.create()
+                .setImage(new Image(imagePath))
+                .setFitHeight(25)
+                .setPreserveRatio(true)
+                .build();
 
-        Image image = new Image(imagePath);
-        ImageView icon = new ImageView(image);
+        Label label = LabelBuilder.create(labelString)
+                .setStyle("-fx-font-size: 16px;")
+                .build();
 
-        icon.setFitWidth(25);
-        icon.setPreserveRatio(true);
-
-        Label lbl = new Label(label);
-        lbl.setStyle("-fx-font-size: 16px;");
-
-        hbox.getChildren().addAll(icon, lbl);
-        hbox.setAlignment(Pos.CENTER_LEFT);
-        return hbox;
+        return HBoxBuilder.create()
+                .addChildren(icon, label)
+                .setSpacing(10)
+                .setAlignment(Pos.CENTER_LEFT)
+                .build();
     }
 
     private void fetchClass() {
@@ -92,9 +101,7 @@ public class Home {
         mainPane.getChildren().add(scrollPane);
     }
 
-    private void initialize() {
-
-        LoggedUser loggedUser = LoggedUser.getInstance();
+    private void initialize() { // semua komponen yang di ho
 
         borderPane = new BorderPane();
         mainPane = new StackPane();
@@ -107,13 +114,17 @@ public class Home {
         scrollPane = new ScrollPane();
         mainPane.getChildren().add(scrollPane);
 
-        Image iconImg = new Image("file:resources/icons/logo.png");
-        ImageView icon = new ImageView(iconImg);
-        iconBtn = new Button();
-        iconBtn.setGraphic(icon);
-        icon.setFitHeight(40);
-        icon.setPreserveRatio(true);
-        iconBtn.setStyle("-fx-cursor: hand;-fx-background-color: transparent; -fx-border-color: transparent; -fx-border-width: 0;");
+        ImageView icon = ImageViewBuilder.create()
+                .setImage(new Image("file:resources/icons/logo.png"))
+                .setFitHeight(40)
+                .setPreserveRatio(true)
+                .build();
+
+        iconBtn = ButtonBuilder.create()
+                .setGraphic(icon)
+                .setStyle("-fx-cursor: hand;-fx-background-color: transparent; -fx-border-color: transparent; -fx-border-width: 0;")
+                .build();
+
 
         classGrid = new ClassroomList(mainPane, leftNav, iconBtn);
         scrollPane.setContent(classGrid);
@@ -135,6 +146,7 @@ public class Home {
         plusMenu.getItems().addAll(createClass, joinClass);
 
 
+        LoggedUser loggedUser = LoggedUser.getInstance();
         if (loggedUser != null) {
             Image userImage = loggedUser.getProfile();
             userImg = new ImageView(Objects.requireNonNullElseGet(userImage, () -> new Image("file:resources/icons/user.png")));
@@ -190,7 +202,7 @@ public class Home {
         calenderSideNav.setPrefWidth(250);
     }
 
-    private Scene setLayout() {
+    private Scene setLayout() { // masuk2in nya
         scrollPane.setHbarPolicy(ScrollPane.ScrollBarPolicy.NEVER);
         scrollPane.setVbarPolicy(ScrollPane.ScrollBarPolicy.AS_NEEDED);
 
@@ -260,7 +272,7 @@ public class Home {
         return scene;
     }
 
-    private void actions(Stage stage) {
+    private void actions(Stage stage) { // event nya
 
         plusBtn.setOnMouseClicked(e -> {
             plusMenu.show(plusBtn, e.getScreenX() - 150, e.getScreenY());
@@ -355,7 +367,7 @@ public class Home {
 
     }
 
-    void closeSidebar() {
+    void closeSidebar() { //
         sp.setTranslateX(0);
 
         KeyValue keyValue = new KeyValue(sp.prefWidthProperty(), 0, Interpolator.EASE_BOTH);

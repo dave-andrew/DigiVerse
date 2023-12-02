@@ -12,7 +12,7 @@ import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.StackPane;
 import net.slc.dv.model.Classroom;
-import net.slc.dv.view.Home;
+import net.slc.dv.view.home.Home;
 import net.slc.dv.view.component.classroom.ClassCard;
 
 import java.util.ArrayList;
