@@ -14,12 +14,14 @@ public enum OrderByType {
     }
 
     public static OrderByType fromString(String type) {
-        for (OrderByType orderByType : OrderByType.values()) {
-            if (orderByType.getType().equalsIgnoreCase(type)) {
-                return orderByType;
-            }
+        switch (type) {
+            case "ASC":
+                return ASC;
+            case "DESC":
+                return DESC;
+            default:
+                throw new IllegalArgumentException("Invalid type: " + type);
         }
-        return null;
     }
 
 }

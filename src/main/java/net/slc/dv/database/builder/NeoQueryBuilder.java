@@ -93,6 +93,12 @@ public class NeoQueryBuilder {
      */
     public NeoQueryBuilder condition(String column, String compareType, Object value) {
         ConditionCompareType conditionCompareType = ConditionCompareType.fromString(compareType);
+        assert conditionCompareType != null;
+
+        if (conditionCompareType.equals(ConditionCompareType.IN)) {
+            return this.conditionSubQuery(column, (NeoQueryBuilder) value);
+        }
+
         return this.condition(column, conditionCompareType, value);
     }
 
