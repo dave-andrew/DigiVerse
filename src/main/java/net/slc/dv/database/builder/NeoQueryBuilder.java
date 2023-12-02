@@ -194,6 +194,16 @@ public class NeoQueryBuilder {
      * @param offset The offset
      * @return NeoQueryBuilder
      */
+    public NeoQueryBuilder offset(int offset) {
+        return this.offset(String.valueOf(offset));
+    }
+
+    /**
+     * Set the selection offset
+     *
+     * @param offset The offset
+     * @return NeoQueryBuilder
+     */
     public NeoQueryBuilder offset(String offset) {
         this.offset = offset;
         return this;
