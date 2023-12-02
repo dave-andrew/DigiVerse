@@ -10,6 +10,7 @@ import net.slc.dv.database.connection.Connect;
 
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
+import java.sql.Types;
 import java.util.*;
 import java.util.concurrent.atomic.AtomicInteger;
 
@@ -27,7 +28,7 @@ public class NeoQueryBuilder {
     private ConditionJoinType conditionJoinType;
 
 
-    private Map<String, String> valueMap;
+    private Map<String, Object> valueMap;
 
     private OrderBy orderBy;
     private String limit;
@@ -131,7 +132,7 @@ public class NeoQueryBuilder {
      * @param value  The value
      * @return NeoQueryBuilder
      */
-    public NeoQueryBuilder values(String column, String value) {
+    public NeoQueryBuilder values(String column, Object value) {
         if (this.valueMap == null) {
             this.valueMap = new HashMap<>();
             this.valueMap.put(column, value);
@@ -381,7 +382,7 @@ public class NeoQueryBuilder {
     private void applyConditions(PreparedStatement preparedStatement) {
         this.conditionList.forEach(condition -> {
             try {
-                preparedStatement.setString(index.getAndIncrement(), condition.getValue());
+                this.apply(preparedStatement, condition.getValue());
             } catch (SQLException e) {
                 throw new RuntimeException(e);
             }
@@ -409,11 +410,46 @@ public class NeoQueryBuilder {
     private void applyValues(PreparedStatement preparedStatement) {
         this.valueMap.values().forEach(val -> {
             try {
-                preparedStatement.setString(index.getAndIncrement(), val);
+                this.apply(preparedStatement, val);
             } catch (SQLException e) {
                 throw new RuntimeException(e);
             }
         });
+    }
+
+    private void apply(PreparedStatement preparedStatement, Object val) throws SQLException {
+        if (val == null) {
+            preparedStatement.setNull(index.getAndIncrement(), Types.NULL);
+            return;
+        }
+
+        if (val instanceof Integer) {
+            preparedStatement.setInt(index.getAndIncrement(), (Integer) val);
+        } else if (val instanceof String) {
+            preparedStatement.setString(index.getAndIncrement(), (String) val);
+        } else if (val instanceof Boolean) {
+            preparedStatement.setBoolean(index.getAndIncrement(), (Boolean) val);
+        } else if (val instanceof Double) {
+            preparedStatement.setDouble(index.getAndIncrement(), (Double) val);
+        } else if (val instanceof Float) {
+            preparedStatement.setFloat(index.getAndIncrement(), (Float) val);
+        } else if (val instanceof Long) {
+            preparedStatement.setLong(index.getAndIncrement(), (Long) val);
+        } else if (val instanceof Short) {
+            preparedStatement.setShort(index.getAndIncrement(), (Short) val);
+        } else if (val instanceof Byte) {
+            preparedStatement.setByte(index.getAndIncrement(), (Byte) val);
+        } else if (val instanceof byte[]) {
+            preparedStatement.setBytes(index.getAndIncrement(), (byte[]) val);
+        } else if (val instanceof java.sql.Date) {
+            preparedStatement.setDate(index.getAndIncrement(), (java.sql.Date) val);
+        } else if (val instanceof java.util.Date) {
+            preparedStatement.setDate(index.getAndIncrement(), new java.sql.Date(((java.util.Date) val).getTime()));
+        } else if (val instanceof UUID) {
+            preparedStatement.setString(index.getAndIncrement(), val.toString());
+        } else {
+            throw new RuntimeException("Unsupported type: " + val.getClass().getSimpleName());
+        }
     }
 
 
