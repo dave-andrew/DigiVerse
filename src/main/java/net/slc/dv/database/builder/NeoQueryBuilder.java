@@ -8,6 +8,7 @@ import net.slc.dv.database.builder.enums.OrderByType;
 import net.slc.dv.database.builder.enums.QueryType;
 import net.slc.dv.database.connection.Connect;
 
+import java.io.FileInputStream;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
 import java.sql.Types;
@@ -205,6 +206,18 @@ public class NeoQueryBuilder {
      * @throws SQLException If an error occurs
      */
     public Results getResults() throws SQLException {
+        PreparedStatement statement = this.buildPreparedStatement();
+        assert statement != null;
+
+        return executeQuery(statement);
+    }
+
+    /**
+     * Build the {@link PreparedStatement} without executing it
+     *
+     * @return {@link PreparedStatement}
+     */
+    public PreparedStatement buildPreparedStatement() {
         Connect connect = Connect.getConnection();
         PreparedStatement statement;
 
@@ -225,8 +238,7 @@ public class NeoQueryBuilder {
                 throw new RuntimeException("Invalid queryType: " + queryType);
         }
 
-        assert statement != null;
-        return executeQuery(statement);
+        return statement;
     }
 
     private PreparedStatement buildSelectStatement(Connect connect) {
@@ -447,6 +459,8 @@ public class NeoQueryBuilder {
             preparedStatement.setDate(index.getAndIncrement(), new java.sql.Date(((java.util.Date) val).getTime()));
         } else if (val instanceof UUID) {
             preparedStatement.setString(index.getAndIncrement(), val.toString());
+        } else if (val instanceof FileInputStream) {
+            preparedStatement.setBlob(index.getAndIncrement(), (FileInputStream) val);
         } else {
             throw new RuntimeException("Unsupported type: " + val.getClass().getSimpleName());
         }
