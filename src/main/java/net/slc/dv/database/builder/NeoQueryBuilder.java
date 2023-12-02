@@ -26,6 +26,7 @@ public class NeoQueryBuilder {
 
 
     private List<Condition> conditionList;
+    private List<SubQueryCondition> subQueryList;
     private ConditionJoinType conditionJoinType;
 
 
@@ -105,11 +106,33 @@ public class NeoQueryBuilder {
      * @return NeoQueryBuilder
      */
     public NeoQueryBuilder condition(String column, ConditionCompareType compareType, Object value) {
+        Condition condition = new Condition(column, compareType, value);
         if (this.conditionList == null) {
             this.conditionList = new ArrayList<>();
-            this.conditionList.add(new Condition(column, compareType, value));
+            this.conditionList.add(condition);
         } else {
-            this.conditionList.add(new Condition(column, compareType, value));
+            this.conditionList.add(condition);
+        }
+
+        return this;
+    }
+
+    /**
+     * Adds a sub query to the WHERE condition
+     *
+     * @param column   The column to be compared
+     * @param subQuery The {@link NeoQueryBuilder} to be used as sub query
+     * @return NeoQueryBuilder
+     */
+    public NeoQueryBuilder conditionSubQuery(String column, NeoQueryBuilder subQuery) {
+        assert subQuery.queryType == QueryType.SELECT;
+
+        SubQueryCondition condition = new SubQueryCondition(column, subQuery);
+        if (this.subQueryList == null) {
+            this.subQueryList = new ArrayList<>();
+            this.subQueryList.add(condition);
+        } else {
+            this.subQueryList.add(condition);
         }
 
         return this;
@@ -305,7 +328,7 @@ public class NeoQueryBuilder {
             query.append("JOIN ").append(this.buildJoin()).append(" ");
         }
 
-        if (conditionList != null) {
+        if (conditionList != null || subQueryList != null) {
             query.append("WHERE ").append(this.buildConditions()).append(" ");
         }
 
@@ -394,21 +417,43 @@ public class NeoQueryBuilder {
             stringJoiner = new StringJoiner(" OR ");
         }
 
-        for (Condition condition : this.conditionList) {
-            stringJoiner.add(condition.getColumn() + " " + condition.getCompareType().getSymbol() + " ?");
+        if (this.conditionList != null) {
+            for (Condition condition : this.conditionList) {
+                stringJoiner.add(condition.getColumn() + " " + condition.getCompareType().getSymbol() + " ?");
+            }
+        }
+
+        if (this.subQueryList != null) {
+            for (SubQueryCondition condition : this.subQueryList) {
+                stringJoiner.add(condition.getColumn() + " IN (" + condition.getQuery() + ") ");
+            }
         }
 
         return stringJoiner.toString();
     }
 
     private void applyConditions(PreparedStatement preparedStatement) {
-        this.conditionList.forEach(condition -> {
-            try {
-                this.apply(preparedStatement, condition.getValue());
-            } catch (SQLException e) {
-                throw new RuntimeException(e);
-            }
-        });
+        if (this.conditionList != null) {
+            this.conditionList.forEach(condition -> {
+                try {
+                    this.apply(preparedStatement, condition.getValue());
+                } catch (SQLException e) {
+                    throw new RuntimeException(e);
+                }
+            });
+        }
+
+        if (this.subQueryList != null) {
+            this.subQueryList.forEach(condition -> {
+                try {
+                    for (Condition subCondition : condition.getConditionList()) {
+                        this.apply(preparedStatement, subCondition.getValue());
+                    }
+                } catch (SQLException e) {
+                    throw new RuntimeException(e);
+                }
+            });
+        }
     }
 
     private String buildInsertValues() {
@@ -483,6 +528,24 @@ public class NeoQueryBuilder {
         private final String column;
         private final ConditionCompareType compareType;
         private final Object value;
+    }
+
+    @Getter
+    private static class SubQueryCondition {
+        private final String column;
+
+        private final String query;
+        private final List<Condition> conditionList;
+
+        public SubQueryCondition(String column, NeoQueryBuilder queryBuilder) {
+            this.column = column;
+            this.query = queryBuilder.buildSelectQuery();
+            this.conditionList = queryBuilder.conditionList;
+        }
+
+        public String getQuery() {
+            return query.trim();
+        }
     }
 
     @AllArgsConstructor
