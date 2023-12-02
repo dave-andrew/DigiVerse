@@ -27,6 +27,7 @@ import java.io.File;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
+import java.util.function.Consumer;
 
 public class Profile extends VBox {
 
@@ -35,9 +36,6 @@ public class Profile extends VBox {
     private final ImageView profileNav;
     private final LoggedUser loggedUser;
     private final StackPane mainPane;
-    private final HBox leftNav;
-    private final Button iconBtn;
-
     private ImageView profile;
     private Label name, email, birthday;
     private TextField nameField;
@@ -51,17 +49,17 @@ public class Profile extends VBox {
     private VBox taskContainer;
     private Button pendingTask, finishedTask;
     private VBox updateProfileContainer, updatePasswordContainer;
+    private Consumer<String> setNavigation;
 
-    public Profile(ImageView profileNav, HBox leftNav, Button iconBtn, StackPane mainPane) {
+    public Profile(ImageView profileNav, StackPane mainPane, Consumer<String> setNavigation) {
+        this.mainPane = mainPane;
+        this.profileNav = profileNav;
+        this.setNavigation = setNavigation;
+
         this.loggedUser = LoggedUser.getInstance();
         this.userController = new UserController();
         this.taskController = new TaskController();
 
-        this.mainPane = mainPane;
-        this.leftNav = leftNav;
-        this.iconBtn = iconBtn;
-
-        this.profileNav = profileNav;
         init();
         actions();
 
@@ -468,43 +466,11 @@ public class Profile extends VBox {
                 String userRole = new MemberController().getRole(task.getClassroom().getClassId());
                 this.mainPane.getChildren().add(new TaskBase(task, task.getClassroom(), userRole));
 
-                setLeftNav(task.getClassroom());
+                this.setNavigation.accept(task.getClassroom().getClassName());
             });
         }
     }
 
-    private void setLeftNav(Classroom classroom) {
-        Image image = new Image("file:resources/icons/right-arrow.png");
-        ImageView icon = new ImageView(image);
-
-        icon.setFitWidth(25);
-        icon.setPreserveRatio(true);
-
-        Label lbl = new Label(classroom.getClassName());
-        lbl.setStyle("-fx-font-size: 16px;");
-
-        lbl.setOnMouseEntered(e -> {
-            lbl.setStyle("-fx-underline: true;-fx-cursor: hand;");
-        });
-
-        lbl.setOnMouseExited(e -> {
-            lbl.setStyle("-fx-underline: false;");
-        });
-
-        lbl.setOnMouseClicked(e -> {
-            String userRole = new MemberController().getRole(classroom.getClassId());
-            BorderPane classDetail = new ClassroomDetail(classroom, userRole, mainPane);
-
-            setLeftNav(classroom);
-
-            mainPane.getChildren().clear();
-            mainPane.getChildren().add(classDetail);
-        });
-
-        this.leftNav.getChildren().clear();
-
-        this.leftNav.getChildren().addAll(iconBtn, icon, lbl);
-    }
 
     public void fetchFinishTask() {
         this.taskContainer.getChildren().clear();

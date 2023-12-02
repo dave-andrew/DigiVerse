@@ -7,6 +7,8 @@ import net.slc.dv.helper.BulletManager;
 import net.slc.dv.helper.InputManager;
 import net.slc.dv.helper.ScreenManager;
 
+import java.util.ArrayList;
+
 public abstract class PlayerBaseState {
 
     protected Player player;
@@ -74,6 +76,7 @@ public abstract class PlayerBaseState {
                 velocityX > 0) {
             velocityX = 0;
         }
+
 
         return velocityX;
     }

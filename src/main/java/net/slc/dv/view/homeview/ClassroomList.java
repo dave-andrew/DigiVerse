@@ -16,19 +16,17 @@ import net.slc.dv.view.home.Home;
 import net.slc.dv.view.component.classroom.ClassCard;
 
 import java.util.ArrayList;
+import java.util.function.Consumer;
 
 public class ClassroomList extends GridPane {
 
-    private final HBox leftNav;
     private final StackPane mainPane;
-    private final Button iconBtn;
-
+    private Consumer<String> setNavigation;
     private ClassController classController;
 
-    public ClassroomList(StackPane mainPane, HBox leftNav, Button iconBtn) {
-        this.leftNav = leftNav;
+    public ClassroomList(StackPane mainPane, Consumer<String> setNavigation) {
         this.mainPane = mainPane;
-        this.iconBtn = iconBtn;
+        this.setNavigation = setNavigation;
         init();
 
         ArrayList<Classroom> classroomList = classController.getUserClassroom();
@@ -43,7 +41,7 @@ public class ClassroomList extends GridPane {
                 String userRole = new MemberController().getRole(classroom.getClassId());
                 BorderPane classDetail = new ClassroomDetail(classroom, userRole, mainPane);
 
-                setLeftNav(classroom);
+                this.setNavigation.accept(classroom.getClassName());
 
                 mainPane.getChildren().clear();
                 mainPane.getChildren().add(classDetail);
@@ -74,37 +72,5 @@ public class ClassroomList extends GridPane {
         classController = new ClassController();
     }
 
-    private void setLeftNav(Classroom classroom) {
-        Image image = new Image("file:resources/icons/right-arrow.png");
-        ImageView icon = new ImageView(image);
-
-        icon.setFitWidth(15);
-        icon.setFitHeight(15);
-
-        Label lbl = new Label(classroom.getClassName());
-        lbl.setStyle("-fx-font-size: 16px;");
-
-        lbl.setOnMouseEntered(e -> {
-            lbl.setStyle("-fx-underline: true;-fx-cursor: hand;");
-        });
-
-        lbl.setOnMouseExited(e -> {
-            lbl.setStyle("-fx-underline: false;");
-        });
-
-        lbl.setOnMouseClicked(e -> {
-            String userRole = new MemberController().getRole(classroom.getClassId());
-            BorderPane classDetail = new ClassroomDetail(classroom, userRole, mainPane);
-
-            setLeftNav(classroom);
-
-            mainPane.getChildren().clear();
-            mainPane.getChildren().add(classDetail);
-        });
-
-        this.leftNav.getChildren().clear();
-
-        this.leftNav.getChildren().addAll(iconBtn, icon, lbl);
-    }
 
 }

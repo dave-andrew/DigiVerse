@@ -51,6 +51,18 @@ public class HBoxBuilder {
         return this;
     }
 
+    public HBoxBuilder removeChildren(Node... nodes) {
+        this.hBox.getChildren().removeAll(nodes);
+
+        return this;
+    }
+
+    public HBoxBuilder removeAllChildren() {
+        this.hBox.getChildren().removeAll(this.hBox.getChildren());
+
+        return this;
+    }
+
     public HBoxBuilder setAlignment(Pos pos) {
         this.hBox.setAlignment(pos);
 

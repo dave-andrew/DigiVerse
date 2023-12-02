@@ -67,6 +67,12 @@ public class VBoxBuilder {
         return this;
     }
 
+    public VBoxBuilder removeAll(Node... nodes) {
+        this.vBox.getChildren().removeAll(nodes);
+
+        return this;
+    }
+
     public VBoxBuilder setAlignment(Pos pos) {
         this.vBox.setAlignment(pos);
 
@@ -99,6 +105,12 @@ public class VBoxBuilder {
 
     public VBoxBuilder setPrefHeight(int height) {
         this.vBox.setPrefHeight(height);
+
+        return this;
+    }
+
+    public VBoxBuilder setTranslateX(double x) {
+        this.vBox.setTranslateX(x);
 
         return this;
     }

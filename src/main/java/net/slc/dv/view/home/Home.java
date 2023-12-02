@@ -2,11 +2,13 @@ package net.slc.dv.view.home;
 
 import java.util.ArrayList;
 import java.util.Objects;
+
 import javafx.animation.Interpolator;
 import javafx.animation.KeyFrame;
 import javafx.animation.KeyValue;
 import javafx.animation.Timeline;
 import javafx.geometry.Pos;
+import javafx.scene.Node;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.image.Image;
@@ -15,6 +17,7 @@ import javafx.scene.layout.*;
 import javafx.stage.Stage;
 import javafx.util.Duration;
 import net.slc.dv.builder.*;
+import net.slc.dv.constant.Icon;
 import net.slc.dv.helper.ImageManager;
 import net.slc.dv.helper.ScreenManager;
 import net.slc.dv.helper.ThemeManager;
@@ -23,304 +26,137 @@ import net.slc.dv.model.LoggedUser;
 import net.slc.dv.view.CreateClass;
 import net.slc.dv.view.JoinClass;
 import net.slc.dv.view.home.component.Calendar;
+import net.slc.dv.view.home.component.Navbar;
 import net.slc.dv.view.home.component.Profile;
 import net.slc.dv.view.home.component.sideNavbar.SideNavbar;
+import net.slc.dv.view.home.component.sideNavbar.SideNavbarButton;
 import net.slc.dv.view.homeview.ClassroomList;
 
 public class Home {
 
-    public static ArrayList<Classroom> teacherClassList = new ArrayList<>();
-    public static ArrayList<Classroom> studentClassList = new ArrayList<>();
-    private Scene scene;
-    private BorderPane borderPane;
-    private GridPane classGrid;
-
-    private HBox navBar, logOutBtn;
-    private HBox leftNav, rightNav;
-    private ImageView userImg;
-    private ImageView leftArrow;
-    private Button iconBtn;
 
-    private StackPane mainPane, sp;
-    private ScrollPane scrollPane;
-
-    private Button plusBtn, userBtn, toggleSide;
-    private SideNavbar sideNavbar;
-
-    private ContextMenu plusMenu;
-    private MenuItem createClass, joinClass;
-    private boolean toggleSideBar = true;
-
-    public Home(Stage stage) {
+	public static ArrayList<Classroom> teacherClassList = new ArrayList<>();
+	public static ArrayList<Classroom> studentClassList = new ArrayList<>();
+	private Stage stage;
+	private Scene scene;
+	private BorderPane borderPane;
+	private GridPane classGrid;
+	private ImageView userImg;
+
+	private StackPane mainPane;
+	private ScrollPane scrollPane;
 
-        initialize();
-        scene = setLayout();
-        actions(stage);
+	private Button plusBtn;
+	private SideNavbar sideNavbar;
+	private Navbar navbar;
 
-        stage.setScene(scene);
-        stage.setTitle("DigiVerse");
-    }
 
-    private void fetchClass() {
+	public Home(Stage stage) {
+		this.stage = stage;
+		initialize();
+		scene = setLayout();
 
-        mainPane.getChildren().clear();
-        classGrid = new ClassroomList(mainPane, leftNav, iconBtn);
-        scrollPane.setContent(classGrid);
+		stage.setScene(scene);
+		stage.setTitle("DigiVerse");
+	}
 
-        mainPane.getChildren().add(scrollPane);
-    }
+	private void fetchClass() {
 
-    private void initialize() { // semua komponen yang di ho
+		mainPane.getChildren().clear();
+		classGrid = new ClassroomList(mainPane, this.navbar::setLeftNavigation);
+		scrollPane.setContent(classGrid);
 
-        borderPane = new BorderPane();
-        mainPane = new StackPane();
+		mainPane.getChildren().add(scrollPane);
+	}
 
-        //        mainPane.prefWidthProperty().bind(borderPane.widthProperty().subtract(210));
+	private void initialize() { // semua komponen yang di ho
 
-        navBar = new HBox();
-        leftNav = new HBox(15);
-        rightNav = new HBox(25);
+		borderPane = new BorderPane();
+		mainPane = new StackPane();
 
-        scrollPane = new ScrollPane();
-        mainPane.getChildren().add(scrollPane);
 
-        ImageView icon = ImageViewBuilder.create()
-                .setImage(new Image("file:resources/icons/logo.png"))
-                .setFitHeight(40)
-                .setPreserveRatio(true)
-                .build();
+		scrollPane = new ScrollPane();
+		mainPane.getChildren().add(scrollPane);
 
-        iconBtn = ButtonBuilder.create()
-                .setGraphic(icon)
-                .setStyle(
-                        "-fx-cursor: hand;-fx-background-color: transparent; -fx-border-color: transparent; -fx-border-width: 0;")
-                .build();
+		this.navbar = new Navbar(stage, this::onNavbarButtonClick);
+		this.sideNavbar = new SideNavbar(this::onSidebarButtonClick);
 
-        classGrid = new ClassroomList(mainPane, leftNav, iconBtn);
-        scrollPane.setContent(classGrid);
+		classGrid = new ClassroomList(mainPane, this.navbar::setLeftNavigation);
+		scrollPane.setContent(classGrid);
+	}
 
-        Image plusImg = new Image("file:resources/icons/plus.png");
-        ImageView plus = new ImageView(plusImg);
-        plus.setFitWidth(20);
-        plus.setFitHeight(20);
-        plus.setPreserveRatio(true);
+	private Scene setLayout() { // masuk2in nya
+		scrollPane.setHbarPolicy(ScrollPane.ScrollBarPolicy.NEVER);
+		scrollPane.setVbarPolicy(ScrollPane.ScrollBarPolicy.AS_NEEDED);
 
-        plusMenu = new ContextMenu();
-        plusMenu.getStyleClass().add("context-menu");
+		scrollPane.setPannable(true);
 
-        createClass = new MenuItem("Create Class");
-        createClass.getStyleClass().add("item");
-        joinClass = new MenuItem("Join Class");
-        joinClass.getStyleClass().add("item");
+		//        TODO: Add class with role as teacher and student
 
-        plusMenu.getItems().addAll(createClass, joinClass);
 
-        LoggedUser loggedUser = LoggedUser.getInstance();
-        if (loggedUser != null) {
-            Image userImage = loggedUser.getProfile();
-            userImg = new ImageView(
-                    Objects.requireNonNullElseGet(userImage, () -> new Image("file:resources/icons/user.png")));
-        } else {
-            userImg = new ImageView(new Image("file:resources/icons/user.png"));
-        }
-        userImg.setFitWidth(40);
-        userImg.setFitHeight(40);
-        userImg.setPreserveRatio(true);
 
-        plusBtn = new Button();
-        plusBtn.setGraphic(plus);
-        plusBtn.getStyleClass().add("image-button");
+		borderPane.setCenter(mainPane);
+		borderPane.setLeft(sideNavbar);
+		borderPane.setTop(navbar);
 
-        ImageManager.makeCircular(userImg, 20);
+		scene = new Scene(borderPane, ScreenManager.SCREEN_WIDTH, ScreenManager.SCREEN_HEIGHT);
+		ThemeManager.getTheme(scene);
 
-        userBtn = new Button();
-        userBtn.setGraphic(userImg);
-        userBtn.getStyleClass().add("image-button");
+		return scene;
+	}
 
-        leftNav.getChildren().add(iconBtn);
-        leftNav.setAlignment(Pos.CENTER_LEFT);
+	private void onSidebarButtonClick(Node button){
+		this.navbar.setLeftNavigation(null);
+		if(button == this.sideNavbar.getHomeButton()){
+			this.sideNavbar.setActive((SideNavbarButton) button);
+			mainPane.getChildren().clear();
+			fetchClass();
+			return;
+		}
+		if(button == this.sideNavbar.getCalendarButton()){
+			this.sideNavbar.setActive((SideNavbarButton) button);
+			mainPane.getChildren().clear();
+			mainPane.getChildren().add(new Calendar(mainPane, this.navbar::setLeftNavigation));
+			return;
+		}
+	}
 
-        ToggleButton themeSwitchButton = new ToggleButton();
-        themeSwitchButton.setOnAction(e -> {
-            ThemeManager.toggleTheme(scene, themeSwitchButton);
-        });
+	private void onNavbarButtonClick(Node button) {
+		mainPane.getChildren().clear();
 
-        ImageView sun = new ImageView(new Image("file:resources/icons/sun.png"));
-        themeSwitchButton.setGraphic(sun);
+		if(button == this.navbar.getIconButton()) {
+			this.navbar.setLeftNavigation(null);
+			this.sideNavbar.setActive(this.sideNavbar.getHomeButton());
+			fetchClass();
+			return;
+		}
+		if(button == this.navbar.getUserButton()) {
+			this.navbar.setLeftNavigation(null);
+			this.sideNavbar.setActive(null);
+			profilePage();
+			return;
+		}
+		if(button == this.navbar.getThemeSwitchButton()){
+			//TODO idk
+			ThemeManager.toggleTheme(scene, (ToggleButton) button);
+			return;
+		}
+	}
 
-        sun.setFitWidth(30);
-        sun.setFitHeight(30);
-
-        themeSwitchButton.getStyleClass().add("image-button");
-
-        rightNav.getChildren().addAll(themeSwitchButton, plusBtn, userBtn);
-        rightNav.setAlignment(Pos.CENTER_RIGHT);
-
-        sideNavbar = new SideNavbar();
-    }
-
-    private Scene setLayout() { // masuk2in nya
-        scrollPane.setHbarPolicy(ScrollPane.ScrollBarPolicy.NEVER);
-        scrollPane.setVbarPolicy(ScrollPane.ScrollBarPolicy.AS_NEEDED);
-
-        scrollPane.setPannable(true);
-
-        //        TODO: Add class with role as teacher and student
-
-        navBar.getChildren().addAll(leftNav, rightNav);
-        navBar.getStyleClass().add("nav-bar");
-
-        HBox.setHgrow(leftNav, Priority.ALWAYS);
-        HBox.setHgrow(rightNav, Priority.NEVER);
-
-        this.sp = new StackPane();
-        sp.getChildren().add(sideNavbar);
-
-        Image image = new Image("file:resources/icons/left-arrow.png");
-        leftArrow = new ImageView(image);
-
-        leftArrow.setFitWidth(25);
-        leftArrow.setFitHeight(25);
-
-        this.toggleSide = new Button();
-        toggleSide.setGraphic(leftArrow);
-        toggleSide.setStyle("-fx-background-color: transparent; -fx-border-color: transparent; -fx-border-width: 0;");
-
-        sp.getChildren().add(toggleSide);
-
-        sp.setAlignment(Pos.CENTER_RIGHT);
-
-        borderPane.setCenter(mainPane);
-        borderPane.setLeft(sp);
-        borderPane.setTop(navBar);
-
-        //        borderPane.getStyleClass().add("bg-secondary");
-
-        scene = new Scene(borderPane, ScreenManager.SCREEN_WIDTH, ScreenManager.SCREEN_HEIGHT);
-        ThemeManager.getTheme(scene);
-
-        return scene;
-    }
-
-    private void actions(Stage stage) { // event nya
-
-        plusBtn.setOnMouseClicked(e -> {
-            plusMenu.show(plusBtn, e.getScreenX() - 150, e.getScreenY());
-        });
-
-        createClass.setOnAction(e -> {
-            new CreateClass(stage);
-            fetchClass();
-        });
-
-        joinClass.setOnAction(e -> {
-            new JoinClass(stage);
-            fetchClass();
-        });
-
-        this.sideNavbar.getHomeButton().setOnMouseClicked(e -> {
-            this.sideNavbar.setActive(this.sideNavbar.getHomeButton());
-            mainPane.getChildren().clear();
-            leftNav.getChildren().clear();
-            leftNav.getChildren().add(iconBtn);
-            fetchClass();
-        });
-        //
-        this.sideNavbar.getCalendarButton().setOnMouseClicked(e -> {
-            this.sideNavbar.setActive(this.sideNavbar.getCalendarButton());
-            mainPane.getChildren().clear();
-            leftNav.getChildren().clear();
-            leftNav.getChildren().add(iconBtn);
-
-            mainPane.getChildren().add(new Calendar(mainPane, leftNav, iconBtn));
-        });
-        //
-        //        iconBtn.setOnMouseClicked(e -> {
-        //            calenderSideNav.getStyleClass().remove("active");
-        //            homeSideNav.getStyleClass().remove("active");
-        //            homeSideNav.getStyleClass().add("active");
-        //            mainPane.getChildren().clear();
-        //            leftNav.getChildren().clear();
-        //            leftNav.getChildren().add(iconBtn);
-        //            fetchClass();
-        //        });
-        //
-        //        userBtn.setOnMouseClicked(e -> {
-        //            calenderSideNav.getStyleClass().remove("active");
-        //            homeSideNav.getStyleClass().remove("active");
-        //            homeSideNav.getStyleClass().remove("active");
-        //            mainPane.getChildren().clear();
-        //            leftNav.getChildren().clear();
-        //            leftNav.getChildren().add(iconBtn);
-        //
-        //            profilePage();
-        //        });
-        //
-        //        toggleSide.setOnMouseClicked(e -> {
-        //            if (toggleSideBar) {
-        //                closeSidebar();
-        //                sideBar.getChildren().remove(homeSideNav);
-        //                sideBar.getChildren().remove(calenderSideNav);
-        //                sideBar.getChildren().remove(sideBarSpacer);
-        //                sideBar.getChildren().remove(logOutBtn);
-        //            } else {
-        //                openSidebar();
-        //            }
-        //
-        //            toggleSideBar = !toggleSideBar;
-        //        });
-    }
-
-    void closeSidebar() { //
-        sp.setTranslateX(0);
-
-        KeyValue keyValue = new KeyValue(sp.prefWidthProperty(), 0, Interpolator.EASE_BOTH);
-        KeyValue rotateArrow = new KeyValue(leftArrow.rotateProperty(), 180, Interpolator.EASE_BOTH);
-
-        KeyFrame start =
-                new KeyFrame(Duration.ZERO, new KeyValue(sp.prefWidthProperty(), sp.getWidth(), Interpolator.LINEAR));
-
-        KeyFrame end = new KeyFrame(Duration.seconds(0.5), keyValue, rotateArrow);
-
-        Timeline timeline = new Timeline(start, end);
-        timeline.play();
-    }
-
-    void openSidebar() {
-
-        double currentTranslateX = sp.getTranslateX();
-
-        KeyValue keyValue = new KeyValue(sp.prefWidthProperty(), 240, Interpolator.EASE_BOTH);
-        KeyValue rotateArrow = new KeyValue(leftArrow.rotateProperty(), 0, Interpolator.EASE_BOTH);
-
-        KeyFrame start = new KeyFrame(
-                Duration.ZERO, new KeyValue(sp.translateXProperty(), currentTranslateX, Interpolator.LINEAR));
-
-        KeyFrame end = new KeyFrame(Duration.seconds(0.5), keyValue, rotateArrow);
-
-        Timeline timeline = new Timeline(start, end);
-        timeline.play();
-
-        //        timeline.onFinishedProperty().set(e -> {
-        //            sideBar.getChildren().add(homeSideNav);
-        //            sideBar.getChildren().add(calenderSideNav);
-        //            sideBar.getChildren().add(sideBarSpacer);
-        //            sideBar.getChildren().add(logOutBtn);
-        //        });
-    }
-
-    public void profilePage() {
-        VBox profile = new Profile(userImg, leftNav, iconBtn, mainPane);
-
-        ScrollPane scrollPane = new ScrollPane();
-        scrollPane.setContent(profile);
-
-        scrollPane.setHbarPolicy(ScrollPane.ScrollBarPolicy.NEVER);
-        scrollPane.setVbarPolicy(ScrollPane.ScrollBarPolicy.AS_NEEDED);
-
-        scrollPane.prefWidthProperty().bind(mainPane.widthProperty());
-        profile.prefWidthProperty().bind(scrollPane.widthProperty());
-
-        mainPane.getChildren().add(scrollPane);
-    }
+
+	public void profilePage() {
+		VBox profile = new Profile(userImg, mainPane, this.navbar::setLeftNavigation);
+
+		ScrollPane scrollPane = new ScrollPane();
+		scrollPane.setContent(profile);
+
+		scrollPane.setHbarPolicy(ScrollPane.ScrollBarPolicy.NEVER);
+		scrollPane.setVbarPolicy(ScrollPane.ScrollBarPolicy.AS_NEEDED);
+
+		scrollPane.prefWidthProperty().bind(mainPane.widthProperty());
+		profile.prefWidthProperty().bind(scrollPane.widthProperty());
+
+		mainPane.getChildren().add(scrollPane);
+	}
+
 }

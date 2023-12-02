@@ -1,6 +1,7 @@
 package net.slc.dv.view.home.component.sideNavbar;
 
 import javafx.geometry.Pos;
+import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
@@ -13,7 +14,7 @@ import net.slc.dv.interfaces.Observer;
 import java.util.function.Consumer;
 
 public class SideNavbarButton extends HBox {
-	public SideNavbarButton(String imagePath, String labelString) {
+	public SideNavbarButton(String imagePath, String labelString, Consumer<SideNavbarButton> onButtonClick) {
 		super();
 
 		ImageView icon = ImageViewBuilder.create()
@@ -32,6 +33,7 @@ public class SideNavbarButton extends HBox {
 				.setPrefWidth(200)
 				.setStyleClass("side-nav-item")
 				.setAlignment(Pos.CENTER_LEFT)
+				.setOnMouseClicked(e -> onButtonClick.accept((SideNavbarButton) e.getSource()))
 				.build();
 	}
 
