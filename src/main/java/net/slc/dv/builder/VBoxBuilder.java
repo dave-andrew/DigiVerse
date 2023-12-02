@@ -21,7 +21,7 @@ public class VBoxBuilder {
         return new VBoxBuilder();
     }
 
-    public static VBoxBuilder create(VBox vBox) {
+    public static VBoxBuilder modify(VBox vBox) {
         return new VBoxBuilder(vBox);
     }
 
@@ -81,6 +81,24 @@ public class VBoxBuilder {
 
     public VBoxBuilder setVgrow(Priority priority) {
         VBox.setVgrow(this.vBox, priority);
+
+        return this;
+    }
+
+    public VBoxBuilder setStyle(String style) {
+        this.vBox.setStyle(style);
+
+        return this;
+    }
+
+    public VBoxBuilder setPrefWidth(int width) {
+        this.vBox.setPrefWidth(width);
+
+        return this;
+    }
+
+    public VBoxBuilder setPrefHeight(int height) {
+        this.vBox.setPrefHeight(height);
 
         return this;
     }

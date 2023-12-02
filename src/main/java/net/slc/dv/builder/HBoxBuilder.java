@@ -1,5 +1,7 @@
 package net.slc.dv.builder;
 
+import javafx.event.Event;
+import javafx.event.EventHandler;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Node;
@@ -21,8 +23,8 @@ public class HBoxBuilder {
         return new HBoxBuilder();
     }
 
-    public static HBoxBuilder create(HBox vBox) {
-        return new HBoxBuilder(vBox);
+    public static HBoxBuilder modify(HBox hBox) {
+        return new HBoxBuilder(hBox);
     }
 
     public HBoxBuilder setSpacing(int spacing) {
@@ -55,14 +57,26 @@ public class HBoxBuilder {
         return this;
     }
 
-    public HBoxBuilder setStyleClass(String styleClass) {
-        this.hBox.getStyleClass().add(styleClass);
+    public HBoxBuilder setStyleClass(String... styleClass) {
+        this.hBox.getStyleClass().addAll(styleClass);
 
         return this;
     }
 
     public HBoxBuilder setHgrow(Priority priority) {
         HBox.setHgrow(this.hBox, priority);
+
+        return this;
+    }
+
+    public HBoxBuilder setPrefWidth(double width) {
+        this.hBox.setPrefWidth(width);
+
+        return this;
+    }
+
+    public HBoxBuilder setOnMouseClicked(EventHandler<Event> eventHandler) {
+        this.hBox.setOnMouseClicked(eventHandler);
 
         return this;
     }

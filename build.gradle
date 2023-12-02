@@ -2,6 +2,7 @@ plugins {
     id 'java'
     id 'application'
     id 'org.openjfx.javafxplugin' version '0.0.13'
+    id 'com.diffplug.spotless' version '6.23.2'
 }
 
 group 'net.slc.dv'
@@ -30,10 +31,16 @@ javafx {
     modules = ['javafx.controls', 'javafx.fxml', 'javafx.web', 'javafx.media']
 }
 
+spotless {
+    java {
+        palantirJavaFormat()
+        removeUnusedImports('cleanthat-javaparser-unnecessaryimport')
+    }
+}
+
 dependencies {
     annotationProcessor 'org.projectlombok:lombok:1.18.30'
 
-    implementation('com.diffplug.gradle.spotless:spotless-plugin-gradle:5.14.2')
     implementation('org.controlsfx:controlsfx:11.1.1')
     implementation('com.dlsc.formsfx:formsfx-core:11.5.0') {
         exclude(group: 'org.openjfx')

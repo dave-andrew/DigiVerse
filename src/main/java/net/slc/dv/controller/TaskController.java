@@ -52,6 +52,11 @@ public class TaskController {
         return taskQuery.fetchTaskByDate(date);
     }
 
+    public ArrayList<Task> fetchTaskByDate(int day, int month, int year) {
+        String date = year + "-" + month + "-" + day;
+        return taskQuery.fetchTaskByDate(date);
+    }
+
     public ArrayList<Task> fetchUserPendingTask(String userid) {
         return taskQuery.fetchUserPendingTask(userid);
     }

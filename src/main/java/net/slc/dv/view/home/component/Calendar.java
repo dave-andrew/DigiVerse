@@ -1,5 +1,8 @@
 package net.slc.dv.view.home.component;
 
+import javafx.scene.control.ScrollPane;
+import net.slc.dv.builder.*;
+import net.slc.dv.constant.Icon;
 import net.slc.dv.controller.MemberController;
 import net.slc.dv.controller.TaskController;
 import javafx.geometry.Insets;
@@ -11,6 +14,7 @@ import javafx.scene.image.ImageView;
 import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
+import net.slc.dv.enums.Days;
 import net.slc.dv.model.Classroom;
 import net.slc.dv.model.Task;
 import net.slc.dv.view.homeview.ClassroomDetail;
@@ -20,215 +24,243 @@ import java.time.LocalDateTime;
 import java.time.YearMonth;
 import java.util.ArrayList;
 
-public class Calendar extends VBox {
+public class Calendar extends ScrollPane {
 
-    private final StackPane mainPane;
-    private final HBox leftNav;
-    private final Button iconBtn;
+	private VBox calendarContainer;
+	private final StackPane mainPane;
+	private final HBox leftNav;
+	private final Button iconBtn;
+	private TaskController taskController;
+	private LocalDateTime date;
+	private GridPane calendarGrid;
+	private Label monthLbl;
+	private HBox calendarHeader;
 
-    private TaskController taskController;
-    private LocalDateTime date;
-    private GridPane calendarGrid;
-    private Label monthLbl;
-    private HBox calendarHeader;
+	public Calendar(StackPane mainPane, HBox leftNav, Button iconBtn) {
+		this.mainPane = mainPane;
+		this.leftNav = leftNav;
+		this.iconBtn = iconBtn;
+		this.taskController = new TaskController();
+		init();
+	}
 
-    public Calendar(StackPane mainPane, HBox leftNav, Button iconBtn) {
-        this.mainPane = mainPane;
-        this.leftNav = leftNav;
-        this.iconBtn = iconBtn;
-        init();
-        createCalendarLayout();
-    }
+	private void init() {
 
-    private void init() {
-        this.taskController = new TaskController();
+		date = LocalDateTime.now();
 
-        date = LocalDateTime.now();
+		this.calendarGrid = GridPaneBuilder.create()
+				.setAlignment(Pos.TOP_CENTER)
+				.build();
 
-        calendarHeader = new HBox(50);
+		this.monthLbl = LabelBuilder.create(date.getMonth() + " " + date.getYear())
+				.setStyle("-fx-font-size: 20px")
+				.setStyleClass("bold-text")
+				.setAlignment(Pos.TOP_CENTER)
+				.setFont(Font.font(16))
+				.build();
 
-        calendarGrid = new GridPane();
 
-        monthLbl = new Label(date.getMonth() + " " + date.getYear());
-        monthLbl.getStyleClass().add("bold-text");
-        monthLbl.setStyle("-fx-font-size: 20px");
+		ImageView leftArrowView = ImageViewBuilder.create()
+				.setImage(new Image(Icon.LEFT_ARROW))
+				.setFitWidth(20)
+				.setPreserveRatio(true)
+				.build();
 
-        monthLbl.setAlignment(Pos.TOP_CENTER);
-        monthLbl.setFont(Font.font(16));
+		Button prevMonthBtn = ButtonBuilder.create()
+				.setGraphic(leftArrowView)
+				.setAlignment(Pos.TOP_CENTER)
+				.setStyleClass("image-button")
+				.setOnAction(e -> updateCalendar(-1))
+				.build();
 
-        Image leftArrow = new Image("file:resources/icons/left-nav.png");
-        ImageView leftArrowView = new ImageView(leftArrow);
-        leftArrowView.setFitWidth(20);
-        leftArrowView.setPreserveRatio(true);
-        Button prevMonthBtn = new Button();
-        prevMonthBtn.setGraphic(leftArrowView);
-        prevMonthBtn.setAlignment(Pos.TOP_CENTER);
-        prevMonthBtn.getStyleClass().add("image-button");
+		ImageView rightArrowView = ImageViewBuilder.create()
+				.setImage(new Image(Icon.RIGHT_ARROW))
+				.setFitWidth(20)
+				.setPreserveRatio(true)
+				.build();
 
-        Image rightArrow = new Image("file:resources/icons/right-nav.png");
-        ImageView rightArrowView = new ImageView(rightArrow);
-        rightArrowView.setFitWidth(20);
-        rightArrowView.setPreserveRatio(true);
-        Button nextMonthBtn = new Button();
-        nextMonthBtn.setGraphic(rightArrowView);
-        nextMonthBtn.setAlignment(Pos.TOP_CENTER);
-        nextMonthBtn.getStyleClass().add("image-button");
+		Button nextMonthBtn = ButtonBuilder.create()
+				.setGraphic(rightArrowView)
+				.setAlignment(Pos.TOP_CENTER)
+				.setStyleClass("image-button")
+				.setOnAction(e -> updateCalendar(1))
+				.build();
 
-        calendarHeader.getChildren().addAll(prevMonthBtn, monthLbl, nextMonthBtn);
-        calendarHeader.setAlignment(Pos.TOP_CENTER);
-        calendarHeader.setPadding(new Insets(20, 0, 20, 0));
+		this.calendarHeader = HBoxBuilder.create()
+				.addChildren(prevMonthBtn, monthLbl, nextMonthBtn)
+				.setAlignment(Pos.TOP_CENTER)
+				.setPadding(20, 0, 20, 0)
+				.setSpacing(50)
+				.build();
 
-        calendarGrid.setAlignment(Pos.TOP_CENTER);
+		this.createCalendarLayout();
 
-        prevMonthBtn.setOnAction(e -> {
-            date = date.minusMonths(1);
-            updateCalendar();
-        });
+		VBox calendarContainer = VBoxBuilder.create()
+				.addChildren(calendarHeader, calendarGrid)
+				.setAlignment(Pos.TOP_CENTER)
+				.setPadding(0, 0, 200, 0)
+				.setStyleClass("card")
+				.setStyle("-fx-effect: null")
+				.build();
 
-        nextMonthBtn.setOnAction(e -> {
-            date = date.plusMonths(1);
-            updateCalendar();
-        });
-    }
+		ScrollPaneBuilder.modify(this)
+				.setHbarPolicy(ScrollPane.ScrollBarPolicy.NEVER)
+				.setVbarPolicy(ScrollPane.ScrollBarPolicy.AS_NEEDED)
+				.setPrefWidth(1000)
+				.setPadding(20, 20, 20, 20)
+				.bindPrefWidthProperty(mainPane.widthProperty().subtract(10))
+				.setFitToWidth(true)
+				.setContent(calendarContainer)
+				.build();
 
-    private void createCalendarLayout() {
-        calendarGrid.getChildren().clear();
-        String[] daysOfWeek = {"Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"};
-        for (int i = 0; i < 7; i++) {
-            VBox dayBox = new VBox();
-            dayBox.setPrefWidth(160);
-            dayBox.setPrefHeight(40);
-            dayBox.setAlignment(Pos.TOP_CENTER);
+	}
 
-            dayBox.getStyleClass().add("calendar-day");
+	private void createCalendarLayout() {
+		calendarGrid.getChildren().clear();
 
-            Label dayLabel = new Label(daysOfWeek[i]);
+		this.createCalendarHeader(calendarGrid);
 
-            dayBox.getChildren().add(dayLabel);
+		YearMonth yearMonth = YearMonth.of(date.getYear(), date.getMonthValue());
+		int daysInMonth = yearMonth.lengthOfMonth();
+		int dayOfWeek = yearMonth.atDay(1).getDayOfWeek().getValue();
 
-            calendarGrid.add(dayBox, i, 0);
-        }
+		int day = 1;
 
-        YearMonth yearMonth = YearMonth.of(date.getYear(), date.getMonthValue());
-        int daysInMonth = yearMonth.lengthOfMonth();
-        int dayOfWeek = yearMonth.atDay(1).getDayOfWeek().getValue();
+		for (int row = 1; row < 7; row++) {
+			for (int col = 0; col < 7; col++) {
+				if (row == 1 && col < dayOfWeek) {
+					StackPane emptyCell = new StackPane();
+					if (dayOfWeek - 1 == col) {
+						emptyCell.getStyleClass().add("rb");
+					} else {
+						emptyCell.getStyleClass().add("r");
+					}
+					calendarGrid.add(emptyCell, col, row);
+					continue;
+				}
+				if (day <= daysInMonth) {
 
-        int day = 1;
+					Label dayText = LabelBuilder.create(String.valueOf(day))
+							.setAlignment(Pos.TOP_CENTER)
+							.build();
 
-        for (int row = 1; row < 7; row++) {
-            for (int col = 0; col < 7; col++) {
-                if (row == 1 && col < dayOfWeek) {
-                    StackPane emptyCell = new StackPane();
-                    if (dayOfWeek - 1 == col) {
-                        emptyCell.getStyleClass().add("rb");
-                    } else {
-                        emptyCell.getStyleClass().add("r");
-                    }
-                    calendarGrid.add(emptyCell, col, row);
-                } else if (day <= daysInMonth) {
-                    VBox dayPane = new VBox();
-                    dayPane.getStyleClass().add("calendar-box");
+					VBox dayPane = VBoxBuilder.create()
+							.setStyleClass("calendar-box")
+							.setPadding(5, 5, 5, 5)
+							.addChildren(dayText)
+							.setPrefHeight(110)
+							.setPrefWidth(160)
+							.setAlignment(Pos.TOP_LEFT)
+							.build();
 
-                    dayPane.setPadding(new Insets(5));
-                    Label dayText = new Label(String.valueOf(day));
-                    dayPane.getChildren().add(dayText);
-                    dayPane.setPrefWidth(160);
-                    dayPane.setPrefHeight(110);
-                    dayPane.setAlignment(Pos.TOP_LEFT);
+					if (col == 0) {
+						VBoxBuilder.modify(dayPane)
+								.setStyleClass("first-column")
+								.build();
+					} else if (row == 1) {
+						VBoxBuilder.modify(dayPane)
+								.setStyleClass("first-row")
+								.build();
+					} else if (String.valueOf(day).equals("1")) {
+						VBoxBuilder.modify(dayPane)
+								.setStyleClass("first-column")
+								.build();
+					}
 
-                    if (col == 0) {
-                        dayPane.getStyleClass().add("first-column");
-                    } else if (row == 1) {
-                        dayPane.getStyleClass().add("first-row");
-                    } else if (String.valueOf(day).equals("1")) {
-                        dayPane.getStyleClass().add("first-column");
-                    }
+					ArrayList<Task> taskList = this.taskController.fetchTaskByDate(day, yearMonth.getMonthValue(), yearMonth.getYear());
 
-                    ArrayList<Task> taskList = fetchTask(day, yearMonth.getMonthValue(), yearMonth.getYear());
+					this.setDayPaneTask(dayPane, taskList);
 
-                    for (Task task : taskList) {
-                        Label taskTitle = new Label(" \u2022 " + task.getTitle());
-                        taskTitle.setWrapText(true);
-                        taskTitle.setMaxWidth(150);
-                        taskTitle.setPadding(new Insets(0, 0, 0, 5));
-                        taskTitle.getStyleClass().add("calendar-item");
+					calendarGrid.add(dayPane, col, row);
+					day++;
+				}
+			}
+		}
+	}
 
-                        taskTitle.setOnMouseEntered(e -> {
-                            taskTitle.setTextFill(Color.web("#FFFFFF"));
-                        });
+	private void createCalendarHeader(GridPane calendarGrid){
+		Days[] daysOfWeek = Days.values();
+		for (int i = 0; i < 7; i++) {
+			Label dayLabel = LabelBuilder.create(daysOfWeek[i].getDay())
+					.build();
 
-                        taskTitle.setOnMouseExited(e -> {
-                            taskTitle.setTextFill(Color.web("#36454F"));
-                        });
 
-                        taskTitle.setOnMouseClicked(e -> {
-                            this.mainPane.getChildren().clear();
+			VBox dayBox = VBoxBuilder.create()
+					.addChildren(dayLabel)
+					.setPrefHeight(40)
+					.setPrefWidth(160)
+					.setAlignment(Pos.TOP_CENTER)
+					.setStyleClass("calendar-day")
+					.build();
 
-                            String userRole = new MemberController().getRole(task.getClassroom().getClassId());
-                            this.mainPane.getChildren().add(new TaskBase(task, task.getClassroom(), userRole));
+			calendarGrid.add(dayBox, i, 0);
+		}
+	}
 
-                            setLeftNav(task.getClassroom());
-                        });
+	private void setDayPaneTask(VBox dayPane, ArrayList<Task> taskList) {
+		for (Task task : taskList) {
+			Label taskTitle = LabelBuilder.create(" \u2022 " + task.getTitle())
+					.setWrapText(true)
+					.setMaxWidth(150)
+					.setPadding(0, 0, 0, 5)
+					.setStyleClass("calendar-item")
+					.build();
 
-                        dayPane.getChildren().add(taskTitle);
-                    }
+			LabelBuilder.modify(taskTitle)
+					.setOnMouseEntered(e -> taskTitle.setTextFill(Color.web("#FFFFFF")))
+					.setOnMouseExited(e -> taskTitle.setTextFill(Color.web("#36454F")))
+					.setOnMouseClicked(e -> {
+						this.mainPane.getChildren().clear();
 
-                    dayText.setAlignment(Pos.TOP_CENTER);
+						String userRole = new MemberController().getRole(task.getClassroom().getClassId());
+						this.mainPane.getChildren().add(new TaskBase(task, task.getClassroom(), userRole));
 
-                    calendarGrid.add(dayPane, col, row);
-                    day++;
-                }
-            }
-        }
+						setLeftNav(task.getClassroom());
+					})
+					.build();
 
-        this.getChildren().add(calendarHeader);
-        this.getChildren().add(calendarGrid);
-        this.setAlignment(Pos.TOP_CENTER);
-    }
+			VBoxBuilder.modify(dayPane)
+					.addChildren(taskTitle)
+					.build();
+		}
+	}
+	private void updateCalendar(int direction) {
+		date = date.plusMonths(direction);
+		monthLbl.setText(date.getMonth() + " " + date.getYear());
 
-    private ArrayList<Task> fetchTask(int day, int month, int year) {
+		createCalendarLayout();
+	}
 
-        String date = year + "-" + month + "-" + day;
+	private void setLeftNav(Classroom classroom) {
+		Image image = new Image("file:resources/icons/right-arrow.png");
+		ImageView icon = new ImageView(image);
 
-        return this.taskController.fetchTaskByDate(date);
-    }
+		icon.setFitWidth(25);
+		icon.setPreserveRatio(true);
 
-    private void updateCalendar() {
-        monthLbl.setText(date.getMonth() + " " + date.getYear());
+		Label lbl = new Label(classroom.getClassName());
+		lbl.setStyle("-fx-font-size: 16px;");
 
-        createCalendarLayout();
-    }
+		lbl.setOnMouseEntered(e -> {
+			lbl.setStyle("-fx-underline: true;-fx-cursor: hand;");
+		});
 
-    private void setLeftNav(Classroom classroom) {
-        Image image = new Image("file:resources/icons/right-arrow.png");
-        ImageView icon = new ImageView(image);
+		lbl.setOnMouseExited(e -> {
+			lbl.setStyle("-fx-underline: false;");
+		});
 
-        icon.setFitWidth(25);
-        icon.setPreserveRatio(true);
+		lbl.setOnMouseClicked(e -> {
+			String userRole = new MemberController().getRole(classroom.getClassId());
+			BorderPane classDetail = new ClassroomDetail(classroom, userRole, mainPane);
 
-        Label lbl = new Label(classroom.getClassName());
-        lbl.setStyle("-fx-font-size: 16px;");
+			setLeftNav(classroom);
 
-        lbl.setOnMouseEntered(e -> {
-            lbl.setStyle("-fx-underline: true;-fx-cursor: hand;");
-        });
+			mainPane.getChildren().clear();
+			mainPane.getChildren().add(classDetail);
+		});
 
-        lbl.setOnMouseExited(e -> {
-            lbl.setStyle("-fx-underline: false;");
-        });
+		this.leftNav.getChildren().clear();
 
-        lbl.setOnMouseClicked(e -> {
-            String userRole = new MemberController().getRole(classroom.getClassId());
-            BorderPane classDetail = new ClassroomDetail(classroom, userRole, mainPane);
-
-            setLeftNav(classroom);
-
-            mainPane.getChildren().clear();
-            mainPane.getChildren().add(classDetail);
-        });
-
-        this.leftNav.getChildren().clear();
-
-        this.leftNav.getChildren().addAll(iconBtn, icon, lbl);
-    }
+		this.leftNav.getChildren().addAll(iconBtn, icon, lbl);
+	}
 }

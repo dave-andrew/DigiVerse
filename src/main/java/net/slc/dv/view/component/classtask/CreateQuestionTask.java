@@ -18,7 +18,6 @@ import net.slc.dv.view.component.classtask.question.QuestionContainer;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.UUID;
 
 @Getter
 public class CreateQuestionTask {
@@ -54,7 +53,7 @@ public class CreateQuestionTask {
 				.bindPrefWidth(container)
 				.build();
 
-		VBoxBuilder.create(this.container)
+		VBoxBuilder.modify(this.container)
 				.addChildren(addQuestionBtn)
 				.build();
 
@@ -68,7 +67,7 @@ public class CreateQuestionTask {
 	private void addNewQuestion() {
 		questionContainers.add(new QuestionContainer(this::removeQuestion));
 
-		VBoxBuilder.create(this.container)
+		VBoxBuilder.modify(this.container)
 				.removeChildren(addQuestionBtn)
 				.addChildren(questionContainers.get(questionContainers.size() - 1).getRoot())
 				.addChildren(addQuestionBtn)
@@ -78,7 +77,7 @@ public class CreateQuestionTask {
 	private void removeQuestion(QuestionContainer question) {
 		questionContainers.remove(question);
 
-		VBoxBuilder.create(this.container)
+		VBoxBuilder.modify(this.container)
 				.removeAll()
 				.addChildren(questionContainers.stream().map(QuestionContainer::getRoot).toArray(Node[]::new))
 				.addChildren(addQuestionBtn)
