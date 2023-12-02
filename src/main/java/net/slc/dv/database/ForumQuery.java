@@ -1,78 +1,75 @@
 package net.slc.dv.database;
 
-import net.slc.dv.database.connection.Connect;
+import net.slc.dv.database.builder.NeoQueryBuilder;
+import net.slc.dv.database.builder.Results;
+import net.slc.dv.database.builder.enums.QueryType;
+import net.slc.dv.helper.Closer;
 import net.slc.dv.helper.toast.ToastBuilder;
 import net.slc.dv.model.Classroom;
 import net.slc.dv.model.Forum;
 import net.slc.dv.model.User;
 
-import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.ArrayList;
 
 public class ForumQuery {
 
-    private final Connect connect;
-
-    public ForumQuery() {
-        this.connect = Connect.getConnection();
-    }
-
     public ArrayList<Forum> getClassroomForum(String classid) {
         ArrayList<Forum> forumList = new ArrayList<>();
-        String query = "SELECT\n" +
-                "    class_forum.ForumID, ForumText, class_forum.UserID, UserName, UserEmail, UserDOB, UserProfile, class_forum.ClassID, ClassName, ClassDesc, ClassCode, ClassSubject, ClassImage, CreatedAt\n" +
-                "FROM class_forum\n" +
-                "JOIN msclass ON class_forum.ClassID = msclass.ClassID\n" +
-                "JOIN msuser ON class_forum.UserID = msuser.UserID\n" +
-                "JOIN msforum ON class_forum.ForumID = msforum.ForumID\n" +
-                "WHERE class_forum.ClassID = ?\n" +
-                "ORDER BY CreatedAt DESC";
 
-        try (PreparedStatement ps = connect.prepareStatement(query)) {
-            assert ps != null;
-            ps.setString(1, classid);
+        try (Closer closer = new Closer()) {
+            NeoQueryBuilder queryBuilder = new NeoQueryBuilder(QueryType.SELECT)
+                    .table("class_forum")
+                    .columns("class_forum.ForumID", "ForumText", "class_forum.UserID", "UserName", "UserEmail", "UserDOB", "UserProfile", "class_forum.ClassID", "ClassName", "ClassDesc", "ClassCode", "ClassSubject", "ClassImage", "CreatedAt")
+                    .join("class_forum", "ForumID", "msclass", "ClassID")
+                    .join("class_forum", "UserID", "msuser", "UserID")
+                    .join("class_forum", "ForumID", "msforum", "ForumID")
+                    .condition("class_forum.ClassID", "=", classid)
+                    .orderBy("CreatedAt", "DESC");
 
-            try (var rs = ps.executeQuery()) {
-                while (rs.next()) {
-                    User user = new User(rs);
-                    Classroom classroom = new Classroom(rs);
+            Results results = closer.add(queryBuilder.getResults());
+            ResultSet set = closer.add(results.getResultSet());
+            while (set.next()) {
+                User user = new User(set);
+                Classroom classroom = new Classroom(set);
 
-                    forumList.add(new Forum(rs.getString("ForumID"), rs.getString("ForumText"), rs.getString("UserID"), user, rs.getString("ClassID"), classroom, rs.getString("CreatedAt")));
-                }
+                forumList.add(new Forum(set.getString("ForumID"), set.getString("ForumText"), set.getString("UserID"), user, set.getString("ClassID"), classroom, set.getString("CreatedAt")));
             }
-        } catch (Exception e) {
-            throw new RuntimeException(e);
+        } catch (SQLException e) {
+            e.printStackTrace();
         }
 
         return forumList;
     }
 
     public Forum createForum(Forum forum) {
-        String query = "INSERT INTO msforum VALUES (?, ?, ?)";
-        String query2 = "INSERT INTO class_forum VALUES (?, ?, ?)";
+        try (Closer closer = new Closer()) {
+            NeoQueryBuilder queryBuilder = new NeoQueryBuilder(QueryType.INSERT)
+                    .table("msforum")
+                    .values("ForumID", forum.getId())
+                    .values("ForumText", forum.getText())
+                    .values("CreatedAt", forum.getCreatedAt());
 
-        try (PreparedStatement ps = connect.prepareStatement(query);
-             PreparedStatement ps2 = connect.prepareStatement(query2)) {
-            assert ps != null;
-            ps.setString(1, forum.getId());
-            ps.setString(2, forum.getText());
-            ps.setString(3, forum.getCreatedAt());
-
-            ps.executeUpdate();
-
-            assert ps2 != null;
-            ps2.setString(1, forum.getClassid());
-            ps2.setString(2, forum.getId());
-            ps2.setString(3, forum.getUserid());
-
-            ps2.executeUpdate();
-
-            ToastBuilder.buildNormal().setText("Forum Posted!").build();
-
-            return forum;
-        } catch (Exception e) {
-            throw new RuntimeException(e);
+            closer.add(queryBuilder.getResults());
+        } catch (SQLException e) {
+            e.printStackTrace();
         }
+
+        try (Closer closer = new Closer()) {
+            NeoQueryBuilder queryBuilder = new NeoQueryBuilder(QueryType.INSERT)
+                    .table("class_forum")
+                    .values("ClassID", forum.getClassid())
+                    .values("ForumID", forum.getId())
+                    .values("UserID", forum.getUserid());
+
+            closer.add(queryBuilder.getResults());
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        ToastBuilder.buildNormal().setText("Forum Posted!").build();
+        return forum;
     }
 
 }

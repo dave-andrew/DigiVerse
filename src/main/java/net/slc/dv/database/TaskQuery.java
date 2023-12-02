@@ -1,288 +1,252 @@
 package net.slc.dv.database;
 
+import net.slc.dv.database.builder.BatchQueryBuilder;
 import net.slc.dv.database.builder.NeoQueryBuilder;
+import net.slc.dv.database.builder.Results;
 import net.slc.dv.database.builder.enums.QueryType;
 import net.slc.dv.database.connection.Connect;
-import net.slc.dv.enums.TaskType;
+import net.slc.dv.helper.Closer;
 import net.slc.dv.helper.DateManager;
 import net.slc.dv.helper.toast.ToastBuilder;
 import net.slc.dv.model.*;
 
 import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
 public class TaskQuery {
 
-	private final Connect connect;
+    private final Connect connect;
 
-	public TaskQuery() {
-		this.connect = Connect.getConnection();
-	}
+    public TaskQuery() {
+        this.connect = Connect.getConnection();
+    }
 
-	public void createFileTask(Task task, String classid) {
+    public void createFileTask(Task task, String classid) {
+        try (Closer closer = new Closer()) {
+            NeoQueryBuilder queryBuilder = new NeoQueryBuilder(QueryType.INSERT)
+                    .table("mstask")
+                    .values("TaskID", task.getId())
+                    .values("UserID", task.getUserid())
+                    .values("TaskTitle", task.getTitle())
+                    .values("TaskDesc", task.getDescription())
+                    .values("TaskType", task.getTaskType().toString())
+                    .values("CreatedAt", task.getCreatedAt())
+                    .values("DeadlineAt", task.getDeadlineAt())
+                    .values("Scored", task.isScored());
 
-		String query = "INSERT INTO mstask VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
-		String query2 = "INSERT INTO class_task VALUES (?, ?)";
+            closer.add(queryBuilder.getResults());
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
 
-		try (var ps = connect.prepareStatement(query);
-		     var ps2 = connect.prepareStatement(query2)) {
-			assert ps != null;
-			ps.setString(1, task.getId());
-			ps.setString(2, task.getUserid());
-			ps.setString(3, task.getTitle());
-			ps.setString(4, task.getDescription());
-			ps.setString(5, task.getTaskType().toString());
-			ps.setString(6, task.getCreatedAt());
-			ps.setString(7, task.getDeadlineAt());
-			ps.setBoolean(8, task.isScored());
+        try (Closer closer = new Closer()) {
+            NeoQueryBuilder queryBuilder = new NeoQueryBuilder(QueryType.INSERT)
+                    .table("class_task")
+                    .values("ClassID", classid)
+                    .values("TaskID", task.getId());
 
-			ps.executeUpdate();
+            closer.add(queryBuilder.getResults());
 
-			assert ps2 != null;
-			ps2.setString(1, classid);
-			ps2.setString(2, task.getId());
-
-			ps2.executeUpdate();
-
-			ToastBuilder.buildNormal().setText("Task Created!").build();
-
-		} catch (Exception e) {
-			throw new RuntimeException(e);
-		}
-	}
+            ToastBuilder.buildNormal().setText("Task Created!").build();
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
+    }
 
 
-	public void createQuestionTask(Task task, List<Question> questionList, String classId) {
-		String query = "INSERT INTO mstask VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
-		String query2 = "INSERT INTO class_task VALUES (?, ?)";
-		String query3 = "INSERT INTO msquestion (QuestionID, TaskID, QuestionType, QuestionText, QuestionChoice, QuestionAnswer) VALUES (?, ?, ?, ?, ?, ?)";
+    public void createQuestionTask(Task task, List<Question> questionList, String classId) {
+        this.createFileTask(task, classId);
 
-		try (var ps = connect.prepareStatement(query);
-		     var ps2 = connect.prepareStatement(query2);
-			 var ps3 = connect.prepareStatement(query3)) {
-			assert ps != null;
-			ps.setString(1, task.getId());
-			ps.setString(2, task.getUserid());
-			ps.setString(3, task.getTitle());
-			ps.setString(4, task.getDescription());
-			ps.setString(5, task.getTaskType().toString());
-			ps.setString(6, task.getCreatedAt());
-			ps.setString(7, task.getDeadlineAt());
-			ps.setBoolean(8, task.isScored());
+        try {
+            BatchQueryBuilder batchQueryBuilder = new BatchQueryBuilder();
+            for (Question question : questionList) {
+                NeoQueryBuilder queryBuilder = new NeoQueryBuilder(QueryType.INSERT)
+                        .table("msquestion")
+                        .values("QuestionID", question.getQuestionID())
+                        .values("TaskID", task.getId())
+                        .values("QuestionType", question.getQuestionType().toString())
+                        .values("QuestionText", question.getQuestionText())
+                        .values("QuestionChoice", question.getQuestionChoice())
+                        .values("QuestionAnswer", question.getQuestionKey());
 
-			ps.executeUpdate();
+                batchQueryBuilder.add(queryBuilder);
+            }
 
-			assert ps2 != null;
-			ps2.setString(1, classId);
-			ps2.setString(2, task.getId());
+            batchQueryBuilder.executeBatch();
+            ToastBuilder.buildNormal().setText("Task Created!").build();
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+    }
 
-			ps2.executeUpdate();
+    public ArrayList<Task> getClassroomTask(String classid) {
+        return this.getTasks(classid, false);
+    }
 
-			for (Question question : questionList) {
-				assert ps3 != null;
-				ps3.setString(1, question.getQuestionID());
-				ps3.setString(2, task.getId());
-				ps3.setString(3, question.getQuestionType().toString());
-				ps3.setString(4, question.getQuestionText());
-				ps3.setString(5, question.getQuestionChoice());
-				ps3.setString(6, question.getQuestionKey());
+    public ArrayList<Task> getScoredClassroomTask(String classid) {
+        return this.getTasks(classid, true);
+    }
 
-				ps3.addBatch();
-			}
+    private ArrayList<Task> getTasks(String classId, boolean scored) {
+        ArrayList<Task> taskList = new ArrayList<>();
+        try (Closer closer = new Closer()) {
+            NeoQueryBuilder queryBuilder = new NeoQueryBuilder(QueryType.SELECT)
+                    .table("class_task")
+                    .join("class_task", "TaskID", "mstask", "TaskID")
+                    .join("mstask", "UserID", "msuser", "UserID")
+                    .condition("class_task.ClassID", "=", classId)
+                    .orderBy("DeadlineAt", "ASC");
 
-			assert ps3 != null;
-			ps3.executeBatch();
+            if (scored) {
+                queryBuilder.condition("Scored", "=", "1");
+            }
 
-			ToastBuilder.buildNormal().setText("Task Created!").build();
+            Results results = closer.add(queryBuilder.getResults());
+            ResultSet set = closer.add(results.getResultSet());
+            while (set.next()) {
+                User user = new User(set);
+                Task task = new Task(set, user);
 
-		} catch (Exception e) {
-			throw new RuntimeException(e);
-		}
-	}
+                taskList.add(task);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
 
-	public ArrayList<Task> getClassroomTask(String classid) {
-		ArrayList<Task> taskList = new ArrayList<>();
+        return taskList;
+    }
 
-		String query = "SELECT\n" +
-				"    class_task.TaskID, TaskTitle, TaskType, TaskDesc, DeadlineAt, CreatedAt, Scored, msuser.UserID, UserName, UserEmail, UserDOB, UserProfile\n" +
-				"FROM class_task\n" +
-				"JOIN mstask ON class_task.TaskID = mstask.TaskID\n" +
-				"JOIN msuser ON mstask.UserID = msuser.UserID\n" +
-				"WHERE class_task.ClassID = ?\n" +
-				"ORDER BY DeadlineAt ASC";
+    public ArrayList<Task> fetchTaskByDate(String date) {
+        String query = "SELECT * FROM class_task\n" +
+                "JOIN mstask ON class_task.TaskID = mstask.TaskID\n" +
+                "JOIN msuser ON mstask.UserID = msuser.UserID\n" +
+                "JOIN msclass ON msclass.ClassID = class_task.ClassID\n" +
+                "WHERE DATE(DeadlineAt) = ? AND " +
+                "class_task.ClassID IN (SELECT ClassID FROM class_member WHERE UserID = ?)\n";
 
-		return getTasks(classid, taskList, query);
-	}
+        ArrayList<Task> taskList = new ArrayList<>();
+        try (PreparedStatement ps = connect.prepareStatement(query)) {
+            assert ps != null;
+            ps.setString(1, date);
+            ps.setString(2, LoggedUser.getInstance().getId());
 
-	public ArrayList<Task> getScoredClassroomTask(String classid) {
-		ArrayList<Task> taskList = new ArrayList<>();
-		String query = "SELECT\n" +
-				"    class_task.TaskID, TaskTitle, TaskType, TaskDesc, DeadlineAt, CreatedAt, Scored, msuser.UserID, UserName, UserEmail, UserDOB, UserProfile\n" +
-				"FROM class_task\n" +
-				"JOIN mstask ON class_task.TaskID = mstask.TaskID\n" +
-				"JOIN msuser ON mstask.UserID = msuser.UserID\n" +
-				"WHERE class_task.ClassID = ? AND Scored = 1\n" +
-				"ORDER BY DeadlineAt ASC";
+            try (var rs = ps.executeQuery()) {
+                while (rs.next()) {
 
-		return getTasks(classid, taskList, query);
-	}
+                    Classroom classroom = new Classroom(rs);
+                    User user = new User(rs);
+                    Task task = new Task(rs, user, classroom);
+                    taskList.add(task);
 
-	private ArrayList<Task> getTasks(String classid, ArrayList<Task> taskList, String query) {
-		try (PreparedStatement ps = connect.prepareStatement(query)) {
-			assert ps != null;
-			ps.setString(1, classid);
+                }
+            }
 
-			try (var rs = ps.executeQuery()) {
-				while (rs.next()) {
-					User user = new User(rs);
-					Task task = new Task(rs, user);
-					taskList.add(task);
-				}
-			}
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
+            return taskList;
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
 
-		return taskList;
-	}
+        return taskList;
+    }
 
-	public ArrayList<Task> fetchTaskByDate(String date) {
-		String query = "SELECT * FROM class_task\n" +
-				"JOIN mstask ON class_task.TaskID = mstask.TaskID\n" +
-				"JOIN msuser ON mstask.UserID = msuser.UserID\n" +
-				"JOIN msclass ON msclass.ClassID = class_task.ClassID\n" +
-				"WHERE DATE(DeadlineAt) = ? AND " +
-				"class_task.ClassID IN (SELECT ClassID FROM class_member WHERE UserID = ?)\n";
+    public ArrayList<Task> fetchUserPendingTask(String userid) {
 
-		ArrayList<Task> taskList = new ArrayList<>();
-		try (PreparedStatement ps = connect.prepareStatement(query)) {
-			assert ps != null;
-			ps.setString(1, date);
-			ps.setString(2, LoggedUser.getInstance().getId());
+        ArrayList<Task> taskList = new ArrayList<>();
 
-			try (var rs = ps.executeQuery()) {
-				while (rs.next()) {
+        String query = "SELECT * FROM class_task\n" +
+                "JOIN mstask ON class_task.TaskID = mstask.TaskID\n" +
+                "JOIN msuser ON mstask.UserID = msuser.UserID\n" +
+                "JOIN msclass ON msclass.ClassID = class_task.ClassID\n" +
+                "WHERE class_task.ClassID IN (SELECT ClassID FROM class_member WHERE UserID = ? AND Role = ?) AND \n" +
+                "mstask.TaskID NOT IN (SELECT TaskID FROM answer_header WHERE UserID = ?)\n";
 
-					Classroom classroom = new Classroom(rs);
-					User user = new User(rs);
-					Task task = new Task(rs, user, classroom);
-					taskList.add(task);
+        try (PreparedStatement ps = connect.prepareStatement(query)) {
+            assert ps != null;
+            ps.setString(1, userid);
+            ps.setString(2, "Student");
+            ps.setString(3, userid);
 
-				}
-			}
+            try (var rs = ps.executeQuery()) {
+                while (rs.next()) {
+                    Classroom classroom = new Classroom(rs);
+                    User user = new User(rs);
+                    Task task = new Task(rs, user, classroom);
+                    taskList.add(task);
 
-			return taskList;
-		} catch (SQLException e) {
-			e.printStackTrace();
-		}
+                }
+            }
+        } catch (Exception ignored) {
+        }
 
-		return taskList;
-	}
+        return taskList;
+    }
 
-	public ArrayList<Task> fetchUserPendingTask(String userid) {
+    public ArrayList<Task> fetchUserFinishedTask(String userid) {
 
-		ArrayList<Task> taskList = new ArrayList<>();
+        ArrayList<Task> taskList = new ArrayList<>();
 
-		String query = "SELECT * FROM class_task\n" +
-				"JOIN mstask ON class_task.TaskID = mstask.TaskID\n" +
-				"JOIN msuser ON mstask.UserID = msuser.UserID\n" +
-				"JOIN msclass ON msclass.ClassID = class_task.ClassID\n" +
-				"WHERE class_task.ClassID IN (SELECT ClassID FROM class_member WHERE UserID = ? AND Role = ?) AND \n" +
-				"mstask.TaskID NOT IN (SELECT TaskID FROM answer_header WHERE UserID = ?)\n";
+        String query = "SELECT * FROM class_task\n" +
+                "JOIN mstask ON class_task.TaskID = mstask.TaskID\n" +
+                "JOIN msuser ON mstask.UserID = msuser.UserID\n" +
+                "JOIN msclass ON msclass.ClassID = class_task.ClassID\n" +
+                "WHERE class_task.ClassID IN (SELECT ClassID FROM class_member WHERE UserID = ? AND Role = ?) AND \n" +
+                "mstask.TaskID IN (SELECT TaskID FROM answer_header WHERE UserID = ?)\n";
 
-		try (PreparedStatement ps = connect.prepareStatement(query)) {
-			assert ps != null;
-			ps.setString(1, userid);
-			ps.setString(2, "Student");
-			ps.setString(3, userid);
+        try (PreparedStatement ps = connect.prepareStatement(query)) {
 
-			try (var rs = ps.executeQuery()) {
-				while (rs.next()) {
-					Classroom classroom = new Classroom(rs);
-					User user = new User(rs);
-					Task task = new Task(rs, user, classroom);
-					taskList.add(task);
+            assert ps != null;
+            ps.setString(1, userid);
+            ps.setString(2, "Student");
+            ps.setString(3, userid);
 
-				}
-			}
-		} catch (Exception ignored) {
-		}
+            try (var rs = ps.executeQuery()) {
+                while (rs.next()) {
 
-		return taskList;
-	}
+                    Classroom classroom = new Classroom(rs);
+                    User user = new User(rs);
+                    Task task = new Task(rs, user, classroom);
+                    taskList.add(task);
 
-	public ArrayList<Task> fetchUserFinishedTask(String userid) {
+                }
+            }
 
-		ArrayList<Task> taskList = new ArrayList<>();
+        } catch (Exception ignored) {
+        }
 
-		String query = "SELECT * FROM class_task\n" +
-				"JOIN mstask ON class_task.TaskID = mstask.TaskID\n" +
-				"JOIN msuser ON mstask.UserID = msuser.UserID\n" +
-				"JOIN msclass ON msclass.ClassID = class_task.ClassID\n" +
-				"WHERE class_task.ClassID IN (SELECT ClassID FROM class_member WHERE UserID = ? AND Role = ?) AND \n" +
-				"mstask.TaskID IN (SELECT TaskID FROM answer_header WHERE UserID = ?)\n";
+        return taskList;
+    }
 
-		try (PreparedStatement ps = connect.prepareStatement(query)) {
+    public ArrayList<Task> fetchClassroomPendingTask(String classid) {
+        ArrayList<Task> taskList = new ArrayList<>();
 
-			assert ps != null;
-			ps.setString(1, userid);
-			ps.setString(2, "Student");
-			ps.setString(3, userid);
+        try (Closer closer = new Closer()) {
+            NeoQueryBuilder queryBuilder = new NeoQueryBuilder(QueryType.SELECT)
+                    .table("class_task")
+                    .join("class_task", "TaskID", "mstask", "TaskID")
+                    .join("mstask", "UserID", "msuser", "UserID")
+                    .join("msclass", "ClassID", "class_task", "ClassID")
+                    .condition("class_task.ClassID", "=", classid)
+                    .condition("mstask.DeadlineAt", ">", DateManager.getNow())
+                    .orderBy("mstask.DeadlineAt", "ASC")
+                    .limit(2);
 
-			try (var rs = ps.executeQuery()) {
-				while (rs.next()) {
+            Results results = closer.add(queryBuilder.getResults());
+            ResultSet set = closer.add(results.getResultSet());
+            while (set.next()) {
+                Classroom classroom = new Classroom(set);
+                User user = new User(set);
+                Task task = new Task(set, user, classroom);
 
-					Classroom classroom = new Classroom(rs);
-					User user = new User(rs);
-					Task task = new Task(rs, user, classroom);
-					taskList.add(task);
+                taskList.add(task);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
 
-				}
-			}
-
-		} catch (Exception ignored) {
-		}
-
-		return taskList;
-	}
-
-	public ArrayList<Task> fetchClassroomPendingTask(String classid) {
-
-		ArrayList<Task> taskList = new ArrayList<>();
-
-		String query = "SELECT * FROM class_task\n" +
-				"JOIN mstask ON class_task.TaskID = mstask.TaskID\n" +
-				"JOIN msuser ON mstask.UserID = msuser.UserID\n" +
-				"JOIN msclass ON msclass.ClassID = class_task.ClassID\n" +
-				"WHERE class_task.ClassID = ? AND \n" +
-				"mstask.DeadlineAt > ?\n" +
-				"ORDER BY mstask.DeadlineAt ASC\n" +
-				"LIMIT 2";
-
-		try (PreparedStatement ps = connect.prepareStatement(query)) {
-
-			assert ps != null;
-			ps.setString(1, classid);
-			ps.setString(2, DateManager.getNow());
-
-			try (var rs = ps.executeQuery()) {
-				while (rs.next()) {
-
-					Classroom classroom = new Classroom(rs);
-					User user = new User(rs);
-					Task task = new Task(rs, user, classroom);
-					taskList.add(task);
-
-				}
-			}
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-
-		return taskList;
-	}
+        return taskList;
+    }
 
 }

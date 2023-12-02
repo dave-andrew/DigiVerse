@@ -1,100 +1,101 @@
 package net.slc.dv.database;
 
-import net.slc.dv.database.connection.Connect;
+import net.slc.dv.database.builder.NeoQueryBuilder;
+import net.slc.dv.database.builder.Results;
+import net.slc.dv.database.builder.enums.QueryType;
+import net.slc.dv.helper.Closer;
 import net.slc.dv.model.Classroom;
 import net.slc.dv.model.LoggedUser;
 
-import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.ArrayList;
 
 public class ClassQuery {
 
     private final LoggedUser loggedUser;
-    private final Connect connect;
 
     public ClassQuery() {
         this.loggedUser = LoggedUser.getInstance();
-        this.connect = Connect.getConnection();
     }
 
     public void createClass(Classroom classroom) {
-        String query = "INSERT INTO msclass VALUES (?, ?, ?, ?, ?, NULL)";
-        String query2 = "INSERT INTO class_member VALUES (?, ?, ?)";
+        try (Closer closer = new Closer()) {
+            NeoQueryBuilder queryBuilder = new NeoQueryBuilder(QueryType.INSERT)
+                    .table("msclass")
+                    .values("ClassID", classroom.getClassId())
+                    .values("ClassName", classroom.getClassName())
+                    .values("ClassDesc", classroom.getClassDesc())
+                    .values("ClassCode", classroom.getClassCode())
+                    .values("ClassSubject", classroom.getClassSubject());
 
-        try (PreparedStatement ps = connect.prepareStatement(query);) {
-            assert ps != null;
-            ps.setString(1, classroom.getClassId());
-            ps.setString(2, classroom.getClassName());
-            ps.setString(3, classroom.getClassDesc());
-            ps.setString(4, classroom.getClassCode());
-            ps.setString(5, classroom.getClassSubject());
-
-            ps.executeUpdate();
-        } catch (Exception e) {
-            throw new RuntimeException(e);
+            closer.add(queryBuilder.getResults());
+        } catch (SQLException e) {
+            e.printStackTrace();
         }
 
-        try (PreparedStatement ps = connect.prepareStatement(query2)) {
-            assert ps != null;
-            ps.setString(1, classroom.getClassId());
-            ps.setString(2, loggedUser.getId());
-            ps.setString(3, "Teacher");
+        try (Closer closer = new Closer()) {
+            NeoQueryBuilder queryBuilder = new NeoQueryBuilder(QueryType.INSERT)
+                    .table("class_member")
+                    .values("ClassID", classroom.getClassId())
+                    .values("UserID", loggedUser.getId())
+                    .values("Role", "Teacher");
 
-            ps.executeUpdate();
-        } catch (Exception e) {
-            throw new RuntimeException(e);
+            closer.add(queryBuilder.getResults());
+        } catch (SQLException e) {
+            e.printStackTrace();
         }
     }
 
     public ArrayList<Classroom> getUserClassroom() {
         ArrayList<Classroom> classrooms = new ArrayList<>();
 
-        String query = "SELECT * FROM msclass WHERE ClassID IN (SELECT ClassID FROM class_member WHERE UserID = ?)";
-        try (PreparedStatement ps = connect.prepareStatement(query)) {
-            assert ps != null;
-            ps.setString(1, loggedUser.getId());
+        try (Closer closer = new Closer()) {
+            NeoQueryBuilder queryBuilder = new NeoQueryBuilder(QueryType.SELECT)
+                    .table("msclass")
+                    .join("msclass", "ClassID", "class_member", "ClassID")
+                    .condition("UserID", "=", loggedUser.getId());
 
-            try (var rs = ps.executeQuery()) {
-                while (rs.next()) {
-                    classrooms.add(new Classroom(rs));
-                }
+            Results results = closer.add(queryBuilder.getResults());
+            ResultSet set = closer.add(results.getResultSet());
+            while (set.next()) {
+                classrooms.add(new Classroom(set));
             }
-        } catch (Exception ignored) {
+        } catch (SQLException e) {
+            e.printStackTrace();
         }
 
         return classrooms;
     }
 
     public String joinClass(String classCode) {
-        String checkGroupClassCode = "SELECT * FROM msclass WHERE ClassCode = ?";
-        String query = "INSERT INTO class_member VALUES (?, ?, ?)";
-
         String classId;
-        try (PreparedStatement ps = connect.prepareStatement(checkGroupClassCode)) {
-            assert ps != null;
-            ps.setString(1, classCode);
+        try (Closer closer = new Closer()) {
+            NeoQueryBuilder queryBuilder = new NeoQueryBuilder(QueryType.SELECT)
+                    .table("msclass")
+                    .condition("ClassCode", "=", classCode);
 
-            try (ResultSet rs = ps.executeQuery()) {
-                if (rs.next()) {
-                    classId = rs.getString("ClassID");
-                } else {
-                    return "no data";
-                }
+            Results results = closer.add(queryBuilder.getResults());
+            ResultSet set = closer.add(results.getResultSet());
+            if (!set.next()) {
+                return "no data";
             }
-        } catch (Exception e) {
+
+            classId = set.getString("ClassID");
+        } catch (SQLException e) {
             return "ingroup";
         }
 
-        try (PreparedStatement ps = connect.prepareStatement(query)) {
-            assert ps != null;
-            ps.setString(1, classId);
-            ps.setString(2, loggedUser.getId());
-            ps.setString(3, "Student");
+        try (Closer closer = new Closer()) {
+            NeoQueryBuilder queryBuilder = new NeoQueryBuilder(QueryType.INSERT)
+                    .table("class_member")
+                    .values("ClassID", classId)
+                    .values("UserID", loggedUser.getId())
+                    .values("Role", "Student");
 
-            ps.executeUpdate();
+            closer.add(queryBuilder.getResults());
             return classId;
-        } catch (Exception e) {
+        } catch (SQLException e) {
             return "ingroup";
         }
     }

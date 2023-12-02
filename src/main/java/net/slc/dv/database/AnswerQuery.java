@@ -1,11 +1,16 @@
 package net.slc.dv.database;
 
-import net.slc.dv.database.connection.Connect;
+import net.slc.dv.database.builder.NeoQueryBuilder;
+import net.slc.dv.database.builder.Results;
+import net.slc.dv.database.builder.enums.QueryType;
+import net.slc.dv.helper.Closer;
 import net.slc.dv.helper.DateManager;
 
-import java.io.*;
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
 import java.sql.Blob;
-import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
@@ -13,40 +18,26 @@ import java.util.UUID;
 
 public class AnswerQuery {
 
-    private final Connect connect;
-
-    public AnswerQuery() {
-        this.connect = Connect.getConnection();
-    }
-
     public ArrayList<File> getMemberAnswer(String taskid, String userid) {
-
         ArrayList<File> fileList = new ArrayList<>();
 
-        String query = "SELECT\n" +
-                "\tmsfile.FileID, FileName, FileBlob, FileType\n" +
-                "FROM answer_header\n" +
-                "JOIN answer_detail\n" +
-                "ON answer_detail.AnswerID = answer_header.AnswerID\n" +
-                "JOIN msfile\n" +
-                "ON msfile.FileID = answer_detail.FileID\n" +
-                "WHERE TaskID = ? AND UserID = ?";
+        try (Closer closer = new Closer()) {
+            NeoQueryBuilder queryBuilder = new NeoQueryBuilder(QueryType.SELECT)
+                    .table("answer_header")
+                    .columns("msfile.FileID", "FileName", "FileBlob", "FileType")
+                    .join("answer_header", "AnswerID", "answer_detail", "AnswerID")
+                    .join("answer_detail", "FileID", "msfile", "FileID")
+                    .condition("TaskID", "=", taskid)
+                    .condition("UserID", "=", userid);
 
-        try (PreparedStatement ps = connect.prepareStatement(query)) {
-            assert ps != null;
-            ps.setString(1, taskid);
-            ps.setString(2, userid);
+            Results results = closer.add(queryBuilder.getResults());
+            ResultSet set = closer.add(results.getResultSet());
+            while (set.next()) {
+                Blob blob = set.getBlob("FileBlob");
 
-            try (ResultSet rs = ps.executeQuery()) {
-                while (rs.next()) {
-                    Blob blob = rs.getBlob("FileBlob");
-
-                    File outputFile = convertBlobToFile(blob, rs.getString("FileName"));
-
-                    fileList.add(outputFile);
-                }
+                File outputFile = convertBlobToFile(blob, set.getString("FileName"));
+                fileList.add(outputFile);
             }
-
         } catch (SQLException e) {
             e.printStackTrace();
         }
@@ -75,78 +66,67 @@ public class AnswerQuery {
     }
 
     public boolean checkAnswer(String taskid, String userid) {
-        String query = "SELECT\n" +
-                "\tAnswerID\n" +
-                "FROM answer_header\n" +
-                "WHERE TaskID = ? AND UserID = ?";
+        try (Closer closer = new Closer()) {
+            NeoQueryBuilder queryBuilder = new NeoQueryBuilder(QueryType.SELECT)
+                    .table("answer_header")
+                    .columns("AnswerID")
+                    .condition("TaskID", "=", taskid)
+                    .condition("UserID", "=", userid);
 
-        try (PreparedStatement ps = connect.prepareStatement(query)) {
+            Results results = closer.add(queryBuilder.getResults());
+            ResultSet set = closer.add(results.getResultSet());
 
-            assert ps != null;
-            ps.setString(1, taskid);
-            ps.setString(2, userid);
-
-            try (ResultSet rs = ps.executeQuery()) {
-
-                return rs.next();
-            }
-
+            return set.next();
         } catch (SQLException e) {
+            e.printStackTrace();
             return false;
         }
     }
 
     public void markAsDone(String taskid, String userid) {
-        String query = "INSERT INTO answer_header VALUES (?, ?, ?, NULL, ?)";
+        try (Closer closer = new Closer()) {
+            NeoQueryBuilder queryBuilder = new NeoQueryBuilder(QueryType.INSERT)
+                    .table("answer_header")
+                    .values("AnswerID", UUID.randomUUID().toString())
+                    .values("TaskID", taskid)
+                    .values("UserID", userid)
+                    .values("Score", null)
+                    .values("CreatedAt", DateManager.getNow());
 
-        try (PreparedStatement ps = connect.prepareStatement(query)) {
-            assert ps != null;
-            ps.setString(1, UUID.randomUUID().toString());
-            ps.setString(2, taskid);
-            ps.setString(3, userid);
-            ps.setString(4, DateManager.getNow());
-
-            ps.executeUpdate();
+            closer.add(queryBuilder.getResults());
         } catch (SQLException e) {
             e.printStackTrace();
         }
     }
 
     public void markUndone(String taskid, String userid) {
-        String query = "DELETE FROM answer_header WHERE TaskID = ? AND UserID = ?";
+        try (Closer closer = new Closer()) {
+            NeoQueryBuilder queryBuilder = new NeoQueryBuilder(QueryType.DELETE)
+                    .table("answer_header")
+                    .condition("TaskID", "=", taskid)
+                    .condition("UserID", "=", userid);
 
-        try (PreparedStatement ps = connect.prepareStatement(query)) {
-            assert ps != null;
-            ps.setString(1, taskid);
-            ps.setString(2, userid);
-
-            ps.executeUpdate();
+            closer.add(queryBuilder.getResults());
         } catch (SQLException e) {
             e.printStackTrace();
         }
     }
 
     public Integer getAnswerScore(String taskid, String userid) {
-        String query = "SELECT SCORE FROM answer_header WHERE TaskID = ? AND UserID = ?";
+        try (Closer closer = new Closer()) {
+            NeoQueryBuilder queryBuilder = new NeoQueryBuilder(QueryType.SELECT)
+                    .table("answer_header")
+                    .columns("score")
+                    .condition("TaskID", "=", taskid)
+                    .condition("UserID", "=", userid);
 
-        try (PreparedStatement ps = connect.prepareStatement(query)) {
-
-            assert ps != null;
-            ps.setString(1, taskid);
-            ps.setString(2, userid);
-
-            try (ResultSet rs = ps.executeQuery()) {
-                if (rs.next()) {
-                    Object scoreObj = rs.getObject("SCORE");
-
-                    if (scoreObj != null) {
-                        return (Integer) scoreObj;
-                    } else {
-                        return null;
-                    }
-                }
+            Results results = closer.add(queryBuilder.getResults());
+            ResultSet set = closer.add(results.getResultSet());
+            if (!set.next()) {
+                return null;
             }
 
+            return set.getInt("SCORE");
         } catch (SQLException e) {
             e.printStackTrace();
         }
@@ -155,23 +135,20 @@ public class AnswerQuery {
     }
 
     public boolean scoreAnswer(String taskid, String userid, int score) {
-        String query = "UPDATE answer_header " +
-                "JOIN mstask ON answer_header.TaskID = mstask.TaskID " +
-                "SET answer_header.Score = ? " +
-                "WHERE mstask.TaskTitle = ? AND answer_header.UserID = ?";
+        try (Closer closer = new Closer()) {
+            NeoQueryBuilder queryBuilder = new NeoQueryBuilder(QueryType.UPDATE)
+                    .table("answer_header")
+                    .join("answer_header", "TaskID", "mstask", "TaskID")
+                    .values("answer_header.Score", score)
+                    .condition("mstask.TaskTitle", "=", taskid)
+                    .condition("answer_header.UserID", "=", userid);
 
-        try (PreparedStatement ps = connect.prepareStatement(query)) {
-            assert ps != null;
-            ps.setInt(1, score);
-            ps.setString(2, taskid);
-            ps.setString(3, userid);
-
-            ps.executeUpdate();
-
+            closer.add(queryBuilder.getResults());
             return true;
         } catch (SQLException e) {
             e.printStackTrace();
-            return false;
         }
+
+        return false;
     }
 }

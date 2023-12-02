@@ -3,7 +3,6 @@ package net.slc.dv.database;
 import net.slc.dv.database.builder.NeoQueryBuilder;
 import net.slc.dv.database.builder.Results;
 import net.slc.dv.database.builder.enums.QueryType;
-import net.slc.dv.database.connection.Connect;
 import net.slc.dv.helper.Closer;
 import net.slc.dv.helper.DateManager;
 import net.slc.dv.model.LoggedUser;
@@ -16,12 +15,6 @@ import java.sql.SQLException;
 import java.time.LocalDateTime;
 
 public class AuthQuery {
-
-    private final Connect connect;
-
-    public AuthQuery() {
-        this.connect = Connect.getConnection();
-    }
 
     public void register(User user) {
         try (Closer closer = new Closer()) {

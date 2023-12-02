@@ -1,13 +1,17 @@
 package net.slc.dv.database;
 
+import net.slc.dv.database.builder.NeoQueryBuilder;
+import net.slc.dv.database.builder.Results;
+import net.slc.dv.database.builder.enums.QueryType;
 import net.slc.dv.database.connection.Connect;
+import net.slc.dv.helper.Closer;
 import net.slc.dv.helper.toast.ToastBuilder;
 import net.slc.dv.model.Answer;
 
 import java.io.File;
 import java.io.FileInputStream;
-import java.sql.Connection;
-import java.sql.PreparedStatement;
+import java.io.FileNotFoundException;
+import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
@@ -15,105 +19,104 @@ import java.util.UUID;
 
 public class FileQuery {
 
-    private final Connect connect;
-    private final Connection connection;
+    private final Connect connection;
 
     public FileQuery() {
-        this.connect = Connect.getConnection();
-        this.connection = connect.getConnect();
+        this.connection = Connect.getConnection();
     }
 
     public void uploadTaskAnswer(Answer answer) {
-        String query = "SELECT FileID FROM answer_header JOIN answer_detail ON answer_header.AnswerID = answer_detail.AnswerID WHERE TaskID = ? AND UserID = ? ";
-        String deleteFile = "DELETE FROM msfile WHERE FileID = ?";
-        String deleteAnswerQuery = "DELETE FROM answer_header WHERE TaskID = ? AND UserID = ?";
-        String query2 = "INSERT INTO answer_header VALUES (?, ?, ?, NULL, ?)";
-        String query3 = "INSERT INTO answer_detail VALUES (?, ?)";
-        String insertFileQuery = "INSERT INTO msfile VALUES (?, ?, ?, ?)";
-
         try {
-            connection.setAutoCommit(false); // Disable auto-commit
+            connection.getConnect().setAutoCommit(false);
 
-            // Get previous answer file id
             List<String> fileidList = new ArrayList<>();
-            try (PreparedStatement ps = connect.prepareStatement(query)) {
-                assert ps != null;
-                ps.setString(1, answer.getTaskid());
-                ps.setString(2, answer.getUserid());
+            try (Closer closer = new Closer()) {
+                NeoQueryBuilder queryBuilder = new NeoQueryBuilder(QueryType.SELECT)
+                        .table("answer_header")
+                        .columns("FileID")
+                        .join("answer_header", "AnswerID", "answer_detail", "AnswerID")
+                        .condition("TaskID", "=", answer.getTaskid())
+                        .condition("UserID", "=", answer.getUserid());
 
-                try (var rs = ps.executeQuery()) {
-                    while (rs.next()) {
-                        fileidList.add(rs.getString("FileID"));
-                    }
+                Results results = closer.add(queryBuilder.getResults());
+                ResultSet set = closer.add(results.getResultSet());
+                while (set.next()) {
+                    fileidList.add(set.getString("FileID"));
                 }
             }
 
-            try (PreparedStatement deleteFileStatement = connect.prepareStatement(deleteFile)) {
-                assert deleteFileStatement != null;
-                for (String fileid : fileidList) {
-                    deleteFileStatement.setString(1, fileid);
-                    deleteFileStatement.executeUpdate();
+            try (Closer closer = new Closer()) {
+                for (String fileId : fileidList) {
+                    NeoQueryBuilder queryBuilder = new NeoQueryBuilder(QueryType.DELETE)
+                            .table("msfile")
+                            .condition("FileID", "=", fileId);
+
+                    closer.add(queryBuilder.getResults());
                 }
             }
 
-            // Delete previous answer if it exists
-            try (PreparedStatement deleteStatement = connect.prepareStatement(deleteAnswerQuery)) {
-                assert deleteStatement != null;
-                deleteStatement.setString(1, answer.getTaskid());
-                deleteStatement.setString(2, answer.getUserid());
-                deleteStatement.executeUpdate();
+            try (Closer closer = new Closer()) {
+                NeoQueryBuilder queryBuilder = new NeoQueryBuilder(QueryType.DELETE)
+                        .table("answer_header")
+                        .condition("TaskID", "=", answer.getTaskid())
+                        .condition("UserID", "=", answer.getUserid());
+
+                closer.add(queryBuilder.getResults());
             }
 
-            // Insert new answer header
-            try (PreparedStatement insertHeaderStatement = connect.prepareStatement(query2)) {
-                assert insertHeaderStatement != null;
-                insertHeaderStatement.setString(1, answer.getId());
-                insertHeaderStatement.setString(2, answer.getTaskid());
-                insertHeaderStatement.setString(3, answer.getUserid());
-                insertHeaderStatement.setString(4, answer.getCreatedAt());
-                insertHeaderStatement.executeUpdate();
+            try (Closer closer = new Closer()) {
+                NeoQueryBuilder queryBuilder = new NeoQueryBuilder(QueryType.INSERT)
+                        .table("answer_header")
+                        .values("AnswerID", answer.getId())
+                        .values("TaskID", answer.getTaskid())
+                        .values("UserID", answer.getUserid())
+                        .values("CreatedAt", answer.getCreatedAt());
+
+                closer.add(queryBuilder.getResults());
             }
 
-            // Insert new answer details and files
-            try (PreparedStatement insertDetailStatement = connect.prepareStatement(query3);
-                 PreparedStatement insertFileStatement = connect.prepareStatement(insertFileQuery)) {
-
+            try (Closer closer = new Closer()) {
                 for (File file : answer.getFileList()) {
                     String fileType = getFileType(file);
-                    String fileid = String.valueOf(UUID.randomUUID());
+                    String fileId = String.valueOf(UUID.randomUUID());
 
-                    // Insert file
-                    assert insertFileStatement != null;
-                    insertFileStatement.setString(1, fileid);
-                    insertFileStatement.setString(2, file.getName());
-                    insertFileStatement.setBlob(3, new FileInputStream(file));
-                    insertFileStatement.setString(4, fileType);
-                    insertFileStatement.executeUpdate();
+                    NeoQueryBuilder queryBuilder = new NeoQueryBuilder(QueryType.INSERT)
+                            .table("msfile")
+                            .values("FileID", fileId)
+                            .values("FileName", file.getName())
+                            .values("FileData", new FileInputStream(file))
+                            .values("FileType", fileType);
 
-                    // Insert answer detail
-                    assert insertDetailStatement != null;
-                    insertDetailStatement.setString(1, answer.getId());
-                    insertDetailStatement.setString(2, fileid);
-                    insertDetailStatement.executeUpdate();
+                    closer.add(queryBuilder.getResults());
+
+                    NeoQueryBuilder queryBuilder2 = new NeoQueryBuilder(QueryType.INSERT)
+                            .table("answer_detail")
+                            .values("AnswerID", answer.getId())
+                            .values("FileID", fileId);
+
+                    closer.add(queryBuilder2.getResults());
                 }
+            } catch (FileNotFoundException e) {
+                connection.getConnect().rollback();
+                throw new RuntimeException(e);
             }
 
-            connection.commit();
+            connection.getConnect().commit();
             ToastBuilder.buildNormal().setText("Answer uploaded successfully!").build();
-        } catch (Exception e) {
+        } catch (SQLException e) {
             try {
-                if (connection != null) {
-                    connection.rollback(); // Rollback the transaction in case of an exception
+                if (connection.getConnect() != null) {
+                    connection.getConnect().rollback();
                 }
             } catch (SQLException rollbackException) {
                 rollbackException.printStackTrace();
             }
 
-            e.printStackTrace();
+            throw new RuntimeException(e);
         } finally {
             try {
-                if (connection != null) {
-                    connection.setAutoCommit(true);
+                if (connection.getConnect() != null) {
+                    connection.getConnect().setAutoCommit(true);
                 }
             } catch (SQLException e) {
                 e.printStackTrace();
