@@ -51,10 +51,14 @@ public class ClassQuery {
         ArrayList<Classroom> classrooms = new ArrayList<>();
 
         try (Closer closer = new Closer()) {
+            NeoQueryBuilder subQuery = new NeoQueryBuilder(QueryType.SELECT)
+                    .table("class_member")
+                    .columns("ClassID")
+                    .condition("UserID", "=", loggedUser.getId());
+
             NeoQueryBuilder queryBuilder = new NeoQueryBuilder(QueryType.SELECT)
                     .table("msclass")
-                    .join("msclass", "ClassID", "class_member", "ClassID")
-                    .condition("UserID", "=", loggedUser.getId());
+                    .condition("ClassID", "IN", subQuery);
 
             Results results = closer.add(queryBuilder.getResults());
             ResultSet set = closer.add(results.getResultSet());
