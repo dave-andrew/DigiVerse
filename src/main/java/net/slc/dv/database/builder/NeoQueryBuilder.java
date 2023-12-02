@@ -90,7 +90,7 @@ public class NeoQueryBuilder {
      * @param value       The value to be compared
      * @return NeoQueryBuilder
      */
-    public NeoQueryBuilder condition(String column, String compareType, String value) {
+    public NeoQueryBuilder condition(String column, String compareType, Object value) {
         ConditionCompareType conditionCompareType = ConditionCompareType.fromString(compareType);
         return this.condition(column, conditionCompareType, value);
     }
@@ -104,7 +104,7 @@ public class NeoQueryBuilder {
      * @param value       The value to be compared
      * @return NeoQueryBuilder
      */
-    public NeoQueryBuilder condition(String column, ConditionCompareType compareType, String value) {
+    public NeoQueryBuilder condition(String column, ConditionCompareType compareType, Object value) {
         if (this.conditionList == null) {
             this.conditionList = new ArrayList<>();
             this.conditionList.add(new Condition(column, compareType, value));
@@ -472,7 +472,7 @@ public class NeoQueryBuilder {
     private static class Condition {
         private final String column;
         private final ConditionCompareType compareType;
-        private final String value;
+        private final Object value;
     }
 
     @AllArgsConstructor
