@@ -43,7 +43,7 @@ public class CreateQuestionTask extends ScrollPane {
                         .map(QuestionContainer::getRootNode)
                         .toArray(Node[]::new))
                 .setAlignment(Pos.CENTER)
-                .setPadding(40, 80, 100, 80)
+                .setPadding(40, 187, 100, 187)
                 .setSpacing(30)
                 .build();
 

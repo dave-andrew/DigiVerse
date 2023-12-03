@@ -70,6 +70,12 @@ public class HBoxBuilder {
         return this;
     }
 
+    public HBoxBuilder setStyle(String... styleClass) {
+        this.hBox.getStyleClass().addAll(styleClass);
+
+        return this;
+    }
+
     public HBoxBuilder setStyleClass(String... styleClass) {
         this.hBox.getStyleClass().addAll(styleClass);
 

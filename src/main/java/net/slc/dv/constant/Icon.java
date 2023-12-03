@@ -17,4 +17,5 @@ public class Icon {
     public static final String MOON = "file:resources/icons/moon.png";
     public static final String LOGO = "file:resources/icons/logo.png";
     public static final String TASK = "file:resources/icons/task.png";
+    public static final String BIN = "file:resources/icons/bin.png";
 }
