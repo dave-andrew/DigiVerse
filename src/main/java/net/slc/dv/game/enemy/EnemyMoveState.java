@@ -2,7 +2,7 @@ package net.slc.dv.game.enemy;
 
 import net.slc.dv.game.Enemy;
 import net.slc.dv.game.gamestate.GamePauseState;
-import net.slc.dv.view.OfflineGame;
+import net.slc.dv.view.offlinegame.OfflineGameView;
 
 public class EnemyMoveState extends EnemyBaseState {
 
@@ -20,7 +20,7 @@ public class EnemyMoveState extends EnemyBaseState {
     }
 
     @Override
-    public void onUpdate(double deltaTime, OfflineGame game) {
+    public void onUpdate(double deltaTime, OfflineGameView game) {
 
         this.lastTimeFrame += deltaTime;
 

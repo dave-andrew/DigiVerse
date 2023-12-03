@@ -1,12 +1,12 @@
 package net.slc.dv.game.gamestate;
 
-import net.slc.dv.view.OfflineGame;
+import net.slc.dv.view.offlinegame.OfflineGameView;
 
 public abstract class GameBaseState {
 
-    protected OfflineGame game;
+    protected OfflineGameView game;
 
-    public GameBaseState(OfflineGame game) {
+    public GameBaseState(OfflineGameView game) {
         this.game = game;
     }
 

@@ -57,6 +57,11 @@ public class StackPaneBuilder {
 		return this;
 	}
 
+	public StackPaneBuilder removeAllChildren() {
+		this.stackPane.getChildren().removeAll(this.stackPane.getChildren());
+		return this;
+	}
+
 	public StackPaneBuilder setAlignment(Pos pos) {
 		this.stackPane.setAlignment(pos);
 		return this;

@@ -1,162 +1,136 @@
 package net.slc.dv.view.home;
 
 import java.util.ArrayList;
-import java.util.Objects;
-
-import javafx.animation.Interpolator;
-import javafx.animation.KeyFrame;
-import javafx.animation.KeyValue;
-import javafx.animation.Timeline;
-import javafx.geometry.Pos;
 import javafx.scene.Node;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
-import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.*;
 import javafx.stage.Stage;
-import javafx.util.Duration;
-import net.slc.dv.builder.*;
-import net.slc.dv.constant.Icon;
-import net.slc.dv.helper.ImageManager;
 import net.slc.dv.helper.ScreenManager;
 import net.slc.dv.helper.ThemeManager;
 import net.slc.dv.model.Classroom;
-import net.slc.dv.model.LoggedUser;
-import net.slc.dv.view.CreateClass;
-import net.slc.dv.view.JoinClass;
-import net.slc.dv.view.home.component.Calendar;
+import net.slc.dv.view.calendar.Calendar;
 import net.slc.dv.view.home.component.Navbar;
 import net.slc.dv.view.home.component.Profile;
-import net.slc.dv.view.home.component.sideNavbar.SideNavbar;
-import net.slc.dv.view.home.component.sideNavbar.SideNavbarButton;
-import net.slc.dv.view.homeview.ClassroomList;
+import net.slc.dv.view.home.component.SideNavbar;
+import net.slc.dv.view.home.component.SideNavbarButton;
+import net.slc.dv.view.classroom.list.ClassroomListView;
 
 public class Home {
 
+    public static ArrayList<Classroom> teacherClassList = new ArrayList<>();
+    public static ArrayList<Classroom> studentClassList = new ArrayList<>();
+    private final Stage stage;
+    private Scene scene;
+    private BorderPane borderPane;
+    private GridPane classGrid;
 
-	public static ArrayList<Classroom> teacherClassList = new ArrayList<>();
-	public static ArrayList<Classroom> studentClassList = new ArrayList<>();
-	private Stage stage;
-	private Scene scene;
-	private BorderPane borderPane;
-	private GridPane classGrid;
-	private ImageView userImg;
+    private StackPane mainPane;
+    private ScrollPane scrollPane;
+    private SideNavbar sideNavbar;
+    private Navbar navbar;
 
-	private StackPane mainPane;
-	private ScrollPane scrollPane;
+    public Home(Stage stage) {
+        this.stage = stage;
+        initialize();
+        scene = setLayout();
 
-	private Button plusBtn;
-	private SideNavbar sideNavbar;
-	private Navbar navbar;
+        stage.setScene(scene);
+        stage.setTitle("DigiVerse");
+    }
 
+    private void fetchClass() {
 
-	public Home(Stage stage) {
-		this.stage = stage;
-		initialize();
-		scene = setLayout();
+        mainPane.getChildren().clear();
+        classGrid = new ClassroomListView(mainPane, this.navbar::setLeftNavigation);
+        scrollPane.setContent(classGrid);
 
-		stage.setScene(scene);
-		stage.setTitle("DigiVerse");
-	}
+        mainPane.getChildren().add(scrollPane);
+    }
 
-	private void fetchClass() {
+    private void initialize() { // semua komponen yang di ho
 
-		mainPane.getChildren().clear();
-		classGrid = new ClassroomList(mainPane, this.navbar::setLeftNavigation);
-		scrollPane.setContent(classGrid);
+        borderPane = new BorderPane();
+        mainPane = new StackPane();
 
-		mainPane.getChildren().add(scrollPane);
-	}
+        scrollPane = new ScrollPane();
+        mainPane.getChildren().add(scrollPane);
 
-	private void initialize() { // semua komponen yang di ho
+        this.navbar = new Navbar(stage, this::onNavbarButtonClick);
+        this.sideNavbar = new SideNavbar(this::onSidebarButtonClick);
 
-		borderPane = new BorderPane();
-		mainPane = new StackPane();
+        classGrid = new ClassroomListView(mainPane, this.navbar::setLeftNavigation);
+        scrollPane.setContent(classGrid);
+    }
 
+    private Scene setLayout() { // masuk2in nya
+        scrollPane.setHbarPolicy(ScrollPane.ScrollBarPolicy.NEVER);
+        scrollPane.setVbarPolicy(ScrollPane.ScrollBarPolicy.AS_NEEDED);
 
-		scrollPane = new ScrollPane();
-		mainPane.getChildren().add(scrollPane);
+        scrollPane.setPannable(true);
 
-		this.navbar = new Navbar(stage, this::onNavbarButtonClick);
-		this.sideNavbar = new SideNavbar(this::onSidebarButtonClick);
+        //        TODO: Add class with role as teacher and student
 
-		classGrid = new ClassroomList(mainPane, this.navbar::setLeftNavigation);
-		scrollPane.setContent(classGrid);
-	}
+        borderPane.setCenter(mainPane);
+        borderPane.setLeft(sideNavbar);
+        borderPane.setTop(navbar);
 
-	private Scene setLayout() { // masuk2in nya
-		scrollPane.setHbarPolicy(ScrollPane.ScrollBarPolicy.NEVER);
-		scrollPane.setVbarPolicy(ScrollPane.ScrollBarPolicy.AS_NEEDED);
+        scene = new Scene(borderPane, ScreenManager.SCREEN_WIDTH, ScreenManager.SCREEN_HEIGHT);
+        ThemeManager.getTheme(scene);
 
-		scrollPane.setPannable(true);
+        return scene;
+    }
 
-		//        TODO: Add class with role as teacher and student
+    private void onSidebarButtonClick(Node button) {
+        this.navbar.setLeftNavigation(null);
+        if (button == this.sideNavbar.getHomeButton()) {
+            this.sideNavbar.setActive((SideNavbarButton) button);
+            mainPane.getChildren().clear();
+            fetchClass();
+            return;
+        }
+        if (button == this.sideNavbar.getCalendarButton()) {
+            this.sideNavbar.setActive((SideNavbarButton) button);
 
+            new Calendar(mainPane, this.navbar::setLeftNavigation);
+            return;
+        }
+    }
 
+    private void onNavbarButtonClick(Node button) {
+        mainPane.getChildren().clear();
 
-		borderPane.setCenter(mainPane);
-		borderPane.setLeft(sideNavbar);
-		borderPane.setTop(navbar);
+        System.out.println("nya");
+        if (button == this.navbar.getIconButton()) {
+            this.navbar.setLeftNavigation(null);
+            this.sideNavbar.setActive(this.sideNavbar.getHomeButton());
+            fetchClass();
+            return;
+        }
+        if (button == this.navbar.getUserButton()) {
+            this.navbar.setLeftNavigation(null);
+            this.sideNavbar.setActive(null);
+            profilePage((ImageView) this.navbar.getUserButton().getGraphic());
+            return;
+        }
+        if (button == this.navbar.getThemeSwitchButton()) {
+            ThemeManager.toggleTheme(scene, (ToggleButton) button);
+        }
+    }
 
-		scene = new Scene(borderPane, ScreenManager.SCREEN_WIDTH, ScreenManager.SCREEN_HEIGHT);
-		ThemeManager.getTheme(scene);
+    public void profilePage(ImageView userImg) {
+        VBox profile = new Profile(userImg, mainPane, this.navbar::setLeftNavigation);
 
-		return scene;
-	}
+        ScrollPane scrollPane = new ScrollPane();
+        scrollPane.setContent(profile);
 
-	private void onSidebarButtonClick(Node button){
-		this.navbar.setLeftNavigation(null);
-		if(button == this.sideNavbar.getHomeButton()){
-			this.sideNavbar.setActive((SideNavbarButton) button);
-			mainPane.getChildren().clear();
-			fetchClass();
-			return;
-		}
-		if(button == this.sideNavbar.getCalendarButton()){
-			this.sideNavbar.setActive((SideNavbarButton) button);
-			mainPane.getChildren().clear();
-			mainPane.getChildren().add(new Calendar(mainPane, this.navbar::setLeftNavigation));
-			return;
-		}
-	}
+        scrollPane.setHbarPolicy(ScrollPane.ScrollBarPolicy.NEVER);
+        scrollPane.setVbarPolicy(ScrollPane.ScrollBarPolicy.AS_NEEDED);
 
-	private void onNavbarButtonClick(Node button) {
-		mainPane.getChildren().clear();
+        scrollPane.prefWidthProperty().bind(mainPane.widthProperty());
+        profile.prefWidthProperty().bind(scrollPane.widthProperty());
 
-		if(button == this.navbar.getIconButton()) {
-			this.navbar.setLeftNavigation(null);
-			this.sideNavbar.setActive(this.sideNavbar.getHomeButton());
-			fetchClass();
-			return;
-		}
-		if(button == this.navbar.getUserButton()) {
-			this.navbar.setLeftNavigation(null);
-			this.sideNavbar.setActive(null);
-			profilePage();
-			return;
-		}
-		if(button == this.navbar.getThemeSwitchButton()){
-			//TODO idk
-			ThemeManager.toggleTheme(scene, (ToggleButton) button);
-			return;
-		}
-	}
-
-
-	public void profilePage() {
-		VBox profile = new Profile(userImg, mainPane, this.navbar::setLeftNavigation);
-
-		ScrollPane scrollPane = new ScrollPane();
-		scrollPane.setContent(profile);
-
-		scrollPane.setHbarPolicy(ScrollPane.ScrollBarPolicy.NEVER);
-		scrollPane.setVbarPolicy(ScrollPane.ScrollBarPolicy.AS_NEEDED);
-
-		scrollPane.prefWidthProperty().bind(mainPane.widthProperty());
-		profile.prefWidthProperty().bind(scrollPane.widthProperty());
-
-		mainPane.getChildren().add(scrollPane);
-	}
-
+        mainPane.getChildren().add(scrollPane);
+    }
 }

@@ -5,7 +5,6 @@ import net.slc.dv.database.builder.Results;
 import net.slc.dv.database.builder.enums.ConditionCompareType;
 import net.slc.dv.database.builder.enums.QueryType;
 import net.slc.dv.database.connection.Connect;
-import net.slc.dv.enums.TaskType;
 import net.slc.dv.helper.Closer;
 import net.slc.dv.helper.DateManager;
 import net.slc.dv.helper.toast.ToastBuilder;
@@ -14,7 +13,6 @@ import net.slc.dv.model.*;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -60,7 +58,8 @@ public class TaskQuery {
 
 
 	public void createQuestionTask(Task task, List<Question> questionList, String classId) {
-		String query = "INSERT INTO mstask VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
+		//TODO DEADLINE
+		String query = "INSERT INTO mstask (TaskID, UserID, TaskTitle, TaskDesc, TaskType, CreatedAt, DeadlineAt, Scored) VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
 		String query2 = "INSERT INTO class_task VALUES (?, ?)";
 		String query3 = "INSERT INTO msquestion (QuestionID, TaskID, QuestionType, QuestionText, QuestionChoice, QuestionAnswer) VALUES (?, ?, ?, ?, ?, ?)";
 
@@ -92,7 +91,7 @@ public class TaskQuery {
 				ps3.setString(3, question.getQuestionType().toString());
 				ps3.setString(4, question.getQuestionText());
 				ps3.setString(5, question.getQuestionChoice());
-				ps3.setString(6, question.getQuestionKey());
+				ps3.setString(6, question.getQuestionAnswer());
 
 				ps3.addBatch();
 			}

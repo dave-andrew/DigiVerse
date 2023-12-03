@@ -16,12 +16,10 @@ import net.slc.dv.controller.TaskController;
 import net.slc.dv.controller.UserController;
 import net.slc.dv.helper.ImageManager;
 import net.slc.dv.helper.StageManager;
-import net.slc.dv.model.Classroom;
 import net.slc.dv.model.LoggedUser;
 import net.slc.dv.model.Task;
-import net.slc.dv.view.component.classdetail.component.TaskItem;
-import net.slc.dv.view.homeview.ClassroomDetail;
-import net.slc.dv.view.homeview.task.TaskBase;
+import net.slc.dv.view.classroom.detail.component.TaskItem;
+import net.slc.dv.view.task.task.TaskBase;
 
 import java.io.File;
 import java.time.LocalDate;
@@ -461,10 +459,8 @@ public class Profile extends VBox {
             this.taskContainer.getChildren().add(taskItem);
 
             taskItem.setOnMouseClicked(e -> {
-                this.mainPane.getChildren().clear();
-
                 String userRole = new MemberController().getRole(task.getClassroom().getClassId());
-                this.mainPane.getChildren().add(new TaskBase(task, task.getClassroom(), userRole));
+                new TaskBase(mainPane, task, task.getClassroom(), userRole);
 
                 this.setNavigation.accept(task.getClassroom().getClassName());
             });

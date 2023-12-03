@@ -4,7 +4,6 @@ import lombok.Getter;
 import lombok.Setter;
 import net.slc.dv.enums.TaskType;
 import net.slc.dv.helper.DateManager;
-import net.slc.dv.view.component.classdetail.component.TaskItem;
 import org.jetbrains.annotations.Nullable;
 
 import java.sql.ResultSet;

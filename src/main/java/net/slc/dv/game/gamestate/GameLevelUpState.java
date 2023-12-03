@@ -5,13 +5,13 @@ import net.slc.dv.helper.ScreenManager;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.KeyCode;
-import net.slc.dv.view.OfflineGame;
+import net.slc.dv.view.offlinegame.OfflineGameView;
 
 public class GameLevelUpState extends GameBaseState {
 
     private final ImageView guiView;
 
-    public GameLevelUpState(OfflineGame game) {
+    public GameLevelUpState(OfflineGameView game) {
         super(game);
         this.guiView = new ImageView(new Image("file:resources/game/gui/level-up.png"));
 

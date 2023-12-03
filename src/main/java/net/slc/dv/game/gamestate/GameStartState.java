@@ -6,13 +6,13 @@ import net.slc.dv.helper.ScreenManager;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.KeyCode;
-import net.slc.dv.view.OfflineGame;
+import net.slc.dv.view.offlinegame.OfflineGameView;
 
 public class GameStartState extends GameBaseState {
 
     private ImageView guiView;
 
-    public GameStartState(OfflineGame game) {
+    public GameStartState(OfflineGameView game) {
         super(game);
     }
 
