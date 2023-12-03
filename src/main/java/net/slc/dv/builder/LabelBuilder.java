@@ -5,6 +5,7 @@ import javafx.geometry.Pos;
 import javafx.scene.control.Label;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Priority;
+import javafx.scene.layout.VBox;
 import javafx.scene.text.Font;
 
 import java.util.function.Consumer;
@@ -64,6 +65,12 @@ public class LabelBuilder {
 
     public LabelBuilder setHMargin(int margin1, int margin2, int margin3, int margin4) {
         HBox.setMargin(this.label, new Insets(margin1, margin2, margin3, margin4));
+
+        return this;
+    }
+
+    public LabelBuilder setVMargin(int margin1, int margin2, int margin3, int margin4) {
+        VBox.setMargin(this.label, new Insets(margin1, margin2, margin3, margin4));
 
         return this;
     }

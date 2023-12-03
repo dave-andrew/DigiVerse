@@ -2,6 +2,9 @@ package net.slc.dv.controller;
 
 import net.slc.dv.database.AnswerQuery;
 import net.slc.dv.helper.toast.ToastBuilder;
+import net.slc.dv.model.AnswerDetail;
+import net.slc.dv.model.AnswerHeader;
+import org.jetbrains.annotations.Nullable;
 
 import java.io.File;
 import java.io.IOException;
@@ -10,6 +13,7 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.nio.file.StandardCopyOption;
 import java.util.ArrayList;
+import java.util.List;
 
 public class AnswerController {
 
@@ -92,5 +96,35 @@ public class AnswerController {
         }
 
         return answerQuery.scoreAnswer(taskid, userid, Integer.parseInt(score));
+    }
+
+    public AnswerHeader saveAnswer(@Nullable AnswerHeader answerHeader, String taskid, String userid, List<AnswerDetail> answerList) {
+        if(answerHeader == null) {
+            answerHeader = new AnswerHeader(taskid, userid, false, 0, null);
+        }
+
+        AnswerHeader finalAnswerHeader = answerHeader;
+        answerList.forEach(answerDetail -> answerDetail.setAnswerId(finalAnswerHeader.getId()));
+
+        answerQuery.createAnswerHeader(answerHeader);
+        answerQuery.createAnswerDetails(answerList);
+
+        return answerHeader;
+    }
+
+    public void submitTest(AnswerHeader answerHeader) {
+        answerQuery.submitTest(answerHeader);
+    }
+
+    @Nullable
+    public AnswerHeader fetchAnswerHeader(String taskid, String userid) {
+        return answerQuery.getAnswerHeader(taskid, userid);
+    }
+
+    public boolean checkTest(String taskid, String userid) {
+        return answerQuery.checkTest(taskid, userid);
+    }
+    public List<AnswerDetail> fetchAnswerDetails(String answerid) {
+        return answerQuery.getAnswerDetails(answerid);
     }
 }

@@ -19,7 +19,7 @@ public class TaskBase extends BorderPane {
     public TaskBase(StackPane mainPane, Task task, Classroom classroom, String userRole) {
         this.mainPane = mainPane;
         this.userRole = userRole;
-        this.taskDetail = new TaskDetailView(mainPane, task, userRole);
+        this.taskDetail = new TaskDetailView(mainPane, task, classroom, userRole);
         this.answerDetail = new AnswerDetailView(task, classroom);
 
         init();

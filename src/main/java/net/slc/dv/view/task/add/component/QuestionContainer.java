@@ -36,7 +36,6 @@ public class QuestionContainer {
 			.setValue(QuestionType.toString(QuestionType.MULTIPLE_CHOICE))
 			.setOnAction(e -> {
 				this.questionContainer.getChildren().remove(1);
-				CreateQuestionBox questionBox = this.questionBox;
 				this.questionContainer.getChildren().add(getContent());
 			})
 			.build();
@@ -62,16 +61,16 @@ public class QuestionContainer {
 
 		if (questionSelect.getValue().equals(QuestionType.toString(QuestionType.MULTIPLE_CHOICE))) {
 			this.questionBox = new CreateMultipleChoiceQuestion();
-			return ((CreateMultipleChoiceQuestion) this.questionBox).getRoot();
+			return ((CreateMultipleChoiceQuestion) this.questionBox);
 		}
 
 		if (questionSelect.getValue().equals(QuestionType.toString(QuestionType.TRUE_FALSE))) {
 			this.questionBox = new CreateTrueFalseQuestion();
-			return ((CreateTrueFalseQuestion) this.questionBox).getRoot();
+			return ((CreateTrueFalseQuestion) this.questionBox);
 		}
 
 		this.questionBox = new CreateEssayQuestion();
-		return ((CreateEssayQuestion) this.questionBox).getRoot();
+		return ((CreateEssayQuestion) this.questionBox);
 	}
 
 	public VBox getRootNode() {

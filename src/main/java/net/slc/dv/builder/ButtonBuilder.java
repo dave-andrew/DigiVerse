@@ -93,6 +93,13 @@ public class ButtonBuilder {
 
         return this;
     }
+
+    public ButtonBuilder setDisable(boolean disable) {
+        this.button.setDisable(disable);
+
+        return this;
+    }
+
     public Button build() {
         return this.button;
     }

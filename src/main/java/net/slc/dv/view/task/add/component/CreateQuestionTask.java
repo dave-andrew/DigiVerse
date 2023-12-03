@@ -1,5 +1,7 @@
 package net.slc.dv.view.task.add.component;
 
+import java.util.ArrayList;
+import java.util.List;
 import javafx.geometry.Pos;
 import javafx.scene.Node;
 import javafx.scene.control.Button;
@@ -15,87 +17,91 @@ import net.slc.dv.builder.VBoxBuilder;
 import net.slc.dv.interfaces.CreateQuestionBox;
 import net.slc.dv.model.Question;
 
-import java.util.ArrayList;
-import java.util.List;
-
 @Getter
-public class CreateQuestionTask {
-	private final List<QuestionContainer> questionContainers;
-	private final Button addQuestionBtn;
-	private final VBox container;
-	private final ScrollPane root;
+public class CreateQuestionTask extends ScrollPane {
+    private final List<QuestionContainer> questionContainers;
+    private final Button addQuestionBtn;
+    private final VBox container;
+	private CreateGeneralTask generalTask;
 
-	public CreateQuestionTask() {
-		ImageView imageView = ImageViewBuilder.create()
-				.setImage(new Image("file:resources/icons/plus-white.png"))
-				.setFitWidth(20)
-				.setFitHeight(20)
-				.setPreserveRatio(true)
-				.build();
+    public CreateQuestionTask() {
+        this.generalTask = new CreateGeneralTask();
+        ImageView imageView = ImageViewBuilder.create()
+                .setImage(new Image("file:resources/icons/plus-white.png"))
+                .setFitWidth(20)
+                .setFitHeight(20)
+                .setPreserveRatio(true)
+                .build();
 
-		questionContainers = new ArrayList<>();
+        questionContainers = new ArrayList<>();
 
-		questionContainers.add(new QuestionContainer(this::removeQuestion));
+        questionContainers.add(new QuestionContainer(this::removeQuestion));
 
-		this.container = VBoxBuilder.create()
-				.addChildren(questionContainers.stream().map(QuestionContainer::getRootNode).toArray(Node[]::new))
-				.setAlignment(Pos.CENTER)
-				.setPadding(40, 80, 100, 80)
-				.setSpacing(30)
-				.build();
+        this.container = VBoxBuilder.create()
+                .addChildren(generalTask)
+                .addChildren(questionContainers.stream()
+                        .map(QuestionContainer::getRootNode)
+                        .toArray(Node[]::new))
+                .setAlignment(Pos.CENTER)
+                .setPadding(40, 80, 100, 80)
+                .setSpacing(30)
+                .build();
 
-		this.addQuestionBtn = ButtonBuilder
-				.create()
-				.setOnAction(e -> addNewQuestion())
-				.setStyleClass("primary-button")
-				.setGraphic(imageView)
-				.bindPrefWidth(container)
-				.build();
+        this.addQuestionBtn = ButtonBuilder.create()
+                .setOnAction(e -> addNewQuestion())
+                .setStyleClass("primary-button")
+                .setGraphic(imageView)
+                .bindPrefWidth(container)
+                .build();
 
-		VBoxBuilder.modify(this.container)
-				.addChildren(addQuestionBtn)
-				.build();
+        VBoxBuilder.modify(this.container).addChildren(addQuestionBtn).build();
 
-		this.root = ScrollPaneBuilder.create()
-				.setContent(container)
-				.setPannable(true)
-				.setFitToWidth(true)
-				.build();
-	}
+        ScrollPaneBuilder.modify(this)
+                .setContent(container)
+                .setPannable(true)
+                .setFitToWidth(true)
+                .build();
+    }
 
-	private void addNewQuestion() {
-		questionContainers.add(new QuestionContainer(this::removeQuestion));
+    private void addNewQuestion() {
+        questionContainers.add(new QuestionContainer(this::removeQuestion));
 
-		VBoxBuilder.modify(this.container)
-				.removeChildren(addQuestionBtn)
-				.addChildren(questionContainers.get(questionContainers.size() - 1).getRootNode())
-				.addChildren(addQuestionBtn)
-				.build();
-	}
+        VBoxBuilder.modify(this.container)
+                .removeChildren(addQuestionBtn)
+                .addChildren(
+                        questionContainers.get(questionContainers.size() - 1).getRootNode())
+                .addChildren(addQuestionBtn)
+                .build();
+    }
 
-	private void removeQuestion(QuestionContainer question) {
-		questionContainers.remove(question);
+    private void removeQuestion(QuestionContainer question) {
+        questionContainers.remove(question);
 
-		VBoxBuilder.modify(this.container)
-				.removeAll(question.getRoot())
-				.build();
-	}
+        VBoxBuilder.modify(this.container).removeAll(question.getRoot()).build();
+    }
 
-	public List<Question> getQuestions() {
-		List<QuestionContainer> questionContainers = this.questionContainers;
-		List<Question> questionList = new ArrayList<>();
-		questionContainers.forEach(questionContainer -> {
-			CreateQuestionBox questionBox = questionContainer.getQuestionBox();
-			Question question = new Question(
-					questionBox.getQuestionType(),
-					questionBox.getQuestionText(),
-					questionBox.getQuestionAnswer(),
-					questionBox.getQuestionKey());
+    public String getTaskTitle() {
+        return generalTask.getTitleField().getText();
+    }
 
-			questionList.add(question);
-		});
+    public String getTaskDescription() {
+        return generalTask.getDescriptionField().getText();
+    }
 
+    public List<Question> getQuestions() {
+        List<QuestionContainer> questionContainers = this.questionContainers;
+        List<Question> questionList = new ArrayList<>();
+        questionContainers.forEach(questionContainer -> {
+            CreateQuestionBox questionBox = questionContainer.getQuestionBox();
+            Question question = new Question(
+                    questionBox.getQuestionType(),
+                    questionBox.getQuestionText(),
+                    questionBox.getQuestionAnswer(),
+                    questionBox.getQuestionKey());
 
-		return questionList;
-	}
+            questionList.add(question);
+        });
+
+        return questionList;
+    }
 }

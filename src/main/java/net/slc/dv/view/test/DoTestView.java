@@ -6,17 +6,17 @@ import javafx.scene.control.Label;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.layout.*;
 import net.slc.dv.builder.*;
+import net.slc.dv.controller.AnswerController;
 import net.slc.dv.controller.TaskController;
 import net.slc.dv.enums.QuestionType;
 import net.slc.dv.interfaces.QuestionBox;
 import net.slc.dv.model.*;
+import net.slc.dv.view.task.task.TaskBase;
 import net.slc.dv.view.test.question.QuestionEssay;
 import net.slc.dv.view.test.question.QuestionMultipleChoice;
 import net.slc.dv.view.test.question.QuestionTrueFalse;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Objects;
+import java.util.*;
 import java.util.concurrent.atomic.AtomicInteger;
 
 public class DoTestView extends HBox {
@@ -25,6 +25,9 @@ public class DoTestView extends HBox {
 	private Button saveButton;
 	private Button submitButton;
 	private final Task task;
+	private final Classroom classroom;
+	private final String userRole;
+	private final AnswerController answerController;
 	private final TaskController taskController;
 	private List<Question> questions;
 	private List<QuestionBox> questionBoxes;
@@ -32,13 +35,17 @@ public class DoTestView extends HBox {
 	private List<AnswerDetail> answerDetails;
 
 
-	public DoTestView(StackPane mainPane, Task task) {
+	public DoTestView(StackPane mainPane, Task task, Classroom classroom, String userRole) {
 		this.mainPane = mainPane;
 		this.task = task;
+		this.classroom = classroom;
+		this.userRole = userRole;
+		this.answerController = new AnswerController();
 		this.taskController = new TaskController();
 		this.questions = taskController.fetchQuestion(task.getId());
-		this.answerHeaders = taskController.fetchAnswerHeader(task.getId(), LoggedUser.getInstance().getId());
-		this.answerDetails = taskController.fetchAnswerDetails(answerHeaders.getId());
+		this.answerHeaders = answerController.fetchAnswerHeader(task.getId(), LoggedUser.getInstance().getId());
+		this.answerDetails = answerHeaders == null ? new ArrayList<>() : answerController.fetchAnswerDetails(answerHeaders.getId());
+
 
 		this.questionBoxes = new ArrayList<>();
 
@@ -176,10 +183,9 @@ public class DoTestView extends HBox {
 		this.questionScroll.setVvalue((double) index / this.questions.size());
 	}
 
-	private void saveAnswer() {
+	private AnswerHeader saveAnswer() {
 		ArrayList<AnswerDetail> answerDetails = new ArrayList<>();
 		for (QuestionBox questionBox : questionBoxes) {
-			System.out.println(questionBox.getQuestionAnswer());
 			if (questionBox.getQuestionAnswer() != null) {
 				AnswerDetail answerDetail = new AnswerDetail(
 						questionBox.getQuestionId(),
@@ -189,16 +195,13 @@ public class DoTestView extends HBox {
 			}
 		}
 
-		System.out.println(answerDetails.size());
-		taskController.saveAnswer(answerHeaders, task.getId(), LoggedUser.getInstance().getId(), answerDetails);
+		return answerController.saveAnswer(answerHeaders, task.getId(), LoggedUser.getInstance().getId(), answerDetails);
 	}
 
 	private void submitAnswer() {
-//		for (QuestionBox questionBox : questionBoxes) {
-//			if (questionBox.getQuestionAnswer() != null) {
-//				taskController.saveAnswer(questionBox.getQuestionAnswer());
-//			}
-//		}
-//		taskController.submitAnswer(task.getId());
+		AnswerHeader answerHeader = this.saveAnswer();
+		answerController.submitTest(answerHeader);
+
+		new TaskBase(mainPane, task, classroom, userRole);
 	}
 }

@@ -9,13 +9,13 @@ import lombok.Getter;
 import net.slc.dv.builder.*;
 import net.slc.dv.enums.QuestionType;
 import net.slc.dv.interfaces.CreateQuestionBox;
+import org.jetbrains.annotations.Nullable;
 
 import java.util.ArrayList;
 import java.util.List;
 
 @Getter
-public class CreateTrueFalseQuestion implements CreateQuestionBox {
-	private final VBox root;
+public class CreateTrueFalseQuestion extends VBox implements CreateQuestionBox {
 	private final TextArea questionField;
 	private final List<TextField> answerFields;
 	private final ComboBox<String> answerKey;
@@ -51,7 +51,7 @@ public class CreateTrueFalseQuestion implements CreateQuestionBox {
                 .setSpacing(10)
                 .build();
 
-        this.root = VBoxBuilder.create()
+        VBoxBuilder.modify(this)
                 .addChildren(questionContainer, answerKey)
                 .setSpacing(30)
                 .build();
@@ -67,6 +67,7 @@ public class CreateTrueFalseQuestion implements CreateQuestionBox {
 		return this.questionField.getText();
 	}
 
+	@Nullable
 	@Override
 	public String getQuestionAnswer() {
 		return null;

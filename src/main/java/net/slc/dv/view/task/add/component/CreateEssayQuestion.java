@@ -11,8 +11,7 @@ import net.slc.dv.enums.QuestionType;
 import net.slc.dv.interfaces.CreateQuestionBox;
 
 @Getter
-public class CreateEssayQuestion implements CreateQuestionBox {
-	private final VBox root;
+public class CreateEssayQuestion extends VBox implements CreateQuestionBox {
 	private final TextArea questionField;
 
 	public CreateEssayQuestion() {
@@ -28,7 +27,7 @@ public class CreateEssayQuestion implements CreateQuestionBox {
 				.setSpacing(10)
 				.build();
 
-		this.root = VBoxBuilder.create()
+		VBoxBuilder.modify(this)
 				.addChildren(questionContainer)
 				.setSpacing(5)
 				.build();

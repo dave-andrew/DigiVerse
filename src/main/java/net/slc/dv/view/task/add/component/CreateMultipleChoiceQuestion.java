@@ -17,8 +17,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Getter
-public class CreateMultipleChoiceQuestion implements CreateQuestionBox {
-	private final VBox root;
+public class CreateMultipleChoiceQuestion extends VBox implements CreateQuestionBox {
 	private final TextArea questionField;
 	private final List<TextField> answerFields;
 	private final ComboBox<String> answerKey;
@@ -77,7 +76,7 @@ public class CreateMultipleChoiceQuestion implements CreateQuestionBox {
                 .setAlignment(Pos.CENTER_LEFT)
                 .build();
 
-        this.root = VBoxBuilder.create()
+        VBoxBuilder.modify(this)
                 .addChildren(questionContainer, answerContainer, answerKey)
                 .setSpacing(30)
                 .build();

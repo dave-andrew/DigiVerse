@@ -67,6 +67,11 @@ public class StackPaneBuilder {
 		return this;
 	}
 
+	public StackPaneBuilder setHMargin(double margin1, double margin2, double margin3, double margin4) {
+		StackPane.setMargin(this.stackPane, new javafx.geometry.Insets(margin1, margin2, margin3, margin4));
+		return this;
+	}
+
 	public StackPane build() {
 		return new StackPane();
 	}

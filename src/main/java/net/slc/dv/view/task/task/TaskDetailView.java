@@ -13,13 +13,15 @@ import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Line;
-import net.slc.dv.builder.ButtonBuilder;
+import net.slc.dv.builder.*;
+import net.slc.dv.constant.Icon;
 import net.slc.dv.controller.AnswerController;
 import net.slc.dv.controller.CommentController;
 import net.slc.dv.enums.TaskType;
 import net.slc.dv.helper.DateManager;
 import net.slc.dv.helper.ImageManager;
 import net.slc.dv.helper.toast.ToastBuilder;
+import net.slc.dv.model.Classroom;
 import net.slc.dv.model.LoggedUser;
 import net.slc.dv.model.Task;
 import net.slc.dv.model.TaskComment;
@@ -34,399 +36,428 @@ import java.util.ArrayList;
 import java.util.Date;
 
 public class TaskDetailView extends HBox {
-    private final StackPane mainPane;
-    private final AnswerController answerController;
-    private final CommentController commentController;
-    private final Task task;
-    private final String userRole;
-    private VBox mainContent, sideContent, fileContainer;
-    private HBox innerMainContent;
-    private Button actionButton, markAsDoneBtn;
-    private Label submitStatus;
-    private Button downloadBtn;
-    private VBox commentListContainer;
+	private final StackPane mainPane;
+	private final AnswerController answerController;
+	private final CommentController commentController;
+	private final Task task;
+	private final String userRole;
+	private final Classroom classroom;
+	private VBox mainContent, sideContent, fileContainer;
+	private HBox innerMainContent;
+	private Button actionButton, markAsDoneBtn;
+	private Label submitStatus;
+	private Button downloadBtn;
+	private VBox commentListContainer;
 
-    public TaskDetailView(StackPane mainPane, Task task, String userRole) {
-        this.mainPane = mainPane;
-        this.task = task;
-        this.userRole = userRole;
-        this.answerController = new AnswerController();
-        this.commentController = new CommentController();
-        init();
-        setLayout();
-        setSideContent();
-        actions();
-    }
+	public TaskDetailView(StackPane mainPane, Task task, Classroom classroom, String userRole) {
+		this.mainPane = mainPane;
+		this.task = task;
+		this.classroom = classroom;
+		this.userRole = userRole;
+		this.answerController = new AnswerController();
+		this.commentController = new CommentController();
+		init();
+		setLayout();
+		initSideContent();
+		actions();
+	}
 
-    private void init() {
-        this.mainContent = new VBox();
-        this.sideContent = new VBox();
-        this.innerMainContent = new HBox();
+	private void init() {
+		this.mainContent = new VBox();
+		this.innerMainContent = new HBox();
 
-        this.setPadding(new Insets(35, 60, 35, 60));
-        this.prefWidthProperty().bind(this.widthProperty());
-    }
+		this.setPadding(new Insets(35, 60, 35, 60));
+		this.prefWidthProperty().bind(this.widthProperty());
+	}
 
-    private void setLayout() {
-        StackPane imgStack = new StackPane();
-        imgStack.setAlignment(Pos.TOP_LEFT);
-        HBox.setMargin(imgStack, new Insets(0, 20, 0, 0));
+	private void setLayout() {
+		ImageView imgView = ImageViewBuilder.create()
+				.setImage(new Image(Icon.TASK))
+				.setFitHeight(40)
+				.setFitWidth(40)
+				.build();
 
-        Image img = new Image("file:resources/icons/task.png");
-        ImageView imgView = new ImageView(img);
-        imgView.setFitWidth(40);
-        imgView.setFitHeight(40);
+		StackPane imgStack = StackPaneBuilder.create()
+				.addChildren(imgView)
+				.setAlignment(Pos.TOP_LEFT)
+				.setHMargin(0, 20, 0, 0)
+				.setMaxHeight(40)
+				.setStyleClass("circle-bg")
+				.build();
 
-        imgStack.setMaxHeight(40);
+		Label taskName = LabelBuilder.create(task.getTitle())
+				.setStyleClass("title")
+				.build();
 
-        imgStack.getChildren().add(imgView);
+		String postedByString = "Posted by: " + task.getUser().getUsername() + " \u2022 " + DateManager.ddMMMyy(task.getCreatedAt());
+		Label postedBy = LabelBuilder.create(postedByString)
+				.setVMargin(20, 0, 0, 0)
+				.build();
 
-        imgStack.getStyleClass().add("circle-bg");
+		VBox detail = VBoxBuilder.create()
+				.addChildren(taskName, postedBy)
+				.setHgrow(Priority.ALWAYS)
+				.build();
 
-        Label taskName = new Label(task.getTitle());
-        taskName.getStyleClass().add("title");
+		this.commentListContainer = VBoxBuilder.create()
+				.setSpacing(10)
+				.setAlignment(Pos.CENTER_LEFT)
+				.setHgrow(Priority.ALWAYS)
+				.setPadding(20, 0, 0, 0)
+				.build();
 
-        String createDate = DateManager.ddMMMyy(task.getCreatedAt());
+		//TODO SCOER BELOM ADA
+		Label score = LabelBuilder.create(task.isScored() ? "Score: 100" : "Score: -")
+				.setHgrow(Priority.ALWAYS)
+				.setAlignment(Pos.CENTER_LEFT)
+				.build();
 
-        Label postedBy = new Label("Posted by: " + task.getUser().getUsername() + " \u2022 " + createDate);
-        VBox.setMargin(postedBy, new Insets(20, 0, 0, 0));
-
-        VBox detail = new VBox();
-        detail.getChildren().addAll(taskName, postedBy);
-        HBox.setHgrow(detail, Priority.ALWAYS);
-
-        this.commentListContainer = new VBox(10);
-        this.commentListContainer.setAlignment(Pos.CENTER_LEFT);
-        HBox.setHgrow(commentListContainer, Priority.ALWAYS);
-        this.commentListContainer.setPadding(new Insets(20, 0, 0, 0));
-
-        Label score;
-        if (task.isScored()) {
-            score = new Label("Score: 100");
-        } else {
-            score = new Label("Score: -");
-        }
-
-        String formattedDate = DateManager.ddMMMyy(task.getDeadlineAt());
-
-        Label deadline = new Label("Deadline: " + formattedDate);
-
-        HBox scoreDeadlineBox = new HBox();
-        scoreDeadlineBox.setAlignment(Pos.CENTER_LEFT);
-
-        HBox.setHgrow(score, Priority.ALWAYS);
-        score.setAlignment(Pos.CENTER_LEFT);
-
-        HBox.setHgrow(deadline, Priority.NEVER);
-        deadline.setAlignment(Pos.CENTER_RIGHT);
-
-        HBox spacer = new HBox();
-        HBox.setHgrow(spacer, Priority.ALWAYS);
-
-        scoreDeadlineBox.getChildren().addAll(score, spacer, deadline);
-
-        detail.getChildren().add(scoreDeadlineBox);
-
-        scoreDeadlineBox.getStyleClass().add("bottom-border");
-
-        Line line = new Line();
-        line.setStroke(Color.valueOf("#E0E0E0"));
-        line.endXProperty().bind(detail.widthProperty());
-        line.endXProperty().bind(innerMainContent.widthProperty().subtract(75));
-
-//        detail.getStyleClass().add("bottom-border");
-
-//        VBox.setMargin(line, new Insets(20, 0, 20, 0));
-
-//        detail.getChildren().add(line);
-
-        HBox taskDescContainer = new HBox();
-        taskDescContainer.setAlignment(Pos.CENTER_LEFT);
-
-        taskDescContainer.getStyleClass().add("bottom-border");
-        taskDescContainer.setPadding(new Insets(20, 0, 20, 0));
-
-        Label taskDesc = new Label(task.getDescription());
-        HBox.setHgrow(taskDesc, Priority.ALWAYS);
-        taskDesc.setPadding(new Insets(10, 0, 5, 0));
-        taskDesc.setWrapText(true);
-
-        taskDescContainer.getChildren().add(taskDesc);
-
-        detail.getChildren().add(taskDescContainer);
-
-        VBox userComment = new VBox();
-        userComment.setAlignment(Pos.CENTER_LEFT);
-
-        Label commentTitle = new Label("Add Comment:");
-        commentTitle.getStyleClass().add("title");
-
-        userComment.getChildren().add(commentTitle);
-
-        if (userRole.equals("Student")) {
-            HBox commentInputContainer = new HBox(10);
-            commentInputContainer.setPadding(new Insets(10, 10, 10, 10));
-
-            ImageView userImg;
-            if (LoggedUser.getInstance().getProfileImage() == null) {
-                userImg = new ImageView(new Image("file:resources/icons/user.png"));
-
-                userImg.setFitWidth(30);
-                userImg.setFitHeight(30);
-
-            } else {
-                userImg = new ImageView(LoggedUser.getInstance().getProfileImage());
-            }
-
-            ImageManager.makeCircular(userImg, 15);
-
-            commentInputContainer.getChildren().add(userImg);
-
-            TextField commentInput = new TextField();
-            HBox.setHgrow(commentInput, Priority.ALWAYS);
-            commentInput.setPromptText("Write your comment here...");
-
-            commentInputContainer.getChildren().add(commentInput);
-
-            commentInput.setOnKeyPressed(e -> {
-                if (e.getCode().toString().equals("ENTER")) {
-                    TaskComment newTaskComment = this.commentController.createTaskComment(commentInput.getText(), task.getId(), LoggedUser.getInstance().getId());
+		HBox spacer = HBoxBuilder.create()
+				.setHgrow(Priority.ALWAYS)
+				.build();
 
 
-                    HBox commentItem = new CommentItem(newTaskComment);
-                    commentListContainer.getChildren().add(0, commentItem);
+		Label deadline = LabelBuilder.create("Deadline: " + DateManager.ddMMMyy(task.getDeadlineAt()))
+				.setHgrow(Priority.ALWAYS)
+				.setAlignment(Pos.CENTER_RIGHT)
+				.build();
 
-                    commentInput.clear();
-                }
-            });
 
-            userComment.getChildren().add(commentInputContainer);
+		HBox scoreDeadlineBox = HBoxBuilder.create()
+				.addChildren(score, spacer, deadline)
+				.setAlignment(Pos.CENTER_LEFT)
+				.setStyleClass("bottom-border")
+				.build();
 
-            detail.getChildren().add(userComment);
-        }
+		detail.getChildren().add(scoreDeadlineBox);
 
-        if (this.userRole.equals("Teacher")) {
-            ArrayList<TaskComment> taskCommentList = this.commentController.getTaskComments(task.getId());
+		Line line = new Line();
+		line.setStroke(Color.valueOf("#E0E0E0"));
+		line.endXProperty().bind(detail.widthProperty());
+		line.endXProperty().bind(innerMainContent.widthProperty().subtract(75));
 
-            for (TaskComment taskComment : taskCommentList) {
 
-                VBox commentContainer = new VBox();
+		HBox taskDescContainer = new HBox();
+		taskDescContainer.setAlignment(Pos.CENTER_LEFT);
 
-                CommentItem commentItem = new CommentItem(taskComment);
-                commentContainer.getChildren().add(commentItem);
+		taskDescContainer.getStyleClass().add("bottom-border");
+		taskDescContainer.setPadding(new Insets(20, 0, 20, 0));
 
-                commentListContainer.getChildren().add(commentContainer);
-            }
-        } else if (this.userRole.equals("Student")) {
-            ArrayList<TaskComment> taskCommentList = this.commentController.getStudentTaskComments(task.getId());
+		Label taskDesc = new Label(task.getDescription());
+		HBox.setHgrow(taskDesc, Priority.ALWAYS);
+		taskDesc.setPadding(new Insets(10, 0, 5, 0));
+		taskDesc.setWrapText(true);
 
-            for (TaskComment taskComment : taskCommentList) {
+		taskDescContainer.getChildren().add(taskDesc);
 
-                VBox commentContainer = new VBox();
+		detail.getChildren().add(taskDescContainer);
 
-                CommentItem commentItem = new CommentItem(taskComment);
-                commentContainer.getChildren().add(commentItem);
+		VBox userComment = new VBox();
+		userComment.setAlignment(Pos.CENTER_LEFT);
 
-                commentListContainer.getChildren().add(commentContainer);
-            }
-        }
+		Label commentTitle = new Label("Add Comment:");
+		commentTitle.getStyleClass().add("title");
 
-        detail.getChildren().add(commentListContainer);
+		userComment.getChildren().add(commentTitle);
 
-        innerMainContent.getChildren().addAll(imgStack, detail);
-        innerMainContent.setAlignment(Pos.TOP_LEFT);
+		if (userRole.equals("Student")) {
+			HBox commentInputContainer = new HBox(10);
+			commentInputContainer.setPadding(new Insets(10, 10, 10, 10));
 
-        mainContent.getChildren().add(innerMainContent);
-        mainContent.getStyleClass().add("card");
-        mainContent.setAlignment(Pos.TOP_LEFT);
-        HBox.setHgrow(mainContent, Priority.ALWAYS);
+			ImageView userImg;
+			if (LoggedUser.getInstance().getProfileImage() == null) {
+				userImg = new ImageView(new Image("file:resources/icons/user.png"));
+
+				userImg.setFitWidth(30);
+				userImg.setFitHeight(30);
+
+			} else {
+				userImg = new ImageView(LoggedUser.getInstance().getProfileImage());
+			}
+
+			ImageManager.makeCircular(userImg, 15);
+
+			commentInputContainer.getChildren().add(userImg);
+
+			TextField commentInput = new TextField();
+			HBox.setHgrow(commentInput, Priority.ALWAYS);
+			commentInput.setPromptText("Write your comment here...");
+
+			commentInputContainer.getChildren().add(commentInput);
+
+			commentInput.setOnKeyPressed(e -> {
+				if (e.getCode().toString().equals("ENTER")) {
+					TaskComment newTaskComment = this.commentController.createTaskComment(commentInput.getText(), task.getId(), LoggedUser.getInstance().getId());
+
+
+					HBox commentItem = new CommentItem(newTaskComment);
+					commentListContainer.getChildren().add(0, commentItem);
+
+					commentInput.clear();
+				}
+			});
+
+			userComment.getChildren().add(commentInputContainer);
+
+			detail.getChildren().add(userComment);
+		}
+
+		if (this.userRole.equals("Teacher")) {
+			ArrayList<TaskComment> taskCommentList = this.commentController.getTaskComments(task.getId());
+
+			for (TaskComment taskComment : taskCommentList) {
+
+				VBox commentContainer = new VBox();
+
+				CommentItem commentItem = new CommentItem(taskComment);
+				commentContainer.getChildren().add(commentItem);
+
+				commentListContainer.getChildren().add(commentContainer);
+			}
+		} else if (this.userRole.equals("Student")) {
+			ArrayList<TaskComment> taskCommentList = this.commentController.getStudentTaskComments(task.getId());
+
+			for (TaskComment taskComment : taskCommentList) {
+
+				VBox commentContainer = new VBox();
+
+				CommentItem commentItem = new CommentItem(taskComment);
+				commentContainer.getChildren().add(commentItem);
+
+				commentListContainer.getChildren().add(commentContainer);
+			}
+		}
+
+		detail.getChildren().add(commentListContainer);
+
+		innerMainContent.getChildren().addAll(imgStack, detail);
+		innerMainContent.setAlignment(Pos.TOP_LEFT);
+
+		mainContent.getChildren().add(innerMainContent);
+		mainContent.getStyleClass().add("card");
+		mainContent.setAlignment(Pos.TOP_LEFT);
+		HBox.setHgrow(mainContent, Priority.ALWAYS);
 //        mainContent.setMaxWidth(800);
 
-        HBox.setMargin(sideContent, new Insets(0, 0, 0, 50));
+		this.sideContent = new VBox();
+		HBox.setMargin(sideContent, new Insets(0, 0, 0, 50));
 
-        this.getChildren().addAll(mainContent, sideContent);
-    }
+		this.getChildren().addAll(mainContent, sideContent);
+	}
 
-    private void setSideContent() {
-        VBox submitContainer = new VBox();
-        VBox.setVgrow(submitContainer, Priority.NEVER);
+	private void initSideContent() {
+		if (!this.userRole.equals("Student")) {
+			return;
+		}
 
-        Label submitTitle = new Label("Submit Task");
-        submitTitle.getStyleClass().add("title");
+		Label submitTitle = LabelBuilder.create("Task")
+				.setStyleClass("title")
+				.build();
 
-        this.submitStatus = new Label("Not Submitted");
+		String status = this.getStatus();
+		this.submitStatus = LabelBuilder.create(status)
+				.setStyleClass("title")
+				.build();
 
-        HBox submitStatusContainer = new HBox();
-        submitStatusContainer.setAlignment(Pos.CENTER_LEFT);
+		HBox spacer = HBoxBuilder.create()
+				.setHgrow(Priority.ALWAYS)
+				.build();
 
-        HBox spacer = new HBox();
-        HBox.setHgrow(spacer, Priority.ALWAYS);
+		HBox submitStatusContainer = HBoxBuilder.create()
+				.addChildren(submitTitle, spacer, submitStatus)
+				.setAlignment(Pos.CENTER_LEFT)
+				.build();
 
-        submitStatusContainer.getChildren().addAll(submitTitle, spacer, submitStatus);
+		this.actionButton = getActionButton(status);
 
-        this.actionButton = getActionButton();
+		this.markAsDoneBtn = ButtonBuilder.create("Mark as Done")
+				.setStyleClass("secondary-button")
+				.setDisable(!(status.equals("Not Submitted") || status.equals("Not Attempted")))
+				.setPrefSize(300, 40)
+				.setVMargin(10, 0, 0, 0)
+				.build();
 
-        this.markAsDoneBtn = new Button("Mark as Done");
-        markAsDoneBtn.getStyleClass().add("secondary-button");
-        markAsDoneBtn.setPrefSize(300, 40);
-        VBox.setMargin(markAsDoneBtn, new Insets(10, 0, 0, 0));
+		VBox submitContainer = VBoxBuilder.create()
+				.addChildren(submitStatusContainer, actionButton, markAsDoneBtn)
+				.setStyleClass("card")
+				.setVgrow(Priority.NEVER)
+				.build();
 
-        submitContainer.getChildren().addAll(submitStatusContainer, actionButton, markAsDoneBtn);
-
-        if (this.userRole.equals("Student")) {
-
-            sideContent.getChildren().addAll(submitContainer);
-            sideContent.setAlignment(Pos.TOP_CENTER);
+		VBoxBuilder.modify(this.sideContent)
+				.addChildren(submitContainer)
+				.setAlignment(Pos.TOP_CENTER)
+				.build();
 
 
-            VBox constraintBox = new VBox();
-            constraintBox.setAlignment(Pos.CENTER_LEFT);
-            constraintBox.getStyleClass().add("card");
 
-            Label constraintTitle = new Label("Constraints: ");
-            constraintBox.getChildren().add(constraintTitle);
+		Label constraintTitle = LabelBuilder.create("Constraints").build();
 
-            Label constraint1 = new Label("1. Max file size 100Kb");
-            constraint1.setStyle("-fx-font-size: 14px;");
-            VBox.setMargin(constraint1, new Insets(5, 0, 0, 0));
+		VBox constraintBox = VBoxBuilder.create()
+				.addChildren(constraintTitle)
+				.setAlignment(Pos.CENTER_LEFT)
+				.setVMargin(30, 0, 0, 0)
+				.setStyleClass("card")
+				.build();
 
-            Label constraint2 = new Label("2. File type any.");
-            constraint2.setStyle("-fx-font-size: 14px;");
+		String[] constraints = new String[]{
+				"1. Max file size 100Kb",
+				"2. File type any."
+		};
 
-            constraintBox.getChildren().addAll(constraint1, constraint2);
+		for (String constraint : constraints) {
+			Label constraintLabel = LabelBuilder.create(constraint)
+					.setStyle("-fx-font-size: 14px;")
+					.setMargin(5, 0, 0, 0)
+					.build();
 
-            VBox.setMargin(constraintBox, new Insets(30, 0, 0, 0));
+			constraintBox.getChildren().add(constraintLabel);
+		}
 
-            sideContent.getChildren().add(constraintBox);
-            sideContent.setPrefWidth(330);
-        }
+		sideContent.getChildren().add(constraintBox);
+		sideContent.setPrefWidth(330);
+		this.fileContainer = new VBox();
+		fileContainer.setAlignment(Pos.CENTER_LEFT);
+		fileContainer.getStyleClass().add("card");
 
-        submitContainer.getStyleClass().add("card");
+		Label fileTitle = new Label("Your Answer: ");
+		fileContainer.getChildren().add(fileTitle);
+		VBox.setMargin(fileContainer, new Insets(30, 0, 0, 0));
 
-        this.fileContainer = new VBox();
-        fileContainer.setAlignment(Pos.CENTER_LEFT);
-        fileContainer.getStyleClass().add("card");
+		this.downloadBtn = new Button("Download");
+		downloadBtn.setStyle("-fx-text-fill: #fff;");
+		downloadBtn.setPrefSize(300, 40);
+		VBox.setMargin(downloadBtn, new Insets(10, 0, 0, 0));
 
-        Label fileTitle = new Label("Your Answer: ");
-        fileContainer.getChildren().add(fileTitle);
-        VBox.setMargin(fileContainer, new Insets(30, 0, 0, 0));
+		fileContainer.getChildren().add(downloadBtn);
 
-        this.downloadBtn = new Button("Download");
-        downloadBtn.setStyle("-fx-text-fill: #fff;");
-        downloadBtn.setPrefSize(300, 40);
-        VBox.setMargin(downloadBtn, new Insets(10, 0, 0, 0));
+		fetchAnswer();
+	}
 
-        fileContainer.getChildren().add(downloadBtn);
+	private Button getActionButton(String status) {
+		if (this.task.getTaskType() == TaskType.FILE) {
+			return ButtonBuilder.create("+ Upload File")
+					.setStyleClass("primary-button")
+					.setStyle("-fx-text-fill: #fff;")
+					.setPrefSize(300, 40)
+					.setDisable(status.equals("Submitted") || this.checkIsDeadline())
+					.setOnAction(e -> this.uploadFile())
+					.setVMargin(30, 0, 0, 0)
+					.setVMargin(30, 0, 0, 0)
+					.build();
+		}
 
-        fetchAnswer();
-    }
+		return ButtonBuilder.create("+ Do Test")
+				.setStyleClass("primary-button")
+				.setStyle("-fx-text-fill: #fff;")
+				.setDisable(status.equals("Done") || this.checkIsDeadline())
+				.setPrefSize(300, 40)
+				.setOnAction(e -> this.doTest())
+				.setVMargin(30, 0, 0, 0)
+				.setVMargin(30, 0, 0, 0)
+				.build();
+	}
 
-    private Button getActionButton(){
-        if (this.task.getTaskType() == TaskType.FILE) {
-            return ButtonBuilder.create("+ Upload File")
-                    .setStyleClass("primary-button")
-                    .setStyle("-fx-text-fill: #fff;")
-                    .setPrefSize(300, 40)
-                    .setOnAction(e -> this.uploadFile())
-                    .setVMargin(30, 0, 0, 0)
-                    .setVMargin(30, 0, 0, 0)
-                    .build();
-        }
+	private String getStatus() {
+		if (this.task.getTaskType() == TaskType.FILE) {
+			if (this.answerController.checkAnswer(this.task.getId(), LoggedUser.getInstance().getId())) {
+				return "Submitted";
+			}
+			return "Not Submitted";
+		}
+		if(this.answerController.checkTest(this.task.getId(), LoggedUser.getInstance().getId())){
+			return "Done";
+		}
 
-        return ButtonBuilder.create("+ Do Test")
-                .setStyleClass("primary-button")
-                .setStyle("-fx-text-fill: #fff;")
-                .setPrefSize(300, 40)
-                .setOnAction(e -> this.doTest())
-                .setVMargin(30, 0, 0, 0)
-                .setVMargin(30, 0, 0, 0)
-                .build();
-    }
+		return "Not Done";
+	}
 
-    private void uploadFile(){
-        if (!checkDeadline()) {
-            return;
-        }
 
-        new UploadFileModal(task.getId(), fileContainer, sideContent, downloadBtn);
-        fetchAnswer();
-    }
+	private void uploadFile() {
+		if (checkIsDeadline()) {
+			return;
+		}
 
-    private void doTest(){
-        if (!checkDeadline()) {
-            return;
-        }
+		new UploadFileModal(task.getId(), fileContainer, sideContent, downloadBtn);
+		fetchAnswer();
+	}
 
-        new DoTestView(this.mainPane, this.task);
-    }
+	private void doTest() {
+		if (checkIsDeadline()) {
+			return;
+		}
 
-    private ArrayList<File> fetchAnswer() {
-        if(this.task.getTaskType() != TaskType.FILE) {
-            return new ArrayList<>();
-        }
+		new DoTestView(mainPane, task, classroom, userRole);
+	}
 
-        if (this.answerController.checkAnswer(this.task.getId(), LoggedUser.getInstance().getId())) {
-            submitStatus.setText("Submitted");
+	private ArrayList<File> fetchAnswer() {
+		if (this.task.getTaskType() != TaskType.FILE) {
+			return new ArrayList<>();
+		}
 
-            ArrayList<File> fileList = this.answerController.getMemberAnswer(this.task.getId(), LoggedUser.getInstance().getId());
+		if (this.answerController.checkAnswer(this.task.getId(), LoggedUser.getInstance().getId())) {
+			submitStatus.setText("Submitted");
 
-            if (!sideContent.getChildren().contains(fileContainer)) {
-                sideContent.getChildren().add(fileContainer);
-            }
+			ArrayList<File> fileList = this.answerController.getMemberAnswer(this.task.getId(), LoggedUser.getInstance().getId());
 
-            if (!fileList.isEmpty()) {
-                downloadBtn.getStyleClass().add("primary-button");
-                downloadBtn.setOnMouseClicked(e -> this.answerController.downloadAllAnswer(fileList));
-            }
+			if (!sideContent.getChildren().contains(fileContainer)) {
+				sideContent.getChildren().add(fileContainer);
+			}
 
-            return fileList;
-        }
+			if (!fileList.isEmpty()) {
+				downloadBtn.getStyleClass().add("primary-button");
+				downloadBtn.setOnMouseClicked(e -> this.answerController.downloadAllAnswer(fileList));
+			}
 
-        sideContent.getChildren().remove(fileContainer);
-        return new ArrayList<>();
-    }
+			return fileList;
+		}
 
-    private void actions() {
+		sideContent.getChildren().remove(fileContainer);
+		return new ArrayList<>();
+	}
 
-        this.markAsDoneBtn.setOnMouseClicked(e -> {
+	private void actions() {
+		if(!userRole.equals("Student")){
+			return;
+		}
 
-            if (!checkDeadline()) {
-                return;
-            }
+		this.markAsDoneBtn.setOnMouseClicked(e -> {
 
-            ArrayList<File> fileList = fetchAnswer();
+			if (checkIsDeadline()) {
+				return;
+			}
 
-            if (submitStatus.getText().equals("Not Submitted")) {
-                this.answerController.markAsDone(task.getId(), LoggedUser.getInstance().getId());
-                this.submitStatus.setText("Submitted");
-                this.sideContent.getChildren().add(fileContainer);
-            } else if (submitStatus.getText().equals("Submitted") && fileList.isEmpty()) {
-                this.answerController.markUndone(task.getId(), LoggedUser.getInstance().getId());
-                this.submitStatus.setText("Not Submitted");
-                this.sideContent.getChildren().remove(fileContainer);
-            }
-        });
-    }
+			ArrayList<File> fileList = fetchAnswer();
 
-    private boolean checkDeadline() {
-        String nowString = DateManager.getNow();
-        String deadlineString = task.getDeadlineAt();
+			if (submitStatus.getText().equals("Not Submitted")) {
+				this.answerController.markAsDone(task.getId(), LoggedUser.getInstance().getId());
+				this.submitStatus.setText("Submitted");
+				this.sideContent.getChildren().add(fileContainer);
+			} else if (submitStatus.getText().equals("Submitted") && fileList.isEmpty()) {
+				this.answerController.markUndone(task.getId(), LoggedUser.getInstance().getId());
+				this.submitStatus.setText("Not Submitted");
+				this.sideContent.getChildren().remove(fileContainer);
+			}
+		});
+	}
 
-        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+	private boolean checkIsDeadline() {
+		String nowString = DateManager.getNow();
+		String deadlineString = task.getDeadlineAt();
 
-        try {
-            Date now = dateFormat.parse(nowString);
-            Date deadline = dateFormat.parse(deadlineString);
+		SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 
-            if (now.compareTo(deadline) > 0) {
-                ToastBuilder.buildNormal().setText("Deadline has passed\nYou can't submit this task anymore").build();
-                return false;
-            }
+		try {
+			Date now = dateFormat.parse(nowString);
+			Date deadline = dateFormat.parse(deadlineString);
 
-        } catch (ParseException e) {
-            e.printStackTrace();
-        }
-        return true;
-    }
+			if (now.compareTo(deadline) > 0) {
+				return true;
+			}
+
+		} catch (ParseException e) {
+			e.printStackTrace();
+		}
+		return false;
+	}
 
 }

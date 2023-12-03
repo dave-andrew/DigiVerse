@@ -20,7 +20,7 @@ import net.slc.dv.model.Classroom;
 import net.slc.dv.model.Question;
 import net.slc.dv.view.home.component.Profile;
 import net.slc.dv.view.task.add.component.TimeSpinner;
-import net.slc.dv.view.task.add.component.CreateFileTask;
+import net.slc.dv.view.task.add.component.CreateGeneralTask;
 import net.slc.dv.view.task.add.component.CreateQuestionTask;
 import net.slc.dv.enums.TaskCenter;
 
@@ -52,7 +52,7 @@ public class AddTaskView extends BorderPane {
 	private DatePicker datePicker;
 	private TimeSpinner timeSpinner;
 	private TaskCenter centerType;
-	private final CreateFileTask createFileTask;
+	private final CreateGeneralTask createFileTask;
 	private final CreateQuestionTask createQuestionTask;
 
 	public AddTaskView(Stage stage, Classroom classroom) {
@@ -60,7 +60,7 @@ public class AddTaskView extends BorderPane {
 		this.stage = stage;
 		this.taskController = new TaskController();
 		this.centerType = TaskCenter.FILE;
-		this.createFileTask = new CreateFileTask();
+		this.createFileTask = new CreateGeneralTask();
 		this.createQuestionTask = new CreateQuestionTask();
 		init();
 
@@ -87,10 +87,10 @@ public class AddTaskView extends BorderPane {
 
 	private void changeCenter() {
 		if(this.centerType == TaskCenter.FILE) {
-			this.root.setCenter(this.createFileTask.getRoot());
+			this.root.setCenter(this.createFileTask);
 		}
 		else {
-			this.root.setCenter(this.createQuestionTask.getRoot());
+			this.root.setCenter(this.createQuestionTask);
 		}
 	}
 
@@ -174,7 +174,7 @@ public class AddTaskView extends BorderPane {
 		}
 
 
-		this.taskController.createQuestionTask(questions, "hello", "hello", deadlineAt, scored, classroom.getClassId());
+		this.taskController.createQuestionTask(questions, this.createQuestionTask.getTaskTitle(), this.createQuestionTask.getTaskDescription(), deadlineAt, scored, classroom.getClassId());
 
 	}
 

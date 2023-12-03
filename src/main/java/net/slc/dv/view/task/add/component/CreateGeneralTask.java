@@ -12,15 +12,13 @@ import net.slc.dv.builder.LabelBuilder;
 import net.slc.dv.builder.VBoxBuilder;
 
 @Getter
-public class CreateFileTask {
+public class CreateGeneralTask extends VBox {
 
     private final TextField titleField;
     private final TextArea descriptionField;
     private final Label errorLbl;
-    private final VBox root;
 
-    public CreateFileTask() {
-
+    public CreateGeneralTask() {
         this.titleField = new TextField();
         this.descriptionField = new TextArea();
         this.errorLbl = LabelBuilder.create()
@@ -55,7 +53,7 @@ public class CreateFileTask {
                 .build();
 
 
-        this.root = VBoxBuilder.create()
+        VBoxBuilder.modify(this)
                 .addChildren(center, addFileBtn)
                 .setAlignment(Pos.CENTER)
                 .build();
