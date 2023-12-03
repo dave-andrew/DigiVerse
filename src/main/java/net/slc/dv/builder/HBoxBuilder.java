@@ -7,6 +7,7 @@ import javafx.geometry.Pos;
 import javafx.scene.Node;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Priority;
+import javafx.scene.layout.VBox;
 
 public class HBoxBuilder {
     private final HBox hBox;
@@ -34,7 +35,7 @@ public class HBoxBuilder {
     }
 
     public HBoxBuilder setMargin(int margin1, int margin2, int margin3, int margin4) {
-        HBox.setMargin(this.hBox, new Insets(margin1, margin2, margin3, margin4));
+        VBox.setMargin(this.hBox, new Insets(margin1, margin2, margin3, margin4));
 
         return this;
     }
