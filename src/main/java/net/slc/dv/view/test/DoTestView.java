@@ -1,6 +1,5 @@
 package net.slc.dv.view.test;
 
-import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
@@ -9,16 +8,15 @@ import javafx.scene.layout.*;
 import net.slc.dv.builder.*;
 import net.slc.dv.controller.TaskController;
 import net.slc.dv.enums.QuestionType;
-import net.slc.dv.enums.TaskType;
 import net.slc.dv.interfaces.QuestionBox;
-import net.slc.dv.model.Question;
-import net.slc.dv.model.Task;
+import net.slc.dv.model.*;
 import net.slc.dv.view.test.question.QuestionEssay;
 import net.slc.dv.view.test.question.QuestionMultipleChoice;
 import net.slc.dv.view.test.question.QuestionTrueFalse;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 import java.util.concurrent.atomic.AtomicInteger;
 
 public class DoTestView extends HBox {
@@ -30,12 +28,18 @@ public class DoTestView extends HBox {
 	private final TaskController taskController;
 	private List<Question> questions;
 	private List<QuestionBox> questionBoxes;
+	private AnswerHeader answerHeaders;
+	private List<AnswerDetail> answerDetails;
+
 
 	public DoTestView(StackPane mainPane, Task task) {
 		this.mainPane = mainPane;
 		this.task = task;
 		this.taskController = new TaskController();
 		this.questions = taskController.fetchQuestion(task.getId());
+		this.answerHeaders = taskController.fetchAnswerHeader(task.getId(), LoggedUser.getInstance().getId());
+		this.answerDetails = taskController.fetchAnswerDetails(answerHeaders.getId());
+
 		this.questionBoxes = new ArrayList<>();
 
 		this.initCenter();
@@ -52,22 +56,26 @@ public class DoTestView extends HBox {
 		VBox questionContainer = new VBox();
 		for (int i = 0; i < questions.size(); i++) {
 			Question question = questions.get(i);
+			AnswerDetail answerDetail = answerDetails
+					.stream()
+					.filter(answer -> Objects.equals(answer.getQuestionId(), question.getQuestionID()))
+					.findFirst()
+					.orElse(null);
 
-			System.out.println("nya" + question.getQuestionType());
 			if (question.getQuestionType().equals(QuestionType.MULTIPLE_CHOICE)) {
-				QuestionMultipleChoice questionBox = new QuestionMultipleChoice(i + 1, question);
+				QuestionMultipleChoice questionBox = new QuestionMultipleChoice(i + 1, question, answerDetail);
 				questionContainer.getChildren().add(questionBox);
 				questionBoxes.add(questionBox);
 				continue;
 			}
 			if (question.getQuestionType().equals(QuestionType.TRUE_FALSE)) {
-				QuestionTrueFalse questionBox = new QuestionTrueFalse(i + 1, question);
+				QuestionTrueFalse questionBox = new QuestionTrueFalse(i + 1, question, answerDetail);
 				questionContainer.getChildren().add(questionBox);
 				questionBoxes.add(questionBox);
 				continue;
 			}
 			if (question.getQuestionType().equals(QuestionType.ESSAY)) {
-				QuestionEssay questionBox = new QuestionEssay(i + 1, question);
+				QuestionEssay questionBox = new QuestionEssay(i + 1, question, answerDetail);
 				questionContainer.getChildren().add(questionBox);
 				questionBoxes.add(questionBox);
 			}
@@ -169,11 +177,20 @@ public class DoTestView extends HBox {
 	}
 
 	private void saveAnswer() {
-//		for (QuestionBox questionBox : questionBoxes) {
-//			if (questionBox.getQuestionAnswer() != null) {
-//				taskController.saveAnswer(questionBox.getQuestionAnswer());
-//			}
-//		}
+		ArrayList<AnswerDetail> answerDetails = new ArrayList<>();
+		for (QuestionBox questionBox : questionBoxes) {
+			System.out.println(questionBox.getQuestionAnswer());
+			if (questionBox.getQuestionAnswer() != null) {
+				AnswerDetail answerDetail = new AnswerDetail(
+						questionBox.getQuestionId(),
+						questionBox.getQuestionAnswer()
+				);
+				answerDetails.add(answerDetail);
+			}
+		}
+
+		System.out.println(answerDetails.size());
+		taskController.saveAnswer(answerHeaders, task.getId(), LoggedUser.getInstance().getId(), answerDetails);
 	}
 
 	private void submitAnswer() {

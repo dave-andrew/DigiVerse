@@ -2,9 +2,7 @@ package net.slc.dv.controller;
 
 import net.slc.dv.database.TaskQuery;
 import net.slc.dv.enums.TaskType;
-import net.slc.dv.model.LoggedUser;
-import net.slc.dv.model.Question;
-import net.slc.dv.model.Task;
+import net.slc.dv.model.*;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -71,4 +69,25 @@ public class TaskController {
     public List<Question> fetchQuestion(String taskid) {
         return taskQuery.fetchQuestions(taskid);
     }
+
+    public void saveAnswer(AnswerHeader answerHeader, String taskid, String userid, List<AnswerDetail> answerList) {
+        if(answerHeader == null) {
+            answerHeader = new AnswerHeader(taskid, userid, false, 0, null);
+        }
+
+        AnswerHeader finalAnswerHeader = answerHeader;
+        answerList.forEach(answerDetail -> answerDetail.setAnswerId(finalAnswerHeader.getId()));
+
+        taskQuery.createAnswerHeader(answerHeader);
+        taskQuery.createAnswerDetails(answerList);
+    }
+
+    public AnswerHeader fetchAnswerHeader(String taskid, String userid) {
+        return taskQuery.getAnswerHeader(taskid, userid);
+    }
+
+    public List<AnswerDetail> fetchAnswerDetails(String answerid) {
+        return taskQuery.getAnswerDetails(answerid);
+    }
+
 }

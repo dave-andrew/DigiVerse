@@ -2,7 +2,7 @@ package net.slc.dv.database;
 
 import net.slc.dv.database.connection.Connect;
 import net.slc.dv.helper.toast.ToastBuilder;
-import net.slc.dv.model.Answer;
+import net.slc.dv.model.AnswerFile;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -23,7 +23,7 @@ public class FileQuery {
         this.connection = connect.getConnect();
     }
 
-    public void uploadTaskAnswer(Answer answer) {
+    public void uploadTaskAnswer(AnswerFile answer) {
         String query = "SELECT FileID FROM answer_header JOIN answer_detail ON answer_header.AnswerID = answer_detail.AnswerID WHERE TaskID = ? AND UserID = ? ";
         String deleteFile = "DELETE FROM msfile WHERE FileID = ?";
         String deleteAnswerQuery = "DELETE FROM answer_header WHERE TaskID = ? AND UserID = ?";

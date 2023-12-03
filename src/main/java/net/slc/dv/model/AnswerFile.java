@@ -10,7 +10,7 @@ import java.util.UUID;
 
 @Getter
 @Setter
-public class Answer {
+public class AnswerFile {
 
     private String id;
     private String taskid;
@@ -19,7 +19,7 @@ public class Answer {
     private List<File> fileList;
     private String createdAt;
 
-    public Answer(String taskid, String userid, List<File> fileList, int score) {
+    public AnswerFile(String taskid, String userid, List<File> fileList, int score) {
         this.id = UUID.randomUUID().toString();
         this.taskid = taskid;
         this.userid = userid;

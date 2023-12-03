@@ -361,6 +361,10 @@ public class TaskDetailView extends HBox {
     }
 
     private ArrayList<File> fetchAnswer() {
+        if(this.task.getTaskType() != TaskType.FILE) {
+            return new ArrayList<>();
+        }
+
         if (this.answerController.checkAnswer(this.task.getId(), LoggedUser.getInstance().getId())) {
             submitStatus.setText("Submitted");
 

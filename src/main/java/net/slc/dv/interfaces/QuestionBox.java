@@ -6,4 +6,5 @@ public interface QuestionBox {
 	public QuestionType getQuestionType();
 	public String getQuestionAnswer();
 	public String getQuestionKey();
+	public String getQuestionId();
 }

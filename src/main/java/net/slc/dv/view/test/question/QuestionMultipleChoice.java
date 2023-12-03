@@ -7,15 +7,20 @@ import lombok.Getter;
 import net.slc.dv.builder.*;
 import net.slc.dv.enums.QuestionType;
 import net.slc.dv.interfaces.QuestionBox;
+import net.slc.dv.model.AnswerDetail;
 import net.slc.dv.model.Question;
 
 @Getter
 public class QuestionMultipleChoice extends VBox implements QuestionBox {
     private final Question question;
+    private final AnswerDetail answerDetail;
+    private final RadioButton[] answerButtons;
+    private final ToggleGroup answerGroup;
     private String answerKey;
 
-    public QuestionMultipleChoice(int number, Question question) {
+    public QuestionMultipleChoice(int number, Question question, AnswerDetail answerDetail) {
         this.question = question;
+        this.answerDetail = answerDetail;
 
         Label numberLabel = LabelBuilder.create(number + ".").build();
 
@@ -28,8 +33,8 @@ public class QuestionMultipleChoice extends VBox implements QuestionBox {
 
         String[] answers = question.getQuestionChoice().split(";");
 
-        RadioButton[] answerButtons = new RadioButton[4];
-        ToggleGroup answerGroup = new ToggleGroup();
+        this.answerButtons = new RadioButton[4];
+        this.answerGroup = new ToggleGroup();
 
         String[] letters = {"A. ", "B. ", "C. ", "D. "};
         for (int i = 0; i < 4; i++) {
@@ -37,10 +42,13 @@ public class QuestionMultipleChoice extends VBox implements QuestionBox {
             answerButtons[i].setToggleGroup(answerGroup);
         }
 
+        this.setActiveAnswer();
+
         answerGroup.selectedToggleProperty().addListener((observable, oldValue, newValue) -> {
             if (newValue != null) {
                 RadioButton selected = (RadioButton) newValue;
-                this.answerKey = selected.getText().split(" ")[1];
+                selected.setSelected(true);
+                this.answerKey = selected.getText().substring(3);
             }
         });
 
@@ -59,6 +67,23 @@ public class QuestionMultipleChoice extends VBox implements QuestionBox {
                 .build();
     }
 
+    private void setActiveAnswer() {
+        if(answerDetail == null) {
+            return;
+        }
+
+        String answer = answerDetail.getAnswerText();
+
+        for (RadioButton answerButton : answerButtons) {
+            if (answerButton.getText().substring(3).equals(answer)) {
+                answerButton.setSelected(true);
+                answerGroup.selectToggle(answerButton);
+                answerKey = answerButton.getText().substring(3);
+                return;
+            }
+        }
+    }
+
     @Override
     public QuestionType getQuestionType() {
         return QuestionType.MULTIPLE_CHOICE;
@@ -72,5 +97,10 @@ public class QuestionMultipleChoice extends VBox implements QuestionBox {
     @Override
     public String getQuestionKey() {
         return this.question.getQuestionAnswer();
+    }
+
+    @Override
+    public String getQuestionId() {
+        return this.question.getQuestionID();
     }
 }

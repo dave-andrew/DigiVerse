@@ -27,7 +27,7 @@ public class NeoQueryBuilder {
     private ConditionJoinType conditionJoinType;
 
 
-    private Map<String, String> valueMap;
+    private Map<String, Object> valueMap;
 
     private OrderBy orderBy;
     private String limit;
@@ -132,6 +132,39 @@ public class NeoQueryBuilder {
      * @return NeoQueryBuilder
      */
     public NeoQueryBuilder values(String column, String value) {
+        if (this.valueMap == null) {
+            this.valueMap = new HashMap<>();
+            this.valueMap.put(column, value);
+        } else {
+            this.valueMap.put(column, value);
+        }
+
+        return this;
+    }
+
+    public NeoQueryBuilder values(String column, Boolean value) {
+        if (this.valueMap == null) {
+            this.valueMap = new HashMap<>();
+            this.valueMap.put(column, value);
+        } else {
+            this.valueMap.put(column, value);
+        }
+
+        return this;
+    }
+
+    public NeoQueryBuilder values(String column, Integer value) {
+        if (this.valueMap == null) {
+            this.valueMap = new HashMap<>();
+            this.valueMap.put(column, value);
+        } else {
+            this.valueMap.put(column, value);
+        }
+
+        return this;
+    }
+
+    public NeoQueryBuilder values(String column, Double value) {
         if (this.valueMap == null) {
             this.valueMap = new HashMap<>();
             this.valueMap.put(column, value);
@@ -409,7 +442,24 @@ public class NeoQueryBuilder {
     private void applyValues(PreparedStatement preparedStatement) {
         this.valueMap.values().forEach(val -> {
             try {
-                preparedStatement.setString(index.getAndIncrement(), val);
+                if(val instanceof Boolean) {
+                    preparedStatement.setBoolean(index.getAndIncrement(), (Boolean) val);
+                    return;
+                }
+                if(val instanceof String) {
+                    preparedStatement.setString(index.getAndIncrement(), (String) val);
+                    return;
+                }
+                if(val instanceof Integer) {
+                    preparedStatement.setInt(index.getAndIncrement(), (Integer) val);
+                    return;
+                }
+                if(val instanceof Double) {
+                    preparedStatement.setDouble(index.getAndIncrement(), (Double) val);
+                    return;
+                }
+
+                preparedStatement.setString(index.getAndIncrement(), null);
             } catch (SQLException e) {
                 throw new RuntimeException(e);
             }

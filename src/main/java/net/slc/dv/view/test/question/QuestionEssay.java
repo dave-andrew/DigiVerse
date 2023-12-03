@@ -12,14 +12,17 @@ import net.slc.dv.builder.TextAreaBuilder;
 import net.slc.dv.builder.VBoxBuilder;
 import net.slc.dv.enums.QuestionType;
 import net.slc.dv.interfaces.QuestionBox;
+import net.slc.dv.model.AnswerDetail;
 import net.slc.dv.model.Question;
 
 public class QuestionEssay extends VBox implements QuestionBox {
 	private final Question question;
 	private TextArea answerField;
+	private AnswerDetail answerDetail;
 
-	public QuestionEssay(int number, Question question) {
+	public QuestionEssay(int number, Question question, AnswerDetail answerDetail) {
 		this.question = question;
+		this.answerDetail = answerDetail;
 
 		Label numberLabel = LabelBuilder.create(number + ".")
 				.build();
@@ -40,7 +43,7 @@ public class QuestionEssay extends VBox implements QuestionBox {
 				.setMaxHeight(200)
 				.build();
 
-
+		this.setActiveAnswer();
 
 		VBoxBuilder.modify(this)
 				.addChildren(questionContainer, answerField)
@@ -49,7 +52,13 @@ public class QuestionEssay extends VBox implements QuestionBox {
 
 	}
 
+	private void setActiveAnswer() {
+		if(answerDetail == null) {
+			return;
+		}
 
+		this.answerField.setText(answerDetail.getAnswerText());
+	}
 	@Override
 	public QuestionType getQuestionType() {
 		return QuestionType.MULTIPLE_CHOICE;
@@ -58,11 +67,16 @@ public class QuestionEssay extends VBox implements QuestionBox {
 
 	@Override
 	public String getQuestionAnswer() {
-		return this.answerField.getText();
+		return this.answerField.getText().isEmpty() ? null : this.answerField.getText();
 	}
 
 	@Override
 	public String getQuestionKey() {
 		return this.question.getQuestionAnswer();
+	}
+
+	@Override
+	public String getQuestionId() {
+		return question.getQuestionID();
 	}
 }
