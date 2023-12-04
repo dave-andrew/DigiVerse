@@ -115,11 +115,11 @@ public class ClassScore extends HBox {
         int taskCount = 0;
 
         ArrayList<Task> taskList = taskController.getScoredClassroomTask(classroom.getClassId());
-        HashMap<String, Integer> taskHash = new HashMap<>();
+        HashMap<String, Double> taskHash = new HashMap<>();
 
         for (Task task : taskList) {
 
-            Integer taskScore = this.answerController.getAnswerScore(task.getId(), member.getUser().getId());
+            Double taskScore = this.answerController.getAnswerScore(task.getId(), member.getUser().getId());
 
             taskHash.put(task.getTitle(), taskScore);
 
@@ -149,7 +149,7 @@ public class ClassScore extends HBox {
         });
     }
 
-    private void displayMemberScore(HashMap<String, Integer> taskHash, double averageScore, MemberItem memberItem, HBox scoreContainer) {
+    private void displayMemberScore(HashMap<String, Double> taskHash, double averageScore, MemberItem memberItem, HBox scoreContainer) {
         this.scoreContainer.getChildren().clear();
 
         ScrollPane scrollPane = new ScrollPane();

@@ -1,358 +1,375 @@
 package net.slc.dv.database;
 
-import net.slc.dv.database.builder.NeoQueryBuilder;
-import net.slc.dv.database.builder.Results;
-import net.slc.dv.database.builder.enums.ConditionCompareType;
-import net.slc.dv.database.builder.enums.QueryType;
-import net.slc.dv.helper.Closer;
-import net.slc.dv.helper.DateManager;
-import net.slc.dv.model.AnswerDetail;
-import net.slc.dv.model.AnswerHeader;
-
-import java.io.File;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.io.InputStream;
+import java.io.*;
 import java.sql.Blob;
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
+import net.slc.dv.database.builder.NeoQueryBuilder;
+import net.slc.dv.database.builder.Results;
+import net.slc.dv.database.builder.enums.ConditionCompareType;
+import net.slc.dv.database.builder.enums.QueryType;
+import net.slc.dv.database.connection.Connect;
+import net.slc.dv.enums.PowerUp;
+import net.slc.dv.helper.Closer;
+import net.slc.dv.helper.DateManager;
+import net.slc.dv.model.AnswerDetail;
+import net.slc.dv.model.AnswerHeader;
+
+import javax.xml.transform.Result;
+
 public class AnswerQuery {
 
-    public ArrayList<File> getMemberFileAnswer(String taskid, String userid) {
-        ArrayList<File> fileList = new ArrayList<>();
+	private final Connect connect;
 
-        try (Closer closer = new Closer()) {
-            NeoQueryBuilder queryBuilder = new NeoQueryBuilder(QueryType.SELECT)
-                    .table("answer_header")
-                    .columns("msfile.FileID", "FileName", "FileBlob", "FileType")
-                    .join("answer_header", "AnswerID", "answer_detail", "AnswerID")
-                    .join("answer_detail", "FileID", "msfile", "FileID")
-                    .condition("TaskID", "=", taskid)
-                    .condition("UserID", "=", userid);
+	public AnswerQuery() {
+		this.connect = Connect.getConnection();
+	}
 
-            Results results = closer.add(queryBuilder.getResults());
-            ResultSet set = closer.add(results.getResultSet());
-            while (set.next()) {
-                Blob blob = set.getBlob("FileBlob");
+	public ArrayList<File> getMemberFileAnswer(String taskid, String userid) {
 
-                File outputFile = convertBlobToFile(blob, set.getString("FileName"));
-                fileList.add(outputFile);
-            }
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
+		ArrayList<File> fileList = new ArrayList<>();
 
-        return fileList;
-    }
+		String query = "SELECT\n" + "\tmsfile.FileID, FileName, FileBlob, FileType\n"
+				+ "FROM answer_header\n"
+				+ "JOIN answer_detail\n"
+				+ "ON answer_detail.AnswerID = answer_header.AnswerID\n"
+				+ "JOIN msfile\n"
+				+ "ON msfile.FileID = answer_detail.FileID\n"
+				+ "WHERE TaskID = ? AND UserID = ?";
 
-    public ArrayList<AnswerDetail> getMemberQuestionAnswer(String taskid, String userid) {
-        ArrayList<AnswerDetail> answerDetails = new ArrayList<>();
+		try (PreparedStatement ps = connect.prepareStatement(query)) {
+			assert ps != null;
+			ps.setString(1, taskid);
+			ps.setString(2, userid);
 
-        try (Closer closer = new Closer()) {
-            NeoQueryBuilder queryHeaderBuilder = new NeoQueryBuilder(QueryType.SELECT)
-                    .table("answer_header")
-                    .condition("TaskID", ConditionCompareType.EQUAL, taskid)
-                    .condition("UserID", ConditionCompareType.EQUAL, userid);
+			try (ResultSet rs = ps.executeQuery()) {
+				while (rs.next()) {
+					Blob blob = rs.getBlob("FileBlob");
 
-            Results resultsHeader = closer.add(queryHeaderBuilder.getResults());
-            ResultSet setHeader = closer.add(resultsHeader.getResultSet());
+					File outputFile = convertBlobToFile(blob, rs.getString("FileName"));
 
-            AnswerHeader answerHeader = null;
-            while (setHeader.next()) {
-                answerHeader = new AnswerHeader(setHeader);
-            }
+					fileList.add(outputFile);
+				}
+			}
 
-            NeoQueryBuilder queryDetailBuilder = new NeoQueryBuilder(QueryType.SELECT)
-                    .columns("*")
-                    .table("answer_detail")
-                    .condition("AnswerID", ConditionCompareType.EQUAL, answerHeader.getId());
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
 
-            Results resultsDetail = closer.add(queryDetailBuilder.getResults());
-            ResultSet setDetail = closer.add(resultsDetail.getResultSet());
+		return fileList;
+	}
 
-            while (setDetail.next()) {
-                answerDetails.add(new AnswerDetail(setDetail));
-            }
+	public ArrayList<AnswerDetail> getMemberQuestionAnswer(String taskid, String userid) {
+		ArrayList<AnswerDetail> answerDetails = new ArrayList<>();
 
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
+		try (Closer closer = new Closer()) {
+			NeoQueryBuilder queryHeaderBuilder = new NeoQueryBuilder(QueryType.SELECT)
+					.columns("*")
+					.table("answer_header")
+					.condition("TaskID", ConditionCompareType.EQUAL, taskid)
+					.condition("UserID", ConditionCompareType.EQUAL, userid);
 
-        return answerDetails;
-    }
+			Results resultsHeader = closer.add(queryHeaderBuilder.getResults());
+			ResultSet setHeader = closer.add(resultsHeader.getResultSet());
 
-    private File convertBlobToFile(Blob blob, String fileName) {
-        File file = new File(fileName);
+			AnswerHeader answerHeader = null;
+			while (setHeader.next()) {
+				answerHeader = new AnswerHeader(setHeader);
+			}
 
-        try (InputStream inStream = blob.getBinaryStream();
-             FileOutputStream fileOutputStream = new FileOutputStream(file)) {
+			NeoQueryBuilder queryDetailBuilder = new NeoQueryBuilder(QueryType.SELECT)
+					.columns("*")
+					.table("answer_detail")
+					.condition("AnswerID", ConditionCompareType.EQUAL, answerHeader.getId());
 
-            byte[] buffer = new byte[1024];
-            int bytesRead;
+			Results resultsDetail = closer.add(queryDetailBuilder.getResults());
+			ResultSet setDetail = closer.add(resultsDetail.getResultSet());
 
-            while ((bytesRead = inStream.read(buffer)) > 0) {
-                fileOutputStream.write(buffer, 0, bytesRead);
-            }
+			while (setDetail.next()) {
+				answerDetails.add(new AnswerDetail(setDetail));
+			}
 
-        } catch (IOException | SQLException e) {
-            e.printStackTrace();
-        }
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
 
-        return file;
-    }
+		return answerDetails;
+	}
 
-    public boolean checkAnswer(String taskid, String userid) {
-        try (Closer closer = new Closer()) {
-            NeoQueryBuilder queryBuilder = new NeoQueryBuilder(QueryType.SELECT)
-                    .table("answer_header")
-                    .columns("AnswerID")
-                    .condition("TaskID", "=", taskid)
-                    .condition("UserID", "=", userid);
+	private File convertBlobToFile(Blob blob, String fileName) {
+		File file = new File(fileName);
 
-            Results results = closer.add(queryBuilder.getResults());
-            ResultSet set = closer.add(results.getResultSet());
+		try (InputStream inStream = blob.getBinaryStream();
+		     FileOutputStream fileOutputStream = new FileOutputStream(file)) {
 
-            return set.next();
-        } catch (SQLException e) {
-            e.printStackTrace();
-            return false;
-        }
-    }
+			byte[] buffer = new byte[1024];
+			int bytesRead;
 
-    public AnswerHeader getAnswerHeader(String taskId, String userId) {
-        try (Closer closer = new Closer()) {
-            NeoQueryBuilder queryBuilder = new NeoQueryBuilder(QueryType.SELECT)
-                    .columns("*")
-                    .table("answer_header")
-                    .condition("TaskID", ConditionCompareType.EQUAL, taskId)
-                    .condition("UserID", ConditionCompareType.EQUAL, userId);
+			while ((bytesRead = inStream.read(buffer)) > 0) {
+				fileOutputStream.write(buffer, 0, bytesRead);
+			}
 
-            Results results = closer.add(queryBuilder.getResults());
-            ResultSet set = closer.add(results.getResultSet());
+		} catch (IOException | SQLException e) {
+			e.printStackTrace();
+		}
 
-            while (set.next()) {
-                System.out.println(set.getString("AnswerID"));
-                return new AnswerHeader(set);
-            }
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
+		return file;
+	}
 
-        return null;
-    }
+	public boolean checkAnswer(String taskid, String userid) {
+		String query = "SELECT\n" + "\tAnswerID\n" + "FROM answer_header\n" + "WHERE TaskID = ? AND UserID = ?";
 
-    public List<AnswerDetail> getAnswerDetails(String questionId) {
-        List<AnswerDetail> answerDetails = new ArrayList<>();
+		try (PreparedStatement ps = connect.prepareStatement(query)) {
 
-        try (Closer closer = new Closer()) {
-            NeoQueryBuilder queryBuilder = new NeoQueryBuilder(QueryType.SELECT)
-                    .columns("*")
-                    .table("answer_detail")
-                    .condition("AnswerID", ConditionCompareType.EQUAL, questionId);
+			assert ps != null;
+			ps.setString(1, taskid);
+			ps.setString(2, userid);
 
-            Results results = closer.add(queryBuilder.getResults());
-            ResultSet set = closer.add(results.getResultSet());
+			try (ResultSet rs = ps.executeQuery()) {
 
-            while (set.next()) {
-                answerDetails.add(new AnswerDetail(set));
-            }
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
+				return rs.next();
+			}
 
-        return answerDetails;
-    }
+		} catch (SQLException e) {
+			return false;
+		}
+	}
 
-    public void markAsDone(String taskid, String userid) {
-        try (Closer closer = new Closer()) {
-            NeoQueryBuilder queryBuilder = new NeoQueryBuilder(QueryType.INSERT)
-                    .table("answer_header")
-                    .values("AnswerID", UUID.randomUUID().toString())
-                    .values("TaskID", taskid)
-                    .values("UserID", userid)
-                    .values("Score", null)
-                    .values("CreatedAt", DateManager.getNow());
+	public void markAsDone(String taskid, String userid) {
+		String query = "INSERT INTO answer_header VALUES (?, ?, ?, NULL, ?)";
 
-            closer.add(queryBuilder.getResults());
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-    }
+		try (PreparedStatement ps = connect.prepareStatement(query)) {
+			assert ps != null;
+			ps.setString(1, UUID.randomUUID().toString());
+			ps.setString(2, taskid);
+			ps.setString(3, userid);
+			ps.setString(4, DateManager.getNow());
 
-    public void createAnswerHeader(AnswerHeader answerHeader) {
-        try (Closer closer = new Closer()) {
-            NeoQueryBuilder deleteQuery = new NeoQueryBuilder(QueryType.DELETE)
-                    .table("answer_header")
-                    .condition("AnswerID", ConditionCompareType.EQUAL, answerHeader.getId())
-                    .condition("TaskID", ConditionCompareType.EQUAL, answerHeader.getTaskid())
-                    .condition("UserID", ConditionCompareType.EQUAL, answerHeader.getUserid());
+			ps.executeUpdate();
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+	}
 
-            NeoQueryBuilder queryBuilder = new NeoQueryBuilder(QueryType.INSERT)
-                    .table("answer_header")
-                    .values("AnswerID", answerHeader.getId())
-                    .values("TaskID", answerHeader.getTaskid())
-                    .values("UserID", answerHeader.getUserid())
-                    .values("Finished", answerHeader.isFinished())
-                    .values("Score", answerHeader.getScore())
-                    .values("CreatedAt", answerHeader.getCreatedAt())
-                    .values("FinishedAt", answerHeader.getFinishedAt());
+	public void markUndone(String taskid, String userid) {
+		String query = "DELETE FROM answer_header WHERE TaskID = ? AND UserID = ?";
 
-            closer.add(deleteQuery.getResults());
-            closer.add(queryBuilder.getResults());
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-    }
+		try (PreparedStatement ps = connect.prepareStatement(query)) {
+			assert ps != null;
+			ps.setString(1, taskid);
+			ps.setString(2, userid);
 
-    public void createAnswerDetails(List<AnswerDetail> answerDetails) {
-        try (Closer closer = new Closer()) {
-            for (AnswerDetail answerDetail : answerDetails) {
-                NeoQueryBuilder queryBuilder = new NeoQueryBuilder(QueryType.INSERT)
-                        .table("answer_detail")
-                        .values("AnswerID", answerDetail.getAnswerId())
-                        .values("QuestionID", answerDetail.getQuestionId())
-                        .values("AnswerText", answerDetail.getAnswerText())
-                        .values("Score", answerDetail.getAnswerScore());
+			ps.executeUpdate();
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+	}
 
-                closer.add(queryBuilder.getResults());
-            }
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-    }
+	public Double getAnswerScore(String taskid, String userid) {
+		String query = "SELECT SCORE FROM answer_header WHERE TaskID = ? AND UserID = ?";
 
-    public void submitTest(AnswerHeader answerHeader) {
-        try (Closer closer = new Closer()) {
-            NeoQueryBuilder queryBuilder = new NeoQueryBuilder(QueryType.UPDATE)
-                    .table("answer_header")
-                    .values("Finished", true)
-                    .values("FinishedAt", DateManager.getNow())
-                    .condition("AnswerID", ConditionCompareType.EQUAL, answerHeader.getId())
-                    .condition("TaskID", ConditionCompareType.EQUAL, answerHeader.getTaskid())
-                    .condition("UserID", ConditionCompareType.EQUAL, answerHeader.getUserid());
+		try (PreparedStatement ps = connect.prepareStatement(query)) {
 
-            closer.add(queryBuilder.getResults());
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-    }
+			assert ps != null;
+			ps.setString(1, taskid);
+			ps.setString(2, userid);
 
-    public void markUndone(String taskid, String userid) {
-        try (Closer closer = new Closer()) {
-            NeoQueryBuilder queryBuilder = new NeoQueryBuilder(QueryType.DELETE)
-                    .table("answer_header")
-                    .condition("TaskID", "=", taskid)
-                    .condition("UserID", "=", userid);
+			try (ResultSet rs = ps.executeQuery()) {
+				if (rs.next()) {
+					Object scoreObj = rs.getObject("Score");
 
-            closer.add(queryBuilder.getResults());
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-    }
+					if (scoreObj != null) {
+						return (Double) scoreObj;
+					} else {
+						return null;
+					}
+				}
+			}
 
-    public boolean checkTest(String taskid, String userid) {
-        try (Closer closer = new Closer()) {
-            NeoQueryBuilder queryBuilder = new NeoQueryBuilder(QueryType.SELECT)
-                    .columns("*")
-                    .table("answer_header")
-                    .condition("TaskID", ConditionCompareType.EQUAL, taskid)
-                    .condition("UserID", ConditionCompareType.EQUAL, userid)
-                    .condition("Finished", ConditionCompareType.EQUAL, "1");
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
 
-            Results results = closer.add(queryBuilder.getResults());
-            ResultSet set = closer.add(results.getResultSet());
+		return null;
+	}
 
-            if (set.next()) {
-                return true;
-            }
+	public boolean scoreAnswer(String taskid, String userid, int score) {
+		String query = "UPDATE answer_header " + "JOIN mstask ON answer_header.TaskID = mstask.TaskID "
+				+ "SET answer_header.Score = ? "
+				+ "WHERE mstask.TaskTitle = ? AND answer_header.UserID = ?";
 
-        } catch (SQLException e) {
-            return false;
-        }
+		try (PreparedStatement ps = connect.prepareStatement(query)) {
+			assert ps != null;
+			ps.setInt(1, score);
+			ps.setString(2, taskid);
+			ps.setString(3, userid);
 
-        return false;
-    }
+			ps.executeUpdate();
 
-    public void scoreQuestionAnswer(List<AnswerDetail> answerDetails) {
-        try (Closer closer = new Closer()) {
+			return true;
+		} catch (SQLException e) {
+			e.printStackTrace();
+			return false;
+		}
+	}
 
-            for (AnswerDetail answerDetail : answerDetails) {
-                NeoQueryBuilder queryBuilder = new NeoQueryBuilder(QueryType.UPDATE)
-                        .table("answer_detail")
-                        .values("Score", answerDetail.getAnswerScore())
-                        .condition("AnswerID", ConditionCompareType.EQUAL, answerDetail.getAnswerId())
-                        .condition("QuestionID", ConditionCompareType.EQUAL, answerDetail.getQuestionId());
+	public AnswerHeader getAnswerHeader(String taskId, String userId) {
+		try (Closer closer = new Closer()) {
+			NeoQueryBuilder queryBuilder = new NeoQueryBuilder(QueryType.SELECT)
+					.columns("*")
+					.table("answer_header")
+					.condition("TaskID", ConditionCompareType.EQUAL, taskId)
+					.condition("UserID", ConditionCompareType.EQUAL, userId);
 
-                closer.add(queryBuilder.getResults());
-                System.out.println(answerDetail.getAnswerId());
-            }
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-    }
+			Results results = closer.add(queryBuilder.getResults());
+			ResultSet set = closer.add(results.getResultSet());
 
-    public Integer getAnswerScore(String taskid, String userid) {
-        try (Closer closer = new Closer()) {
-            NeoQueryBuilder queryBuilder = new NeoQueryBuilder(QueryType.SELECT)
-                    .table("answer_header")
-                    .columns("score")
-                    .condition("TaskID", "=", taskid)
-                    .condition("UserID", "=", userid);
+			while (set.next()) {
+				return new AnswerHeader(set);
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
 
-            Results results = closer.add(queryBuilder.getResults());
-            ResultSet set = closer.add(results.getResultSet());
-            if (!set.next()) {
-                return null;
-            }
+		return null;
+	}
 
-            return set.getInt("SCORE");
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
+	public List<AnswerDetail> getAnswerDetails(String questionId) {
+		List<AnswerDetail> answerDetails = new ArrayList<>();
 
-        return null;
-    }
+		try (Closer closer = new Closer()) {
+			NeoQueryBuilder queryBuilder = new NeoQueryBuilder(QueryType.SELECT)
+					.columns("*")
+					.table("answer_detail")
+					.condition("AnswerID", ConditionCompareType.EQUAL, questionId);
 
-    public void finishScoring(String taskId, String userId, String answerid, Double score) {
-        try (Closer closer = new Closer()) {
-            NeoQueryBuilder queryHeaderBuilder = new NeoQueryBuilder(QueryType.UPDATE)
-                    .table("answer_header")
-                    .values("Score", score)
-                    .condition("AnswerID", ConditionCompareType.EQUAL, answerid);
+			Results results = closer.add(queryBuilder.getResults());
+			ResultSet set = closer.add(results.getResultSet());
 
-            closer.add(queryHeaderBuilder.getResults());
+			while (set.next()) {
+				answerDetails.add(new AnswerDetail(set));
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
 
-            NeoQueryBuilder queryTaskBuilder = new NeoQueryBuilder(QueryType.UPDATE)
-                    .table("mstask")
-                    .values("Scored", true)
-                    .condition("UserID", ConditionCompareType.EQUAL, userId)
-                    .condition("TaskID", ConditionCompareType.EQUAL, taskId);
+		return answerDetails;
+	}
 
-            closer.add(queryTaskBuilder.getResults());
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-    }
+	public void createAnswerHeader(AnswerHeader answerHeader) {
+		try (Closer closer = new Closer()) {
+			NeoQueryBuilder deleteQuery = new NeoQueryBuilder(QueryType.DELETE)
+					.table("answer_header")
+					.condition("AnswerID", ConditionCompareType.EQUAL, answerHeader.getId())
+					.condition("TaskID", ConditionCompareType.EQUAL, answerHeader.getTaskid())
+					.condition("UserID", ConditionCompareType.EQUAL, answerHeader.getUserid());
 
-    public boolean scoreAnswer(String taskid, String userid, int score) {
-        try (Closer closer = new Closer()) {
-            NeoQueryBuilder queryBuilder = new NeoQueryBuilder(QueryType.UPDATE)
-                    .table("answer_header")
-                    .join("answer_header", "TaskID", "mstask", "TaskID")
-                    .values("answer_header.Score", score)
-                    .condition("mstask.TaskTitle", "=", taskid)
-                    .condition("answer_header.UserID", "=", userid);
+			NeoQueryBuilder queryBuilder = new NeoQueryBuilder(QueryType.INSERT)
+					.table("answer_header")
+					.values("AnswerID", answerHeader.getId())
+					.values("TaskID", answerHeader.getTaskid())
+					.values("UserID", answerHeader.getUserid())
+					.values("Finished", answerHeader.isFinished())
+					.values("Score", answerHeader.getScore())
+					.values("CreatedAt", answerHeader.getCreatedAt())
+					.values("FinishedAt", answerHeader.getFinishedAt());
 
-            closer.add(queryBuilder.getResults());
-            return true;
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
+			closer.add(deleteQuery.getResults());
+			closer.add(queryBuilder.getResults());
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+	}
 
-        return false;
-    }
+	public void createAnswerDetails(List<AnswerDetail> answerDetails) {
+		try (Closer closer = new Closer()) {
+			for (AnswerDetail answerDetail : answerDetails) {
+				NeoQueryBuilder queryBuilder = new NeoQueryBuilder(QueryType.INSERT)
+						.table("answer_detail")
+						.values("AnswerID", answerDetail.getAnswerId())
+						.values("QuestionID", answerDetail.getQuestionId())
+						.values("AnswerText", answerDetail.getAnswerText())
+						.values("Score", answerDetail.getAnswerScore());
+
+				closer.add(queryBuilder.getResults());
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+	}
+
+	public void submitTest(AnswerHeader answerHeader) {
+		try (Closer closer = new Closer()) {
+			NeoQueryBuilder queryBuilder = new NeoQueryBuilder(QueryType.UPDATE)
+					.table("answer_header")
+					.values("Finished", true)
+					.values("FinishedAt", DateManager.getNow())
+					.condition("AnswerID", ConditionCompareType.EQUAL, answerHeader.getId())
+					.condition("TaskID", ConditionCompareType.EQUAL, answerHeader.getTaskid())
+					.condition("UserID", ConditionCompareType.EQUAL, answerHeader.getUserid());
+
+			closer.add(queryBuilder.getResults());
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+	}
+
+	public boolean checkTest(String taskid, String userid) {
+		try (Closer closer = new Closer()) {
+			NeoQueryBuilder queryBuilder = new NeoQueryBuilder(QueryType.SELECT)
+					.columns("*")
+					.table("answer_header")
+					.condition("TaskID", ConditionCompareType.EQUAL, taskid)
+					.condition("UserID", ConditionCompareType.EQUAL, userid)
+					.condition("Finished", ConditionCompareType.EQUAL, "1");
+
+			Results results = closer.add(queryBuilder.getResults());
+			ResultSet set = closer.add(results.getResultSet());
+
+			if (set.next()) {
+				return true;
+			}
+
+		} catch (SQLException e) {
+			return false;
+		}
+
+		return false;
+	}
+
+	public void scoreQuestionAnswer(List<AnswerDetail> answerDetails) {
+		try (Closer closer = new Closer()) {
+
+			for (AnswerDetail answerDetail : answerDetails) {
+				NeoQueryBuilder queryBuilder = new NeoQueryBuilder(QueryType.UPDATE)
+						.table("answer_detail")
+						.values("Score", answerDetail.getAnswerScore())
+						.condition("AnswerID", ConditionCompareType.EQUAL, answerDetail.getAnswerId())
+						.condition("QuestionID", ConditionCompareType.EQUAL, answerDetail.getQuestionId());
+
+				closer.add(queryBuilder.getResults());
+				System.out.println(answerDetail.getAnswerId());
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+	}
+
+	public void finishScoring(String taskId, String userId, String answerid, Double score) {
+		try (Closer closer = new Closer()) {
+			NeoQueryBuilder queryHeaderBuilder = new NeoQueryBuilder(QueryType.UPDATE)
+					.table("answer_header")
+					.values("Score", score)
+					.condition("AnswerID", ConditionCompareType.EQUAL, answerid);
+
+			closer.add(queryHeaderBuilder.getResults());
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+	}
 }

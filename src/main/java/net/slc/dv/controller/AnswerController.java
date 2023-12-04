@@ -31,7 +31,7 @@ public class AnswerController {
         return answerQuery.getMemberQuestionAnswer(taskid, userid);
     }
 
-    public Integer getAnswerScore(String taskid, String userid) {
+    public Double getAnswerScore(String taskid, String userid) {
         return answerQuery.getAnswerScore(taskid, userid);
     }
 
@@ -104,7 +104,7 @@ public class AnswerController {
 
     public AnswerHeader saveAnswer(@Nullable AnswerHeader answerHeader, String taskid, String userid, List<AnswerDetail> answerList) {
         if(answerHeader == null) {
-            answerHeader = new AnswerHeader(taskid, userid, false, 0, null);
+            answerHeader = new AnswerHeader(taskid, userid, false, null, null);
         }
 
         AnswerHeader finalAnswerHeader = answerHeader;
