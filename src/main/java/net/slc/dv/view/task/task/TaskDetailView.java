@@ -107,13 +107,13 @@ public class TaskDetailView extends HBox {
 		Label score = new Label();
 
 
+
 		if(answerHeader != null) {
-			score = LabelBuilder.create(task.isScored() ? "Score: " + answerHeader.getScore() : "Score: -")
+			System.out.println("haH" + answerHeader.getScore());
+			score = LabelBuilder.create(answerHeader.getScore() == null ? "Score: -" : "Score: " + answerHeader.getScore() )
 					.setHgrow(Priority.ALWAYS)
 					.setAlignment(Pos.CENTER_LEFT)
 					.build();
-
-			System.out.println("haH2" + score.getText());
 		}
 		HBox spacer = HBoxBuilder.create()
 				.setHgrow(Priority.ALWAYS)

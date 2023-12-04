@@ -134,9 +134,12 @@ public class QuestionMultipleChoice extends VBox implements QuestionBox {
 
     @Override
     public Double getAnswerScore() {
-        System.out.println(this.answer + " " + this.answerDetail.getAnswerScore() + " " + this.answerDetail.getAnswerText());
         if(this.answer == null) {
             return 0.0;
+        }
+
+        if(this.answerDetail == null) {
+            return null;
         }
 
         if(this.answer.equals(this.answerDetail.getAnswerText())) {

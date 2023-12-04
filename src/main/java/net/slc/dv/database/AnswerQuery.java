@@ -170,7 +170,7 @@ public class AnswerQuery {
 		}
 	}
 
-	public Integer getAnswerScore(String taskid, String userid) {
+	public Double getAnswerScore(String taskid, String userid) {
 		String query = "SELECT SCORE FROM answer_header WHERE TaskID = ? AND UserID = ?";
 
 		try (PreparedStatement ps = connect.prepareStatement(query)) {
@@ -181,10 +181,10 @@ public class AnswerQuery {
 
 			try (ResultSet rs = ps.executeQuery()) {
 				if (rs.next()) {
-					Object scoreObj = rs.getObject("SCORE");
+					Object scoreObj = rs.getObject("Score");
 
 					if (scoreObj != null) {
-						return (Integer) scoreObj;
+						return (Double) scoreObj;
 					} else {
 						return null;
 					}
@@ -230,7 +230,6 @@ public class AnswerQuery {
 			ResultSet set = closer.add(results.getResultSet());
 
 			while (set.next()) {
-				System.out.println(set.getString("AnswerID"));
 				return new AnswerHeader(set);
 			}
 		} catch (SQLException e) {
@@ -369,14 +368,6 @@ public class AnswerQuery {
 					.condition("AnswerID", ConditionCompareType.EQUAL, answerid);
 
 			closer.add(queryHeaderBuilder.getResults());
-
-			NeoQueryBuilder queryTaskBuilder = new NeoQueryBuilder(QueryType.UPDATE)
-					.table("mstask")
-					.values("Scored", true)
-					.condition("UserID", ConditionCompareType.EQUAL, userId)
-					.condition("TaskID", ConditionCompareType.EQUAL, taskId);
-
-			closer.add(queryTaskBuilder.getResults());
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
