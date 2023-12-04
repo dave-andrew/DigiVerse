@@ -2,10 +2,12 @@ package net.slc.dv.view.test.question;
 
 import javafx.scene.control.*;
 import javafx.scene.layout.GridPane;
+import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import lombok.Getter;
 import net.slc.dv.builder.*;
 import net.slc.dv.enums.QuestionType;
+import net.slc.dv.helper.DecimalTextFormatter;
 import net.slc.dv.interfaces.QuestionBox;
 import net.slc.dv.model.AnswerDetail;
 import net.slc.dv.model.Question;
@@ -16,9 +18,14 @@ public class QuestionMultipleChoice extends VBox implements QuestionBox {
     private final AnswerDetail answerDetail;
     private final RadioButton[] answerButtons;
     private final ToggleGroup answerGroup;
-    private String answerKey;
+    private String answer;
+    private TextField scoreField;
 
     public QuestionMultipleChoice(int number, Question question, AnswerDetail answerDetail) {
+        this(number, question, answerDetail, false);
+    }
+
+    public QuestionMultipleChoice(int number, Question question, AnswerDetail answerDetail, boolean isChecking) {
         this.question = question;
         this.answerDetail = answerDetail;
 
@@ -48,7 +55,7 @@ public class QuestionMultipleChoice extends VBox implements QuestionBox {
             if (newValue != null) {
                 RadioButton selected = (RadioButton) newValue;
                 selected.setSelected(true);
-                this.answerKey = selected.getText().substring(3);
+                this.answer = selected.getText().substring(3);
             }
         });
 
@@ -65,6 +72,32 @@ public class QuestionMultipleChoice extends VBox implements QuestionBox {
                 .addChildren(questionContainer, answerGrid)
                 .setSpacing(10)
                 .build();
+
+
+        if (!isChecking) {
+            return;
+        }
+
+        VBoxBuilder.modify(this)
+                .addChildren(createFieldLabelPair())
+                .build();
+    }
+
+    private HBox createFieldLabelPair() {
+        Label fieldLabel = LabelBuilder.create("Score: ")
+                .build();
+
+        System.out.println(answerDetail.getAnswerScore());
+        this.scoreField = TextFieldBuilder.create()
+                .setTextFormatter(new DecimalTextFormatter(0, 2, 0, 10))
+                .setText(String.valueOf(answerDetail.getAnswerScore().intValue()))
+                .setDisable(true)
+                .build();
+
+        return HBoxBuilder.create()
+                .addChildren(fieldLabel, scoreField)
+                .setSpacing(10)
+                .build();
     }
 
     private void setActiveAnswer() {
@@ -78,7 +111,7 @@ public class QuestionMultipleChoice extends VBox implements QuestionBox {
             if (answerButton.getText().substring(3).equals(answer)) {
                 answerButton.setSelected(true);
                 answerGroup.selectToggle(answerButton);
-                answerKey = answerButton.getText().substring(3);
+                this.answer = answerButton.getText().substring(3);
                 return;
             }
         }
@@ -91,16 +124,34 @@ public class QuestionMultipleChoice extends VBox implements QuestionBox {
 
     @Override
     public String getQuestionAnswer() {
-        return this.answerKey;
-    }
-
-    @Override
-    public String getQuestionKey() {
-        return this.question.getQuestionAnswer();
+        return this.answer;
     }
 
     @Override
     public String getQuestionId() {
         return this.question.getQuestionID();
+    }
+
+    @Override
+    public Double getAnswerScore() {
+        System.out.println(this.answer + " " + this.answerDetail.getAnswerScore() + " " + this.answerDetail.getAnswerText());
+        if(this.answer == null) {
+            return 0.0;
+        }
+
+        if(this.answer.equals(this.answerDetail.getAnswerText())) {
+            return 1.0;
+        }
+
+        if(this.answerDetail.getAnswerScore() != null) {
+            return this.answerDetail.getAnswerScore();
+        }
+
+        return null;
+    }
+
+    @Override
+    public boolean isAnswered() {
+        return this.answer != null;
     }
 }

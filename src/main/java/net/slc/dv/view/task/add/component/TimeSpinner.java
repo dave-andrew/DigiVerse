@@ -19,12 +19,9 @@ public class TimeSpinner extends Spinner<LocalTime> {
     public TimeSpinner(LocalTime time) {
         setEditable(true);
 
-        // Create a StringConverter for converting between the text in the
-        // editor and the actual value:
-
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("HH:mm:ss");
 
-        StringConverter<LocalTime> localTimeConverter = new StringConverter<LocalTime>() {
+        StringConverter<LocalTime> localTimeConverter = new StringConverter<>() {
 
             @Override
             public String toString(LocalTime time) {

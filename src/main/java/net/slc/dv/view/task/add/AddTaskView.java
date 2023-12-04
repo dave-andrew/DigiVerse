@@ -157,8 +157,8 @@ public class AddTaskView extends BorderPane {
 
 
 	private void submitFormTest() {
-		String title = this.createFileTask.getTitleField().getText();
-		String description = this.createFileTask.getDescriptionField().getText();
+		String title = this.createQuestionTask.getTaskTitle();
+		String description = this.createQuestionTask.getTaskDescription();
 		List<Question> questions = this.createQuestionTask.getQuestions();
 
 		LocalDate deadline = this.datePicker.getValue();
@@ -174,8 +174,9 @@ public class AddTaskView extends BorderPane {
 		}
 
 
-		this.taskController.createQuestionTask(questions, this.createQuestionTask.getTaskTitle(), this.createQuestionTask.getTaskDescription(), deadlineAt, scored, classroom.getClassId());
+		this.taskController.createQuestionTask(questions, title, description, deadlineAt, scored, classroom.getClassId());
 
+		dialogStage.close();
 	}
 
 	private VBox rightBar() {

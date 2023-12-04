@@ -189,7 +189,8 @@ public class DoTestView extends HBox {
 			if (questionBox.getQuestionAnswer() != null) {
 				AnswerDetail answerDetail = new AnswerDetail(
 						questionBox.getQuestionId(),
-						questionBox.getQuestionAnswer()
+						questionBox.getQuestionAnswer(),
+						questionBox.getAnswerScore()
 				);
 				answerDetails.add(answerDetail);
 			}

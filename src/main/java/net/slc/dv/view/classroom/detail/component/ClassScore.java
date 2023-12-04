@@ -240,7 +240,7 @@ public class ClassScore extends HBox {
                 container.getChildren().add(saveBtn);
 
                 saveBtn.setOnMouseClicked(e -> {
-                    if (this.answerController.scoreAnswer(taskTitle, selectedMember.getUser().getId(), taskScoreInput.getText())) {
+                    if (this.answerController.scoreQuestionAnswer(taskTitle, selectedMember.getUser().getId(), taskScoreInput.getText())) {
                         ToastBuilder.buildNormal().setText("Score saved!").build();
                         container.getChildren().removeAll(taskScoreInput, saveBtn);
                         Label scoreInput = new Label(taskScoreInput.getText());

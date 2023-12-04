@@ -20,11 +20,7 @@ import net.slc.dv.controller.CommentController;
 import net.slc.dv.enums.TaskType;
 import net.slc.dv.helper.DateManager;
 import net.slc.dv.helper.ImageManager;
-import net.slc.dv.helper.toast.ToastBuilder;
-import net.slc.dv.model.Classroom;
-import net.slc.dv.model.LoggedUser;
-import net.slc.dv.model.Task;
-import net.slc.dv.model.TaskComment;
+import net.slc.dv.model.*;
 import net.slc.dv.view.classroom.detail.component.CommentItem;
 import net.slc.dv.view.task.upload.UploadFileModal;
 import net.slc.dv.view.test.DoTestView;
@@ -106,12 +102,19 @@ public class TaskDetailView extends HBox {
 				.setPadding(20, 0, 0, 0)
 				.build();
 
-		//TODO SCOER BELOM ADA
-		Label score = LabelBuilder.create(task.isScored() ? "Score: 100" : "Score: -")
-				.setHgrow(Priority.ALWAYS)
-				.setAlignment(Pos.CENTER_LEFT)
-				.build();
+		AnswerHeader answerHeader = this.answerController.fetchAnswerHeader(task.getId(), LoggedUser.getInstance().getId());
 
+		Label score = new Label();
+
+
+		if(answerHeader != null) {
+			score = LabelBuilder.create(task.isScored() ? "Score: " + answerHeader.getScore() : "Score: -")
+					.setHgrow(Priority.ALWAYS)
+					.setAlignment(Pos.CENTER_LEFT)
+					.build();
+
+			System.out.println("haH2" + score.getText());
+		}
 		HBox spacer = HBoxBuilder.create()
 				.setHgrow(Priority.ALWAYS)
 				.build();
@@ -397,7 +400,7 @@ public class TaskDetailView extends HBox {
 		if (this.answerController.checkAnswer(this.task.getId(), LoggedUser.getInstance().getId())) {
 			submitStatus.setText("Submitted");
 
-			ArrayList<File> fileList = this.answerController.getMemberAnswer(this.task.getId(), LoggedUser.getInstance().getId());
+			ArrayList<File> fileList = this.answerController.getMemberFileAnswer(this.task.getId(), LoggedUser.getInstance().getId());
 
 			if (!sideContent.getChildren().contains(fileContainer)) {
 				sideContent.getChildren().add(fileContainer);

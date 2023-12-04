@@ -23,8 +23,12 @@ public class AnswerController {
         this.answerQuery = new AnswerQuery();
     }
 
-    public ArrayList<File> getMemberAnswer(String taskid, String userid) {
-        return answerQuery.getMemberAnswer(taskid, userid);
+    public ArrayList<File> getMemberFileAnswer(String taskid, String userid) {
+        return answerQuery.getMemberFileAnswer(taskid, userid);
+    }
+
+    public List<AnswerDetail> getMemberQuestionAnswer(String taskid, String userid) {
+        return answerQuery.getMemberQuestionAnswer(taskid, userid);
     }
 
     public Integer getAnswerScore(String taskid, String userid) {
@@ -79,7 +83,7 @@ public class AnswerController {
         answerQuery.markUndone(taskid, userid);
     }
 
-    public boolean scoreAnswer(String taskid, String userid, String score) {
+    public boolean scoreQuestionAnswer(String taskid, String userid, String score) {
         if(score.isEmpty()) {
             ToastBuilder.buildNormal().setText("Score cannot be empty!").build();
             return false;
@@ -126,5 +130,13 @@ public class AnswerController {
     }
     public List<AnswerDetail> fetchAnswerDetails(String answerid) {
         return answerQuery.getAnswerDetails(answerid);
+    }
+
+    public void scoreQuestionAnswer(List<AnswerDetail> answerDetails) {
+        answerQuery.scoreQuestionAnswer(answerDetails);
+    }
+
+    public void finishScoring(String taskId, String userId, String answerid, Double score) {
+        answerQuery.finishScoring(taskId, userId, answerid, score);
     }
 }

@@ -242,7 +242,7 @@ public class UploadFileModal {
     }
 
     private void fetchAnswer() {
-        ArrayList<File> fileList = this.answerController.getMemberAnswer(taskid, LoggedUser.getInstance().getId());
+        ArrayList<File> fileList = this.answerController.getMemberFileAnswer(taskid, LoggedUser.getInstance().getId());
 
         sideContent.getChildren().add(fileContainer);
 
