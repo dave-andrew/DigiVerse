@@ -113,13 +113,6 @@ public class TaskQuery {
     }
 
     public ArrayList<Task> fetchTaskByDate(String date) {
-        String query = "SELECT * FROM class_task\n" +
-                "JOIN mstask ON class_task.TaskID = mstask.TaskID\n" +
-                "JOIN msuser ON mstask.UserID = msuser.UserID\n" +
-                "JOIN msclass ON msclass.ClassID = class_task.ClassID\n" +
-                "WHERE DATE(DeadlineAt) = ? AND " +
-                "class_task.ClassID IN (SELECT ClassID FROM class_member WHERE UserID = ?)\n";
-
         ArrayList<Task> taskList = new ArrayList<>();
         try (Closer closer = new Closer()) {
             NeoQueryBuilder classMemberSQ = new NeoQueryBuilder(QueryType.SELECT)
@@ -171,7 +164,7 @@ public class TaskQuery {
                     .table("class_task")
                     .join("class_task", "TaskID", "mstask", "TaskID")
                     .join("mstask", "UserID", "msuser", "UserID")
-                    .join("msclass", "ClassID", "class_task", "ClassID")
+                    .join("class_task", "ClassID", "msclass", "ClassID")
                     .condition("class_task.ClassID", "IN", classMemberSQ)
                     .condition("mstask.TaskID", "NOT IN", answerHeaderSQ);
 

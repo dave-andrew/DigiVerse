@@ -137,6 +137,6 @@ public class AnswerController {
     }
 
     public void finishScoring(String taskId, String userId, String answerid, Double score) {
-        answerQuery.finishScoring(taskId, userId, answerid, score);
+        answerQuery.finishScoring(answerid, score);
     }
 }
