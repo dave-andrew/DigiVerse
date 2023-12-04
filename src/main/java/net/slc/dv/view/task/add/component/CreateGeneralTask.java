@@ -27,13 +27,8 @@ public class CreateGeneralTask extends VBox {
 
         Label title = LabelBuilder.create("Task Title").build();
 
-
         Label description = LabelBuilder.create("Task Description")
                 .setMargin(30, 0, 0, 0)
-                .build();
-
-        Label addFileBtn = LabelBuilder.create()
-                .setMargin(100, 0, 0, 0)
                 .build();
 
         HBox errorContainer = HBoxBuilder.create()
@@ -52,12 +47,9 @@ public class CreateGeneralTask extends VBox {
                 .setAlignment(Pos.CENTER)
                 .build();
 
-
         VBoxBuilder.modify(this)
-                .addChildren(center, addFileBtn)
+                .addChildren(center)
                 .setAlignment(Pos.CENTER)
                 .build();
     }
-
-
 }

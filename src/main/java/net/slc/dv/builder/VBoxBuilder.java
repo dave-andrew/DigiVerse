@@ -110,6 +110,12 @@ public class VBoxBuilder {
         return this;
     }
 
+    public VBoxBuilder bindPrefWidth(VBox node) {
+        this.vBox.prefWidthProperty().bind(node.prefWidthProperty());
+
+        return this;
+    }
+
     public VBoxBuilder setPrefWidth(int width) {
         this.vBox.setPrefWidth(width);
 

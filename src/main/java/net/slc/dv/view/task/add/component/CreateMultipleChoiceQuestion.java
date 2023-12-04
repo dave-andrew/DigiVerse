@@ -53,7 +53,7 @@ public class CreateMultipleChoiceQuestion extends VBox implements CreateQuestion
 			.addChildren(answerFields.get(1), 1, 0)
 			.addChildren(answerFields.get(2), 0, 1)
 			.addChildren(answerFields.get(3), 1, 1)
-			.setHGap(5)
+			.setHGap(20)
 			.setVGap(5)
 			.build();
 

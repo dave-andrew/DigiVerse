@@ -54,11 +54,6 @@ public class SideNavbar extends StackPane {
 
         this.logoutButton = this.LogoutButton();
 
-        Label logOutLbl = new Label("Log Out");
-        logOutLbl.setStyle("-fx-font-size: 16px; -fx-text-fill: #d70000;");
-
-        HBox.setMargin(logOutLbl, new Insets(0, 0, 0, 10));
-
         this.sidebarSpacer = VBoxBuilder.create().setVgrow(Priority.ALWAYS).build();
 
         this.sideNavbarContainer = VBoxBuilder.create()
@@ -104,8 +99,8 @@ public class SideNavbar extends StackPane {
         return HBoxBuilder.create()
                 .addChildren(icon, label)
                 .setSpacing(10)
-                .setPrefWidth(200)
-                .setMargin(0, 0, 40, 0)
+                .setPrefWidth(250)
+                .setMargin(0, 0, 50, 0)
                 .setStyleClass("side-nav-item")
                 .setOnMouseClicked(e -> logout())
                 .setAlignment(Pos.CENTER_LEFT)
@@ -148,7 +143,7 @@ public class SideNavbar extends StackPane {
 
         KeyValue keyValue = new KeyValue(this.sideNavbarContainer.prefWidthProperty(), 0, Interpolator.EASE_BOTH);
         KeyValue rotateArrow =
-                new KeyValue(this.sideNavbarContainer.rotateProperty(), 180 * 900, Interpolator.EASE_BOTH);
+                new KeyValue(this.buttonToggle.rotateProperty(), 180, Interpolator.EASE_BOTH);
 
         KeyFrame start = new KeyFrame(
                 Duration.ZERO,
@@ -171,7 +166,8 @@ public class SideNavbar extends StackPane {
 
         KeyFrame start = new KeyFrame(
                 Duration.ZERO,
-                new KeyValue(this.sideNavbarContainer.translateXProperty(), currentTranslateX, Interpolator.LINEAR));
+                new KeyValue(this.sideNavbarContainer.translateXProperty(), currentTranslateX, Interpolator.LINEAR)
+        );
 
         KeyFrame end = new KeyFrame(Duration.seconds(0.5), keyValue, rotateArrow);
 

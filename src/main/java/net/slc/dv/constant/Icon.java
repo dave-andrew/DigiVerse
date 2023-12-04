@@ -20,4 +20,5 @@ public class Icon {
     public static final String PDF = "file:resources/icons/pdf.png";
     public static final String IMAGE = "file:resources/icons/image.png";
     public static final String FILE = "file:resources/icons/file.png";
+    public static final String BIN = "file:resources/icons/bin.png";
 }
