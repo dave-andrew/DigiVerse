@@ -23,10 +23,10 @@ public class ClassroomDetailView extends BorderPane {
 
         init();
 
-//        StackPaneBuilder.modify(mainPane)
-//                .removeAllChildren()
-//                .addChildren(this)
-//                .build();
+        StackPaneBuilder.modify(mainPane)
+                .removeAllChildren()
+                .addChildren(this)
+                .build();
     }
 
     private void init() {

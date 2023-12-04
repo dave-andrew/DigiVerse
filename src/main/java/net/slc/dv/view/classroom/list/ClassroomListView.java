@@ -37,7 +37,6 @@ public class ClassroomListView extends GridPane {
                 String userRole = new MemberController().getRole(classroom.getClassId());
                 BorderPane classDetail = new ClassroomDetailView(mainPane, classroom, userRole);
 
-                mainPane.getChildren().add(classDetail);
                 this.setNavigation.accept(classroom.getClassName());
 
                 if (userRole.equals("Teacher")) {
