@@ -239,7 +239,7 @@ public class TaskQuery {
                     .table("class_task")
                     .join("class_task", "TaskID", "mstask", "TaskID")
                     .join("mstask", "UserID", "msuser", "UserID")
-                    .join("msclass", "ClassID", "class_task", "ClassID")
+                    .join("class_task", "ClassID", "msclass", "ClassID")
                     .condition("class_task.ClassID", "=", classid)
                     .condition("mstask.DeadlineAt", ">", DateManager.getNow())
                     .orderBy("mstask.DeadlineAt", "ASC")
