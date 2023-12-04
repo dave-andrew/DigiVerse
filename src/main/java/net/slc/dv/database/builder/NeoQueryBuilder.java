@@ -303,7 +303,7 @@ public class NeoQueryBuilder {
         query.append("SELECT ");
 
         if (this.columns == null) {
-            query.append("* ");
+            query.append("*").append(" ");
         } else {
             query.append(this.buildColumns()).append(" ");
         }
@@ -318,18 +318,18 @@ public class NeoQueryBuilder {
         }
 
         if (orderBy != null) {
-            query.append("ORDER BY ").append(orderBy);
+            query.append("ORDER BY ").append(this.buildOrderBy()).append(" ");
         }
 
         if (limit != null) {
-            query.append("LIMIT ").append(limit);
+            query.append("LIMIT ").append(limit).append(" ");
         }
 
         if (offset != null) {
-            query.append("OFFSET ").append(offset);
+            query.append("OFFSET ").append(offset).append(" ");
         }
 
-        return query.toString();
+        return query.toString().trim();
     }
 
     private String buildInsertQuery() {
@@ -377,7 +377,7 @@ public class NeoQueryBuilder {
     }
 
     private String buildJoin() {
-        StringJoiner stringJoiner = new StringJoiner(", ");
+        StringJoiner stringJoiner = new StringJoiner(" JOIN ");
         for (Join join : this.joins) {
             stringJoiner.add(join.getTargetTable() + " ON " + join.buildCondition());
         }
@@ -415,6 +415,10 @@ public class NeoQueryBuilder {
         }
 
         return stringJoiner.toString();
+    }
+
+    private String buildOrderBy() {
+        return this.orderBy.getColumn() + " " + this.orderBy.getOrder().getType();
     }
 
     private void applyConditions(PreparedStatement preparedStatement) throws SQLException {
