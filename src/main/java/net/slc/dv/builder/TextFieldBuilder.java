@@ -1,6 +1,7 @@
 package net.slc.dv.builder;
 
 import javafx.scene.control.TextField;
+import javafx.scene.control.TextFormatter;
 import lombok.Getter;
 
 @Getter
@@ -26,6 +27,21 @@ public class TextFieldBuilder {
 
 	public TextFieldBuilder setEditable(boolean editable) {
 		this.textField.setEditable(editable);
+		return this;
+	}
+
+	public TextFieldBuilder setDisable(boolean disable) {
+		this.textField.setDisable(disable);
+		return this;
+	}
+
+	public TextFieldBuilder setText(String text) {
+		this.textField.setText(text);
+		return this;
+	}
+
+	public TextFieldBuilder setTextFormatter(TextFormatter formatter) {
+		this.textField.setTextFormatter(formatter);
 		return this;
 	}
 

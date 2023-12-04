@@ -19,6 +19,10 @@ public class TextAreaBuilder {
 		return this;
 	}
 
+	public TextAreaBuilder setText(String text) {
+		this.textArea.setText(text);
+		return this;
+	}
 	public TextAreaBuilder setMaxHeight(double maxHeight) {
 		this.textArea.setMaxHeight(maxHeight);
 		return this;
@@ -26,6 +30,11 @@ public class TextAreaBuilder {
 
 	public TextAreaBuilder setPromptText(String promptText) {
 		this.textArea.setPromptText(promptText);
+		return this;
+	}
+
+	public TextAreaBuilder setDisable(boolean disable) {
+		this.textArea.setDisable(disable);
 		return this;
 	}
 

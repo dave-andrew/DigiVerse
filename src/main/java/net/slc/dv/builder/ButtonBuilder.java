@@ -1,8 +1,11 @@
 package net.slc.dv.builder;
 
+import javafx.event.EventHandler;
 import javafx.geometry.Insets;
+import javafx.geometry.Pos;
 import javafx.scene.control.Button;
 import javafx.scene.image.ImageView;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.VBox;
 
 import java.util.function.Consumer;
@@ -19,7 +22,7 @@ public class ButtonBuilder {
         this.button = button;
     }
 
-    public static ButtonBuilder create(Button button) {
+    public static ButtonBuilder modify(Button button) {
         return new ButtonBuilder(button);
     }
 
@@ -67,8 +70,32 @@ public class ButtonBuilder {
         return this;
     }
 
-    public ButtonBuilder setOnAction(Consumer consumer) {
+    public ButtonBuilder setOnAction(Consumer<Button> consumer) {
         this.button.setOnAction(e -> consumer.accept(this.button));
+
+        return this;
+    }
+
+    public ButtonBuilder setPrefSize(int width, int height) {
+        this.button.setPrefSize(width, height);
+
+        return this;
+    }
+
+    public ButtonBuilder setAlignment(Pos pos) {
+        this.button.setAlignment(pos);
+
+        return this;
+    }
+
+    public ButtonBuilder setOnMouseClick(EventHandler<MouseEvent> eventHandler) {
+        this.button.setOnMouseClicked(e -> eventHandler.handle(e));
+
+        return this;
+    }
+
+    public ButtonBuilder setDisable(boolean disable) {
+        this.button.setDisable(disable);
 
         return this;
     }

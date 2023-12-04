@@ -1,5 +1,6 @@
 package net.slc.dv.builder;
 
+import javafx.geometry.Pos;
 import javafx.scene.Node;
 import javafx.scene.layout.GridPane;
 
@@ -25,6 +26,11 @@ public class GridPaneBuilder {
 
 	public GridPaneBuilder setVGap(double vGap) {
 		this.gridPane.setVgap(vGap);
+		return this;
+	}
+
+	public GridPaneBuilder setAlignment(Pos pos) {
+		this.gridPane.setAlignment(pos);
 		return this;
 	}
 

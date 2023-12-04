@@ -2,6 +2,7 @@ plugins {
     id 'java'
     id 'application'
     id 'org.openjfx.javafxplugin' version '0.0.13'
+    id 'com.diffplug.spotless' version '6.23.2'
 }
 
 group 'net.slc.dv'
@@ -28,6 +29,13 @@ application {
 javafx {
     version = '17.0.9'
     modules = ['javafx.controls', 'javafx.fxml', 'javafx.web', 'javafx.media']
+}
+
+spotless {
+    java {
+        palantirJavaFormat()
+        removeUnusedImports('cleanthat-javaparser-unnecessaryimport')
+    }
 }
 
 dependencies {

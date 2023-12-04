@@ -2,12 +2,12 @@ package net.slc.dv.game.dropitem.state;
 
 import net.slc.dv.game.Enemy;
 import net.slc.dv.game.dropitem.DropItem;
-import net.slc.dv.view.OfflineGame;
+import net.slc.dv.view.offlinegame.OfflineGameView;
 
 public class DropItemDespawnState extends DropItemBaseState {
 
 
-    public DropItemDespawnState(OfflineGame game, Enemy enemy, DropItem dropItem) {
+    public DropItemDespawnState(OfflineGameView game, Enemy enemy, DropItem dropItem) {
         super(game, enemy, dropItem);
     }
 

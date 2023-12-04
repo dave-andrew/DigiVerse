@@ -6,6 +6,7 @@ import javafx.scene.control.ToggleButton;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.util.Duration;
+import net.slc.dv.constant.Icon;
 
 public class ThemeManager {
 
@@ -32,7 +33,7 @@ public class ThemeManager {
             if (theme.equals("light")) {
                 theme = "dark";
 
-                ImageView moon = new ImageView(new Image("file:resources/icons/moon.png"));
+                ImageView moon = new ImageView(new Image(Icon.MOON));
                 toggleButton.setGraphic(moon);
 
                 moon.setFitWidth(30);
@@ -42,7 +43,7 @@ public class ThemeManager {
             } else if (theme.equals("dark")) {
                 theme = "light";
 
-                ImageView sun = new ImageView(new Image("file:resources/icons/sun.png"));
+                ImageView sun = new ImageView(new Image(Icon.SUN));
                 toggleButton.setGraphic(sun);
 
                 sun.setFitWidth(30);

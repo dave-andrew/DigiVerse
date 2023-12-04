@@ -1,11 +1,11 @@
 package net.slc.dv.game.gamestate;
 
 import net.slc.dv.game.player.PlayerNoLiveState;
-import net.slc.dv.view.OfflineGame;
+import net.slc.dv.view.offlinegame.OfflineGameView;
 
 public class GamePlayState extends GameBaseState {
 
-    public GamePlayState(OfflineGame game) {
+    public GamePlayState(OfflineGameView game) {
         super(game);
     }
 

@@ -18,9 +18,9 @@ import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
 import net.slc.dv.model.LoggedUser;
-import net.slc.dv.view.Home;
-import net.slc.dv.view.LoginView;
-import net.slc.dv.view.OfflineGame;
+import net.slc.dv.view.home.Home;
+import net.slc.dv.view.login.LoginView;
+import net.slc.dv.view.offlinegame.OfflineGameView;
 
 public class Main extends Application {
 
@@ -86,13 +86,13 @@ public class Main extends Application {
 		if (!value) {
 			if(this.currentScene == null) {
 				this.currentScene = "offline";
-				new OfflineGame(stage);
+				new OfflineGameView(stage);
 				return;
 			}
 
 			ToastBuilder.buildNormal().setText("You are offline!").build();
 			this.currentScene = "offline";
-			new OfflineGame(stage);
+			new OfflineGameView(stage);
 			return;
 		}
 

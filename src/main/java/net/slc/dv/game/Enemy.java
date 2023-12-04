@@ -11,13 +11,13 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
-import net.slc.dv.view.OfflineGame;
+import net.slc.dv.view.offlinegame.OfflineGameView;
 
 import java.util.ArrayList;
 
 public class Enemy extends ImageView {
 
-    private final OfflineGame game;
+    private final OfflineGameView game;
     private final Player player;
 
     private int health;
@@ -39,7 +39,7 @@ public class Enemy extends ImageView {
 
     private final Pane root;
     private final String type;
-    public Enemy(OfflineGame game, Pane root, double posX, double posY, Player player, String type, int health) {
+    public Enemy(OfflineGameView game, Pane root, double posX, double posY, Player player, String type, int health) {
         this.game = game;
         this.player = player;
         this.type = type;
@@ -182,7 +182,7 @@ public class Enemy extends ImageView {
         return despawnState;
     }
 
-    public OfflineGame getGame() {
+    public OfflineGameView getGame() {
         return game;
     }
 }

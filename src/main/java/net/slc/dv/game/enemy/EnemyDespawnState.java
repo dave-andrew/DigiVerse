@@ -1,7 +1,7 @@
 package net.slc.dv.game.enemy;
 
 import net.slc.dv.game.Enemy;
-import net.slc.dv.view.OfflineGame;
+import net.slc.dv.view.offlinegame.OfflineGameView;
 
 public class EnemyDespawnState extends EnemyBaseState {
 
@@ -16,7 +16,7 @@ public class EnemyDespawnState extends EnemyBaseState {
     }
 
     @Override
-    public void onUpdate(double deltaTime, OfflineGame game) {
+    public void onUpdate(double deltaTime, OfflineGameView game) {
 
     }
 }

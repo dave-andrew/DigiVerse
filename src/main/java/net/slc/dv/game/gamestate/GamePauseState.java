@@ -1,13 +1,13 @@
 package net.slc.dv.game.gamestate;
 
 import net.slc.dv.helper.ScreenManager;
-import net.slc.dv.view.OfflineGame;
-import net.slc.dv.view.gameview.PauseMenu;
-import net.slc.dv.view.gameview.SettingMenu;
+import net.slc.dv.view.offlinegame.OfflineGameView;
+import net.slc.dv.view.offlinegame.component.PauseMenu;
+import net.slc.dv.view.offlinegame.component.SettingMenu;
 
 public class GamePauseState extends GameBaseState {
 
-    public GamePauseState(OfflineGame game) {
+    public GamePauseState(OfflineGameView game) {
         super(game);
 
         SettingMenu settingMenu = new SettingMenu(game);

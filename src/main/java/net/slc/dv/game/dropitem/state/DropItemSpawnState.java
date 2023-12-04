@@ -7,7 +7,7 @@ import net.slc.dv.game.enemy.EnemyDeadState;
 import net.slc.dv.game.enemy.EnemyDespawnState;
 import javafx.scene.media.Media;
 import javafx.scene.media.MediaPlayer;
-import net.slc.dv.view.OfflineGame;
+import net.slc.dv.view.offlinegame.OfflineGameView;
 
 import java.io.File;
 
@@ -17,7 +17,7 @@ public class DropItemSpawnState extends DropItemBaseState {
     private final MediaPlayer powerupSound;
     private final double effectTime = 200.0;
 
-    public DropItemSpawnState(OfflineGame game, Enemy enemy, DropItem dropItem) {
+    public DropItemSpawnState(OfflineGameView game, Enemy enemy, DropItem dropItem) {
         super(game, enemy, dropItem);
 
         File moneySFX = new File("resources/game/soundFX/money.wav");

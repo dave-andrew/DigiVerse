@@ -2,9 +2,7 @@ package net.slc.dv.controller;
 
 import net.slc.dv.database.TaskQuery;
 import net.slc.dv.enums.TaskType;
-import net.slc.dv.model.LoggedUser;
-import net.slc.dv.model.Question;
-import net.slc.dv.model.Task;
+import net.slc.dv.model.*;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -52,6 +50,11 @@ public class TaskController {
         return taskQuery.fetchTaskByDate(date);
     }
 
+    public ArrayList<Task> fetchTaskByDate(int day, int month, int year) {
+        String date = year + "-" + month + "-" + day;
+        return taskQuery.fetchTaskByDate(date);
+    }
+
     public ArrayList<Task> fetchUserPendingTask(String userid) {
         return taskQuery.fetchUserPendingTask(userid);
     }
@@ -61,5 +64,9 @@ public class TaskController {
     }
     public ArrayList<Task> fetchClassroomPendingTask(String classid) {
         return taskQuery.fetchClassroomPendingTask(classid);
+    }
+
+    public List<Question> fetchQuestion(String taskid) {
+        return taskQuery.fetchQuestions(taskid);
     }
 }

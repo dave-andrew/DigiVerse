@@ -1,7 +1,7 @@
 package net.slc.dv.game.enemy;
 
 import net.slc.dv.game.Enemy;
-import net.slc.dv.view.OfflineGame;
+import net.slc.dv.view.offlinegame.OfflineGameView;
 
 public abstract class EnemyBaseState {
 
@@ -13,6 +13,6 @@ public abstract class EnemyBaseState {
 
     public abstract void onEnterState();
 
-    public abstract void onUpdate(double deltaTime, OfflineGame game);
+    public abstract void onUpdate(double deltaTime, OfflineGameView game);
 
 }

@@ -2,6 +2,9 @@ package net.slc.dv.controller;
 
 import net.slc.dv.database.AnswerQuery;
 import net.slc.dv.helper.toast.ToastBuilder;
+import net.slc.dv.model.AnswerDetail;
+import net.slc.dv.model.AnswerHeader;
+import org.jetbrains.annotations.Nullable;
 
 import java.io.File;
 import java.io.IOException;
@@ -10,6 +13,7 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.nio.file.StandardCopyOption;
 import java.util.ArrayList;
+import java.util.List;
 
 public class AnswerController {
 
@@ -19,8 +23,12 @@ public class AnswerController {
         this.answerQuery = new AnswerQuery();
     }
 
-    public ArrayList<File> getMemberAnswer(String taskid, String userid) {
-        return answerQuery.getMemberAnswer(taskid, userid);
+    public ArrayList<File> getMemberFileAnswer(String taskid, String userid) {
+        return answerQuery.getMemberFileAnswer(taskid, userid);
+    }
+
+    public List<AnswerDetail> getMemberQuestionAnswer(String taskid, String userid) {
+        return answerQuery.getMemberQuestionAnswer(taskid, userid);
     }
 
     public Integer getAnswerScore(String taskid, String userid) {
@@ -75,7 +83,7 @@ public class AnswerController {
         answerQuery.markUndone(taskid, userid);
     }
 
-    public boolean scoreAnswer(String taskid, String userid, String score) {
+    public boolean scoreQuestionAnswer(String taskid, String userid, String score) {
         if(score.isEmpty()) {
             ToastBuilder.buildNormal().setText("Score cannot be empty!").build();
             return false;
@@ -92,5 +100,43 @@ public class AnswerController {
         }
 
         return answerQuery.scoreAnswer(taskid, userid, Integer.parseInt(score));
+    }
+
+    public AnswerHeader saveAnswer(@Nullable AnswerHeader answerHeader, String taskid, String userid, List<AnswerDetail> answerList) {
+        if(answerHeader == null) {
+            answerHeader = new AnswerHeader(taskid, userid, false, 0, null);
+        }
+
+        AnswerHeader finalAnswerHeader = answerHeader;
+        answerList.forEach(answerDetail -> answerDetail.setAnswerId(finalAnswerHeader.getId()));
+
+        answerQuery.createAnswerHeader(answerHeader);
+        answerQuery.createAnswerDetails(answerList);
+
+        return answerHeader;
+    }
+
+    public void submitTest(AnswerHeader answerHeader) {
+        answerQuery.submitTest(answerHeader);
+    }
+
+    @Nullable
+    public AnswerHeader fetchAnswerHeader(String taskid, String userid) {
+        return answerQuery.getAnswerHeader(taskid, userid);
+    }
+
+    public boolean checkTest(String taskid, String userid) {
+        return answerQuery.checkTest(taskid, userid);
+    }
+    public List<AnswerDetail> fetchAnswerDetails(String answerid) {
+        return answerQuery.getAnswerDetails(answerid);
+    }
+
+    public void scoreQuestionAnswer(List<AnswerDetail> answerDetails) {
+        answerQuery.scoreQuestionAnswer(answerDetails);
+    }
+
+    public void finishScoring(String taskId, String userId, String answerid, Double score) {
+        answerQuery.finishScoring(taskId, userId, answerid, score);
     }
 }

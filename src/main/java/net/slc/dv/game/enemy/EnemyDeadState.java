@@ -5,7 +5,7 @@ import javafx.scene.media.MediaPlayer;
 import net.slc.dv.game.Enemy;
 import net.slc.dv.game.dropitem.*;
 import net.slc.dv.helper.ItemManager;
-import net.slc.dv.view.OfflineGame;
+import net.slc.dv.view.offlinegame.OfflineGameView;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -37,7 +37,7 @@ public class EnemyDeadState extends EnemyBaseState {
     }
 
     @Override
-    public void onUpdate(double deltaTime, OfflineGame game) {
+    public void onUpdate(double deltaTime, OfflineGameView game) {
         this.lastTimeFrame += deltaTime;
 
         if (frame == 1200) {
