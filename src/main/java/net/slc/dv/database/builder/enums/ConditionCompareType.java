@@ -11,7 +11,8 @@ public enum ConditionCompareType {
     GREATER_THAN_EQUAL(">="),
     LESS_THAN_EQUAL("<="),
 
-    IN("IN");
+    IN("IN"),
+    NOT_IN("NOT IN");
 
     private final String symbol;
 
@@ -34,6 +35,8 @@ public enum ConditionCompareType {
             case "<=":
                 return LESS_THAN_EQUAL;
             case "IN":
+                return IN;
+            case "NOT IN":
                 return IN;
             default:
                 throw new IllegalArgumentException("Invalid symbol: " + symbol);

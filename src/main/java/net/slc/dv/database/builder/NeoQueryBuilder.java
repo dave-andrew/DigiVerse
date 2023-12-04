@@ -106,7 +106,7 @@ public class NeoQueryBuilder {
      */
     public NeoQueryBuilder condition(String column, ConditionCompareType compareType, Object value) {
         AbstractCondition condition;
-        if (compareType.equals(ConditionCompareType.IN)) {
+        if (compareType.equals(ConditionCompareType.IN) || compareType.equals(ConditionCompareType.NOT_IN)) {
             condition = new SubQueryCondition(column, (NeoQueryBuilder) value);
         } else {
             condition = new Condition(column, compareType, value);
@@ -410,7 +410,7 @@ public class NeoQueryBuilder {
                 }
 
                 SubQueryCondition subQueryCondition = (SubQueryCondition) condition;
-                stringJoiner.add(subQueryCondition.getColumn() + " IN (" + subQueryCondition.getQuery() + ") ");
+                stringJoiner.add(subQueryCondition.getColumn() + " " + condition.getCompareType().getSymbol() + " (" + subQueryCondition.getQuery() + ") ");
             }
         }
 

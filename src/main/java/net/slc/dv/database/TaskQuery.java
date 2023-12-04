@@ -5,25 +5,17 @@ import net.slc.dv.database.builder.NeoQueryBuilder;
 import net.slc.dv.database.builder.Results;
 import net.slc.dv.database.builder.enums.ConditionCompareType;
 import net.slc.dv.database.builder.enums.QueryType;
-import net.slc.dv.database.connection.Connect;
 import net.slc.dv.helper.Closer;
 import net.slc.dv.helper.DateManager;
 import net.slc.dv.helper.toast.ToastBuilder;
 import net.slc.dv.model.*;
 
-import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
 public class TaskQuery {
-
-    private final Connect connect;
-
-    public TaskQuery() {
-        this.connect = Connect.getConnection();
-    }
 
     public void createFileTask(Task task, String classid) {
         try (Closer closer = new Closer()) {
@@ -71,7 +63,7 @@ public class TaskQuery {
                         .values("QuestionType", question.getQuestionType().toString())
                         .values("QuestionText", question.getQuestionText())
                         .values("QuestionChoice", question.getQuestionChoice())
-                        .values("QuestionAnswer", question.getQuestionKey());
+                        .values("QuestionAnswer", question.getQuestionAnswer());
 
                 batchQueryBuilder.add(queryBuilder);
             }
@@ -129,23 +121,30 @@ public class TaskQuery {
                 "class_task.ClassID IN (SELECT ClassID FROM class_member WHERE UserID = ?)\n";
 
         ArrayList<Task> taskList = new ArrayList<>();
-        try (PreparedStatement ps = connect.prepareStatement(query)) {
-            assert ps != null;
-            ps.setString(1, date);
-            ps.setString(2, LoggedUser.getInstance().getId());
+        try (Closer closer = new Closer()) {
+            NeoQueryBuilder classMemberSQ = new NeoQueryBuilder(QueryType.SELECT)
+                    .table("class_member")
+                    .columns("ClassID")
+                    .condition("UserID", "=", LoggedUser.getInstance().getId())
+                    .condition("Role", "=", "Student");
 
-            try (var rs = ps.executeQuery()) {
-                while (rs.next()) {
+            NeoQueryBuilder queryBuilder = new NeoQueryBuilder(QueryType.SELECT)
+                    .table("class_task")
+                    .join("class_task", "TaskID", "mstask", "TaskID")
+                    .join("mstask", "UserID", "msuser", "UserID")
+                    .join("class_task", "ClassID", "msclass", "ClassID")
+                    .condition("DATE(DeadlineAt)", "=", date)
+                    .condition("class_task.ClassID", "IN", classMemberSQ);
 
-                    Classroom classroom = new Classroom(rs);
-                    User user = new User(rs);
-                    Task task = new Task(rs, user, classroom);
-                    taskList.add(task);
+            Results results = closer.add(queryBuilder.getResults());
+            ResultSet set = closer.add(results.getResultSet());
 
-                }
+            while (set.next()) {
+                Classroom classroom = new Classroom(set);
+                User user = new User(set);
+                Task task = new Task(set, user, classroom);
+                taskList.add(task);
             }
-
-            return taskList;
         } catch (SQLException e) {
             e.printStackTrace();
         }
@@ -154,67 +153,79 @@ public class TaskQuery {
     }
 
     public ArrayList<Task> fetchUserPendingTask(String userid) {
-
         ArrayList<Task> taskList = new ArrayList<>();
 
-        String query = "SELECT * FROM class_task\n" +
-                "JOIN mstask ON class_task.TaskID = mstask.TaskID\n" +
-                "JOIN msuser ON mstask.UserID = msuser.UserID\n" +
-                "JOIN msclass ON msclass.ClassID = class_task.ClassID\n" +
-                "WHERE class_task.ClassID IN (SELECT ClassID FROM class_member WHERE UserID = ? AND Role = ?) AND \n" +
-                "mstask.TaskID NOT IN (SELECT TaskID FROM answer_header WHERE UserID = ?)\n";
+        try (Closer closer = new Closer()) {
+            NeoQueryBuilder classMemberSQ = new NeoQueryBuilder(QueryType.SELECT)
+                    .table("class_member")
+                    .columns("ClassID")
+                    .condition("UserID", "=", userid)
+                    .condition("Role", "=", "Student");
 
-        try (PreparedStatement ps = connect.prepareStatement(query)) {
-            assert ps != null;
-            ps.setString(1, userid);
-            ps.setString(2, "Student");
-            ps.setString(3, userid);
+            NeoQueryBuilder answerHeaderSQ = new NeoQueryBuilder(QueryType.SELECT)
+                    .table("answer_header")
+                    .columns("TaskID")
+                    .condition("UserID", "=", userid);
 
-            try (var rs = ps.executeQuery()) {
-                while (rs.next()) {
-                    Classroom classroom = new Classroom(rs);
-                    User user = new User(rs);
-                    Task task = new Task(rs, user, classroom);
-                    taskList.add(task);
+            NeoQueryBuilder queryBuilder = new NeoQueryBuilder(QueryType.SELECT)
+                    .table("class_task")
+                    .join("class_task", "TaskID", "mstask", "TaskID")
+                    .join("mstask", "UserID", "msuser", "UserID")
+                    .join("msclass", "ClassID", "class_task", "ClassID")
+                    .condition("class_task.ClassID", "IN", classMemberSQ)
+                    .condition("mstask.TaskID", "NOT IN", answerHeaderSQ);
 
-                }
+            Results results = closer.add(queryBuilder.getResults());
+            ResultSet set = closer.add(results.getResultSet());
+
+            while (set.next()) {
+                Classroom classroom = new Classroom(set);
+                User user = new User(set);
+                Task task = new Task(set, user, classroom);
+
+                taskList.add(task);
             }
-        } catch (Exception ignored) {
+        } catch (SQLException e) {
+            e.printStackTrace();
         }
 
         return taskList;
     }
 
     public ArrayList<Task> fetchUserFinishedTask(String userid) {
-
         ArrayList<Task> taskList = new ArrayList<>();
 
-        String query = "SELECT * FROM class_task\n" +
-                "JOIN mstask ON class_task.TaskID = mstask.TaskID\n" +
-                "JOIN msuser ON mstask.UserID = msuser.UserID\n" +
-                "JOIN msclass ON msclass.ClassID = class_task.ClassID\n" +
-                "WHERE class_task.ClassID IN (SELECT ClassID FROM class_member WHERE UserID = ? AND Role = ?) AND \n" +
-                "mstask.TaskID IN (SELECT TaskID FROM answer_header WHERE UserID = ?)\n";
+        try (Closer closer = new Closer()) {
+            NeoQueryBuilder classMemberSQ = new NeoQueryBuilder(QueryType.SELECT)
+                    .table("class_member")
+                    .columns("ClassID")
+                    .condition("UserID", "=", userid)
+                    .condition("Role", "=", "Student");
 
-        try (PreparedStatement ps = connect.prepareStatement(query)) {
+            NeoQueryBuilder answerHeaderSQ = new NeoQueryBuilder(QueryType.SELECT)
+                    .table("answer_header")
+                    .columns("TaskID")
+                    .condition("UserID", "=", userid);
 
-            assert ps != null;
-            ps.setString(1, userid);
-            ps.setString(2, "Student");
-            ps.setString(3, userid);
+            NeoQueryBuilder queryBuilder = new NeoQueryBuilder(QueryType.SELECT)
+                    .table("class_task")
+                    .join("class_task", "TaskID", "mstask", "TaskID")
+                    .join("mstask", "UserID", "msuser", "UserID")
+                    .join("class_task", "ClassID", "msclass", "ClassID")
+                    .condition("class_task.ClassID", "IN", classMemberSQ)
+                    .condition("mstask.TaskID", "IN", answerHeaderSQ);
 
-            try (var rs = ps.executeQuery()) {
-                while (rs.next()) {
+            Results results = closer.add(queryBuilder.getResults());
+            ResultSet set = closer.add(results.getResultSet());
 
-                    Classroom classroom = new Classroom(rs);
-                    User user = new User(rs);
-                    Task task = new Task(rs, user, classroom);
-                    taskList.add(task);
-
-                }
+            while (set.next()) {
+                Classroom classroom = new Classroom(set);
+                User user = new User(set);
+                Task task = new Task(set, user, classroom);
+                taskList.add(task);
             }
-
-        } catch (Exception ignored) {
+        } catch (SQLException e) {
+            e.printStackTrace();
         }
 
         return taskList;

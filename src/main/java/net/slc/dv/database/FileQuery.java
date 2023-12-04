@@ -6,7 +6,7 @@ import net.slc.dv.database.builder.enums.QueryType;
 import net.slc.dv.database.connection.Connect;
 import net.slc.dv.helper.Closer;
 import net.slc.dv.helper.toast.ToastBuilder;
-import net.slc.dv.model.Answer;
+import net.slc.dv.model.AnswerFile;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -25,7 +25,7 @@ public class FileQuery {
         this.connection = Connect.getConnection();
     }
 
-    public void uploadTaskAnswer(Answer answer) {
+    public void uploadTaskAnswer(AnswerFile answer) {
         try {
             connection.getConnect().setAutoCommit(false);
 
