@@ -29,12 +29,12 @@ public class QuestionMultipleChoice extends VBox implements QuestionBox {
         this.question = question;
         this.answerDetail = answerDetail;
 
-        Label numberLabel = LabelBuilder.create(number + ".").build();
-
-        Label questionText = LabelBuilder.create(question.getQuestionText()).build();
+        Label numberLabel = LabelBuilder.create(number + ". " + question.getQuestionText())
+                .setWrapText(true)
+                .build();
 
         VBox questionContainer = VBoxBuilder.create()
-                .addChildren(numberLabel, questionText)
+                .addChildren(numberLabel)
                 .setSpacing(10)
                 .build();
 

@@ -88,10 +88,9 @@ public class AddTaskView extends BorderPane {
 	private void changeCenter() {
 		if(this.centerType == TaskCenter.FILE) {
 			this.root.setCenter(this.createFileTask);
+			return;
 		}
-		else {
-			this.root.setCenter(this.createQuestionTask);
-		}
+		this.root.setCenter(this.createQuestionTask);
 	}
 
 	private HBox navBar() {
@@ -200,11 +199,6 @@ public class AddTaskView extends BorderPane {
 				.addChildren(dateTimeLabel, datePicker, timeSpinner)
 				.setSpacing(10)
 				.setAlignment(Pos.CENTER_LEFT)
-				.setPadding(30, 40, 0, 40)
-				.build();
-
-		VBox dateTimeContainer = VBoxBuilder.create()
-				.addChildren(dateTimeBox)
 				.build();
 
 		Label scoreLabel = new Label("Scored");
@@ -230,15 +224,32 @@ public class AddTaskView extends BorderPane {
 				.setVMargin(0, 0, 50, 0)
 				.build();
 
-		Button questionBtn = ButtonBuilder.create("Create Question")
-				.setStyleClass("primary-button")
-				.setStyle("-fx-text-fill: white;")
-				.setPrefWidth(300)
+		VBox dateTimeContainer = VBoxBuilder.create()
+				.setPadding(30, 40, 0, 40)
+				.build();
+
+		Label questionLabel = LabelBuilder.create("Task Type")
+				.build();
+
+		ComboBox<Object> questionBtn = ComboBoxBuilder.create()
+				.setItems("Task", "Test")
+				.setValue("Task")
 				.setOnAction(e -> this.changeTaskType())
+				.bindWidthProperty(dateTimeContainer, 80)
+				.build();
+
+		VBox questionContainer = VBoxBuilder.create()
+				.addChildren(questionLabel, questionBtn)
+				.setSpacing(10)
+				.build();
+
+		VBoxBuilder.modify(dateTimeContainer)
+				.addChildren(questionContainer, dateTimeBox)
+				.setSpacing(30)
 				.build();
 
 		return VBoxBuilder.create()
-				.addChildren(questionBtn, dateTimeContainer, scoreBox, spacer, joinBtn)
+				.addChildren(dateTimeContainer, scoreBox, spacer, joinBtn)
 				.setAlignment(Pos.CENTER)
 				.setStyleClass("side-nav")
 				.build();

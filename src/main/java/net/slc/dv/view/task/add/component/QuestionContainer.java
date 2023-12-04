@@ -58,7 +58,7 @@ public class QuestionContainer {
 
         Button closeButton = ButtonBuilder.create()
                 .setGraphic(closeIcon)
-                .setStyle("-fx-background-color: transparent;-fx-border-color: transparent;-fx-cursor: hand;")
+                .setStyle("-fx-background-color: transparent;-fx-border-color: red; -fx-border-width: 1px; -fx-border-radius:5px; -fx-cursor: hand;")
                 .setOnAction(e -> consumer.accept(this))
                 .build();
 

@@ -1,5 +1,6 @@
 package net.slc.dv.view.test;
 
+import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
@@ -19,7 +20,7 @@ import net.slc.dv.view.test.question.QuestionTrueFalse;
 import java.util.*;
 import java.util.concurrent.atomic.AtomicInteger;
 
-public class DoTestView extends HBox {
+public class DoTestView extends BorderPane {
 	private final StackPane mainPane;
 	private ScrollPane questionScroll;
 	private Button saveButton;
@@ -73,26 +74,30 @@ public class DoTestView extends HBox {
 				QuestionMultipleChoice questionBox = new QuestionMultipleChoice(i + 1, question, answerDetail);
 				questionContainer.getChildren().add(questionBox);
 				questionBoxes.add(questionBox);
-				continue;
-			}
-			if (question.getQuestionType().equals(QuestionType.TRUE_FALSE)) {
+			} else if (question.getQuestionType().equals(QuestionType.TRUE_FALSE)) {
 				QuestionTrueFalse questionBox = new QuestionTrueFalse(i + 1, question, answerDetail);
 				questionContainer.getChildren().add(questionBox);
 				questionBoxes.add(questionBox);
-				continue;
-			}
-			if (question.getQuestionType().equals(QuestionType.ESSAY)) {
+			} else if (question.getQuestionType().equals(QuestionType.ESSAY)) {
 				QuestionEssay questionBox = new QuestionEssay(i + 1, question, answerDetail);
 				questionContainer.getChildren().add(questionBox);
 				questionBoxes.add(questionBox);
 			}
+
+			questionContainer.getStyleClass().add("card");
 		}
 
-		questionScroll.setContent(questionContainer);
-
-		HBoxBuilder.modify(this)
-				.addChildren(questionScroll)
+		VBox container = VBoxBuilder.create()
+				.addChildren(questionContainer)
+				.setPadding(40, 120, 100, 120)
+				.setAlignment(Pos.CENTER)
 				.build();
+
+		questionScroll.setContent(container);
+		questionScroll.setFitToWidth(true);
+		questionScroll.setPrefWidth(600);
+
+		this.setCenter(questionScroll);
 	}
 
 	private void initRight() {
@@ -135,12 +140,12 @@ public class DoTestView extends HBox {
 
 		VBox submitContainer = VBoxBuilder.create()
 				.addChildren(submitStatusContainer, questionNumbers, saveButton, submitButton)
+				.setPadding(30)
 				.setVgrow(Priority.NEVER)
+				.setStyleClass("side-nav")
 				.build();
 
-		HBoxBuilder.modify(this)
-				.addChildren(submitContainer)
-				.build();
+		this.setRight(submitContainer);
 	}
 
 	private GridPane getQuestionNumbers() {
@@ -162,7 +167,6 @@ public class DoTestView extends HBox {
 
 			if (questionBoxes.get(i).getQuestionAnswer() != null) {
 				questionNumber.getStyleClass().add("answered");
-				//TODO: DEP change this
 			}
 
 			questionNumbers.add(questionNumber, colIndex.get(), rowIndex.get());
