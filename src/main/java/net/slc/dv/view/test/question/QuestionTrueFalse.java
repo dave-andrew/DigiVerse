@@ -30,15 +30,11 @@ public class QuestionTrueFalse extends VBox implements QuestionBox {
 		this.question = question;
 		this.answerDetail = answerDetail;
 
-		Label numberLabel = LabelBuilder.create(number + ".")
+		Label numberLabel = LabelBuilder.create(number + ". " + question.getQuestionText())
 				.build();
-
-		Label questionText = LabelBuilder.create(question.getQuestionText())
-				.build();
-
 
 		VBox questionContainer = VBoxBuilder.create()
-				.addChildren(numberLabel, questionText)
+				.addChildren(numberLabel)
 				.setSpacing(10)
 				.build();
 

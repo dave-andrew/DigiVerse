@@ -35,6 +35,7 @@ public class DoTestView extends BorderPane {
 	private List<QuestionBox> questionBoxes;
 	private AnswerHeader answerHeaders;
 	private List<AnswerDetail> answerDetails;
+	private GridPane questionNumbers;
 
 
 	public DoTestView(StackPane mainPane, Task task, Classroom classroom, String userRole) {
@@ -63,6 +64,7 @@ public class DoTestView extends BorderPane {
 	private void initCenter() {
 		this.questionScroll = new ScrollPane();
 		VBox questionContainer = new VBox();
+		questionContainer.setSpacing(20);
 		for (int i = 0; i < questions.size(); i++) {
 			Question question = questions.get(i);
 
@@ -77,28 +79,32 @@ public class DoTestView extends BorderPane {
 				QuestionMultipleChoice questionBox = new QuestionMultipleChoice(i + 1, question, answerDetail);
 				questionContainer.getChildren().add(questionBox);
 				questionBoxes.add(questionBox);
+				questionBox.getStyleClass().add("card");
 			} else if (question.getQuestionType().equals(QuestionType.TRUE_FALSE)) {
 				QuestionTrueFalse questionBox = new QuestionTrueFalse(i + 1, question, answerDetail);
 				questionContainer.getChildren().add(questionBox);
 				questionBoxes.add(questionBox);
+				questionBox.getStyleClass().add("card");
 			} else if (question.getQuestionType().equals(QuestionType.ESSAY)) {
 				QuestionEssay questionBox = new QuestionEssay(i + 1, question, answerDetail);
 				questionContainer.getChildren().add(questionBox);
 				questionBoxes.add(questionBox);
+				questionBox.getStyleClass().add("card");
 			}
-
-			questionContainer.getStyleClass().add("card");
 		}
 
 		VBox container = VBoxBuilder.create()
 				.addChildren(questionContainer)
-				.setPadding(40, 120, 100, 120)
+				.setPadding(40, 50, 40, 70)
 				.setAlignment(Pos.CENTER)
 				.build();
 
 		questionScroll.setContent(container);
 		questionScroll.setFitToWidth(true);
-		questionScroll.setPrefWidth(600);
+		questionScroll.setPannable(true);
+
+		questionScroll.setHbarPolicy(ScrollPane.ScrollBarPolicy.NEVER);
+		questionScroll.setVbarPolicy(ScrollPane.ScrollBarPolicy.NEVER);
 
 		this.setCenter(questionScroll);
 	}
@@ -122,7 +128,8 @@ public class DoTestView extends BorderPane {
 				.build();
 
 
-		GridPane questionNumbers = this.getQuestionNumbers();
+		this.questionNumbers = this.getQuestionNumbers();
+		this.questionNumbers.setPadding(new Insets(20, 0, 0, 0));
 
 		this.saveButton = ButtonBuilder.create("Save")
 				.setStyleClass("primary-button")
@@ -143,12 +150,23 @@ public class DoTestView extends BorderPane {
 
 		VBox submitContainer = VBoxBuilder.create()
 				.addChildren(submitStatusContainer, questionNumbers, saveButton, submitButton)
-				.setPadding(30)
+				.setStyleClass("card")
 				.setVgrow(Priority.NEVER)
-				.setStyleClass("side-nav")
 				.build();
 
-		this.setRight(submitContainer);
+		VBox rightContentContainer = VBoxBuilder.create()
+				.addChildren(submitContainer)
+				.setPadding(40, 60, 30, 10)
+				.build();
+
+		ScrollPane rightScroll = ScrollPaneBuilder.create()
+				.setContent(rightContentContainer)
+				.setPannable(true)
+				.setHbarPolicy(ScrollPane.ScrollBarPolicy.NEVER)
+				.setVbarPolicy(ScrollPane.ScrollBarPolicy.NEVER)
+				.build();
+
+		this.setRight(rightScroll);
 	}
 
 	private GridPane getQuestionNumbers() {
@@ -165,11 +183,12 @@ public class DoTestView extends BorderPane {
 			int finalI = i;
 			Button questionNumber = ButtonBuilder.create(String.valueOf(i + 1))
 					.setPrefSize(50, 50)
+					.setStyleClass("test-button")
 					.setOnAction(e -> this.changeQuestion(finalI))
 					.build();
 
 			if (questionBoxes.get(i).getQuestionAnswer() != null) {
-				questionNumber.getStyleClass().add("answered");
+				questionNumber.getStyleClass().add("submitted");
 			}
 
 			questionNumbers.add(questionNumber, colIndex.get(), rowIndex.get());
@@ -193,14 +212,23 @@ public class DoTestView extends BorderPane {
 	private AnswerHeader saveAnswer() {
 		ArrayList<AnswerDetail> answerDetails = new ArrayList<>();
 		for (QuestionBox questionBox : questionBoxes) {
-			if (questionBox.getQuestionAnswer() != null) {
-				AnswerDetail answerDetail = new AnswerDetail(
-						questionBox.getQuestionId(),
-						questionBox.getQuestionAnswer(),
-						questionBox.getAnswerScore()
-				);
-				answerDetails.add(answerDetail);
+
+			if(questionBox.getQuestionAnswer() == null) {
+				this.questionNumbers.getChildren().get(questionBoxes.indexOf(questionBox)).getStyleClass().remove("submitted");
+				continue;
 			}
+
+			AnswerDetail answerDetail = new AnswerDetail(
+					questionBox.getQuestionId(),
+					questionBox.getQuestionAnswer(),
+					questionBox.getAnswerScore()
+			);
+
+			System.out.println(questionBox.getQuestionAnswer());
+
+			this.questionNumbers.getChildren().get(questionBoxes.indexOf(questionBox)).getStyleClass().add("submitted");
+
+			answerDetails.add(answerDetail);
 		}
 
 		return answerController.saveAnswer(answerHeaders, task.getId(), LoggedUser.getInstance().getId(), answerDetails);

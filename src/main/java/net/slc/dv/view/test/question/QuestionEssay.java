@@ -29,14 +29,11 @@ public class QuestionEssay extends VBox implements QuestionBox {
 		this.answerDetail = answerDetail;
 		this.isChecking = isChecking;
 
-		Label numberLabel = LabelBuilder.create(number + ".")
-				.build();
-
-		Label questionText = LabelBuilder.create(question.getQuestionText())
+		Label numberLabel = LabelBuilder.create(number + ". " + question.getQuestionText())
 				.build();
 
 		VBox questionContainer = VBoxBuilder.create()
-				.addChildren(numberLabel, questionText)
+				.addChildren(numberLabel)
 				.setSpacing(10)
 				.build();
 
@@ -98,6 +95,7 @@ public class QuestionEssay extends VBox implements QuestionBox {
 		return QuestionType.MULTIPLE_CHOICE;
 	}
 
+	@Nullable
 	@Override
 	public String getQuestionAnswer() {
 		return this.answerField.getText().isEmpty() ? null : this.answerField.getText();

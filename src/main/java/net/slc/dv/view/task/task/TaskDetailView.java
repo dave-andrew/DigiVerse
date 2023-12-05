@@ -109,7 +109,6 @@ public class TaskDetailView extends HBox {
 
 
 		if(answerHeader != null) {
-			System.out.println("haH" + answerHeader.getScore());
 			score = LabelBuilder.create(answerHeader.getScore() == null ? "Score: -" : "Score: " + answerHeader.getScore() )
 					.setHgrow(Priority.ALWAYS)
 					.setAlignment(Pos.CENTER_LEFT)
@@ -259,8 +258,14 @@ public class TaskDetailView extends HBox {
 
 		String status = this.getStatus();
 		this.submitStatus = LabelBuilder.create(status)
-				.setStyleClass("title")
+				.setStyle("-fx-text-size: 14px; -fx-text-fill: #F44336;")
 				.build();
+
+		if (status.equals("Submitted")) {
+			this.submitStatus.setStyle("-fx-text-fill: #4CAF50;");
+		} else if (status.equals("Done")) {
+			this.submitStatus.setStyle("-fx-text-fill: #4CAF50;");
+		}
 
 		HBox spacer = HBoxBuilder.create()
 				.setHgrow(Priority.ALWAYS)
@@ -434,11 +439,21 @@ public class TaskDetailView extends HBox {
 			if (submitStatus.getText().equals("Not Submitted")) {
 				this.answerController.markAsDone(task.getId(), LoggedUser.getInstance().getId());
 				this.submitStatus.setText("Submitted");
+				this.submitStatus.setStyle("-fx-text-fill: #4CAF50;");
 				this.sideContent.getChildren().add(fileContainer);
 			} else if (submitStatus.getText().equals("Submitted") && fileList.isEmpty()) {
 				this.answerController.markUndone(task.getId(), LoggedUser.getInstance().getId());
 				this.submitStatus.setText("Not Submitted");
+				this.submitStatus.setStyle("-fx-text-fill: #F44336;");
 				this.sideContent.getChildren().remove(fileContainer);
+			} else if(submitStatus.getText().equals("Done")){
+				this.answerController.markUndone(task.getId(), LoggedUser.getInstance().getId());
+				this.submitStatus.setText("Not Done");
+				this.submitStatus.setStyle("-fx-text-fill: #4CAF50;");
+			} else {
+				this.answerController.markAsDone(task.getId(), LoggedUser.getInstance().getId());
+				this.submitStatus.setText("Done");
+				this.submitStatus.setStyle("-fx-text-fill: #F44336;");
 			}
 		});
 	}
