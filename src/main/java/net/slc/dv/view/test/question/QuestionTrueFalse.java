@@ -140,6 +140,10 @@ public class QuestionTrueFalse extends VBox implements QuestionBox {
 			return 0.0;
 		}
 
+		if(this.answer.equals(this.question.getQuestionAnswer())) {
+			return 1.0;
+		}
+
 		if(this.answerDetail == null) {
 			return null;
 		}

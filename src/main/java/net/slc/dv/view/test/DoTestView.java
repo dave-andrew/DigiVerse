@@ -15,6 +15,7 @@ import net.slc.dv.view.task.task.TaskBase;
 import net.slc.dv.view.test.question.QuestionEssay;
 import net.slc.dv.view.test.question.QuestionMultipleChoice;
 import net.slc.dv.view.test.question.QuestionTrueFalse;
+import org.jetbrains.annotations.Nullable;
 
 import java.util.*;
 import java.util.concurrent.atomic.AtomicInteger;
@@ -63,6 +64,8 @@ public class DoTestView extends HBox {
 		VBox questionContainer = new VBox();
 		for (int i = 0; i < questions.size(); i++) {
 			Question question = questions.get(i);
+
+			@Nullable
 			AnswerDetail answerDetail = answerDetails
 					.stream()
 					.filter(answer -> Objects.equals(answer.getQuestionId(), question.getQuestionID()))

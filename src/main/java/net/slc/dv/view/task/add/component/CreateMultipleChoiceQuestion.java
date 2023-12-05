@@ -129,6 +129,22 @@ public class CreateMultipleChoiceQuestion extends VBox implements CreateQuestion
 
 	@Override
 	public String getQuestionKey() {
+		String key = this.answerKey.getValue();
+
+		if(key.equals("A")) {
+			return this.answerFields.get(0).getText();
+		}
+		if(key.equals("B")) {
+			return this.answerFields.get(1).getText();
+		}
+		if(key.equals("C")) {
+			return this.answerFields.get(2).getText();
+		}
+		if(key.equals("D")) {
+			return this.answerFields.get(3).getText();
+		}
+
+
 		return this.answerKey.getValue();
 	}
 }

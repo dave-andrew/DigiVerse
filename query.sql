@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Dec 03, 2023 at 04:04 PM
+-- Generation Time: Dec 05, 2023 at 06:54 AM
 -- Server version: 10.4.28-MariaDB
 -- PHP Version: 8.0.28
 
@@ -30,22 +30,38 @@ SET time_zone = "+00:00";
 CREATE TABLE `answer_detail` (
                                  `AnswerID` char(36) NOT NULL,
                                  `QuestionID` char(36) NOT NULL,
-                                 `AnswerText` varchar(1000) DEFAULT NULL
+                                 `AnswerText` varchar(1000) DEFAULT NULL,
+                                 `Score` int(11) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
 -- Dumping data for table `answer_detail`
 --
 
-INSERT INTO `answer_detail` (`AnswerID`, `QuestionID`, `AnswerText`) VALUES
-                                                                         ('5d512c21-b0fd-4541-a5f9-c64165419133', '75962db6-040c-4fd6-aaba-b34e30777d7c', '🤤🤤🤤🤤🤤🤤🤤🤤🤤🤤'),
-                                                                         ('adcc9b7b-61a5-4835-8534-a6b54fced755', '1413421f-fee5-4342-be9f-b36cdc74ec31', 'dep'),
-                                                                         ('adcc9b7b-61a5-4835-8534-a6b54fced755', '168a07fc-a5a8-47a4-8298-438b835ee31a', 'Hendi'),
-                                                                         ('adcc9b7b-61a5-4835-8534-a6b54fced755', '4e16582f-872e-4673-bb29-29600d7ae1fa', 'True'),
-                                                                         ('adcc9b7b-61a5-4835-8534-a6b54fced755', '6642a382-42ad-44b3-842b-fcc070456019', 'Michael Sandera'),
-                                                                         ('adcc9b7b-61a5-4835-8534-a6b54fced755', '79e1a4ba-0a6d-4470-a8cc-c496ed05f0c6', 'dep'),
-                                                                         ('adcc9b7b-61a5-4835-8534-a6b54fced755', 'd3757789-9878-4e59-ab0d-f2b8b6ad4039', 'True'),
-                                                                         ('adcc9b7b-61a5-4835-8534-a6b54fced755', 'e0805ecd-be22-47b7-979f-831dcfe32c20', 'Dep');
+INSERT INTO `answer_detail` (`AnswerID`, `QuestionID`, `AnswerText`, `Score`) VALUES
+                                                                                  ('13638aae-65df-4e66-a136-c8666b2657f1', '029d94e3-49c8-4041-8f7e-3493f2b7e948', 'sen123', 10),
+                                                                                  ('13638aae-65df-4e66-a136-c8666b2657f1', '061da911-38fe-40ee-82e7-92984621a91f', 'sen123', 10),
+                                                                                  ('13638aae-65df-4e66-a136-c8666b2657f1', '201c78e4-04aa-4b20-8ad0-633b84fb9ec0', 'sen123', 10),
+                                                                                  ('13638aae-65df-4e66-a136-c8666b2657f1', '3e1c3ce6-e3c6-4f60-a1ab-ea7c18d41688', 's', 10),
+                                                                                  ('13638aae-65df-4e66-a136-c8666b2657f1', '500857e6-d225-486e-b392-efefd732c371', 's', 10),
+                                                                                  ('13638aae-65df-4e66-a136-c8666b2657f1', '758f0d20-deb6-47cc-b87b-aaccadfff16c', 's', 10),
+                                                                                  ('13638aae-65df-4e66-a136-c8666b2657f1', '75962db6-040c-4fd6-aaba-b34e30777d7c', 's', 9),
+                                                                                  ('13638aae-65df-4e66-a136-c8666b2657f1', '960c0352-ef53-47a9-a981-a7c1f090bbaa', 's', 1),
+                                                                                  ('adcc9b7b-61a5-4835-8534-a6b54fced755', '1413421f-fee5-4342-be9f-b36cdc74ec31', 'dep', NULL),
+                                                                                  ('adcc9b7b-61a5-4835-8534-a6b54fced755', '168a07fc-a5a8-47a4-8298-438b835ee31a', 'Hendi', 1),
+                                                                                  ('adcc9b7b-61a5-4835-8534-a6b54fced755', '4e16582f-872e-4673-bb29-29600d7ae1fa', 'True', 1),
+                                                                                  ('adcc9b7b-61a5-4835-8534-a6b54fced755', '6642a382-42ad-44b3-842b-fcc070456019', 'Michael Sandera', 1),
+                                                                                  ('adcc9b7b-61a5-4835-8534-a6b54fced755', '79e1a4ba-0a6d-4470-a8cc-c496ed05f0c6', 'dep', NULL),
+                                                                                  ('adcc9b7b-61a5-4835-8534-a6b54fced755', 'd3757789-9878-4e59-ab0d-f2b8b6ad4039', 'True', 1),
+                                                                                  ('adcc9b7b-61a5-4835-8534-a6b54fced755', 'e0805ecd-be22-47b7-979f-831dcfe32c20', 'Dep', 1),
+                                                                                  ('adcc9b7b-61a5-4835-8534-a6b54fced755', 'e8bdf5fb-6ee4-4c5e-9f3e-50c997331773', 'depping', NULL),
+                                                                                  ('fdd7add2-ddd1-492b-979d-0f2e0d0c6801', '0aaf220a-59b3-4522-8719-5bedfddf7024', 'ddeepp', 1),
+                                                                                  ('fdd7add2-ddd1-492b-979d-0f2e0d0c6801', '2f633b59-62a9-4f40-8823-f9c44e5b2ca7', 'True', 1),
+                                                                                  ('fdd7add2-ddd1-492b-979d-0f2e0d0c6801', '4d1ff2f3-849e-4ad2-9eae-9f985d14861e', 'True', 1),
+                                                                                  ('fdd7add2-ddd1-492b-979d-0f2e0d0c6801', '53bec7b1-7ec1-475d-bb95-9f4f5f112d8f', '2 Tahun lagi', 1),
+                                                                                  ('fdd7add2-ddd1-492b-979d-0f2e0d0c6801', '8d6770cc-cc78-4743-b412-27c1afb798c4', 'True', 1),
+                                                                                  ('fdd7add2-ddd1-492b-979d-0f2e0d0c6801', '8d9dbcc9-0fa0-4ea2-8457-3697f851d89b', '2', 1),
+                                                                                  ('fdd7add2-ddd1-492b-979d-0f2e0d0c6801', '8dd7a1ee-0578-431b-b2e3-2a219f04f197', 'test', 10);
 
 -- --------------------------------------------------------
 
@@ -58,7 +74,7 @@ CREATE TABLE `answer_header` (
                                  `TaskID` char(36) NOT NULL,
                                  `UserID` char(36) NOT NULL,
                                  `Finished` varchar(25) NOT NULL,
-                                 `Score` int(11) DEFAULT NULL,
+                                 `Score` double DEFAULT NULL,
                                  `CreatedAt` datetime DEFAULT NULL,
                                  `FinishedAt` datetime DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
@@ -68,8 +84,9 @@ CREATE TABLE `answer_header` (
 --
 
 INSERT INTO `answer_header` (`AnswerID`, `TaskID`, `UserID`, `Finished`, `Score`, `CreatedAt`, `FinishedAt`) VALUES
-                                                                                                                 ('5d512c21-b0fd-4541-a5f9-c64165419133', '3a218295-459b-4623-9d65-0239cb5fd168', 'd64dafd6-c3ef-4a64-a585-a7eb3581c623', '0', 0, '2023-12-03 21:47:13', NULL),
-                                                                                                                 ('adcc9b7b-61a5-4835-8534-a6b54fced755', '0b5da0a8-16c5-4259-9826-47669a5cb4b9', 'd64dafd6-c3ef-4a64-a585-a7eb3581c623', '1', 0, '2023-12-03 16:34:39', '2023-12-03 19:38:39');
+                                                                                                                 ('13638aae-65df-4e66-a136-c8666b2657f1', '3a218295-459b-4623-9d65-0239cb5fd168', 'd64dafd6-c3ef-4a64-a585-a7eb3581c623', '1', 0.875, '2023-12-04 14:55:37', '2023-12-04 14:55:37'),
+                                                                                                                 ('adcc9b7b-61a5-4835-8534-a6b54fced755', '0b5da0a8-16c5-4259-9826-47669a5cb4b9', 'd64dafd6-c3ef-4a64-a585-a7eb3581c623', '1', 1, '2023-12-03 16:34:39', '2023-12-04 12:13:55'),
+                                                                                                                 ('fdd7add2-ddd1-492b-979d-0f2e0d0c6801', '1ab13b08-36f2-4ff7-904c-b6094bce44bd', 'd64dafd6-c3ef-4a64-a585-a7eb3581c623', '1', 0.875, '2023-12-04 15:04:59', '2023-12-04 15:04:59');
 
 -- --------------------------------------------------------
 
@@ -164,9 +181,11 @@ INSERT INTO `class_task` (`ClassID`, `TaskID`) VALUES
                                                    ('14c78ec5-9bb1-4cc8-9b0c-c6ac802a4ca7', '7438c33c-0392-422e-8522-975e66135b21'),
                                                    ('14c78ec5-9bb1-4cc8-9b0c-c6ac802a4ca7', '7faa3885-7148-4bb5-a32b-494faf35fda7'),
                                                    ('14c78ec5-9bb1-4cc8-9b0c-c6ac802a4ca7', 'a3ee7523-dedd-4cd2-803e-e90bf36d3901'),
+                                                   ('14c78ec5-9bb1-4cc8-9b0c-c6ac802a4ca7', 'aa99cca2-ee7f-4bdf-9f1e-45fb3480df7c'),
                                                    ('14c78ec5-9bb1-4cc8-9b0c-c6ac802a4ca7', 'c7b677a9-6c06-450f-9b93-52d496a6d6b4'),
                                                    ('14c78ec5-9bb1-4cc8-9b0c-c6ac802a4ca7', 'ccda622b-d65c-49d4-baf3-40992a8a37f6'),
-                                                   ('14c78ec5-9bb1-4cc8-9b0c-c6ac802a4ca7', 'e280ee1a-f8a8-4cbf-b323-6def5a6079e3');
+                                                   ('14c78ec5-9bb1-4cc8-9b0c-c6ac802a4ca7', 'e280ee1a-f8a8-4cbf-b323-6def5a6079e3'),
+                                                   ('7b18eec9-0745-40b3-b618-c13aff79e6a1', '1ab13b08-36f2-4ff7-904c-b6094bce44bd');
 
 -- --------------------------------------------------------
 
@@ -291,25 +310,33 @@ CREATE TABLE `msquestion` (
 INSERT INTO `msquestion` (`QuestionID`, `TaskID`, `QuestionType`, `QuestionText`, `QuestionChoice`, `QuestionAnswer`) VALUES
                                                                                                                           ('029d94e3-49c8-4041-8f7e-3493f2b7e948', '3a218295-459b-4623-9d65-0239cb5fd168', 'ESSAY', 'Apa itu tag dan attribute pada HTML? Berikan 3 contoh tag HTML beserta dengan fungsinya. Serta sebutkan masing-masing 3 contoh attribut HTML yang berhubungan dengan HTML, CSS dan JavaScript. ', NULL, NULL),
                                                                                                                           ('061da911-38fe-40ee-82e7-92984621a91f', '3a218295-459b-4623-9d65-0239cb5fd168', 'ESSAY', 'Apa itu HTML, CSS, dan JS? Jelaskan hubungan dari ketiga hal tersebut. ', NULL, NULL),
-                                                                                                                          ('0f36ef75-1aaa-4556-ab22-066c294d5f0a', '5ee98d05-3b50-4485-905a-d6bd40d35484', 'MULTIPLE_CHOICE', 'Siapa itu Alvin?', 'Alvin;Sayang;Ulveen;Seti-chan', 'B'),
+                                                                                                                          ('0aaf220a-59b3-4522-8719-5bedfddf7024', '1ab13b08-36f2-4ff7-904c-b6094bce44bd', 'MULTIPLE_CHOICE', 'Berapa dep + dep', 'dep;depdep;ddeepp;hendi', 'hendi'),
+                                                                                                                          ('0f36ef75-1aaa-4556-ab22-066c294d5f0a', '5ee98d05-3b50-4485-905a-d6bd40d35484', 'MULTIPLE_CHOICE', 'Siapa itu Alvin?', 'Alvin;Sayang;Ulveen;Seti-chan', 'Sayang'),
                                                                                                                           ('1413421f-fee5-4342-be9f-b36cdc74ec31', '0b5da0a8-16c5-4259-9826-47669a5cb4b9', 'ESSAY', 'dep dep dep dep dep dep dep dep dep dep dep dep dep dep dep dep dep? dep dep dep dep dep dep dep dep dep dep dep dep dep dep dep dep dep dep dep dep dep dep dep dep dep dep dep dep dep dep dep dep dep dep dep dep dep dep dep dep dep dep dep dep dep dep dep dep dep dep dep dep dep dep dep dep dep dep dep dep dep dep dep dep dep dep dep depdep dep dep dep dep dep dep dep dep dep dep dep dep dep dep dep dep  dep dep dep dep dep dep dep dep dep dep dep dep dep dep dep dep dep!', NULL, NULL),
                                                                                                                           ('168a07fc-a5a8-47a4-8298-438b835ee31a', '0b5da0a8-16c5-4259-9826-47669a5cb4b9', 'MULTIPLE_CHOICE', 'Siapa pacar dep', 'Gaada;Shelina;Kun-chan;Hendi', 'D'),
                                                                                                                           ('1bba3bef-3274-4f12-8f8f-e0c14d064025', 'a3ee7523-dedd-4cd2-803e-e90bf36d3901', 'TRUE_FALSE', 'nyaaaaaaaaaaaaaaaaaaaaaaaaaa123123123', 'aaaa|bbbbb', 'True'),
                                                                                                                           ('1bf75c9b-ce14-4735-90bd-5ba6f5e6ab18', 'ccda622b-d65c-49d4-baf3-40992a8a37f6', 'ESSAY', 'aaaaaaaaaaa gamau', NULL, NULL),
                                                                                                                           ('201c78e4-04aa-4b20-8ad0-633b84fb9ec0', '3a218295-459b-4623-9d65-0239cb5fd168', 'ESSAY', 'Jelaskan apa itu color schemes dan jelaskan minimal tiga jenis basic color schemes!', NULL, NULL),
                                                                                                                           ('24a02382-cbe5-4541-ac33-ad9bd6e7981d', '60793cc6-4a8c-4e03-8b22-724249b62e7f', 'TRUE_FALSE', 'nyaaaaa', 'aaaa|bbbbb', 'True'),
+                                                                                                                          ('2f633b59-62a9-4f40-8823-f9c44e5b2ca7', '1ab13b08-36f2-4ff7-904c-b6094bce44bd', 'TRUE_FALSE', 'Apakah dep memiliki hubungan baik dengan Michael Alvin Santoso?', NULL, 'False'),
                                                                                                                           ('3e1c3ce6-e3c6-4f60-a1ab-ea7c18d41688', '3a218295-459b-4623-9d65-0239cb5fd168', 'ESSAY', 'Jelaskan perbedaan membuat class menggunakan constructor function dan class declaration, serta jelaskan apa itu prototype dalam object JavaScript. ', NULL, NULL),
+                                                                                                                          ('4d1ff2f3-849e-4ad2-9eae-9f985d14861e', '1ab13b08-36f2-4ff7-904c-b6094bce44bd', 'TRUE_FALSE', 'Apakah dep takut dengan jopython?', NULL, 'True'),
                                                                                                                           ('4e16582f-872e-4673-bb29-29600d7ae1fa', '0b5da0a8-16c5-4259-9826-47669a5cb4b9', 'TRUE_FALSE', 'Apakah Dep Gei?', NULL, 'True'),
                                                                                                                           ('500857e6-d225-486e-b392-efefd732c371', '3a218295-459b-4623-9d65-0239cb5fd168', 'ESSAY', 'Jelaskan mengenai konsep Cascade, Specificity dan Inheritance pada CSS dan berikan contohnya. ', NULL, NULL),
-                                                                                                                          ('6642a382-42ad-44b3-842b-fcc070456019', '0b5da0a8-16c5-4259-9826-47669a5cb4b9', 'MULTIPLE_CHOICE', '🐏🐏🐏🐏🐏🐏🐏🐏🐏🐏', 'Papa;ML;Mbe;Michael Sandera', 'A'),
+                                                                                                                          ('53bec7b1-7ec1-475d-bb95-9f4f5f112d8f', '1ab13b08-36f2-4ff7-904c-b6094bce44bd', 'MULTIPLE_CHOICE', 'Kapan dep akan menyelesaikan dokumentasi Java Take Home Case', '2 Tahun lagi;besok;Tidak selesai;dibuatin efran', 'Tidak selesai'),
+                                                                                                                          ('6642a382-42ad-44b3-842b-fcc070456019', '0b5da0a8-16c5-4259-9826-47669a5cb4b9', 'MULTIPLE_CHOICE', '🐏🐏🐏🐏🐏🐏🐏🐏🐏🐏', 'Papa;ML;Mbe;Michael Sandera', 'Papa'),
                                                                                                                           ('758f0d20-deb6-47cc-b87b-aaccadfff16c', '3a218295-459b-4623-9d65-0239cb5fd168', 'ESSAY', 'Jelaskan dan berikan 3 contoh mengenai selector dan property yang ada pada CSS. ', NULL, NULL),
                                                                                                                           ('75962db6-040c-4fd6-aaba-b34e30777d7c', '3a218295-459b-4623-9d65-0239cb5fd168', 'ESSAY', 'Jelaskan perbedaan membuat class menggunakan constructor function dan class declaration, serta jelaskan apa itu prototype dalam object JavaScript. ', NULL, NULL),
                                                                                                                           ('79e1a4ba-0a6d-4470-a8cc-c496ed05f0c6', '0b5da0a8-16c5-4259-9826-47669a5cb4b9', 'ESSAY', 'Pada suatu hari yang cerah, WL, DK, NO, LK sedang berjalan menuju ruang kelas 23-1. Tiba-tiba saat membuka pintu, mereka melihat sebuah dep liar! Apa yang seharusnya mereka lakukan sehingga integritas ruang dan waktu tetap terjaga!', NULL, NULL),
+                                                                                                                          ('8d6770cc-cc78-4743-b412-27c1afb798c4', '1ab13b08-36f2-4ff7-904c-b6094bce44bd', 'TRUE_FALSE', 'Apakah dep bisa mengalahkan naga yang kuat? (hendi\'s)', NULL, 'False'),
+                                                                                                                          ('8d9dbcc9-0fa0-4ea2-8457-3697f851d89b', '1ab13b08-36f2-4ff7-904c-b6094bce44bd', 'MULTIPLE_CHOICE', 'Apa 2 pangkat 100', '2;1.2676506e+30;0;i', '1.2676506e+30'),
+                                                                                                                          ('8dd7a1ee-0578-431b-b2e3-2a219f04f197', '1ab13b08-36f2-4ff7-904c-b6094bce44bd', 'ESSAY', 'Jelaskan kapan dan dimana dep mandi?', NULL, NULL),
                                                                                                                           ('960648ec-14d6-4afd-b7f0-7378df7ff4e1', 'c7b677a9-6c06-450f-9b93-52d496a6d6b4', 'ESSAY', 'test', NULL, NULL),
                                                                                                                           ('960c0352-ef53-47a9-a981-a7c1f090bbaa', '3a218295-459b-4623-9d65-0239cb5fd168', 'ESSAY', 'Apa itu API canvas dan Context2D pada canvas, serta jelaskan kelebihan dan kekurangan menggunakan canvas dibandingkan dengan menggunakan elemen HTML DOM biasa. ', NULL, NULL),
+                                                                                                                          ('a7c059b4-174e-4f00-8c5f-df3cbb625330', '1ab13b08-36f2-4ff7-904c-b6094bce44bd', 'MULTIPLE_CHOICE', 'Berapa panjang kontol dep', '15 cm;5 cm;10 cm;20 cm', '15 cm'),
                                                                                                                           ('d3757789-9878-4e59-ab0d-f2b8b6ad4039', '0b5da0a8-16c5-4259-9826-47669a5cb4b9', 'TRUE_FALSE', 'APAKAH DEP WIBU?', NULL, 'True'),
                                                                                                                           ('d7682deb-ddb5-4539-927d-ef7502b93705', '2690e80d-a127-493f-95d9-45b3a38b2e4a', 'MULTIPLE_CHOICE', '', ' ; ; ; ', 'A'),
-                                                                                                                          ('e0805ecd-be22-47b7-979f-831dcfe32c20', '0b5da0a8-16c5-4259-9826-47669a5cb4b9', 'MULTIPLE_CHOICE', 'DEP??????', 'DEP;Dep;dep;DEPPPPPPPPPPP', 'D'),
+                                                                                                                          ('e0805ecd-be22-47b7-979f-831dcfe32c20', '0b5da0a8-16c5-4259-9826-47669a5cb4b9', 'MULTIPLE_CHOICE', 'DEP??????', 'DEP;Dep;dep;DEPPPPPPPPPPP', 'DEPPPPPPPPPPP'),
                                                                                                                           ('e4095eb6-91ee-49a7-8da1-aa6aaeb50c27', 'a3ee7523-dedd-4cd2-803e-e90bf36d3901', 'TRUE_FALSE', 'test', 'aa|aa', 'True'),
                                                                                                                           ('e8bdf5fb-6ee4-4c5e-9f3e-50c997331773', '0b5da0a8-16c5-4259-9826-47669a5cb4b9', 'ESSAY', 'Jelaskan konsep quantum entanglement dalam konteks 2 photon cahaya yang berada di Laser Interferometer Gravitational Wave Observatory dan hubungan peran quantum entanglement dalam pendeteksian gravitational wave!', NULL, NULL);
 
@@ -336,8 +363,9 @@ CREATE TABLE `mstask` (
 --
 
 INSERT INTO `mstask` (`TaskID`, `UserID`, `TaskTitle`, `TaskDesc`, `TaskType`, `FileID`, `CreatedAt`, `DeadlineAt`, `Scored`) VALUES
-                                                                                                                                  ('01c7bf34-ffa2-4753-816c-4fce43bba068', '4ae58729-b9bf-4eb0-bd1c-995c5ae3f170', 'Efran Ganteng', 'Kiw kiw', 'FILE', NULL, '2023-11-14 08:42:26', '2023-11-14 23:59:59', 1),
-                                                                                                                                  ('0b5da0a8-16c5-4259-9826-47669a5cb4b9', '4ae58729-b9bf-4eb0-bd1c-995c5ae3f170', 'hello', 'hello', 'QUESTION', NULL, '2023-12-03 14:45:54', '2023-12-14 23:59:59', 0),
+                                                                                                                                  ('01c7bf34-ffa2-4753-816c-4fce43bba068', '4ae58729-b9bf-4eb0-bd1c-995c5ae3f170', 'Efran Ganteng', 'Kiw kiw', 'FILE', '1f0d805a-f09f-4c03-8935-66585cbb272f', '2023-11-14 08:42:26', '2023-11-14 23:59:59', 1),
+                                                                                                                                  ('0b5da0a8-16c5-4259-9826-47669a5cb4b9', '4ae58729-b9bf-4eb0-bd1c-995c5ae3f170', 'Salah Persepsi', 'hello', 'QUESTION', NULL, '2023-12-03 14:45:54', '2023-12-14 23:59:59', 0),
+                                                                                                                                  ('1ab13b08-36f2-4ff7-904c-b6094bce44bd', '4ae58729-b9bf-4eb0-bd1c-995c5ae3f170', 'Introduction to Dep\'s', 'Learning more about dep', 'QUESTION', NULL, '2023-12-04 12:26:45', '2023-12-14 23:59:59', 1),
                                                                                                                                   ('2690e80d-a127-493f-95d9-45b3a38b2e4a', '4ae58729-b9bf-4eb0-bd1c-995c5ae3f170', 'hello', 'hello', 'QUESTION', NULL, '2023-12-03 13:15:55', '2023-12-03 23:59:59', 0),
                                                                                                                                   ('3a218295-459b-4623-9d65-0239cb5fd168', '4ae58729-b9bf-4eb0-bd1c-995c5ae3f170', 'Pertanyaan Subco Web Design', 'Latihan sebelum subject Web Design', 'QUESTION', NULL, '2023-12-03 21:45:10', '2023-12-19 23:59:59', 1),
                                                                                                                                   ('4c479560-765b-4664-8c4e-17b9d6b0eb53', '4ae58729-b9bf-4eb0-bd1c-995c5ae3f170', 'ILHAM HILANG!', 'Cari dimana ilham menghilang dan dapatkan hadiah 200 Miliar Rupiah!', 'FILE', NULL, '2023-11-11 09:26:21', '2023-11-11 23:59:59', 1),
@@ -346,6 +374,7 @@ INSERT INTO `mstask` (`TaskID`, `UserID`, `TaskTitle`, `TaskDesc`, `TaskType`, `
                                                                                                                                   ('7438c33c-0392-422e-8522-975e66135b21', '4ae58729-b9bf-4eb0-bd1c-995c5ae3f170', 'test', 'testtttt', 'FILE', NULL, '2023-11-12 03:34:50', '2023-11-12 23:59:59', 1),
                                                                                                                                   ('7faa3885-7148-4bb5-a32b-494faf35fda7', '4ae58729-b9bf-4eb0-bd1c-995c5ae3f170', 'OH NOOOO KAREN MARAH!', 'Atasi hal tersebut secara bijak, atau Karen akan bertambah marah!!!', 'FILE', NULL, '2023-11-13 15:40:11', '2023-11-13 23:59:59', 0),
                                                                                                                                   ('a3ee7523-dedd-4cd2-803e-e90bf36d3901', '4ae58729-b9bf-4eb0-bd1c-995c5ae3f170', 'hello', 'hello', 'QUESTION', NULL, '2023-12-02 05:22:39', '2023-12-02 23:59:59', 0),
+                                                                                                                                  ('aa99cca2-ee7f-4bdf-9f1e-45fb3480df7c', '4ae58729-b9bf-4eb0-bd1c-995c5ae3f170', 'Introduction to Quantum Mechanics.', 'Jelaskan mengenai 3 teori mekanika quantum yang digunakan untuk menjelaskan mengenai gaya-gaya fundamental alam!\n- Quantum Electrodynamics\n- Quantum Flavordynamics\n- Quantum Chromodynamics', 'FILE', NULL, '2023-12-03 22:15:56', '2023-12-19 23:59:59', 1),
                                                                                                                                   ('c7b677a9-6c06-450f-9b93-52d496a6d6b4', '4ae58729-b9bf-4eb0-bd1c-995c5ae3f170', 'hello', 'hello', 'QUESTION', NULL, '2023-12-02 05:21:42', '2023-12-02 23:59:59', 0),
                                                                                                                                   ('ccda622b-d65c-49d4-baf3-40992a8a37f6', '4ae58729-b9bf-4eb0-bd1c-995c5ae3f170', 'hello', 'hello', 'QUESTION', NULL, '2023-12-02 05:34:24', '2023-12-02 23:59:59', 0),
                                                                                                                                   ('e280ee1a-f8a8-4cbf-b323-6def5a6079e3', '4ae58729-b9bf-4eb0-bd1c-995c5ae3f170', 'mencari Nobel yang berlabuh ke negeri Cina', 'Nobel telah dipanggil oleh General dari negeri Cina. Pergi dan temukanlah harta karun yaitu Nobel dan berikan dia makan!', 'FILE', NULL, '2023-11-17 12:44:57', '2023-11-30 23:59:59', 0);

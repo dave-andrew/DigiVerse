@@ -194,7 +194,14 @@ public class AnswerDetailView extends HBox {
 	}
 
 	private void getQuestionAnswer(ClassroomMember member) {
+		AnswerHeader answerHeader = answerController.fetchAnswerHeader(this.task.getId(), member.getUser().getId());
 
+		if(answerHeader == null || answerHeader.getFinishedAt() == null) {
+			return;
+		}
+
+		List<Question> questions = taskController.fetchQuestion(task.getId());
+		List<AnswerDetail> answerDetails = answerController.getMemberQuestionAnswer(task.getId(), member.getUser().getId());
 
 		// TODO DEP PRETTIFY PLZ
 		Button saveButton = ButtonBuilder.create("Save")
@@ -206,8 +213,6 @@ public class AnswerDetailView extends HBox {
 				.setSpacing(10)
 				.build();
 
-		List<Question> questions = taskController.fetchQuestion(task.getId());
-		List<AnswerDetail> answerDetails = answerController.getMemberQuestionAnswer(task.getId(), member.getUser().getId());
 
 		for (int i = 0; i < questions.size(); i++) {
 			Question question = questions.get(i);

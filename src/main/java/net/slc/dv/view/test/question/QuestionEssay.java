@@ -68,7 +68,6 @@ public class QuestionEssay extends VBox implements QuestionBox {
 		Label fieldLabel = LabelBuilder.create("Score: ")
 				.build();
 
-		System.out.println(answerDetail == null ? "0" : String.valueOf(answerDetail.getAnswerScore()));
 		this.scoreField = TextFieldBuilder.create()
 				.setPromptText("0")
 				.setTextFormatter(new DecimalTextFormatter(0, 1, 0, 10))

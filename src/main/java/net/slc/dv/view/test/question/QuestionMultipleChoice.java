@@ -87,10 +87,10 @@ public class QuestionMultipleChoice extends VBox implements QuestionBox {
         Label fieldLabel = LabelBuilder.create("Score: ")
                 .build();
 
-        System.out.println(answerDetail.getAnswerScore());
+        System.out.println("SASAGEYO" + (answerDetail == null ? "0" : String.valueOf(answerDetail.getAnswerScore())));
         this.scoreField = TextFieldBuilder.create()
                 .setTextFormatter(new DecimalTextFormatter(0, 2, 0, 10))
-                .setText(String.valueOf(answerDetail.getAnswerScore().intValue()))
+                .setText(String.valueOf(answerDetail == null ? "0" : answerDetail.getAnswerScore().intValue()))
                 .setDisable(true)
                 .build();
 
@@ -138,6 +138,10 @@ public class QuestionMultipleChoice extends VBox implements QuestionBox {
             return 0.0;
         }
 
+        if(this.answer.equals(this.question.getQuestionAnswer())) {
+            return 1.0;
+        }
+
         if(this.answerDetail == null) {
             return null;
         }
@@ -155,6 +159,7 @@ public class QuestionMultipleChoice extends VBox implements QuestionBox {
 
     @Override
     public boolean isAnswered() {
+        System.out.println("UDAH DIJAWBA:" + (this.answer != null));
         return this.answer != null;
     }
 }
