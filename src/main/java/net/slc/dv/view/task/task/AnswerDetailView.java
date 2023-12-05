@@ -74,7 +74,10 @@ public class AnswerDetailView extends HBox {
 		this.memberAnswerContainer = new VBox();
 		this.memberAnswerContainer.setPadding(new Insets(20));
 		ScrollPane scrollAnswerContainer = new ScrollPane();
+
+		scrollAnswerContainer.setPannable(true);
 		scrollAnswerContainer.setContent(memberAnswerContainer);
+		scrollAnswerContainer.setFitToWidth(true);
 
 		Label fileTitle = new Label("Choose a student to see the answer!");
 		this.memberAnswerContainer.getChildren().addAll(fileTitle);
@@ -206,11 +209,15 @@ public class AnswerDetailView extends HBox {
 		// TODO DEP PRETTIFY PLZ
 		Button saveButton = ButtonBuilder.create("Save")
 				.setPrefWidth(100)
+				.setStyleClass("primary-button")
+				.setStyle("-fx-text-fill: white;")
+				.setVMargin(30, 0, 0, 0)
 				.setOnAction(e -> this.saveScore(member))
+				.bindPrefWidth(memberAnswerContainer)
 				.build();
 
 		VBox answerContainer = VBoxBuilder.create()
-				.setSpacing(10)
+				.setSpacing(30)
 				.build();
 
 
@@ -225,18 +232,21 @@ public class AnswerDetailView extends HBox {
 			if (question.getQuestionType().equals(QuestionType.MULTIPLE_CHOICE)) {
 				QuestionMultipleChoice questionBox = new QuestionMultipleChoice(i + 1, question, answerDetail, true);
 				answerContainer.getChildren().add(questionBox);
+				questionBox.getStyleClass().add("card");
 				questionBoxes.add(questionBox);
 				continue;
 			}
 			if (question.getQuestionType().equals(QuestionType.TRUE_FALSE)) {
 				QuestionTrueFalse questionBox = new QuestionTrueFalse(i + 1, question, answerDetail, true);
 				answerContainer.getChildren().add(questionBox);
+				questionBox.getStyleClass().add("card");
 				questionBoxes.add(questionBox);
 				continue;
 			}
 			if (question.getQuestionType().equals(QuestionType.ESSAY)) {
 				QuestionEssay questionBox = new QuestionEssay(i + 1, question, answerDetail, true);
 				answerContainer.getChildren().add(questionBox);
+				questionBox.getStyleClass().add("card");
 				questionBoxes.add(questionBox);
 			}
 		}

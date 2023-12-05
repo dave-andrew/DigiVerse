@@ -60,6 +60,8 @@ public class ClassTask extends ClassBase {
         fetchTask();
 
         this.setContent(container);
+        this.setFitToWidth(true);
+        this.setPannable(true);
     }
 
     private void actions() {

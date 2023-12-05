@@ -208,6 +208,22 @@
     -fx-background-color: #F0F0F0;
 }
 
+.radio-button {
+    -fx-font-size: 14px;
+    -fx-text-fill: #333;
+    -fx-padding: 5px 10px;
+    -fx-cursor: hand;
+}
+
+.radio-button.correct {
+    -fx-background-color: #4CAF50;
+    -fx-text-fill: #fff;
+}
+
+.radio-button:hover {
+    -fx-background-color: #E0E0E0;
+}
+
 /* ============================== */
 
 .auth-layout {

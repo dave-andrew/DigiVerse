@@ -86,7 +86,7 @@ public class QuestionTrueFalse extends VBox implements QuestionBox {
 
 		this.scoreField = TextFieldBuilder.create()
 				.setTextFormatter(new DecimalTextFormatter(0, 2, 0, 10))
-				.setText(String.valueOf(answerDetail.getAnswerScore().intValue()))
+				.setText(String.valueOf(answerDetail != null ? answerDetail.getAnswerScore().intValue() : 0))
 				.setDisable(true)
 				.build();
 

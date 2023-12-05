@@ -224,7 +224,7 @@ public class DoTestView extends BorderPane {
 					questionBox.getAnswerScore()
 			);
 
-			System.out.println(questionBox.getQuestionAnswer());
+//			System.out.println(questionBox.getQuestionAnswer());
 
 			this.questionNumbers.getChildren().get(questionBoxes.indexOf(questionBox)).getStyleClass().add("submitted");
 

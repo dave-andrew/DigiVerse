@@ -82,13 +82,15 @@ public class ClassroomListView extends GridPane {
 
         VBox messageContainer = new VBox();
         messageContainer.setAlignment(Pos.CENTER_LEFT);
-        messageContainer.setSpacing(20);
+        messageContainer.setSpacing(40);
+
+
 
         Label dear = LabelBuilder.create("Dear " + LoggedUser.getInstance().getUsername() + ",")
                 .setStyleClass("title")
                 .build();
 
-        Label p1 = new Label("Welcome to an exciting journey of learning and discovery of DigiVerse! I am thrilled to have each and every one of you in our class. This promises to be a rewarding and enriching experience, filled with opportunities for growth, collaboration, and success.");
+        Label p1 = new Label("Welcome to an exciting journey of learning and discovery with DigiVerse! I am thrilled to have each and every one of you in our class. This promises to be a rewarding and enriching experience, filled with opportunities for growth, collaboration, and success.");
         p1.setWrapText(true);
 
         Label p2 = new Label("In this application, we value curiosity, creativity, and the pursuit of knowledge. Together, we will explore new concepts, engage in meaningful discussions, and support one another on our academic endeavors.");
@@ -112,7 +114,7 @@ public class ClassroomListView extends GridPane {
         messageContainer.getChildren().addAll(dear, p1, p2, p3, p4, pContainer);
 
         messageContainer.setPrefWidth(600);
-        messageContainer.setPrefHeight(500);
+        messageContainer.setPrefHeight(600);
         messageContainer.setAlignment(Pos.CENTER_LEFT);
         messageContainer.getStyleClass().add("card");
 
