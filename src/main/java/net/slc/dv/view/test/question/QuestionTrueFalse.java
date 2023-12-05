@@ -45,6 +45,7 @@ public class QuestionTrueFalse extends VBox implements QuestionBox {
 		String[] letters = { "True", "False"};
 		for (int i = 0; i < letters.length; i++) {
 			answerButtons[i] = new RadioButton(letters[i]);
+			answerButtons[i].setDisable(isChecking);
 			answerButtons[i].setToggleGroup(answerGroup);
 		}
 

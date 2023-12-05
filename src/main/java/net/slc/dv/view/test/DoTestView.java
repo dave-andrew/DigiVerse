@@ -1,5 +1,8 @@
 package net.slc.dv.view.test;
 
+import java.util.*;
+import java.util.concurrent.atomic.AtomicInteger;
+
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.control.Button;
@@ -18,9 +21,6 @@ import net.slc.dv.view.test.question.QuestionMultipleChoice;
 import net.slc.dv.view.test.question.QuestionTrueFalse;
 import org.jetbrains.annotations.Nullable;
 
-import java.util.*;
-import java.util.concurrent.atomic.AtomicInteger;
-
 public class DoTestView extends BorderPane {
 	private final StackPane mainPane;
 	private ScrollPane questionScroll;
@@ -34,9 +34,8 @@ public class DoTestView extends BorderPane {
 	private List<Question> questions;
 	private List<QuestionBox> questionBoxes;
 	private AnswerHeader answerHeaders;
-	private List<AnswerDetail> answerDetails;
+	private final List<AnswerDetail> answerDetails;
 	private GridPane questionNumbers;
-
 
 	public DoTestView(StackPane mainPane, Task task, Classroom classroom, String userRole) {
 		this.mainPane = mainPane;
@@ -46,19 +45,15 @@ public class DoTestView extends BorderPane {
 		this.answerController = new AnswerController();
 		this.taskController = new TaskController();
 		this.questions = taskController.fetchQuestion(task.getId());
-		this.answerHeaders = answerController.fetchAnswerHeader(task.getId(), LoggedUser.getInstance().getId());
-		this.answerDetails = answerHeaders == null ? new ArrayList<>() : answerController.fetchAnswerDetails(answerHeaders.getId());
-
-
+		this.answerHeaders = answerController.fetchAnswerHeader(
+				task.getId(), LoggedUser.getInstance().getId());
+		this.answerDetails = answerController.fetchAnswerDetails(answerHeaders);
 		this.questionBoxes = new ArrayList<>();
 
 		this.initCenter();
 		this.initRight();
 
-		StackPaneBuilder.modify(mainPane)
-				.removeAllChildren()
-				.addChildren(this)
-				.build();
+		StackPaneBuilder.modify(mainPane).removeAllChildren().addChildren(this).build();
 	}
 
 	private void initCenter() {
@@ -69,8 +64,7 @@ public class DoTestView extends BorderPane {
 			Question question = questions.get(i);
 
 			@Nullable
-			AnswerDetail answerDetail = answerDetails
-					.stream()
+			AnswerDetail answerDetail = answerDetails.stream()
 					.filter(answer -> Objects.equals(answer.getQuestionId(), question.getQuestionID()))
 					.findFirst()
 					.orElse(null);
@@ -80,12 +74,16 @@ public class DoTestView extends BorderPane {
 				questionContainer.getChildren().add(questionBox);
 				questionBoxes.add(questionBox);
 				questionBox.getStyleClass().add("card");
-			} else if (question.getQuestionType().equals(QuestionType.TRUE_FALSE)) {
+				continue;
+			}
+			if (question.getQuestionType().equals(QuestionType.TRUE_FALSE)) {
 				QuestionTrueFalse questionBox = new QuestionTrueFalse(i + 1, question, answerDetail);
 				questionContainer.getChildren().add(questionBox);
 				questionBoxes.add(questionBox);
 				questionBox.getStyleClass().add("card");
-			} else if (question.getQuestionType().equals(QuestionType.ESSAY)) {
+				continue;
+			}
+			if (question.getQuestionType().equals(QuestionType.ESSAY)) {
 				QuestionEssay questionBox = new QuestionEssay(i + 1, question, answerDetail);
 				questionContainer.getChildren().add(questionBox);
 				questionBoxes.add(questionBox);
@@ -110,23 +108,18 @@ public class DoTestView extends BorderPane {
 	}
 
 	private void initRight() {
-		Label submitTitle = LabelBuilder.create("Submit Task")
-				.setStyleClass("title")
-				.build();
+		Label submitTitle =
+				LabelBuilder.create("Submit Task").setStyleClass("title").build();
 
-		Label submitStatus = LabelBuilder.create("Not Submitted")
-				.setStyleClass("title")
-				.build();
+		Label submitStatus =
+				LabelBuilder.create("Not Submitted").setStyleClass("title").build();
 
-		HBox spacer = HBoxBuilder.create()
-				.setHgrow(Priority.ALWAYS)
-				.build();
+		HBox spacer = HBoxBuilder.create().setHgrow(Priority.ALWAYS).build();
 
 		HBox submitStatusContainer = HBoxBuilder.create()
 				.addChildren(submitTitle, spacer, submitStatus)
 				.setAlignment(Pos.CENTER_LEFT)
 				.build();
-
 
 		this.questionNumbers = this.getQuestionNumbers();
 		this.questionNumbers.setPadding(new Insets(20, 0, 0, 0));
@@ -146,7 +139,6 @@ public class DoTestView extends BorderPane {
 				.setOnAction(e -> this.submitAnswer())
 				.setVMargin(30, 0, 0, 0)
 				.build();
-
 
 		VBox submitContainer = VBoxBuilder.create()
 				.addChildren(submitStatusContainer, questionNumbers, saveButton, submitButton)
@@ -210,28 +202,35 @@ public class DoTestView extends BorderPane {
 	}
 
 	private AnswerHeader saveAnswer() {
+		this.answerHeaders = answerController.fetchAnswerHeader(
+				task.getId(), LoggedUser.getInstance().getId());
 		ArrayList<AnswerDetail> answerDetails = new ArrayList<>();
 		for (QuestionBox questionBox : questionBoxes) {
 
-			if(questionBox.getQuestionAnswer() == null) {
-				this.questionNumbers.getChildren().get(questionBoxes.indexOf(questionBox)).getStyleClass().remove("submitted");
+			if (!questionBox.isAnswered()) {
+				this.questionNumbers
+						.getChildren()
+						.get(questionBoxes.indexOf(questionBox))
+						.getStyleClass()
+						.remove("submitted");
 				continue;
 			}
 
 			AnswerDetail answerDetail = new AnswerDetail(
-					questionBox.getQuestionId(),
-					questionBox.getQuestionAnswer(),
-					questionBox.getAnswerScore()
-			);
+					questionBox.getQuestionId(), questionBox.getQuestionAnswer(), questionBox.getAnswerScore());
 
-//			System.out.println(questionBox.getQuestionAnswer());
 
-			this.questionNumbers.getChildren().get(questionBoxes.indexOf(questionBox)).getStyleClass().add("submitted");
+			this.questionNumbers
+					.getChildren()
+					.get(questionBoxes.indexOf(questionBox))
+					.getStyleClass()
+					.add("submitted");
 
 			answerDetails.add(answerDetail);
 		}
 
-		return answerController.saveAnswer(answerHeaders, task.getId(), LoggedUser.getInstance().getId(), answerDetails);
+		return answerController.saveAnswer(
+				answerHeaders, task.getId(), LoggedUser.getInstance().getId(), answerDetails);
 	}
 
 	private void submitAnswer() {

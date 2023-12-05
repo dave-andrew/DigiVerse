@@ -99,16 +99,16 @@ public class Home {
     }
 
     private void onNavbarButtonClick(Node button) {
-        mainPane.getChildren().clear();
 
-        System.out.println("nya");
         if (button == this.navbar.getIconButton()) {
+            mainPane.getChildren().clear();
             this.navbar.setLeftNavigation(null);
             this.sideNavbar.setActive(this.sideNavbar.getHomeButton());
             fetchClass();
             return;
         }
         if (button == this.navbar.getUserButton()) {
+            mainPane.getChildren().clear();
             this.navbar.setLeftNavigation(null);
             this.sideNavbar.setActive(null);
             profilePage((ImageView) this.navbar.getUserButton().getGraphic());

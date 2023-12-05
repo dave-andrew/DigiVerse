@@ -128,8 +128,12 @@ public class AnswerController {
     public boolean checkTest(String taskid, String userid) {
         return answerQuery.checkTest(taskid, userid);
     }
-    public List<AnswerDetail> fetchAnswerDetails(String answerid) {
-        return answerQuery.getAnswerDetails(answerid);
+    public List<AnswerDetail> fetchAnswerDetails(AnswerHeader answerHeader) {
+        try {
+            return answerQuery.getAnswerDetails(answerHeader.getId());
+        } catch (NullPointerException e) {
+            return new ArrayList<>();
+        }
     }
 
     public void scoreQuestionAnswer(List<AnswerDetail> answerDetails) {
