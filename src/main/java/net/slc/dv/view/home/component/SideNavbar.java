@@ -117,11 +117,9 @@ public class SideNavbar extends StackPane {
 
     public void setActive(SideNavbarButton sideNavbarButton) {
         this.sideButtons.forEach(button -> {
+            button.setInactive();
             if (button.equals(sideNavbarButton)) {
                 button.setActive();
-            } else {
-                System.out.println("ada");
-                button.setInactive();
             }
         });
     }
