@@ -9,6 +9,9 @@ import javafx.scene.image.ImageView;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Priority;
 import javafx.stage.Stage;
+import net.slc.dv.builder.ImageViewBuilder;
+import net.slc.dv.resources.Icon;
+import net.slc.dv.resources.IconStorage;
 
 public class JoinClassNav extends HBox {
 
@@ -24,10 +27,11 @@ public class JoinClassNav extends HBox {
     private void initialize() {
         HBox leftNav = new HBox(20);
 
-        Image closeImg = new Image("file:resources/icons/close.png");
-        ImageView close = new ImageView(closeImg);
-        close.setFitWidth(17);
-        close.setFitHeight(17);
+        ImageView close = ImageViewBuilder.create()
+                .bindImageProperty(IconStorage.getIcon(Icon.CLOSE))
+                .setFitWidth(17)
+                .setFitHeight(17)
+                .build();
 
         closeBtn = new Button();
         closeBtn.setGraphic(close);

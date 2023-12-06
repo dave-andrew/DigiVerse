@@ -46,17 +46,24 @@ public class ChangeAccountBox extends VBox {
         Label userInfoLbl = new Label("Logged As:");
         userInfoLbl.setStyle("-fx-font-size: 20px;");
 
-        ImageView userImg = ImageViewBuilder.create()
-                .bindImageProperty(IconStorage.getIcon(Icon.USER))
-                .setFitHeight(40)
-                .setFitWidth(40)
-                .build();
+        ImageView userImg = new ImageView();
 
         if (loggedUser != null) {
             userNameLbl = new Label(loggedUser.getUsername());
             userEmailLbl = new Label(loggedUser.getEmail());
             if (loggedUser.getProfile() != null) {
-                userImg.setImage(loggedUser.getProfile());
+                ImageViewBuilder.modify(userImg)
+                        .setImage(loggedUser.getProfile())
+                        .setFitHeight(40)
+                        .setFitWidth(40)
+                        .build();
+            }
+            else {
+                ImageViewBuilder.modify(userImg)
+                        .bindImageProperty(IconStorage.getIcon(Icon.USER))
+                        .setFitHeight(40)
+                        .setFitWidth(40)
+                        .build();
             }
         }
 

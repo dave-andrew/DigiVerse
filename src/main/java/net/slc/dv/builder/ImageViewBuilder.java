@@ -19,7 +19,7 @@ public class ImageViewBuilder {
         return new ImageViewBuilder();
     }
 
-    public static ImageViewBuilder create(ImageView imageView) {
+    public static ImageViewBuilder modify(ImageView imageView) {
         return new ImageViewBuilder(imageView);
     }
 

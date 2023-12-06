@@ -1,5 +1,6 @@
 package net.slc.dv.view.classroom.detail.component;
 
+import net.slc.dv.builder.ImageViewBuilder;
 import net.slc.dv.helper.ImageManager;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
@@ -8,21 +9,28 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.HBox;
 import net.slc.dv.model.ClassroomMember;
+import net.slc.dv.resources.Icon;
+import net.slc.dv.resources.IconStorage;
 
 public class MemberItem extends HBox {
 
     public MemberItem(ClassroomMember member, int idx) {
-        Image profileImg;
+        ImageView profileImg = new ImageView();
         if(member.getUser().getBlobProfile() != null) {
-            profileImg = member.getUser().getProfile();
+            ImageViewBuilder.modify(profileImg)
+                    .setImage(member.getUser().getProfile())
+                    .setFitHeight(35)
+                    .setFitWidth(35)
+                    .build();
         } else {
-            profileImg = new Image("file:resources/icons/user.png");
+            ImageViewBuilder.modify(profileImg)
+                    .bindImageProperty(IconStorage.getIcon(Icon.USER))
+                    .setFitHeight(35)
+                    .setFitWidth(35)
+                    .build();
         }
 
-        ImageView profile = new ImageView(profileImg);
-        profile.setFitWidth(35);
-        profile.setFitHeight(35);
-        ImageManager.makeCircular(profile, 17.5);
+        ImageManager.makeCircular(profileImg, 17.5);
 
         HBox userBox = new HBox();
         userBox.setAlignment(Pos.CENTER_LEFT);
@@ -35,7 +43,7 @@ public class MemberItem extends HBox {
 
         Label index = new Label(idx + ".  ");
 
-        this.getChildren().addAll(index, profile, userBox);
+        this.getChildren().addAll(index, profileImg, userBox);
         this.setAlignment(Pos.CENTER_LEFT);
     }
 

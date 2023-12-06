@@ -11,6 +11,7 @@ import javafx.scene.shape.Line;
 import javafx.scene.shape.Rectangle;
 import javafx.stage.FileChooser;
 import javafx.util.StringConverter;
+import net.slc.dv.builder.ImageViewBuilder;
 import net.slc.dv.controller.MemberController;
 import net.slc.dv.controller.TaskController;
 import net.slc.dv.controller.UserController;
@@ -19,6 +20,8 @@ import net.slc.dv.helper.StageManager;
 import net.slc.dv.model.Classroom;
 import net.slc.dv.model.LoggedUser;
 import net.slc.dv.model.Task;
+import net.slc.dv.resources.Icon;
+import net.slc.dv.resources.IconStorage;
 import net.slc.dv.view.classroom.detail.component.TaskItem;
 import net.slc.dv.view.task.task.TaskBase;
 
@@ -383,11 +386,12 @@ public class Profile extends VBox {
     private HBox setChangePassword() {
         HBox passwordContainer = new HBox(5);
 
-        Image passwordIcon = new Image("file:resources/icons/change-password.png");
-        ImageView passwordIconView = new ImageView(passwordIcon);
+        ImageView passwordIconView = ImageViewBuilder.create()
+                .bindImageProperty(IconStorage.getIcon(Icon.CHANGE_PASSWORD))
+                .setFitHeight(25)
+                .setPreserveRatio(true)
+                .build();
 
-        passwordIconView.setFitWidth(25);
-        passwordIconView.setPreserveRatio(true);
 
         HBox.setMargin(passwordIconView, new Insets(0, 0, 0, 20));
 

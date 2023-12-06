@@ -74,11 +74,12 @@ public class RightContent extends VBox {
 
 		HBox dropDownComment = new HBox();
 
-		Image arrowDown = new Image("file:resources/icons/down-arrow.png");
-		ImageView arrowDownImage = new ImageView(arrowDown);
+		ImageView arrowDownImage = ImageViewBuilder.create()
+				.bindImageProperty(IconStorage.getIcon(Icon.DOWN_ARROW))
+				.setFitWidth(8)
+				.setFitHeight(8)
+				.build();
 
-		arrowDownImage.setFitWidth(8);
-		arrowDownImage.setFitHeight(8);
 
 		Button dropDownBtn = new Button();
 		dropDownBtn.setGraphic(arrowDownImage);
@@ -172,8 +173,11 @@ public class RightContent extends VBox {
 		commentSection.setPadding(new Insets(10, 10, 10, 10));
 		commentSection.setSpacing(10);
 
-		Image profile = new Image("file:resources/icons/user.png");
-		ImageView profileImage = new ImageView(profile);
+		ImageView profileImage = ImageViewBuilder.create()
+				.bindImageProperty(IconStorage.getIcon(Icon.USER))
+				.setFitWidth(30)
+				.setFitHeight(30)
+				.build();
 
 		if (user.getProfile() != null) {
 			profileImage = new ImageView(LoggedUser.getInstance().getProfileImage());

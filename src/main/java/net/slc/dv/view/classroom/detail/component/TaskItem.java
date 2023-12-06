@@ -1,5 +1,6 @@
 package net.slc.dv.view.classroom.detail.component;
 
+import net.slc.dv.builder.ImageViewBuilder;
 import net.slc.dv.helper.DateManager;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
@@ -10,45 +11,49 @@ import javafx.scene.layout.HBox;
 import javafx.scene.layout.Priority;
 import javafx.scene.layout.StackPane;
 import net.slc.dv.model.Task;
+import net.slc.dv.resources.Icon;
+import net.slc.dv.resources.IconStorage;
 
 public class TaskItem extends HBox {
 
-    public TaskItem(Task task) {
-        StackPane stackPane = new StackPane();
+	public TaskItem(Task task) {
+		StackPane stackPane = new StackPane();
 
-        Image image = new Image("file:resources/icons/task.png");
-        ImageView imageView = new ImageView(image);
-        stackPane.getChildren().add(imageView);
+		ImageView imageView = ImageViewBuilder.create()
+				.bindImageProperty(IconStorage.getIcon(Icon.TASK))
+				.setFitHeight(20)
+				.setFitWidth(20)
+				.build();
 
-        stackPane.getStyleClass().add("circle-bg");
+		stackPane.getChildren().add(imageView);
 
-        imageView.setFitWidth(20);
-        imageView.setFitHeight(20);
+		stackPane.getStyleClass().add("circle-bg");
 
-        HBox.setMargin(stackPane, new Insets(0, 20, 0, 0));
 
-        this.getChildren().add(stackPane);
+		HBox.setMargin(stackPane, new Insets(0, 20, 0, 0));
 
-        Label title = new Label(task.getTitle());
-        title.setAlignment(Pos.CENTER);
+		this.getChildren().add(stackPane);
 
-        this.getChildren().add(title);
+		Label title = new Label(task.getTitle());
+		title.setAlignment(Pos.CENTER);
 
-        HBox spacer = new HBox();
-        HBox.setHgrow(spacer, Priority.ALWAYS);
+		this.getChildren().add(title);
 
-        this.getChildren().add(spacer);
+		HBox spacer = new HBox();
+		HBox.setHgrow(spacer, Priority.ALWAYS);
 
-        String formattedDate = DateManager.ddMMMyy(task.getDeadlineAt());
+		this.getChildren().add(spacer);
 
-        Label deadline = new Label(formattedDate);
-        deadline.setAlignment(Pos.CENTER_RIGHT);
-        HBox.setHgrow(deadline, Priority.NEVER);
-        deadline.setStyle("-fx-font-size: 13px; -fx-text-fill: #9E9E9E;");
-        this.getChildren().add(deadline);
+		String formattedDate = DateManager.ddMMMyy(task.getDeadlineAt());
 
-        this.getStyleClass().add("task-item");
+		Label deadline = new Label(formattedDate);
+		deadline.setAlignment(Pos.CENTER_RIGHT);
+		HBox.setHgrow(deadline, Priority.NEVER);
+		deadline.setStyle("-fx-font-size: 13px; -fx-text-fill: #9E9E9E;");
+		this.getChildren().add(deadline);
 
-        this.setAlignment(Pos.CENTER_LEFT);
-    }
+		this.getStyleClass().add("task-item");
+
+		this.setAlignment(Pos.CENTER_LEFT);
+	}
 }

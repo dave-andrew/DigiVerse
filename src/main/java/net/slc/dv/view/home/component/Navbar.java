@@ -150,7 +150,7 @@ public class Navbar extends HBox {
 			Image userImage = loggedUser.getProfile();
 			userImageView = ImageViewBuilder.create()
 					.setImage(
-							Objects.requireNonNullElseGet(userImage, () -> new Image("file:resources/icons/user.png")))
+							Objects.requireNonNullElseGet(userImage, () -> new Image("file:resources/icons/light/user.png")))
 					.setFitWidth(40)
 					.setFitHeight(40)
 					.setPreserveRatio(true)
