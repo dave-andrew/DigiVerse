@@ -3,6 +3,7 @@ package net.slc.dv.builder;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Node;
+import javafx.scene.control.ScrollPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Priority;
 import javafx.scene.layout.VBox;
@@ -52,6 +53,12 @@ public class VBoxBuilder {
 
     public VBoxBuilder setPadding(int padding) {
         this.vBox.setPadding(new Insets(padding));
+
+        return this;
+    }
+
+    public VBoxBuilder setMaxWidth(int width) {
+        this.vBox.setMaxWidth(width);
 
         return this;
     }
@@ -112,6 +119,12 @@ public class VBoxBuilder {
 
     public VBoxBuilder bindPrefWidth(VBox node) {
         this.vBox.prefWidthProperty().bind(node.prefWidthProperty());
+
+        return this;
+    }
+
+    public VBoxBuilder bindPrefWidth(ScrollPane vBox, double substract) {
+        this.vBox.prefWidthProperty().bind(vBox.widthProperty().subtract(substract));
 
         return this;
     }

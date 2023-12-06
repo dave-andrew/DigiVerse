@@ -57,6 +57,7 @@ public class Calendar extends ScrollPane {
                 .setStyleClass("bold-text")
                 .setAlignment(Pos.TOP_CENTER)
                 .setFont(Font.font(16))
+                .setPrefWidth(200)
                 .build();
 
         ImageView leftArrowView = ImageViewBuilder.create()

@@ -30,6 +30,8 @@ public class QuestionEssay extends VBox implements QuestionBox {
 		this.isChecking = isChecking;
 
 		Label numberLabel = LabelBuilder.create(number + ". " + question.getQuestionText())
+				.setWrapText(true)
+				.setPadding(0, 0, 20, 0)
 				.build();
 
 		VBox questionContainer = VBoxBuilder.create()

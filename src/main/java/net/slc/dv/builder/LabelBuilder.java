@@ -87,6 +87,12 @@ public class LabelBuilder {
         return this;
     }
 
+    public LabelBuilder setPrefWidth(double prefWidth) {
+        this.label.setPrefWidth(prefWidth);
+
+        return this;
+    }
+
     public LabelBuilder setWrapText(boolean wrapText) {
         this.label.setWrapText(wrapText);
 
