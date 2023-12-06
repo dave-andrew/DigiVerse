@@ -6,49 +6,49 @@ import javafx.scene.control.ToggleButton;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.util.Duration;
-import net.slc.dv.constant.Icon;
+import net.slc.dv.enums.PowerUp;
+import net.slc.dv.enums.Theme;
+import net.slc.dv.resources.IconStorage;
 
 public class ThemeManager {
-
+    private static ThemeManager instance;
     public static final String LIGHT_THEME = "file:resources/light_theme.css";
     public static final String DARK_THEME = "file:resources/dark_theme.css";
-    private static String theme = "light";
+    private static Theme theme = Theme.LIGHT;
 
-    public static void getTheme(Scene scene) {
+    public void getTheme(Scene scene) {
         scene.getStylesheets().clear();
-        if (theme.equals("light")) {
+        if (theme.equals(Theme.LIGHT)) {
             scene.getStylesheets().add(LIGHT_THEME);
-        } else if (theme.equals("dark")) {
+        } else if (theme.equals(Theme.DARK)) {
             scene.getStylesheets().add(DARK_THEME);
         }
     }
 
-    public static void toggleTheme(Scene scene, ToggleButton toggleButton) {
+    public static ThemeManager getInstance() {
+        if(instance == null) {
+            instance = new ThemeManager();
+        }
+        return instance;
+    }
+
+
+    public void toggleTheme(Scene scene, ToggleButton toggleButton) {
         FadeTransition fadeOut = new FadeTransition(Duration.millis(250), scene.getRoot());
         fadeOut.setFromValue(1.0);
         fadeOut.setToValue(0.0);
 
         fadeOut.setOnFinished(event -> {
             scene.getStylesheets().clear();
-            if (theme.equals("light")) {
-                theme = "dark";
+            if (theme.equals(Theme.LIGHT)) {
+                theme = Theme.DARK;
 
-                ImageView moon = new ImageView(new Image(Icon.MOON));
-                toggleButton.setGraphic(moon);
-
-                moon.setFitWidth(30);
-                moon.setFitHeight(30);
-
+                IconStorage.changeTheme(Theme.DARK);
                 scene.getStylesheets().add(DARK_THEME);
-            } else if (theme.equals("dark")) {
-                theme = "light";
+            } else if (theme.equals(Theme.DARK)) {
+                theme = Theme.LIGHT;
 
-                ImageView sun = new ImageView(new Image(Icon.SUN));
-                toggleButton.setGraphic(sun);
-
-                sun.setFitWidth(30);
-                sun.setFitHeight(30);
-
+                IconStorage.changeTheme(Theme.LIGHT);
                 scene.getStylesheets().add(LIGHT_THEME);
             }
 

@@ -95,7 +95,7 @@ public class JoinClassView {
         borderPane.setCenter(mainVbox);
 
         scene = new Scene(borderPane, ScreenManager.SCREEN_WIDTH, ScreenManager.SCREEN_HEIGHT);
-        ThemeManager.getTheme(scene);
+        ThemeManager.getInstance().getTheme(scene);
     }
 
     private void setActions() {

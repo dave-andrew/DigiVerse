@@ -1,5 +1,7 @@
 package net.slc.dv.view.classroom.join.component;
 
+import net.slc.dv.resources.Icon;
+import net.slc.dv.resources.IconStorage;
 import net.slc.dv.controller.AuthController;
 import net.slc.dv.helper.ImageManager;
 import net.slc.dv.helper.StageManager;
@@ -43,7 +45,7 @@ public class ChangeAccountBox extends VBox {
         Label userInfoLbl = new Label("Logged As:");
         userInfoLbl.setStyle("-fx-font-size: 20px;");
 
-        Image image = new Image("file:resources/icons/user.png");
+        Image image = IconStorage.getIcon(Icon.USER);
         ImageView userImg = new ImageView(image);
         userImg.setFitWidth(40);
         userImg.setFitHeight(40);

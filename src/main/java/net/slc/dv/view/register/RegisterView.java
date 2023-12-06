@@ -15,6 +15,7 @@ import javafx.scene.shape.Rectangle;
 import javafx.scene.text.Font;
 import javafx.stage.Stage;
 import javafx.util.Duration;
+import net.slc.dv.resources.ImageStorage;
 import net.slc.dv.controller.AuthController;
 import net.slc.dv.helper.ScreenManager;
 
@@ -115,7 +116,7 @@ public class RegisterView extends VBox {
             loginLink.setStyle("-fx-font-size: 14px;-fx-text-fill: #000000;");
         });
 
-        Image image = new Image("file:resources/image/auth_image.png");
+        Image image = new Image(ImageStorage.AUTH_IMAGE);
         registerImage = new ImageView(image);
 
         vbox = new VBox(10);

@@ -1,5 +1,7 @@
 package net.slc.dv.view.classroom.detail.component;
 
+import net.slc.dv.resources.Icon;
+import net.slc.dv.resources.IconStorage;
 import net.slc.dv.controller.CommentController;
 import net.slc.dv.helper.ImageManager;
 import javafx.geometry.Insets;
@@ -39,7 +41,7 @@ public class CommentItem extends HBox {
     }
 
     private void setLayout() {
-        Image profile = new Image("file:resources/icons/user.png");
+        Image profile = IconStorage.getIcon(Icon.USER);
         ImageView profileImage = new ImageView(profile);
 
         if(comment.getUser().getProfile() != null) {

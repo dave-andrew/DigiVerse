@@ -19,6 +19,9 @@ import javafx.stage.Stage;
 import javafx.util.Duration;
 import net.slc.dv.controller.AuthController;
 import net.slc.dv.helper.ScreenManager;
+import net.slc.dv.resources.Icon;
+import net.slc.dv.resources.IconStorage;
+import net.slc.dv.resources.ImageStorage;
 import net.slc.dv.view.register.RegisterView;
 import net.slc.dv.view.home.Home;
 
@@ -132,7 +135,7 @@ public class LoginView {
 //        welcomeToLabel.setStyle("-fx-text-fill: white;-fx-font-size: 25px;");
 //        welcomeToLabel.setPadding(new Insets(0, 0, 100, 0));
 
-        Image appIcon = new Image("file:resources/icons/logo.png");
+        Image appIcon = IconStorage.getIcon(Icon.LOGO);
         ImageView appIconView = new ImageView(appIcon);
         appIconView.setStyle("-fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.3), 10, 0, 0, 0);");
 
@@ -212,7 +215,7 @@ public class LoginView {
         rememberMe.setScaleX(0.8);
         rememberMe.setScaleY(0.8);
 
-        Image image = new Image("file:resources/image/auth_image2.png");
+        Image image = new Image(ImageStorage.AUTH_IMAGE_TWO);
 
         loginImage = new ImageView(image);
 

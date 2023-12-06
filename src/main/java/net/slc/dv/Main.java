@@ -1,5 +1,7 @@
 package net.slc.dv;
 
+import net.slc.dv.resources.Icon;
+import net.slc.dv.resources.IconStorage;
 import net.slc.dv.controller.AuthController;
 import net.slc.dv.database.connection.ConnectionChecker;
 import net.slc.dv.helper.ScreenManager;
@@ -47,7 +49,7 @@ public class Main extends Application {
 		borderPane.setCenter(loading);
 
 		scene = new Scene(borderPane, ScreenManager.SCREEN_WIDTH, ScreenManager.SCREEN_HEIGHT);
-		ThemeManager.getTheme(scene);
+		ThemeManager.getInstance().getTheme(scene);
 
 		return scene;
 	}
@@ -128,12 +130,13 @@ public class Main extends Application {
 
 	@Override
 	public void start(Stage stage) {
+		IconStorage.init();
 		Stage primaryStage = StageManager.getInstance();
 		scene = initialize();
 		primaryStage.setScene(scene);
 
 		primaryStage.setTitle("DigiVerse");
-		primaryStage.getIcons().add(new Image("file:resources/icons/app_logo.png"));
+		primaryStage.getIcons().add(IconStorage.getIcon(Icon.APP_LOGO));
 		stage.initStyle(StageStyle.UTILITY);
 		primaryStage.show();
 	}

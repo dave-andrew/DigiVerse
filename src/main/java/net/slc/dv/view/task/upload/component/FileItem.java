@@ -8,6 +8,8 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Priority;
+import net.slc.dv.resources.Icon;
+import net.slc.dv.resources.IconStorage;
 
 import java.io.File;
 
@@ -18,22 +20,19 @@ public class FileItem extends HBox {
     public FileItem(File file) {
 
         if (getFileType(file).equals("pdf")) {
-            Image img = new Image("file:resources/icons/pdf.png");
-            ImageView imgView = new ImageView(img);
+            ImageView imgView = new ImageView(IconStorage.getIcon(Icon.PDF));
             imgView.setFitWidth(20);
             imgView.setFitHeight(20);
 
             this.getChildren().add(imgView);
         } else if (getFileType(file).equals("png") || getFileType(file).equals("jpg") || getFileType(file).equals("jpeg")) {
-            Image img = new Image("file:resources/icons/image.png");
-            ImageView imgView = new ImageView(img);
+            ImageView imgView = new ImageView(IconStorage.getIcon(Icon.IMAGE));
             imgView.setFitWidth(20);
             imgView.setFitHeight(20);
 
             this.getChildren().add(imgView);
         } else {
-            Image img = new Image("file:resources/icons/file.png");
-            ImageView imgView = new ImageView(img);
+            ImageView imgView = new ImageView(IconStorage.getIcon(Icon.FILE));
             imgView.setFitWidth(20);
             imgView.setFitHeight(20);
 
@@ -44,8 +43,7 @@ public class FileItem extends HBox {
         fileName.setStyle("-fx-font-size: 14px;");
         this.getChildren().add(fileName);
 
-        Image closeImg = new Image("file:resources/icons/close.png");
-        ImageView closeIcon = new ImageView(closeImg);
+        ImageView closeIcon = new ImageView(IconStorage.getIcon(Icon.CLOSE));
 
         this.removeBtn = new Button();
         removeBtn.setGraphic(closeIcon);

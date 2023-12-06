@@ -11,7 +11,8 @@ import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import net.slc.dv.builder.ButtonBuilder;
 import net.slc.dv.builder.VBoxBuilder;
-import net.slc.dv.constant.Icon;
+import net.slc.dv.resources.Icon;
+import net.slc.dv.resources.IconStorage;
 import net.slc.dv.controller.AnswerController;
 import net.slc.dv.controller.MemberController;
 import net.slc.dv.controller.TaskController;
@@ -137,8 +138,7 @@ public class AnswerDetailView extends HBox {
 			HBox fileItem = new HBox();
 
 			if (answer.getName().endsWith(".pdf")) {
-				Image image = new Image(Icon.PDF);
-				ImageView icon = new ImageView(image);
+				ImageView icon = new ImageView(IconStorage.getIcon(Icon.PDF));
 
 				icon.setFitWidth(25);
 				icon.setPreserveRatio(true);
@@ -147,7 +147,7 @@ public class AnswerDetailView extends HBox {
 
 			} else if (answer.getName().endsWith(".png") || answer.getName().endsWith(".jpg") || answer.getName().endsWith(".jpeg")) {
 
-				Image image = new Image(Icon.IMAGE);
+				Image image = IconStorage.getIcon(Icon.IMAGE);
 				ImageView icon = new ImageView(image);
 
 				icon.setFitWidth(25);
@@ -156,7 +156,7 @@ public class AnswerDetailView extends HBox {
 				fileItem.getChildren().addAll(icon);
 
 			} else {
-				Image image = new Image(Icon.FILE);
+				Image image = IconStorage.getIcon(Icon.FILE);
 				ImageView icon = new ImageView(image);
 
 				icon.setFitWidth(25);

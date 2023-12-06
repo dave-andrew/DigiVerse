@@ -19,10 +19,10 @@ import java.util.function.Consumer;
 public class ClassroomListView extends GridPane {
 
     private final StackPane mainPane;
-    private Consumer<String> setNavigation;
+    private Consumer<Classroom> setNavigation;
     private ClassController classController;
 
-    public ClassroomListView(StackPane mainPane, Consumer<String> setNavigation) {
+    public ClassroomListView(StackPane mainPane, Consumer<Classroom> setNavigation) {
         this.mainPane = mainPane;
         this.setNavigation = setNavigation;
         init();
@@ -44,9 +44,9 @@ public class ClassroomListView extends GridPane {
 
             sp.setOnMouseClicked(e -> {
                 String userRole = new MemberController().getRole(classroom.getClassId());
-                BorderPane classDetail = new ClassroomDetailView(mainPane, classroom, userRole);
+                new ClassroomDetailView(mainPane, classroom, userRole);
 
-                this.setNavigation.accept(classroom.getClassName());
+                this.setNavigation.accept(classroom);
 
                 if (userRole.equals("Teacher")) {
                     Home.teacherClassList.add(classroom);

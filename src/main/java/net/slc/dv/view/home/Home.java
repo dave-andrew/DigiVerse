@@ -57,7 +57,7 @@ public class Home {
         scrollPane = new ScrollPane();
         mainPane.getChildren().add(scrollPane);
 
-        this.navbar = new Navbar(stage, this::onNavbarButtonClick);
+        this.navbar = new Navbar(mainPane, stage, this::onNavbarButtonClick);
         this.sideNavbar = new SideNavbar(this::onSidebarButtonClick);
 
         classGrid = new ClassroomListView(mainPane, this.navbar::setLeftNavigation);
@@ -70,14 +70,12 @@ public class Home {
 
         scrollPane.setPannable(true);
 
-        //        TODO: Add class with role as teacher and student
-
         borderPane.setCenter(mainPane);
         borderPane.setLeft(sideNavbar);
         borderPane.setTop(navbar);
 
         scene = new Scene(borderPane, ScreenManager.SCREEN_WIDTH, ScreenManager.SCREEN_HEIGHT);
-        ThemeManager.getTheme(scene);
+        ThemeManager.getInstance().getTheme(scene);
 
         return scene;
     }
@@ -94,7 +92,6 @@ public class Home {
             this.sideNavbar.setActive((SideNavbarButton) button);
 
             new Calendar(mainPane, this.navbar::setLeftNavigation);
-            return;
         }
     }
 
@@ -115,9 +112,10 @@ public class Home {
             return;
         }
         if (button == this.navbar.getThemeSwitchButton()) {
-            ThemeManager.toggleTheme(scene, (ToggleButton) button);
+            ThemeManager.getInstance().toggleTheme(scene, (ToggleButton) button);
         }
     }
+
 
     public void profilePage(ImageView userImg) {
         VBox profile = new Profile(userImg, mainPane, this.navbar::setLeftNavigation);

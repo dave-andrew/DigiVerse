@@ -11,7 +11,8 @@ import javafx.scene.layout.Priority;
 import javafx.scene.layout.VBox;
 import lombok.Getter;
 import net.slc.dv.builder.*;
-import net.slc.dv.constant.Icon;
+import net.slc.dv.resources.Icon;
+import net.slc.dv.resources.IconStorage;
 import net.slc.dv.enums.QuestionType;
 import net.slc.dv.interfaces.CreateQuestionBox;
 
@@ -50,7 +51,7 @@ public class QuestionContainer {
                 .build();
 
         ImageView closeIcon = ImageViewBuilder.create()
-                .setImage(new Image(Icon.BIN))
+                .setImage(IconStorage.getIcon(Icon.BIN))
                 .setFitWidth(20)
                 .setFitHeight(20)
                 .setPreserveRatio(true)

@@ -1,5 +1,7 @@
 package net.slc.dv.view.classroom.detail.component;
 
+import net.slc.dv.resources.Icon;
+import net.slc.dv.resources.IconStorage;
 import net.slc.dv.helper.ImageManager;
 import javafx.scene.control.TextField;
 import javafx.scene.image.Image;
@@ -16,7 +18,7 @@ public class CommentTextField extends HBox {
         ImageView profileImg;
 
         if (LoggedUser.getInstance().getProfile() == null) {
-            profileImg = new ImageView(new Image("file:resources/icons/user.png"));
+            profileImg = new ImageView(IconStorage.getIcon(Icon.USER));
         } else {
             profileImg = new ImageView(LoggedUser.getInstance().getProfile());
         }

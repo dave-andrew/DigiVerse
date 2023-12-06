@@ -20,6 +20,8 @@ import javafx.stage.FileChooser;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
+import net.slc.dv.resources.Icon;
+import net.slc.dv.resources.IconStorage;
 import net.slc.dv.controller.AnswerController;
 import net.slc.dv.controller.FileController;
 import net.slc.dv.helper.StageManager;
@@ -65,16 +67,14 @@ public class UploadFileModal {
 
         Scene scene = new Scene(mainVbox, 600, 600);
         scene.setFill(Color.TRANSPARENT);
-        ThemeManager.getTheme(scene);
+        ThemeManager.getInstance().getTheme(scene);
         dialogStage.setScene(scene);
     }
 
     private void setLayout() {
         mainVbox.setAlignment(Pos.CENTER);
         VBox.setMargin(mainVbox, new Insets(20));
-
-        Image uploadImg = new Image("file:resources/icons/close.png");
-        ImageView uploadIcon = new ImageView(uploadImg);
+        ImageView uploadIcon = new ImageView(IconStorage.getIcon(Icon.CLOSE));
         uploadIcon.setFitWidth(12);
         uploadIcon.setFitHeight(12);
 

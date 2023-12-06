@@ -14,6 +14,8 @@ import net.slc.dv.builder.ButtonBuilder;
 import net.slc.dv.builder.ImageViewBuilder;
 import net.slc.dv.builder.ScrollPaneBuilder;
 import net.slc.dv.builder.VBoxBuilder;
+import net.slc.dv.resources.Icon;
+import net.slc.dv.resources.IconStorage;
 import net.slc.dv.interfaces.CreateQuestionBox;
 import net.slc.dv.model.Question;
 
@@ -27,7 +29,7 @@ public class CreateQuestionTask extends ScrollPane {
 	public CreateQuestionTask() {
 		this.generalTask = new CreateGeneralTask();
 		ImageView imageView = ImageViewBuilder.create()
-				.setImage(new Image("file:resources/icons/plus-white.png"))
+				.setImage(IconStorage.getIcon(Icon.PLUS_WHITE))
 				.setFitWidth(20)
 				.setFitHeight(20)
 				.setPreserveRatio(true)

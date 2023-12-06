@@ -9,6 +9,8 @@ import javafx.scene.image.ImageView;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Priority;
 import javafx.stage.Stage;
+import net.slc.dv.resources.Icon;
+import net.slc.dv.resources.IconStorage;
 
 public class CreateClassNav extends HBox {
 
@@ -23,7 +25,7 @@ public class CreateClassNav extends HBox {
     private void initialize() {
         HBox leftNav = new HBox(20);
 
-        Image closeImg = new Image("file:resources/icons/close.png");
+        Image closeImg = IconStorage.getIcon(Icon.CLOSE);
         ImageView close = new ImageView(closeImg);
         close.setFitWidth(17);
         close.setFitHeight(17);

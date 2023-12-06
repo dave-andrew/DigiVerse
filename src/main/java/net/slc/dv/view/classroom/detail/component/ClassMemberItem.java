@@ -1,5 +1,7 @@
 package net.slc.dv.view.classroom.detail.component;
 
+import net.slc.dv.resources.Icon;
+import net.slc.dv.resources.IconStorage;
 import net.slc.dv.helper.ImageManager;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
@@ -20,9 +22,10 @@ public class ClassMemberItem extends HBox {
         User user = classMember.getUser();
 
         if (user.getBlobProfile() != null) {
+            System.out.println("Ada profile");
             profileImg = user.getProfile();
         } else {
-            profileImg = new Image("file:resources/icons/user.png");
+            profileImg = IconStorage.getIcon(Icon.USER);
         }
 
         VBox userBox = new VBox();

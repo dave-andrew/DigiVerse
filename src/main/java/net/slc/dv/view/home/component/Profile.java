@@ -16,6 +16,7 @@ import net.slc.dv.controller.TaskController;
 import net.slc.dv.controller.UserController;
 import net.slc.dv.helper.ImageManager;
 import net.slc.dv.helper.StageManager;
+import net.slc.dv.model.Classroom;
 import net.slc.dv.model.LoggedUser;
 import net.slc.dv.model.Task;
 import net.slc.dv.view.classroom.detail.component.TaskItem;
@@ -47,9 +48,9 @@ public class Profile extends VBox {
     private VBox taskContainer;
     private Button pendingTask, finishedTask;
     private VBox updateProfileContainer, updatePasswordContainer;
-    private Consumer<String> setNavigation;
+    private Consumer<Classroom> setNavigation;
 
-    public Profile(ImageView profileNav, StackPane mainPane, Consumer<String> setNavigation) {
+    public Profile(ImageView profileNav, StackPane mainPane, Consumer<Classroom> setNavigation) {
         this.mainPane = mainPane;
         this.profileNav = profileNav;
         this.setNavigation = setNavigation;
@@ -462,7 +463,7 @@ public class Profile extends VBox {
                 String userRole = new MemberController().getRole(task.getClassroom().getClassId());
                 new TaskBase(mainPane, task, task.getClassroom(), userRole);
 
-                this.setNavigation.accept(task.getClassroom().getClassName());
+                this.setNavigation.accept(task.getClassroom());
             });
         }
     }

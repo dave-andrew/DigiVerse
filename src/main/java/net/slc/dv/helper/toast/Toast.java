@@ -103,7 +103,7 @@ public class Toast {
 
     public void build() {
         Scene scene = new Scene(root);
-        ThemeManager.getTheme(scene);
+        ThemeManager.getInstance().getTheme(scene);
         scene.setFill(Color.TRANSPARENT);
         toastStage.setScene(scene);
 

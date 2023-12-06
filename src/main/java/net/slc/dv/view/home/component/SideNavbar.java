@@ -8,7 +8,6 @@ import javafx.animation.Interpolator;
 import javafx.animation.KeyFrame;
 import javafx.animation.KeyValue;
 import javafx.animation.Timeline;
-import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Node;
 import javafx.scene.control.Button;
@@ -22,7 +21,8 @@ import javafx.scene.layout.VBox;
 import javafx.util.Duration;
 import lombok.Getter;
 import net.slc.dv.builder.*;
-import net.slc.dv.constant.Icon;
+import net.slc.dv.resources.Icon;
+import net.slc.dv.resources.IconStorage;
 import net.slc.dv.controller.AuthController;
 import net.slc.dv.helper.StageManager;
 import net.slc.dv.model.LoggedUser;
@@ -45,8 +45,8 @@ public class SideNavbar extends StackPane {
         this.onButtonClick = onButtonClick;
         this.sideButtons = new ArrayList<>();
         this.authController = new AuthController();
-        this.homeButton = new SideNavbarButton(Icon.HOME, "Home", onButtonClick);
-        this.calendarButton = new SideNavbarButton(Icon.CALENDAR, "Calendar", onButtonClick);
+        this.homeButton = new SideNavbarButton(IconStorage.getIcon(Icon.HOME), "Home", onButtonClick);
+        this.calendarButton = new SideNavbarButton(IconStorage.getIcon(Icon.CALENDAR), "Calendar", onButtonClick);
         this.sidebarOpen = true;
 
         this.sideButtons.add(this.homeButton);
@@ -63,7 +63,7 @@ public class SideNavbar extends StackPane {
                 .build();
 
         ImageView leftArrow = ImageViewBuilder.create()
-                .setImage(new Image(Icon.LEFT_ARROW))
+                .setImage(IconStorage.getIcon(Icon.LEFT_ARROW))
                 .setPreserveRatio(true)
                 .setFitWidth(25)
                 .setFitHeight(25)
@@ -85,7 +85,7 @@ public class SideNavbar extends StackPane {
 
     public HBox LogoutButton() {
         ImageView icon = ImageViewBuilder.create()
-                .setImage(new Image(Icon.LOGOUT))
+                .setImage(IconStorage.getIcon(Icon.LOGOUT))
                 .setFitWidth(20)
                 .setFitHeight(20)
                 .setPreserveRatio(true)

@@ -14,7 +14,8 @@ import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Line;
 import net.slc.dv.builder.*;
-import net.slc.dv.constant.Icon;
+import net.slc.dv.resources.Icon;
+import net.slc.dv.resources.IconStorage;
 import net.slc.dv.controller.AnswerController;
 import net.slc.dv.controller.CommentController;
 import net.slc.dv.enums.TaskType;
@@ -68,7 +69,7 @@ public class TaskDetailView extends HBox {
 
 	private void setLayout() {
 		ImageView imgView = ImageViewBuilder.create()
-				.setImage(new Image(Icon.TASK))
+				.setImage(IconStorage.getIcon(Icon.TASK))
 				.setFitHeight(40)
 				.setFitWidth(40)
 				.build();
@@ -168,7 +169,7 @@ public class TaskDetailView extends HBox {
 
 			ImageView userImg;
 			if (LoggedUser.getInstance().getProfileImage() == null) {
-				userImg = new ImageView(new Image("file:resources/icons/user.png"));
+				userImg = new ImageView(IconStorage.getIcon(Icon.USER));
 
 				userImg.setFitWidth(30);
 				userImg.setFitHeight(30);

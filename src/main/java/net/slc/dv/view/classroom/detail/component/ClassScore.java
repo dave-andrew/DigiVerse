@@ -1,5 +1,7 @@
 package net.slc.dv.view.classroom.detail.component;
 
+import net.slc.dv.resources.Icon;
+import net.slc.dv.resources.IconStorage;
 import net.slc.dv.controller.AnswerController;
 import net.slc.dv.controller.MemberController;
 import net.slc.dv.controller.TaskController;
@@ -224,7 +226,7 @@ public class ClassScore extends HBox {
 
                 container.getChildren().add(taskScoreInput);
 
-                Image image = new Image("file:resources/icons/save.png");
+                Image image = IconStorage.getIcon(Icon.SAVE);
                 ImageView saveIcon = new ImageView(image);
 
                 saveIcon.setFitWidth(20);

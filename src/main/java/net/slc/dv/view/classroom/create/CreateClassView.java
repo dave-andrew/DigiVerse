@@ -55,7 +55,7 @@ public class CreateClassView {
         classFormBox.setMaxWidth(800);
 
         dialogStage.setScene(new Scene(borderPane, ScreenManager.SCREEN_WIDTH, ScreenManager.SCREEN_HEIGHT));
-        ThemeManager.getTheme(dialogStage.getScene());
+        ThemeManager.getInstance().getTheme(dialogStage.getScene());
     }
 
     private void setLayout() {

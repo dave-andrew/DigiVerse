@@ -12,6 +12,8 @@ import javafx.scene.layout.VBox;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 import net.slc.dv.builder.*;
+import net.slc.dv.resources.Icon;
+import net.slc.dv.resources.IconStorage;
 import net.slc.dv.controller.TaskController;
 import net.slc.dv.helper.DateManager;
 import net.slc.dv.helper.ScreenManager;
@@ -79,7 +81,7 @@ public class AddTaskView extends BorderPane {
 		dialogScene = new Scene(root, ScreenManager.SCREEN_WIDTH, ScreenManager.SCREEN_HEIGHT);
 		dialogStage.setScene(dialogScene);
 
-		ThemeManager.getTheme(dialogScene);
+		ThemeManager.getInstance().getInstance().getTheme(dialogScene);
 
 		dialogStage.setTitle("Add Task");
 		dialogStage.showAndWait();
@@ -95,7 +97,7 @@ public class AddTaskView extends BorderPane {
 
 	private HBox navBar() {
 		close = ImageViewBuilder.create()
-				.setImage(new Image("file:resources/icons/close.png"))
+				.setImage(IconStorage.getIcon(Icon.CLOSE))
 				.setFitWidth(20)
 				.setPreserveRatio(true)
 				.build();

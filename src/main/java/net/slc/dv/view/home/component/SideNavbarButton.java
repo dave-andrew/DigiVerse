@@ -12,11 +12,11 @@ import net.slc.dv.builder.LabelBuilder;
 import java.util.function.Consumer;
 
 public class SideNavbarButton extends HBox {
-	public SideNavbarButton(String imagePath, String labelString, Consumer<SideNavbarButton> onButtonClick) {
+	public SideNavbarButton(Image image, String labelString, Consumer<SideNavbarButton> onButtonClick) {
 		super();
 
 		ImageView icon = ImageViewBuilder.create()
-				.setImage(new Image(imagePath))
+				.setImage(image)
 				.setFitHeight(25)
 				.setPreserveRatio(true)
 				.build();

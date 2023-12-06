@@ -15,10 +15,12 @@ import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
 import net.slc.dv.builder.*;
-import net.slc.dv.constant.Icon;
+import net.slc.dv.resources.Icon;
+import net.slc.dv.resources.IconStorage;
 import net.slc.dv.controller.MemberController;
 import net.slc.dv.controller.TaskController;
 import net.slc.dv.enums.Days;
+import net.slc.dv.model.Classroom;
 import net.slc.dv.model.Task;
 import net.slc.dv.view.task.task.TaskBase;
 
@@ -31,9 +33,9 @@ public class Calendar extends ScrollPane {
     private GridPane calendarGrid;
     private Label monthLbl;
     private HBox calendarHeader;
-    private Consumer<String> setNavigation;
+    private Consumer<Classroom> setNavigation;
 
-    public Calendar(StackPane mainPane, Consumer<String> setNavigation) {
+    public Calendar(StackPane mainPane, Consumer<Classroom> setNavigation) {
         this.mainPane = mainPane;
         this.setNavigation = setNavigation;
         this.taskController = new TaskController();
@@ -60,7 +62,7 @@ public class Calendar extends ScrollPane {
                 .build();
 
         ImageView leftArrowView = ImageViewBuilder.create()
-                .setImage(new Image(Icon.LEFT_NAV_ARROW))
+                .setImage(IconStorage.getIcon(Icon.LEFT_NAV_ARROW))
                 .setFitWidth(20)
                 .setPreserveRatio(true)
                 .build();
@@ -73,7 +75,7 @@ public class Calendar extends ScrollPane {
                 .build();
 
         ImageView rightArrowView = ImageViewBuilder.create()
-                .setImage(new Image(Icon.RIGHT_NAV_ARROW))
+                .setImage(IconStorage.getIcon(Icon.RIGHT_NAV_ARROW))
                 .setFitWidth(20)
                 .setPreserveRatio(true)
                 .build();
@@ -209,7 +211,7 @@ public class Calendar extends ScrollPane {
                                 .getRole(task.getClassroom().getClassId());
                         new TaskBase(mainPane, task, task.getClassroom(), userRole);
 
-                        this.setNavigation.accept(task.getClassroom().getClassName());
+                        this.setNavigation.accept(task.getClassroom());
                     })
                     .build();
 
