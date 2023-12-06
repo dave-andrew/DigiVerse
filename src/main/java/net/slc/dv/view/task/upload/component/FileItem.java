@@ -20,19 +20,19 @@ public class FileItem extends HBox {
     public FileItem(File file) {
 
         if (getFileType(file).equals("pdf")) {
-            ImageView imgView = new ImageView(IconStorage.getIcon(Icon.PDF));
+            ImageView imgView = new ImageView(IconStorage.getIcon(Icon.PDF).getValue());
             imgView.setFitWidth(20);
             imgView.setFitHeight(20);
 
             this.getChildren().add(imgView);
         } else if (getFileType(file).equals("png") || getFileType(file).equals("jpg") || getFileType(file).equals("jpeg")) {
-            ImageView imgView = new ImageView(IconStorage.getIcon(Icon.IMAGE));
+            ImageView imgView = new ImageView(IconStorage.getIcon(Icon.IMAGE).getValue());
             imgView.setFitWidth(20);
             imgView.setFitHeight(20);
 
             this.getChildren().add(imgView);
         } else {
-            ImageView imgView = new ImageView(IconStorage.getIcon(Icon.FILE));
+            ImageView imgView = new ImageView(IconStorage.getIcon(Icon.FILE).getValue());
             imgView.setFitWidth(20);
             imgView.setFitHeight(20);
 
@@ -43,7 +43,7 @@ public class FileItem extends HBox {
         fileName.setStyle("-fx-font-size: 14px;");
         this.getChildren().add(fileName);
 
-        ImageView closeIcon = new ImageView(IconStorage.getIcon(Icon.CLOSE));
+        ImageView closeIcon = new ImageView(IconStorage.getIcon(Icon.CLOSE).getValue());
 
         this.removeBtn = new Button();
         removeBtn.setGraphic(closeIcon);

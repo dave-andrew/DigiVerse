@@ -25,7 +25,7 @@ public class ClassMemberItem extends HBox {
             System.out.println("Ada profile");
             profileImg = user.getProfile();
         } else {
-            profileImg = IconStorage.getIcon(Icon.USER);
+            profileImg = IconStorage.getIcon(Icon.USER).getValue();
         }
 
         VBox userBox = new VBox();

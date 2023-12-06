@@ -12,6 +12,7 @@ import javafx.scene.layout.HBox;
 import javafx.scene.layout.Priority;
 import javafx.scene.layout.VBox;
 import net.slc.dv.builder.ButtonBuilder;
+import net.slc.dv.builder.ImageViewBuilder;
 import net.slc.dv.builder.VBoxBuilder;
 import net.slc.dv.resources.Icon;
 import net.slc.dv.resources.IconStorage;
@@ -150,29 +151,31 @@ public class AnswerDetailView extends HBox {
 			HBox fileItem = new HBox();
 
 			if (answer.getName().endsWith(".pdf")) {
-				ImageView icon = new ImageView(IconStorage.getIcon(Icon.PDF));
-
-				icon.setFitWidth(25);
-				icon.setPreserveRatio(true);
+				ImageView icon = ImageViewBuilder.create()
+						.bindImageProperty(IconStorage.getIcon(Icon.PDF))
+						.setFitWidth(25)
+						.setPreserveRatio(true)
+						.build();
 
 				fileItem.getChildren().addAll(icon);
 
 			} else if (answer.getName().endsWith(".png") || answer.getName().endsWith(".jpg") || answer.getName().endsWith(".jpeg")) {
+				ImageView icon = ImageViewBuilder.create()
+						.bindImageProperty(IconStorage.getIcon(Icon.IMAGE))
+						.setFitWidth(25)
+						.setPreserveRatio(true)
+						.build();
 
-				Image image = IconStorage.getIcon(Icon.IMAGE);
-				ImageView icon = new ImageView(image);
-
-				icon.setFitWidth(25);
-				icon.setPreserveRatio(true);
 
 				fileItem.getChildren().addAll(icon);
 
 			} else {
-				Image image = IconStorage.getIcon(Icon.FILE);
-				ImageView icon = new ImageView(image);
-
-				icon.setFitWidth(25);
-				icon.setPreserveRatio(true);
+				ImageView icon = ImageViewBuilder.create()
+						.bindImageProperty(IconStorage.getIcon(Icon.FILE))
+						.setFitHeight(25)
+						.setFitWidth(25)
+						.setPreserveRatio(true)
+						.build();
 
 				fileItem.getChildren().addAll(icon);
 

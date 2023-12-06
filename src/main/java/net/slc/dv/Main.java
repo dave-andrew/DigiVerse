@@ -136,7 +136,7 @@ public class Main extends Application {
 		primaryStage.setScene(scene);
 
 		primaryStage.setTitle("DigiVerse");
-		primaryStage.getIcons().add(IconStorage.getIcon(Icon.APP_LOGO));
+		primaryStage.getIcons().add(IconStorage.getIcon(Icon.APP_LOGO).getValue());
 		stage.initStyle(StageStyle.UTILITY);
 		primaryStage.show();
 	}

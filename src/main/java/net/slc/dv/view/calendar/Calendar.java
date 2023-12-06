@@ -63,7 +63,7 @@ public class Calendar extends ScrollPane {
                 .build();
 
         ImageView leftArrowView = ImageViewBuilder.create()
-                .setImage(IconStorage.getIcon(Icon.LEFT_NAV_ARROW))
+                .bindImageProperty(IconStorage.getIcon(Icon.LEFT_NAV_ARROW))
                 .setFitWidth(20)
                 .setPreserveRatio(true)
                 .build();
@@ -76,7 +76,7 @@ public class Calendar extends ScrollPane {
                 .build();
 
         ImageView rightArrowView = ImageViewBuilder.create()
-                .setImage(IconStorage.getIcon(Icon.RIGHT_NAV_ARROW))
+                .bindImageProperty(IconStorage.getIcon(Icon.RIGHT_NAV_ARROW))
                 .setFitWidth(20)
                 .setPreserveRatio(true)
                 .build();

@@ -1,5 +1,6 @@
 package net.slc.dv.view.classroom.detail.component;
 
+import net.slc.dv.builder.ImageViewBuilder;
 import net.slc.dv.resources.Icon;
 import net.slc.dv.resources.IconStorage;
 import net.slc.dv.controller.CommentController;
@@ -41,8 +42,11 @@ public class CommentItem extends HBox {
     }
 
     private void setLayout() {
-        Image profile = IconStorage.getIcon(Icon.USER);
-        ImageView profileImage = new ImageView(profile);
+        ImageView profileImage = ImageViewBuilder.create()
+                .bindImageProperty(IconStorage.getIcon(Icon.USER))
+                .setFitWidth(30)
+                .setFitHeight(30)
+                .build();
 
         if(comment.getUser().getProfile() != null) {
             profileImage = new ImageView(comment.getUser().getProfile());

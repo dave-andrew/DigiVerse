@@ -29,7 +29,7 @@ public class CreateQuestionTask extends ScrollPane {
 	public CreateQuestionTask() {
 		this.generalTask = new CreateGeneralTask();
 		ImageView imageView = ImageViewBuilder.create()
-				.setImage(IconStorage.getIcon(Icon.PLUS_WHITE))
+				.bindImageProperty(IconStorage.getIcon(Icon.PLUS_WHITE))
 				.setFitWidth(20)
 				.setFitHeight(20)
 				.setPreserveRatio(true)

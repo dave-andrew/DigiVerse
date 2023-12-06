@@ -69,7 +69,7 @@ public class TaskDetailView extends HBox {
 
 	private void setLayout() {
 		ImageView imgView = ImageViewBuilder.create()
-				.setImage(IconStorage.getIcon(Icon.TASK))
+				.bindImageProperty(IconStorage.getIcon(Icon.TASK))
 				.setFitHeight(40)
 				.setFitWidth(40)
 				.build();
@@ -169,7 +169,7 @@ public class TaskDetailView extends HBox {
 
 			ImageView userImg;
 			if (LoggedUser.getInstance().getProfileImage() == null) {
-				userImg = new ImageView(IconStorage.getIcon(Icon.USER));
+				userImg = new ImageView(IconStorage.getIcon(Icon.USER).getValue());
 
 				userImg.setFitWidth(30);
 				userImg.setFitHeight(30);

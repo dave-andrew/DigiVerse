@@ -1,5 +1,6 @@
 package net.slc.dv.builder;
 
+import javafx.beans.property.ObjectProperty;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 
@@ -42,6 +43,12 @@ public class ImageViewBuilder {
 
     public ImageViewBuilder setPreserveRatio(boolean preserveRatio) {
         this.imageView.setPreserveRatio(preserveRatio);
+
+        return this;
+    }
+
+    public ImageViewBuilder bindImageProperty(ObjectProperty<Image> ObjectP) {
+        this.imageView.imageProperty().bind(ObjectP);
 
         return this;
     }

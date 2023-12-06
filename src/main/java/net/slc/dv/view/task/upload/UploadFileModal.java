@@ -74,7 +74,7 @@ public class UploadFileModal {
     private void setLayout() {
         mainVbox.setAlignment(Pos.CENTER);
         VBox.setMargin(mainVbox, new Insets(20));
-        ImageView uploadIcon = new ImageView(IconStorage.getIcon(Icon.CLOSE));
+        ImageView uploadIcon = new ImageView(IconStorage.getIcon(Icon.CLOSE).getValue());
         uploadIcon.setFitWidth(12);
         uploadIcon.setFitHeight(12);
 

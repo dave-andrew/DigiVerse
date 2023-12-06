@@ -135,8 +135,7 @@ public class LoginView {
 //        welcomeToLabel.setStyle("-fx-text-fill: white;-fx-font-size: 25px;");
 //        welcomeToLabel.setPadding(new Insets(0, 0, 100, 0));
 
-        Image appIcon = IconStorage.getIcon(Icon.LOGO);
-        ImageView appIconView = new ImageView(appIcon);
+        ImageView appIconView = new ImageView(IconStorage.getIcon(Icon.LOGO).getValue());
         appIconView.setStyle("-fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.3), 10, 0, 0, 0);");
 
         appIconView.setFitHeight(100);

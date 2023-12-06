@@ -68,7 +68,7 @@ public class Navbar extends HBox {
 
 	public HBox createLeftNav() {
 		ImageView icon = ImageViewBuilder.create()
-				.setImage(IconStorage.getIcon(Icon.LOGO))
+				.bindImageProperty(IconStorage.getIcon(Icon.LOGO))
 				.setFitHeight(40)
 				.setPreserveRatio(true)
 				.build();
@@ -91,12 +91,11 @@ public class Navbar extends HBox {
 	public HBox createRightNav() {
 
 		this.themeSwitchButton = new ToggleButton();
-		themeSwitchButton.setGraphic(new ImageView(IconStorage.getIcon(Icon.SUN)));
 		themeSwitchButton.setPrefWidth(30);
 		themeSwitchButton.setPrefHeight(30);
 		themeSwitchButton.setOnAction(e -> onButtonClick.accept((ToggleButton) e.getSource()));
 
-		ImageView sun = new ImageView(IconStorage.getIcon(Icon.SUN));
+		ImageView sun = new ImageView(IconStorage.getIcon(Icon.SUN).getValue());
 		themeSwitchButton.setGraphic(sun);
 
 		sun.setFitWidth(30);
@@ -105,7 +104,7 @@ public class Navbar extends HBox {
 		themeSwitchButton.getStyleClass().add("image-button");
 
 		ImageView plus = ImageViewBuilder.create()
-				.setImage(IconStorage.getIcon(Icon.PLUS))
+				.bindImageProperty(IconStorage.getIcon(Icon.PLUS))
 				.setFitHeight(20)
 				.setFitWidth(20)
 				.setPreserveRatio(true)
@@ -184,7 +183,7 @@ public class Navbar extends HBox {
 		}
 
 		ImageView icon = ImageViewBuilder.create()
-				.setImage(IconStorage.getIcon(Icon.RIGHT_ARROW))
+				.bindImageProperty(IconStorage.getIcon(Icon.RIGHT_ARROW))
 				.setFitHeight(25)
 				.setPreserveRatio(true)
 				.build();

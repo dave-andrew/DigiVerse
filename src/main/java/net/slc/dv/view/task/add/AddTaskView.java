@@ -97,7 +97,7 @@ public class AddTaskView extends BorderPane {
 
 	private HBox navBar() {
 		close = ImageViewBuilder.create()
-				.setImage(IconStorage.getIcon(Icon.CLOSE))
+				.bindImageProperty(IconStorage.getIcon(Icon.CLOSE))
 				.setFitWidth(20)
 				.setPreserveRatio(true)
 				.build();

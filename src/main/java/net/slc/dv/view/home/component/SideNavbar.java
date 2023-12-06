@@ -63,7 +63,7 @@ public class SideNavbar extends StackPane {
                 .build();
 
         ImageView leftArrow = ImageViewBuilder.create()
-                .setImage(IconStorage.getIcon(Icon.LEFT_ARROW))
+                .bindImageProperty(IconStorage.getIcon(Icon.LEFT_ARROW))
                 .setPreserveRatio(true)
                 .setFitWidth(25)
                 .setFitHeight(25)
@@ -85,7 +85,7 @@ public class SideNavbar extends StackPane {
 
     public HBox LogoutButton() {
         ImageView icon = ImageViewBuilder.create()
-                .setImage(IconStorage.getIcon(Icon.LOGOUT))
+                .bindImageProperty(IconStorage.getIcon(Icon.LOGOUT))
                 .setFitWidth(20)
                 .setFitHeight(20)
                 .setPreserveRatio(true)

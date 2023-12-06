@@ -1,5 +1,6 @@
 package net.slc.dv.view.classroom.detail.component;
 
+import net.slc.dv.builder.ImageViewBuilder;
 import net.slc.dv.resources.Icon;
 import net.slc.dv.resources.IconStorage;
 import net.slc.dv.helper.ImageManager;
@@ -18,7 +19,11 @@ public class CommentTextField extends HBox {
         ImageView profileImg;
 
         if (LoggedUser.getInstance().getProfile() == null) {
-            profileImg = new ImageView(IconStorage.getIcon(Icon.USER));
+            profileImg = ImageViewBuilder.create()
+                    .bindImageProperty(IconStorage.getIcon(Icon.USER))
+                    .setFitWidth(30)
+                    .setFitHeight(30)
+                    .build();
         } else {
             profileImg = new ImageView(LoggedUser.getInstance().getProfile());
         }

@@ -51,7 +51,7 @@ public class QuestionContainer {
                 .build();
 
         ImageView closeIcon = ImageViewBuilder.create()
-                .setImage(IconStorage.getIcon(Icon.BIN))
+                .bindImageProperty(IconStorage.getIcon(Icon.BIN))
                 .setFitWidth(20)
                 .setFitHeight(20)
                 .setPreserveRatio(true)
