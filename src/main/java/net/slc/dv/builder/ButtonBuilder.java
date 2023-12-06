@@ -4,6 +4,7 @@ import javafx.event.EventHandler;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.control.Button;
+import javafx.scene.control.ScrollPane;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.VBox;
@@ -54,6 +55,12 @@ public class ButtonBuilder {
 
     public ButtonBuilder bindPrefWidth(VBox vBox) {
         this.button.prefWidthProperty().bind(vBox.widthProperty());
+
+        return this;
+    }
+
+    public ButtonBuilder bindPrefWidth(ScrollPane vBox, double substract) {
+        this.button.prefWidthProperty().bind(vBox.widthProperty().subtract(substract));
 
         return this;
     }

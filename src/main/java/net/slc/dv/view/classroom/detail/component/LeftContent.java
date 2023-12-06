@@ -7,6 +7,8 @@ import javafx.scene.input.ClipboardContent;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Priority;
 import javafx.scene.layout.VBox;
+import net.slc.dv.helper.toast.Toast;
+import net.slc.dv.helper.toast.ToastBuilder;
 import net.slc.dv.model.Classroom;
 
 public class LeftContent extends HBox {
@@ -22,11 +24,22 @@ public class LeftContent extends HBox {
             classCode = new Label(classroom.getClassCode());
             classCode.getStyleClass().add("title");
 
+            classCode.setOnMouseEntered(e -> {
+                classCode.setStyle("-fx-cursor: hand;");
+            });
+
+            classCode.setOnMouseExited(e -> {
+                classCode.setStyle("-fx-cursor: default;");
+            });
+
             classCode.setOnMouseClicked(e -> {
                 Clipboard clipboard = Clipboard.getSystemClipboard();
                 ClipboardContent content = new ClipboardContent();
                 content.putString(classCode.getText());
                 clipboard.setContent(content);
+                ToastBuilder.buildNormal()
+                        .setText("Class code copied to clipboard")
+                        .build();
             });
 
             container.getChildren().addAll(classCodeTitle, classCode);

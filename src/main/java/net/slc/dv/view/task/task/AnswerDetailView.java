@@ -1,6 +1,7 @@
 package net.slc.dv.view.task.task;
 
 import javafx.geometry.Insets;
+import javafx.geometry.Pos;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.ScrollPane;
@@ -8,6 +9,7 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
+import javafx.scene.layout.Priority;
 import javafx.scene.layout.VBox;
 import net.slc.dv.builder.ButtonBuilder;
 import net.slc.dv.builder.VBoxBuilder;
@@ -45,6 +47,8 @@ public class AnswerDetailView extends HBox {
 	private VBox memberList;
 	private int idx = 1;
 
+	private ScrollPane scrollAnswerContainer;
+
 	public AnswerDetailView(Task task, Classroom classroom) {
 		this.memberController = new MemberController();
 		this.answerController = new AnswerController();
@@ -72,18 +76,26 @@ public class AnswerDetailView extends HBox {
 
 		memberContainer.getChildren().add(scrollPane);
 
+		HBox answerContainer = new HBox();
+		HBox.setHgrow(answerContainer, Priority.ALWAYS);
+		answerContainer.setAlignment(Pos.TOP_CENTER);
+
 		this.memberAnswerContainer = new VBox();
 		this.memberAnswerContainer.setPadding(new Insets(20));
-		ScrollPane scrollAnswerContainer = new ScrollPane();
+		this.memberAnswerContainer.prefWidthProperty().bind(answerContainer.widthProperty());
+
+		Label fileTitle = new Label("Choose a student to see the answer!");
+		this.memberAnswerContainer.getChildren().addAll(fileTitle);
+
+		this.scrollAnswerContainer = new ScrollPane();
 
 		scrollAnswerContainer.setPannable(true);
 		scrollAnswerContainer.setContent(memberAnswerContainer);
 		scrollAnswerContainer.setFitToWidth(true);
 
-		Label fileTitle = new Label("Choose a student to see the answer!");
-		this.memberAnswerContainer.getChildren().addAll(fileTitle);
+		answerContainer.getChildren().add(scrollAnswerContainer);
 
-		this.getChildren().addAll(memberContainer, scrollAnswerContainer);
+		this.getChildren().addAll(memberContainer, answerContainer);
 	}
 
 	private void setLayout() {
@@ -213,11 +225,13 @@ public class AnswerDetailView extends HBox {
 				.setStyle("-fx-text-fill: white;")
 				.setVMargin(30, 0, 0, 0)
 				.setOnAction(e -> this.saveScore(member))
-				.bindPrefWidth(memberAnswerContainer)
+				.bindPrefWidth(scrollAnswerContainer, 50)
 				.build();
 
 		VBox answerContainer = VBoxBuilder.create()
 				.setSpacing(30)
+				.bindPrefWidth(scrollAnswerContainer, 50)
+//				.setMaxWidth(750)
 				.build();
 
 

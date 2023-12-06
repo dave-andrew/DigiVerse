@@ -208,6 +208,8 @@
     -fx-background-color: #F0F0F0;
 }
 
+/*TODO: Radio button masi belum bagus*/
+
 .radio-button {
     -fx-font-size: 14px;
     -fx-text-fill: #333;
