@@ -9,15 +9,19 @@ import javafx.scene.control.*;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.BorderPane;
+import javafx.scene.layout.HBox;
 import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
 import javafx.scene.shape.Rectangle;
 import javafx.scene.text.Font;
 import javafx.stage.Stage;
 import javafx.util.Duration;
+import net.slc.dv.builder.HBoxBuilder;
+import net.slc.dv.builder.VBoxBuilder;
 import net.slc.dv.resources.ImageStorage;
 import net.slc.dv.controller.AuthController;
 import net.slc.dv.helper.ScreenManager;
+import net.slc.dv.view.login.LoginView;
 
 public class RegisterView extends VBox {
 
@@ -61,6 +65,7 @@ public class RegisterView extends VBox {
         confirmPasswordTxt = new PasswordField();
 
         dobPicker = new DatePicker();
+        dobPicker.prefWidthProperty().bind(nameTxt.widthProperty());
 
         nameVbox = new VBox();
         emailVbox = new VBox();
@@ -69,11 +74,16 @@ public class RegisterView extends VBox {
         ageVbox = new VBox();
         registerVbox = new VBox();
 
+        nameVbox.setPrefWidth(350);
+        emailVbox.setPrefWidth(350);
+        passwordVbox.setPrefWidth(350);
+        confirmPasswordVbox.setPrefWidth(350);
+        ageVbox.setPrefWidth(350);
+
         registerBtn = new Button("Register");
         registerBtn.getStyleClass().add("primary-button");
         registerBtn.setStyle("-fx-text-fill: white;");
-
-        registerBtn.setPrefWidth(260);
+        registerBtn.setPrefWidth(350);
         registerBtn.setPrefHeight(40);
 
         registerBtn.setOnMouseEntered(e -> {
@@ -140,9 +150,34 @@ public class RegisterView extends VBox {
 
         VBox.setMargin(registerBtn, new Insets(0, 0, 10, 0));
 
-        vbox.getChildren().addAll(subTitle, nameVbox, emailVbox, passwordVbox, confirmPasswordVbox, ageVbox, registerVbox, errorLbl);
+        HBox nameHBox = HBoxBuilder.create()
+                .addChildren(nameVbox)
+                .setAlignment(Pos.CENTER)
+                .build();
+
+        HBox emailHBox = HBoxBuilder.create()
+                .addChildren(emailVbox)
+                .setAlignment(Pos.CENTER)
+                .build();
+
+        HBox passwordHBox = HBoxBuilder.create()
+                .addChildren(passwordVbox)
+                .setAlignment(Pos.CENTER)
+                .build();
+
+        HBox confirmPasswordHBox = HBoxBuilder.create()
+                .addChildren(confirmPasswordVbox)
+                .setAlignment(Pos.CENTER)
+                .build();
+
+        HBox ageHBox = HBoxBuilder.create()
+                .addChildren(ageVbox)
+                .setAlignment(Pos.CENTER)
+                .build();
+
+        vbox.getChildren().addAll(subTitle, nameHBox, emailHBox, passwordHBox, confirmPasswordHBox, ageHBox, registerVbox, errorLbl);
         vbox.setAlignment(Pos.CENTER);
-        vbox.setPadding(new Insets(0, 0, 0, 50));
+//        vbox.setPadding(new Insets(0, 0, 0, 60));
 
         StackPane imagePane = new StackPane();
         imagePane.setPrefSize(400, ScreenManager.SCREEN_HEIGHT);
@@ -159,12 +194,20 @@ public class RegisterView extends VBox {
         imagePane.getChildren().add(registerImage);
 
         this.getChildren().addAll(vbox);
+        this.setMaxWidth(600);
         this.setAlignment(Pos.CENTER);
     }
 
     private void actions(Stage stage) {
         loginLink.setOnAction(e -> {
-            root.setLeft(loginVBox);
+            VBoxBuilder.modify(LoginView.getOuterContainer())
+                    .removeAll()
+                    .addChildren(loginVBox)
+                    .setPrefWidth(550)
+                    .build();
+
+            root.getChildren().clear();
+            root.setCenter(LoginView.getOuterContainer());
         });
 
         registerBtn.setOnAction(e -> {
@@ -178,7 +221,14 @@ public class RegisterView extends VBox {
 
             if (output.equals("Register Success!")) {
                 errorLbl.setStyle("-fx-text-fill: green;-fx-font-weight: bold;");
-                root.setLeft(loginVBox);
+
+                VBoxBuilder.modify(LoginView.getOuterContainer())
+                        .removeAll()
+                        .addChildren(loginVBox)
+                        .build();
+
+                root.getChildren().clear();
+                root.setCenter(LoginView.getOuterContainer());
             }
             errorLbl.setText(output);
         });

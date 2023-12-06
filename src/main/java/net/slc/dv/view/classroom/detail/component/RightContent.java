@@ -82,8 +82,8 @@ public class RightContent extends VBox {
 
 		ImageView arrowDownImage = ImageViewBuilder.create()
 				.bindImageProperty(IconStorage.getIcon(Icon.DOWN_ARROW))
-				.setFitWidth(8)
-				.setFitHeight(8)
+				.setFitWidth(15)
+				.setFitHeight(15)
 				.build();
 
 

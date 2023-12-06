@@ -10,6 +10,7 @@ import javafx.scene.control.*;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.BorderPane;
+import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
 import javafx.scene.shape.Circle;
@@ -17,6 +18,9 @@ import javafx.scene.text.Font;
 import javafx.scene.text.TextAlignment;
 import javafx.stage.Stage;
 import javafx.util.Duration;
+import lombok.Getter;
+import net.slc.dv.builder.HBoxBuilder;
+import net.slc.dv.builder.VBoxBuilder;
 import net.slc.dv.controller.AuthController;
 import net.slc.dv.helper.ScreenManager;
 import net.slc.dv.resources.Icon;
@@ -38,7 +42,12 @@ public class LoginView {
     private PasswordField passwordTxt;
     private Button loginBtn, registerLink;
     private ImageView loginImage;
+
+    @Getter
+    private static VBox outerContainer;
+
     private VBox vbox;
+
     private VBox emailVbox, passwordVbox, loginVbox, rememberMeVbox;
     private CheckBox rememberMe;
     private Label errorLbl;
@@ -49,6 +58,7 @@ public class LoginView {
         initialize();
 
         this.registerVBox = new RegisterView(stage, this.vbox, borderPane);
+        this.registerVBox.getStyleClass().add("card");
 
         setLayout();
         actions(stage);
@@ -74,7 +84,8 @@ public class LoginView {
         Circle backerPuff12 = createBackerPuffs(ScreenManager.SCREEN_WIDTH / 2 + 20, 780, 60);
         Circle backerPuff13 = createBackerPuffs(ScreenManager.SCREEN_WIDTH / 2 + 30, 850, 90);
 
-        root.getChildren().addAll(backerPuff1, backerPuff2, backerPuff3, backerPuff4, backerPuff5, backerPuff6, backerPuff7,
+        root.getChildren().addAll(backerPuff1, backerPuff2, backerPuff3, backerPuff4, backerPuff5, backerPuff6,
+                backerPuff7,
                 backerPuff8, backerPuff9, backerPuff10, backerPuff11, backerPuff12, backerPuff13);
 
         Circle backPuff1 = createBackPuffs(ScreenManager.SCREEN_WIDTH / 2 - 40, 0, 100);
@@ -168,11 +179,12 @@ public class LoginView {
         loginBtn = new Button("Start Journey");
         loginBtn.getStyleClass().add("primary-button");
         loginBtn.setStyle("-fx-text-fill: white;");
-        loginBtn.setPrefWidth(260);
+        loginBtn.setPrefWidth(350);
         loginBtn.setPrefHeight(40);
 
         loginBtn.setOnMouseEntered(e -> {
-            loginBtn.setStyle("-fx-effect: dropshadow(three-pass-box, rgba(0, 0, 0, 0.5), 5, 0, 0, 0);-fx-text-fill: white;");
+            loginBtn.setStyle("-fx-effect: dropshadow(three-pass-box, rgba(0, 0, 0, 0.5), 5, 0, 0, 0);-fx-text-fill: " +
+                    "white;");
 
             Timeline timeline = new Timeline();
 
@@ -252,20 +264,50 @@ public class LoginView {
         loginVbox.getChildren().addAll(loginBtn, registerLink);
         loginVbox.setAlignment(Pos.CENTER);
 
+        emailVbox.setPrefWidth(350);
+        passwordVbox.setPrefWidth(350);
+
         rememberMeVbox.getChildren().add(rememberMe);
-        rememberMeVbox.setAlignment(Pos.CENTER);
+        rememberMeVbox.setAlignment(Pos.CENTER_LEFT);
+        rememberMeVbox.setPrefWidth(350);
 
         rememberMeVbox.setPadding(new Insets(30, 0, 0, 0));
 
         loginVbox.setPadding(new Insets(0, 0, 10, 0));
 
-        vbox.getChildren().addAll(subTitle, emailVbox, passwordVbox, rememberMeVbox, loginVbox, errorLbl);
+        HBox emailHBox = HBoxBuilder.create()
+                .addChildren(emailVbox)
+                .setAlignment(Pos.CENTER)
+                .build();
+
+        HBox passwordHBox = HBoxBuilder.create()
+                .addChildren(passwordVbox)
+                .setAlignment(Pos.CENTER)
+                .build();
+
+        HBox rememberMeHBox = HBoxBuilder.create()
+                .addChildren(rememberMeVbox)
+                .setAlignment(Pos.CENTER)
+                .build();
+
+        vbox.getChildren().addAll(subTitle, emailHBox, passwordHBox, rememberMeHBox, loginVbox, errorLbl);
         vbox.setAlignment(Pos.CENTER);
 
-        vbox.setMaxWidth(600);
-        vbox.setPadding(new Insets(0, 0, 0, 50));
+        vbox.getStyleClass().add("card");
 
-        borderPane.setLeft(vbox);
+        vbox.setMaxWidth(600);
+//        vbox.setPadding(new Insets(0, 0, 0, 100));
+
+        outerContainer = VBoxBuilder.create()
+                .addChildren(vbox)
+                .setAlignment(Pos.CENTER)
+                .setPadding(0, 50, 0, 0)
+                .build();
+
+//        outerContainer.setPadding(new Insets(0, 0, 0, 50));
+
+        borderPane.getChildren().clear();
+        borderPane.setCenter(outerContainer);
 
         loginImage.setFitHeight(ScreenManager.SCREEN_HEIGHT);
 
@@ -289,6 +331,14 @@ public class LoginView {
             errorLbl.setText(message);
         });
 
-        registerLink.setOnAction(e -> borderPane.setLeft(registerVBox));
+        registerLink.setOnAction(e -> {
+            VBoxBuilder.modify(outerContainer)
+                    .removeAll()
+                    .addChildren(registerVBox)
+                    .build();
+
+            borderPane.getChildren().clear();
+            borderPane.setCenter(outerContainer);
+        });
     }
 }
