@@ -11,6 +11,7 @@ import javafx.scene.shape.Line;
 import javafx.scene.shape.Rectangle;
 import javafx.stage.FileChooser;
 import javafx.util.StringConverter;
+import net.slc.dv.builder.ButtonBuilder;
 import net.slc.dv.builder.ImageViewBuilder;
 import net.slc.dv.controller.MemberController;
 import net.slc.dv.controller.TaskController;
@@ -340,18 +341,19 @@ public class Profile extends VBox {
     private HBox setEditProfile() {
         HBox editProfileContainer = new HBox(5);
 
-        Image editIcon = new Image("file:resources/icons/edit-profile.png");
+        Image editIcon = new Image("file:resources/icons/light/user.png");
         ImageView editIconView = new ImageView(editIcon);
 
         editIconView.setFitWidth(25);
         editIconView.setPreserveRatio(true);
         HBox.setMargin(editIconView, new Insets(0, 0, 0, 20));
 
-        Label editBtn = new Label("Edit Profile");
-        editBtn.setPrefWidth(100);
-        editBtn.setStyle("-fx-font-size: 14px");
+        Button editBtn = ButtonBuilder.create("Edit Profile")
+                .setStyle("-fx-font-size: 14px")
+                .setGraphic(editIconView)
+                .build();
 
-        editProfileContainer.getChildren().addAll(editIconView, editBtn);
+        editProfileContainer.getChildren().addAll(editBtn);
         editProfileContainer.setAlignment(Pos.CENTER_RIGHT);
 
         this.nameField = new TextField(loggedUser.getUsername());
@@ -370,7 +372,7 @@ public class Profile extends VBox {
         this.birthdayField.setMaxWidth(500);
 
 
-        editProfileContainer.setOnMouseClicked(e -> {
+        editBtn.setOnMouseClicked(e -> {
             this.errorLbl.setText("");
             profileContainer.getChildren().remove(profileContent);
             profileContainer.getChildren().removeAll(updateProfileContainer, updatePasswordContainer);
@@ -378,7 +380,7 @@ public class Profile extends VBox {
         });
 
         VBox.setMargin(editProfileContainer, new Insets(0, 0, 400, 0));
-        editProfileContainer.getStyleClass().add("border-button");
+        editBtn.getStyleClass().add("border-button");
 
         return editProfileContainer;
     }
@@ -395,15 +397,13 @@ public class Profile extends VBox {
 
         HBox.setMargin(passwordIconView, new Insets(0, 0, 0, 20));
 
-        Label passwordBtn = new Label("Change Password");
-        passwordBtn.setPrefWidth(150);
-        passwordBtn.setStyle("-fx-font-size: 14px");
+        Button passwordBtn = ButtonBuilder.create("Change Password")
+                .setGraphic(passwordIconView)
+                .setStyle("-fx-font-size: 14px")
+                .build();
 
-        passwordContainer.getChildren().addAll(passwordIconView, passwordBtn);
-        passwordContainer.setAlignment(Pos.CENTER_RIGHT);
-        passwordContainer.getStyleClass().add("border-button");
 
-        passwordContainer.setOnMouseClicked(e -> {
+        passwordBtn.setOnMouseClicked(e -> {
             this.errorLbl2.setText("");
             profileContainer.getChildren().remove(profileContent);
             profileContainer.getChildren().removeAll(updateProfileContainer, updatePasswordContainer);
@@ -411,6 +411,10 @@ public class Profile extends VBox {
         });
 
         VBox.setMargin(passwordContainer, new Insets(0, 0, 400, 0));
+        passwordBtn.getStyleClass().add("border-button");
+
+        passwordContainer.getChildren().addAll(passwordBtn);
+        passwordContainer.setAlignment(Pos.CENTER_RIGHT);
 
         return passwordContainer;
     }

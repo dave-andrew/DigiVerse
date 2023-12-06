@@ -41,8 +41,8 @@ public class ClassMember extends ClassBase {
         teacherContainer = new VBox(10);
         studentContainer = new VBox(10);
 
-        teacherContainer.setPadding(new Insets(7, 20, 7, 20));
-        studentContainer.setPadding(new Insets(7, 20, 7, 20));
+        teacherContainer.setPadding(new Insets(7, 20, 20, 20));
+        studentContainer.setPadding(new Insets(7, 20, 20, 20));
 
         Label teacherTitle = new Label("Teacher");
         teacherTitle.getStyleClass().add("title");

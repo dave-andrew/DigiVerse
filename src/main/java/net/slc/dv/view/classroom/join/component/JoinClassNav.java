@@ -12,9 +12,11 @@ import javafx.stage.Stage;
 import net.slc.dv.builder.ImageViewBuilder;
 import net.slc.dv.resources.Icon;
 import net.slc.dv.resources.IconStorage;
+import lombok.Getter;
 
 public class JoinClassNav extends HBox {
 
+    @Getter
     private Button joinBtn;
     private Button closeBtn;
 
@@ -43,7 +45,8 @@ public class JoinClassNav extends HBox {
 
         joinBtn = new Button("Join");
         joinBtn.getStyleClass().add("primary-button");
-        joinBtn.setStyle("-fx-text-fill: white");
+        joinBtn.setPrefWidth(120);
+        joinBtn.setStyle("-fx-text-fill: white;-fx-background-radius: 5px");
 
         this.setAlignment(Pos.CENTER_LEFT);
         HBox.setHgrow(title, Priority.ALWAYS);
@@ -63,7 +66,4 @@ public class JoinClassNav extends HBox {
         });
     }
 
-    public Button getJoinBtn() {
-        return joinBtn;
-    }
 }

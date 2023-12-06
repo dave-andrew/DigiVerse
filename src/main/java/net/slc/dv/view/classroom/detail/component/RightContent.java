@@ -1,6 +1,10 @@
 package net.slc.dv.view.classroom.detail.component;
 
 import net.slc.dv.builder.ImageViewBuilder;
+import net.slc.dv.builder.ButtonBuilder;
+import net.slc.dv.builder.ImageViewBuilder;
+import net.slc.dv.builder.VBoxBuilder;
+import net.slc.dv.enums.Theme;
 import net.slc.dv.resources.Icon;
 import net.slc.dv.resources.IconStorage;
 import net.slc.dv.controller.CommentController;
@@ -30,49 +34,51 @@ import java.util.List;
 
 public class RightContent extends VBox {
 
-	private final Classroom classroom;
-	private TextField postInput;
-	private ForumController forumController;
-	private CommentController commentController;
-	private User user;
+    private final Classroom classroom;
+    private TextField postInput;
+    private ForumController forumController;
+    private CommentController commentController;
+    private User user;
 
-	private void init() {
-		this.forumController = new ForumController();
-		this.commentController = new CommentController();
-		this.user = LoggedUser.getInstance();
-	}
+    private void init() {
+        this.forumController = new ForumController();
+        this.commentController = new CommentController();
+        this.user = LoggedUser.getInstance();
+    }
 
-	private void setLayout() {
-		this.getChildren().add(Container("post", "", user));
+    private void setLayout() {
+        this.getChildren().add(Container("post", "", user));
 
-		List<Forum> forumList = this.forumController.getClassroomForum(classroom.getClassId());
-		for (Forum forum : forumList) {
-			VBox forumContainer = forumContainer(forum);
-			this.getChildren().add(forumContainer);
-		}
-	}
+        List<Forum> forumList = this.forumController.getClassroomForum(classroom.getClassId());
+        for (Forum forum : forumList) {
+            VBox forumContainer = forumContainer(forum);
+            forumContainer.setPadding(new Insets(15, 30, 15, 40));
+            this.getChildren().add(forumContainer);
+        }
+    }
 
-	public VBox forumContainer(Forum forum) {
-		VBox forumContainer = new VBox();
+    public VBox forumContainer(Forum forum) {
+        VBox forumContainer = new VBox();
 
-		HBox post = Container("display", forum.getText(), forum.getUser());
-		forumContainer.getChildren().add(post);
+        HBox post = Container("display", forum.getText(), forum.getUser());
+        forumContainer.getChildren().add(post);
 
-		VBox line = new VBox();
-		line.getChildren().add(post);
-		line.getStyleClass().add("bottom-border");
+        VBox line = new VBox();
+        line.getChildren().add(post);
+        line.getStyleClass().add("bottom-border");
 
-		VBox.setMargin(line, new Insets(10, 0, 10, 0));
-		forumContainer.getChildren().add(line);
+        VBox.setMargin(line, new Insets(10, 0, 10, 0));
+        forumContainer.getChildren().add(line);
 
-		VBox commentContainer = new VBox();
-		forumContainer.getChildren().add(commentContainer);
+        VBox commentContainer = new VBox();
 
-		HBox commentInput = commentInput(forum, commentContainer);
-		commentInput.getStyleClass().add("bottom-border");
-		forumContainer.getChildren().add(commentInput);
+        forumContainer.getChildren().add(commentContainer);
 
-		HBox dropDownComment = new HBox();
+        HBox commentInput = commentInput(forum, commentContainer);
+        commentInput.getStyleClass().add("bottom-border");
+        forumContainer.getChildren().add(commentInput);
+
+        HBox dropDownComment = new HBox();
 
 		ImageView arrowDownImage = ImageViewBuilder.create()
 				.bindImageProperty(IconStorage.getIcon(Icon.DOWN_ARROW))
@@ -81,97 +87,98 @@ public class RightContent extends VBox {
 				.build();
 
 
-		Button dropDownBtn = new Button();
-		dropDownBtn.setGraphic(arrowDownImage);
-		dropDownBtn.setStyle("-fx-background-color: transparent;-fx-border-color: none; -fx-cursor: hand;");
-		dropDownBtn.setPadding(new Insets(0));
+        Button dropDownBtn = new Button();
+        dropDownBtn.setGraphic(arrowDownImage);
+        dropDownBtn.setStyle("-fx-background-color: transparent;-fx-border-color: none; -fx-cursor: hand;");
+        dropDownBtn.setPadding(new Insets(0));
 
-		dropDownBtn.prefWidthProperty().bind(forumContainer.widthProperty().subtract(75));
+        dropDownBtn.prefWidthProperty().bind(forumContainer.widthProperty().subtract(75));
 
-		Button loadMoreComment = new Button("Load more");
-		loadMoreComment.setStyle("-fx-background-color: transparent;-fx-border-color: none; -fx-cursor: hand;");
+        Button loadMoreComment = new Button("Load more");
+        loadMoreComment.setStyle("-fx-background-color: transparent;-fx-border-color: none; -fx-cursor: hand;");
 
-		loadMoreComment.setOnMouseClicked(e -> {
-			fetchForumComment(commentContainer, forum);
-		});
+        loadMoreComment.setOnMouseClicked(e -> {
+            fetchForumComment(commentContainer, forum);
+        });
 
-		dropDownBtn.setOnMouseClicked(e -> {
-			if (forum.isToggle()) {
-				fetchForumComment(commentContainer, forum);
+        dropDownBtn.setOnMouseClicked(e -> {
+            if (forum.isToggle()) {
+                fetchForumComment(commentContainer, forum);
 
-				forum.setToggle(false);
-				commentContainer.getChildren().add(loadMoreComment);
+                forum.setToggle(false);
+                commentContainer.getChildren().add(loadMoreComment);
 
-				KeyFrame start = new KeyFrame(Duration.ZERO,
-				                              new KeyValue(dropDownBtn.rotateProperty(), 0)
-				);
+                KeyFrame start = new KeyFrame(Duration.ZERO,
+                        new KeyValue(dropDownBtn.rotateProperty(), 0)
+                );
 
-				KeyFrame end = new KeyFrame(Duration.seconds(0.5),
-				                            new KeyValue(dropDownBtn.rotateProperty(), 180)
-				);
+                KeyFrame end = new KeyFrame(Duration.seconds(0.5),
+                        new KeyValue(dropDownBtn.rotateProperty(), 180)
+                );
 
-				Timeline timeline = new Timeline(start, end);
-				timeline.play();
-			} else {
-				commentContainer.getChildren().clear();
-				forum.setCommentCounter(0);
-				forum.setToggle(true);
+                Timeline timeline = new Timeline(start, end);
+                timeline.play();
+            } else {
+                commentContainer.getChildren().clear();
+                forum.setCommentCounter(0);
+                forum.setToggle(true);
 
-				KeyFrame start = new KeyFrame(Duration.ZERO,
-				                              new KeyValue(dropDownBtn.rotateProperty(), 180)
-				);
+                KeyFrame start = new KeyFrame(Duration.ZERO,
+                        new KeyValue(dropDownBtn.rotateProperty(), 180)
+                );
 
-				KeyFrame end = new KeyFrame(Duration.seconds(0.5),
-				                            new KeyValue(dropDownBtn.rotateProperty(), 0)
-				);
+                KeyFrame end = new KeyFrame(Duration.seconds(0.5),
+                        new KeyValue(dropDownBtn.rotateProperty(), 0)
+                );
 
-				Timeline timeline = new Timeline(start, end);
-				timeline.play();
-			}
-		});
+                Timeline timeline = new Timeline(start, end);
+                timeline.play();
+            }
+        });
 
-		dropDownComment.getChildren().add(dropDownBtn);
+        dropDownComment.getChildren().add(dropDownBtn);
 
-		forumContainer.getChildren().add(dropDownComment);
+        forumContainer.getChildren().add(dropDownComment);
 
-		forumContainer.getStyleClass().add("border");
-		forumContainer.setPadding(new Insets(15));
+        forumContainer.getStyleClass().add("border");
+        forumContainer.setPadding(new Insets(15));
 
-		return forumContainer;
-	}
+        return forumContainer;
+    }
 
-	private void fetchForumComment(VBox commentContainer, Forum forum) {
-		List<ForumComment> forumCommentList = this.commentController.getForumComments(forum.getId(), forum.getCommentCounter());
+    private void fetchForumComment(VBox commentContainer, Forum forum) {
+        List<ForumComment> forumCommentList = this.commentController.getForumComments(forum.getId(),
+                forum.getCommentCounter());
 
-		VBox commentFetched = new VBox();
+        VBox commentFetched = new VBox();
 
-		for (ForumComment forumComment : forumCommentList) {
-			HBox commentItem = new CommentItem(forumComment);
-			commentFetched.getChildren().add(0, commentItem);
-		}
+        for (ForumComment forumComment : forumCommentList) {
+            HBox commentItem = new CommentItem(forumComment);
+            commentFetched.getChildren().add(0, commentItem);
+        }
 
-		KeyValue keyValue = new KeyValue(commentFetched.opacityProperty(), 0, Interpolator.EASE_OUT);
+        KeyValue keyValue = new KeyValue(commentFetched.opacityProperty(), 0, Interpolator.EASE_OUT);
 
-		KeyFrame start = new KeyFrame(Duration.ZERO, keyValue);
+        KeyFrame start = new KeyFrame(Duration.ZERO, keyValue);
 
-		KeyFrame end = new KeyFrame(Duration.seconds(0.5),
-		                            new KeyValue(commentFetched.opacityProperty(), 1)
-		);
+        KeyFrame end = new KeyFrame(Duration.seconds(0.5),
+                new KeyValue(commentFetched.opacityProperty(), 1)
+        );
 
 
-		Timeline timeline = new Timeline(start, end);
+        Timeline timeline = new Timeline(start, end);
 
-		timeline.play();
+        timeline.play();
 
-		commentContainer.getChildren().add(0, commentFetched);
+        commentContainer.getChildren().add(0, commentFetched);
 
-		forum.setCommentCounter(forum.getCommentCounter() + 1);
-	}
+        forum.setCommentCounter(forum.getCommentCounter() + 1);
+    }
 
-	public HBox commentInput(Forum forum, VBox commentContainer) {
-		HBox commentSection = new HBox();
-		commentSection.setPadding(new Insets(10, 10, 10, 10));
-		commentSection.setSpacing(10);
+    public HBox commentInput(Forum forum, VBox commentContainer) {
+        HBox commentSection = new HBox();
+        commentSection.setPadding(new Insets(10, 10, 10, 10));
+        commentSection.setSpacing(10);
 
 		ImageView profileImage = ImageViewBuilder.create()
 				.bindImageProperty(IconStorage.getIcon(Icon.USER))
@@ -179,50 +186,75 @@ public class RightContent extends VBox {
 				.setFitHeight(30)
 				.build();
 
-		if (user.getProfile() != null) {
-			profileImage = new ImageView(LoggedUser.getInstance().getProfileImage());
-		}
+        if (user.getProfile() != null) {
+            profileImage = new ImageView(LoggedUser.getInstance().getProfileImage());
+        }
 
-		profileImage.setFitWidth(30);
-		profileImage.setFitHeight(30);
-		profileImage.getStyleClass().add("profile");
+        profileImage.setFitWidth(30);
+        profileImage.setFitHeight(30);
+        profileImage.getStyleClass().add("profile");
 
-		ImageManager.makeCircular(profileImage, 15);
+        ImageManager.makeCircular(profileImage, 15);
 
-		TextField commentInput = getTextField(forum, commentContainer);
+        TextField commentInput = getTextField(forum, commentContainer);
 
-		HBox.setHgrow(commentInput, Priority.ALWAYS);
+        HBox.setHgrow(commentInput, Priority.ALWAYS);
 
-		commentSection.getChildren().addAll(profileImage, commentInput);
-		commentSection.setAlignment(Pos.TOP_CENTER);
+        Button postBtn = ButtonBuilder.create()
+                .setStyle("-fx-background-color: transparent; -fx-border-color: transparent; -fx-cursor: hand;")
+                .setPadding(0, 0, 0, 0)
+                .setGraphic(ImageViewBuilder.create()
+                        .setImage(new Image(Icon.SEND.getPath(Theme.LIGHT)))
+                        .setFitWidth(20)
+                        .setFitHeight(20)
+                        .build())
+                .setMinWidth(40)
+                .build();
 
-		return commentSection;
-	}
+        VBox btnContainer = VBoxBuilder.create()
+                .addChildren(postBtn)
+                .setAlignment(Pos.CENTER_RIGHT)
+                .build();
 
-	@NotNull
-	private TextField getTextField(Forum forum, VBox commentContainer) {
-		TextField commentInput = new TextField();
-		commentInput.setPromptText("Write a comment...");
-		commentInput.setStyle("-fx-font-size: 14px");
-		commentInput.setOnKeyPressed(event -> {
-			if (event.getCode() == KeyCode.ENTER) {
-				ForumComment forumComment = commentController.createForumComment(commentInput.getText(), forum.getId(), LoggedUser.getInstance().getId());
+        postBtn.setOnMouseClicked(event -> {
+            uploadComment(forum, commentContainer, commentInput);
+        });
 
-				HBox commentItem = new CommentItem(forumComment);
+        commentSection.getChildren().addAll(profileImage, commentInput, btnContainer);
+        commentSection.setAlignment(Pos.TOP_CENTER);
 
-				if (commentContainer.getChildren().isEmpty()) {
-					commentContainer.getChildren().add(commentItem);
-				} else {
-					commentContainer.getChildren().add(commentContainer.getChildren().size() - 1, commentItem);
-				}
-				commentInput.clear();
-			}
-		});
-		return commentInput;
-	}
+        return commentSection;
+    }
 
-	private HBox Container(String type, String text, User user) {
-		HBox container = new HBox(5);
+    @NotNull
+    private TextField getTextField(Forum forum, VBox commentContainer) {
+        TextField commentInput = new TextField();
+        commentInput.setPromptText("Write a comment...");
+        commentInput.setStyle("-fx-font-size: 14px");
+        commentInput.setOnKeyPressed(event -> {
+            if (event.getCode() == KeyCode.ENTER) {
+                uploadComment(forum, commentContainer, commentInput);
+            }
+        });
+        return commentInput;
+    }
+
+    private void uploadComment(Forum forum, VBox commentContainer, TextField commentInput) {
+        ForumComment forumComment = commentController.createForumComment(commentInput.getText(),
+                forum.getId(), LoggedUser.getInstance().getId());
+
+        HBox commentItem = new CommentItem(forumComment);
+
+        if (commentContainer.getChildren().isEmpty()) {
+            commentContainer.getChildren().add(commentItem);
+        } else {
+            commentContainer.getChildren().add(commentContainer.getChildren().size() - 1, commentItem);
+        }
+        commentInput.clear();
+    }
+
+    private HBox Container(String type, String text, User user) {
+        HBox container = new HBox(5);
 
 		ImageView profileImage = ImageViewBuilder.create()
 				.bindImageProperty(IconStorage.getIcon(Icon.USER))
@@ -234,65 +266,89 @@ public class RightContent extends VBox {
 			profileImage = new ImageView(user.getProfile());
 		}
 
-		profileImage.setFitWidth(30);
-		profileImage.setFitHeight(30);
-		profileImage.getStyleClass().add("profile");
+        profileImage.setFitWidth(30);
+        profileImage.setFitHeight(30);
+        profileImage.getStyleClass().add("profile");
 
-		if (type.equals("post")) {
-			ImageView loggedUserProfile = new ImageView(LoggedUser.getInstance().getProfileImage());
-			loggedUserProfile.setFitWidth(30);
-			loggedUserProfile.setFitHeight(30);
-			loggedUserProfile.getStyleClass().add("profile");
+        if (type.equals("post")) {
+            ImageView loggedUserProfile = new ImageView(LoggedUser.getInstance().getProfileImage());
+            loggedUserProfile.setFitWidth(30);
+            loggedUserProfile.setFitHeight(30);
+            loggedUserProfile.getStyleClass().add("profile");
 
-			ImageManager.makeCircular(loggedUserProfile, 15);
+            ImageManager.makeCircular(loggedUserProfile, 15);
 
-			container.getChildren().add(loggedUserProfile);
+            container.getChildren().add(loggedUserProfile);
 
-			postInput = new TextField();
-			postInput.setPromptText("What's on your mind, " + LoggedUser.getInstance().getUsername() + "?");
+            postInput = new TextField();
+            postInput.setPromptText("What's on your mind, " + LoggedUser.getInstance().getUsername() + "?");
 
-			container.getChildren().add(postInput);
+            Button postBtn = ButtonBuilder.create()
+                    .setStyle("-fx-background-color: transparent; -fx-border-color: transparent; -fx-cursor: hand;")
+                    .setPadding(0, 0, 0, 0)
+                    .setGraphic(ImageViewBuilder.create()
+                            .setImage(new Image(Icon.SEND.getPath(Theme.LIGHT)))
+                            .setFitWidth(20)
+                            .setFitHeight(20)
+                            .build())
+                    .setMinWidth(40)
+                    .build();
 
-			postInput.setOnKeyPressed(event -> {
-				if (event.getCode() == KeyCode.ENTER) {
-					Forum forum = forumController.createForum(postInput.getText(), classroom.getClassId());
-					getChildren().add(1, Container("display", forum.getText(), user));
-					postInput.clear();
-				}
-			});
+            VBox btnContainer = VBoxBuilder.create()
+                    .addChildren(postBtn)
+                    .setAlignment(Pos.CENTER_RIGHT)
+                    .build();
 
-			HBox.setHgrow(postInput, Priority.ALWAYS);
-			container.getStyleClass().add("border");
-			container.setPadding(new Insets(15));
+            container.getChildren().addAll(postInput, btnContainer);
 
-		} else if (type.equals("display")) {
-			container.getChildren().add(profileImage);
+            postInput.setOnKeyPressed(event -> {
+                if (event.getCode() == KeyCode.ENTER) {
+                    Forum forum = forumController.createForum(postInput.getText(), classroom.getClassId());
+                    getChildren().add(1, Container("display", forum.getText(), user));
+                    postInput.clear();
+                }
+            });
 
-			VBox userContainer = new VBox();
-			Label userName = new Label(user.getUsername());
-			userName.setStyle("-fx-font-size: 16px");
+            postBtn.setOnMouseClicked(event -> {
+                Forum forum = forumController.createForum(postInput.getText(), classroom.getClassId());
+                getChildren().add(1, Container("display", forum.getText(), user));
+                postInput.clear();
+            });
 
-			Label label = new Label(text);
-			label.setWrapText(true);
-			label.setStyle("-fx-font-family: 'Nunito Regular'; -fx-font-size: 14px");
+            HBox.setHgrow(postInput, Priority.ALWAYS);
+            container.getStyleClass().add("border");
+            container.setAlignment(Pos.BOTTOM_CENTER);
+            container.setPadding(new Insets(15, 30, 15, 40));
+        } else if (type.equals("display")) {
+            container.getChildren().add(profileImage);
 
-			userContainer.getChildren().addAll(userName, label);
+            VBox userContainer = new VBox();
+            Label userName = new Label(user.getUsername());
+            userName.setStyle("-fx-font-size: 16px");
+            userName.setPadding(new Insets(0, 0, 7, 0));
 
-			container.getChildren().add(userContainer);
-		}
+            Label label = new Label("  " + text);
+            label.setWrapText(true);
+            label.setStyle("-fx-font-family: 'Nunito Regular'; -fx-font-size: 14px");
+            label.setPadding(new Insets(5, 0, 5, 10));
+            label.prefWidthProperty().bind(this.widthProperty().subtract(115));
+            label.getStyleClass().add("reply-bg");
 
-		container.setAlignment(Pos.TOP_LEFT);
+            userContainer.getChildren().addAll(userName, label);
+            container.getChildren().add(userContainer);
+        }
 
-		return container;
-	}
+        container.setAlignment(Pos.TOP_LEFT);
 
-	public RightContent(Classroom classroom) {
-		this.classroom = classroom;
-		init();
-		setLayout();
+        return container;
+    }
 
+    public RightContent(Classroom classroom) {
+        this.classroom = classroom;
+        init();
+        setLayout();
 
-		this.setSpacing(20);
-	}
+        this.setSpacing(20);
+    }
 
 }

@@ -52,7 +52,7 @@ public class RegisterView extends VBox {
         emailLbl = new Label("Email:");
         passwordLbl = new Label("Password:");
         confirmPasswordLbl = new Label("Confirm Password:");
-        agelbl = new Label("Age:");
+        agelbl = new Label("Date of Birth:");
         errorLbl = new Label();
 
         nameTxt = new TextField();

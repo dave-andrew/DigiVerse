@@ -571,9 +571,11 @@
 }
 
 .border-button {
-    -fx-border-radius: 10px;
-    -fx-border-color: #e3e5e8;
+    -fx-border-radius: 5px;
+    -fx-border-color: #b4d2ff;
     -fx-border-width: 1px;
+    -fx-background-color: transparent;
+    -fx-padding: 5px 10px;
     -fx-cursor: hand;
 }
 

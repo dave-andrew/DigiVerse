@@ -47,8 +47,26 @@ public class ButtonBuilder {
         return this;
     }
 
+    public ButtonBuilder setPadding(double top, double right, double bottom, double left) {
+        this.button.setPadding(new Insets(top, right, bottom, left));
+
+        return this;
+    }
+
     public ButtonBuilder setStyleClass(String styleClass) {
         this.button.getStyleClass().add(styleClass);
+
+        return this;
+    }
+
+    public ButtonBuilder setPrefWidth(double prefWidth) {
+        this.button.setPrefWidth(prefWidth);
+
+        return this;
+    }
+
+    public ButtonBuilder setMinWidth(double width) {
+        this.button.setMinWidth(width);
 
         return this;
     }

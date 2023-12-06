@@ -121,6 +121,14 @@ public class CommentItem extends HBox {
                     }
                 });
 
+                this.commentTextField.getPostBtn().setOnMouseClicked(e2 -> {
+                    TaskComment replyComment = commentController.replyComment(commentTextField.getReplyField().getText(), comment.getId());
+
+                    replyContainer.getChildren().add(new CommentItem(replyComment));
+
+                    commentTextField.getReplyField().clear();
+                });
+
                 replyInputContainer.getChildren().add(commentTextField);
 
             } else {

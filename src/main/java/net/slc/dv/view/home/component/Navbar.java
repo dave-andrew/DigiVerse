@@ -184,7 +184,7 @@ public class Navbar extends HBox {
 
 		ImageView icon = ImageViewBuilder.create()
 				.bindImageProperty(IconStorage.getIcon(Icon.RIGHT_ARROW))
-				.setFitHeight(25)
+				.setFitHeight(18)
 				.setPreserveRatio(true)
 				.build();
 

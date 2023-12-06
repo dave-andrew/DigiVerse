@@ -26,6 +26,7 @@ public enum Icon {
 	PLUS_WHITE("file:resources/icons/light/plus-white.png"),
 	CHANGE_PASSWORD("file:resources/icons/light/change-password.png", "file:resources/icons/dark/change-password.png"),
 	EMAIL("file:resources/icons/light/email.png", "file:resources/icons/dark/email.png"),
+	SEND("file:resources/icons/send.png"),
 	DOWN_ARROW("file:resources/icons/light/down-arrow.png", "file:resources/icons/dark/down-arrow.png");
 
 	private final String pathLight;
