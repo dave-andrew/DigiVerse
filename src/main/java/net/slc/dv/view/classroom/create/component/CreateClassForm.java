@@ -11,6 +11,7 @@ import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 import net.slc.dv.controller.ClassController;
+import net.slc.dv.view.home.Home;
 
 import java.util.ArrayList;
 
@@ -104,6 +105,7 @@ public class CreateClassForm extends VBox {
             String message = classController.checkCreateClass(className, classDesc, classCode, classSubject);
 
             if (message.equals("Create Class Success!")) {
+                Home.fetchClass();
                 dialogStage.close();
             }
 

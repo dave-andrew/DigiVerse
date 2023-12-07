@@ -24,12 +24,12 @@ public class Home {
     private final Stage stage;
     private Scene scene;
     private BorderPane borderPane;
-    private GridPane classGrid;
+    private static GridPane classGrid;
 
-    private StackPane mainPane;
-    private ScrollPane scrollPane;
+    private static StackPane mainPane;
+    private static ScrollPane scrollPane;
     private SideNavbar sideNavbar;
-    private Navbar navbar;
+    private static Navbar navbar;
 
     public Home(Stage stage) {
         this.stage = stage;
@@ -40,10 +40,9 @@ public class Home {
         stage.setTitle("DigiVerse");
     }
 
-    private void fetchClass() {
-
+    public static void fetchClass() {
         mainPane.getChildren().clear();
-        classGrid = new ClassroomListView(mainPane, this.navbar::setLeftNavigation);
+        classGrid = new ClassroomListView(mainPane, navbar::setLeftNavigation);
         scrollPane.setContent(classGrid);
 
         mainPane.getChildren().add(scrollPane);

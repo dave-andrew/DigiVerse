@@ -279,7 +279,7 @@ public class Profile extends VBox {
         line.setStartX(0);
 
         line.endXProperty().bind(profileContainer.widthProperty().subtract(20));
-        VBox.setMargin(line, new Insets(30, 0, 0, 0));
+        VBox.setMargin(line, new Insets(30, 0, 10, 0));
 
         line.setStroke(Color.valueOf("#2c3e50"));
         line.setStrokeWidth(1);

@@ -107,8 +107,6 @@ public class TaskDetailView extends HBox {
 
 		Label score = new Label();
 
-
-
 		if(answerHeader != null) {
 			score = LabelBuilder.create(answerHeader.getScore() == null ? "Score: -" : "Score: " + answerHeader.getScore() )
 					.setHgrow(Priority.ALWAYS)
@@ -160,6 +158,7 @@ public class TaskDetailView extends HBox {
 
 		Label commentTitle = new Label("Add Comment:");
 		commentTitle.getStyleClass().add("title");
+		VBox.setMargin(commentTitle, new Insets(20, 0, 0, 0));
 
 		userComment.getChildren().add(commentTitle);
 

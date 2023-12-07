@@ -112,7 +112,7 @@
 }
 
 .check-box > .box {
-    -fx-shape: "M 8 0 A 8 8 0 1 0 0 8 A 8 8 0 0 0 8 0";
+    /*-fx-shape: "M 8 0 A 8 8 0 1 0 0 8 A 8 8 0 0 0 8 0";*/
     -fx-padding: 4px;
     -fx-background-color: #ffffff;
     -fx-border-color: #E5E5E5;

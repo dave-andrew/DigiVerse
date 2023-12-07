@@ -135,7 +135,9 @@ public class Navbar extends HBox {
 		this.createClass = MenuItemBuilder.create()
 				.setText("Create Class")
 				.setStyleClass("item")
-				.setOnAction(e -> new CreateClassView(stage))
+				.setOnAction(e -> {
+					new CreateClassView(stage);
+				})
 				.build();
 		this.joinClass = MenuItemBuilder.create()
 				.setText("Join Class")

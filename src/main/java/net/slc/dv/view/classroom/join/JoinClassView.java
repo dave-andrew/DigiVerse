@@ -14,6 +14,7 @@ import javafx.stage.Stage;
 import net.slc.dv.view.classroom.join.component.GroupCodeForm;
 import net.slc.dv.view.classroom.join.component.JoinClassNav;
 import net.slc.dv.view.classroom.join.component.ChangeAccountBox;
+import net.slc.dv.view.home.Home;
 
 public class JoinClassView {
 
@@ -103,6 +104,7 @@ public class JoinClassView {
             String message = classController.checkJoinClass(classFormBox.getGroupCode());
 
             if (message.equals("Class Joined!")) {
+                Home.fetchClass();
                 dialogStage.close();
             }
 
