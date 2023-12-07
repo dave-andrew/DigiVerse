@@ -1,0 +1,32 @@
+@font-face {
+    font-family: "Minecraft";
+    src: url("./fonts/Minecraft.ttf");
+}
+
+.text {
+    -fx-font-family: "Minecraft";
+    -fx-font-size: 25;
+}
+
+.button {
+    -fx-text-fill: white;
+    -fx-border-style: none;
+    -fx-border-radius: 19px;
+    -fx-background-color: #085004;
+    -fx-background-radius: 19px;
+    -fx-background-image:
+            url('./game/gui/pixel-border.png'),
+            url('./game/gui/pixel-border.png'),
+            url('./game/gui/pixel-border.png'),
+            url('./game/gui/pixel-border.png');
+    -fx-background-position:
+            top left,
+            top right,
+            bottom right,
+            bottom left;
+    -fx-background-repeat: no-repeat;
+    -fx-background-size: 30px 30px;
+    -fx-border-image-width: 20;
+    -fx-border-image-insets: 0;
+    -fx-border-image-repeat: stretch;
+}

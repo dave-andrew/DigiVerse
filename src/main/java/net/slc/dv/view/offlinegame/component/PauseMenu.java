@@ -15,35 +15,30 @@ public class PauseMenu extends VBox {
     public PauseMenu(OfflineGameView game, VBox settingMenu) {
         StackPane stackPane = new StackPane();
         Button resumeButton = new Button("Resume");
-        Button settingButton = new Button("Setting");
-        Button exitButton = new Button("Exit");
 
-        Label pauseLabel = new Label("Pause Menu");
-        pauseLabel.getStyleClass().add("title");
+        Button settingButton = new Button("Setting");
+        Button exitButton = new Button("Quit");
+
+        Label pauseLabel = new Label("PAUSE MENU");
+        pauseLabel.setStyle("-fx-font-size: 40px;-fx-font-family: 'Minecraft'");
 
         resumeButton.setPrefWidth(250);
-        resumeButton.getStyleClass().add("primary-button");
-        resumeButton.setStyle("-fx-text-fill: white;");
 
         settingButton.setPrefWidth(250);
-        settingButton.getStyleClass().add("primary-button");
-        settingButton.setStyle("-fx-text-fill: white;");
 
         exitButton.setPrefWidth(250);
-        exitButton.getStyleClass().add("primary-button");
-        exitButton.setStyle("-fx-text-fill: white;");
 
-        resumeButton.setOnAction(e -> {
+        resumeButton.setOnMouseClicked(e -> {
             game.getRoot().getChildren().remove(game.getPauseMenu());
             game.changeState(game.getPlayState());
         });
 
-        settingButton.setOnAction(e -> {
+        settingButton.setOnMouseClicked(e -> {
             game.getPauseMenu().getChildren().remove(this);
             game.getPauseMenu().getChildren().add(settingMenu);
         });
 
-        exitButton.setOnAction(e -> {
+        exitButton.setOnMouseClicked(e -> {
             System.exit(0);
         });
 

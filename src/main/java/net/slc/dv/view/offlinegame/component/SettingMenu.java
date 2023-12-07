@@ -28,8 +28,8 @@ public class SettingMenu extends VBox {
         musicSlider.setPrefWidth(200);
         SFXSlider.setPrefWidth(200);
 
-        Label settingsLabel = new Label("Settings");
-        settingsLabel.getStyleClass().add("title");
+        Label settingsLabel = new Label("SETTINGS");
+        settingsLabel.setStyle("-fx-font-size: 40px;-fx-font-family: 'Minecraft'");
 
         this.getChildren().add(settingsLabel);
 
@@ -117,7 +117,7 @@ public class SettingMenu extends VBox {
         stackPane.getChildren().add(imageView);
 
         VBox settingMenu = new VBox(40);
-        settingMenu.setPadding(new Insets(50));
+        settingMenu.setPadding(new Insets(100));
         settingMenu.getChildren().addAll(settingsLabel, musicContainer, resolutionContainer, buttonContainer);
         settingMenu.setAlignment(Pos.CENTER);
 

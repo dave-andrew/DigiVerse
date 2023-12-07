@@ -50,9 +50,11 @@ public class ForumQuery {
     public Forum createForum(Forum forum) {
         String query = "INSERT INTO msforum VALUES (?, ?, ?)";
         String query2 = "INSERT INTO class_forum VALUES (?, ?, ?)";
+        String query3 = "SELECT * FROM msuser WHERE UserID = ?";
 
         try (PreparedStatement ps = connect.prepareStatement(query);
-             PreparedStatement ps2 = connect.prepareStatement(query2)) {
+             PreparedStatement ps2 = connect.prepareStatement(query2);
+             PreparedStatement ps3 = connect.prepareStatement(query3)) {
             assert ps != null;
             ps.setString(1, forum.getId());
             ps.setString(2, forum.getText());
@@ -66,6 +68,16 @@ public class ForumQuery {
             ps2.setString(3, forum.getUserid());
 
             ps2.executeUpdate();
+
+            assert ps3 != null;
+            ps3.setString(1, forum.getUserid());
+
+            try (var rs = ps3.executeQuery()) {
+                if (rs.next()) {
+                    User user = new User(rs);
+                    forum.setUser(user);
+                }
+            }
 
             ToastBuilder.buildNormal().setText("Forum Posted!").build();
 

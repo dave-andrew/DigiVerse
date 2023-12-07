@@ -127,7 +127,7 @@ public class LoginView {
 
         borderPane = new BorderPane();
         borderPane.setPrefSize(ScreenManager.SCREEN_WIDTH / 2, ScreenManager.SCREEN_HEIGHT);
-        borderPane.setStyle("-fx-background-color: white;");
+        borderPane.setStyle("-fx-background-color: #f6f6f6;");
         borderPane.setTranslateX(ScreenManager.SCREEN_WIDTH / 2 + 70);
 
         root.getChildren().add(borderPane);
@@ -241,7 +241,7 @@ public class LoginView {
 
     private Circle createPuffs(double x, double y, double radius) {
         Circle puff = new Circle(x, y, radius);
-        puff.setStyle("-fx-fill: white;");
+        puff.setStyle("-fx-fill: #f6f6f6;");
         return puff;
     }
 

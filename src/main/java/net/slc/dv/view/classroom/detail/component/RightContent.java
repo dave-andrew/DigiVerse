@@ -200,7 +200,7 @@ public class RightContent extends VBox {
 
         HBox.setHgrow(commentInput, Priority.ALWAYS);
 
-        Button postBtn = ButtonBuilder.create()
+        Button commentButton = ButtonBuilder.create()
                 .setStyle("-fx-background-color: transparent; -fx-border-color: transparent; -fx-cursor: hand;")
                 .setPadding(0, 0, 0, 0)
                 .setGraphic(ImageViewBuilder.create()
@@ -212,11 +212,11 @@ public class RightContent extends VBox {
                 .build();
 
         VBox btnContainer = VBoxBuilder.create()
-                .addChildren(postBtn)
+                .addChildren(commentButton)
                 .setAlignment(Pos.CENTER_RIGHT)
                 .build();
 
-        postBtn.setOnMouseClicked(event -> {
+        commentButton.setOnMouseClicked(event -> {
             uploadComment(forum, commentContainer, commentInput);
         });
 
@@ -264,6 +264,7 @@ public class RightContent extends VBox {
 
 		if (user.getProfile() != null) {
 			profileImage = new ImageView(user.getProfile());
+            ImageManager.makeCircular(profileImage, 15);
 		}
 
         profileImage.setFitWidth(30);
@@ -304,14 +305,19 @@ public class RightContent extends VBox {
             postInput.setOnKeyPressed(event -> {
                 if (event.getCode() == KeyCode.ENTER) {
                     Forum forum = forumController.createForum(postInput.getText(), classroom.getClassId());
-                    getChildren().add(1, Container("display", forum.getText(), user));
+                    System.out.println(forum.getUser().getUsername());
+                    VBox forumContainer = forumContainer(forum);
+                    forumContainer.setPadding(new Insets(15, 30, 15, 40));
+                    this.getChildren().add(1, forumContainer);
                     postInput.clear();
                 }
             });
 
             postBtn.setOnMouseClicked(event -> {
                 Forum forum = forumController.createForum(postInput.getText(), classroom.getClassId());
-                getChildren().add(1, Container("display", forum.getText(), user));
+                VBox forumContainer = forumContainer(forum);
+                forumContainer.setPadding(new Insets(15, 30, 15, 40));
+                this.getChildren().add(1, forumContainer);
                 postInput.clear();
             });
 

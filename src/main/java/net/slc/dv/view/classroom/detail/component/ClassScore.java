@@ -84,32 +84,43 @@ public class ClassScore extends HBox {
     private void fetchMember() {
         this.memberList.getChildren().clear();
 
-        this.memberController.getClassMember(classroom.getClassId()).forEach(member -> {
-            if (member.getRole().equals("Student")) {
-                HBox scoreContainer = new HBox();
-                Label score = new Label("Score: ");
-                scoreContainer.setAlignment(Pos.CENTER_LEFT);
+        ArrayList<ClassroomMember> memberList = this.memberController.getClassMember(classroom.getClassId());
 
-                Label scoreValue = new Label("0");
+        for(ClassroomMember member : memberList) {
+            if (!member.getRole().equals("Student")) continue;
 
-                scoreContainer.getChildren().addAll(score, scoreValue);
+            HBox scoreContainer = new HBox();
+            Label score = new Label("Score: ");
+            scoreContainer.setAlignment(Pos.CENTER_LEFT);
 
-                MemberItem memberItem = new MemberItem(member, idx);
-                HBox spacer = new HBox();
+            Label scoreValue = new Label("0");
 
-                HBox.setHgrow(spacer, Priority.ALWAYS);
+            scoreContainer.getChildren().addAll(score, scoreValue);
 
-                memberItem.getChildren().add(spacer);
-                memberItem.getChildren().add(scoreContainer);
+            MemberItem memberItem = new MemberItem(member, idx);
+            HBox spacer = new HBox();
 
-                memberItem.getStyleClass().add("task-item");
+            HBox.setHgrow(spacer, Priority.ALWAYS);
 
-                fetchAnswer(member, memberItem, scoreContainer, scoreValue);
+            memberItem.getChildren().add(spacer);
+            memberItem.getChildren().add(scoreContainer);
 
-                this.memberList.getChildren().addAll(memberItem);
-                idx++;
-            }
-        });
+            memberItem.getStyleClass().add("task-item");
+
+            fetchAnswer(member, memberItem, scoreContainer, scoreValue);
+
+            this.memberList.getChildren().addAll(memberItem);
+            idx++;
+        }
+
+        if(idx == 1) {
+            Label noMember = new Label("Eh? No member yet lah.");
+            noMember.getStyleClass().add("title");
+            noMember.setPadding(new Insets(20));
+            this.memberList.getChildren().add(noMember);
+            this.memberList.setAlignment(Pos.CENTER);
+        }
+
     }
 
     private void fetchAnswer(ClassroomMember member, MemberItem memberItem, HBox scoreContainer, Label scoreSideValue) {

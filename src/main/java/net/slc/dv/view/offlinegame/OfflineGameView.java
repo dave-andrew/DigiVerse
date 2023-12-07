@@ -2,6 +2,7 @@ package net.slc.dv.view.offlinegame;
 
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.StackPane;
+import javafx.scene.text.Font;
 import lombok.Getter;
 import net.slc.dv.builder.HBoxBuilder;
 import net.slc.dv.builder.StackPaneBuilder;
@@ -93,8 +94,12 @@ public class OfflineGameView {
     private boolean deadPause = false;
     private boolean isPaused = false;
 
+    private Font font;
+
     public OfflineGameView(Stage stage) {
         this.root = new Pane();
+
+        this.font = new Font(25);
         setupAudio();
 
         this.pauseMenu = new VBox(40);
@@ -111,15 +116,18 @@ public class OfflineGameView {
         player.setY(ScreenManager.SCREEN_HEIGHT / 2);
 
         this.fpsLabel = new Label("FPS: 0");
+        this.fpsLabel.setFont(font);
 
-        this.fpsLabel.setPrefWidth(100);
+        this.fpsLabel.setPrefWidth(150);
         this.fpsLabel.setLayoutX(root.getWidth() - fpsLabel.getPrefWidth() - 10);
         this.fpsLabel.setLayoutY(10);
 
-        this.timerLabel = new Label();
-        this.timerLabel.setPrefWidth(100);
+        this.timerLabel = new Label("Time: 90s");
+        timerLabel.setFont(font);
+        this.timerLabel.setPrefWidth(150);
         this.timerLabel.setLayoutX((root.getWidth() - timerLabel.getPrefWidth()) / 2);
         this.timerLabel.setLayoutY(10);
+        this.timerLabel.setAlignment(Pos.CENTER);
 
         this.groundSprites = new ArrayList<>();
         groundSprites.add(0, ImageManager.importGroundSprites("tile"));
@@ -146,7 +154,7 @@ public class OfflineGameView {
         this.currentState = startState;
         this.currentState.onEnterState();
 
-        scene.getStylesheets().add("file:resources/light_theme.css");
+        scene.getStylesheets().add("file:resources/game_theme.css");
 
         stage.setScene(scene);
         stage.setTitle("DigiVerse - Prairie King");
@@ -306,8 +314,8 @@ public class OfflineGameView {
 
         scoreText = new Label();
         scoreText.setText(Integer.toString(player.getScore()));
-        scoreText.setScaleX(2);
-        scoreText.setScaleY(2);
+        scoreText.setScaleX(1.5);
+        scoreText.setScaleY(1.5);
         scoreText.setLayoutX(50);
         scoreText.setLayoutY(10);
 
@@ -321,6 +329,7 @@ public class OfflineGameView {
                 .build();
 
         health = new ImageView(ImageManager.importGUI("health-icon"));
+        health.setStyle("-fx-border-style: solid; -fx-border-width: 1px; -fx-border-color: #000000;");
         health.setFitWidth(32);
         health.setPreserveRatio(true);
         health.setX(10);
@@ -333,8 +342,8 @@ public class OfflineGameView {
         } else {
             healthText.setText(Integer.toString(player.getLives()));
         }
-        healthText.setScaleX(2);
-        healthText.setScaleY(2);
+        healthText.setScaleX(1.5);
+        healthText.setScaleY(1.5);
         healthText.setLayoutX(50);
         healthText.setLayoutY(50);
 
@@ -358,7 +367,7 @@ public class OfflineGameView {
         playerStatBackground.setFitWidth(170);
         playerStatBackground.setFitHeight(130);
 
-        playerStatBackground.setStyle("-fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.8), 10, 0, 0, 0);");
+        playerStatBackground.setStyle("-fx-effect: dropshadow(three-pass-box, rgba(0,0,0,1), 10, 0, 0, 0);");
 
         this.playerStatPane = new StackPane();
         playerStatPane.getChildren().addAll(playerStatBackground, playerStatContainer);
