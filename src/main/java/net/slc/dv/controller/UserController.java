@@ -37,4 +37,8 @@ public class UserController {
         return userQuery.updatePassword(newPassword);
     }
 
+    public void updateColor(String color) {
+        userQuery.updateColor(color);
+    }
+
 }

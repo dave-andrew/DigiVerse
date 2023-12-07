@@ -1,5 +1,8 @@
 package net.slc.dv;
 
+import javafx.scene.image.ImageView;
+import net.slc.dv.builder.ImageViewBuilder;
+import net.slc.dv.enums.Theme;
 import net.slc.dv.resources.Icon;
 import net.slc.dv.resources.IconStorage;
 import net.slc.dv.controller.AuthController;
@@ -36,7 +39,7 @@ public class Main extends Application {
 
 		BorderPane borderPane = new BorderPane();
 
-		VBox loading = new VBox();
+		VBox loading = new VBox(30);
 		loading.setAlignment(Pos.CENTER);
 
 		ProgressBar progressBar = new ProgressBar();
@@ -44,7 +47,11 @@ public class Main extends Application {
 
 		simulateLoading(progressBar);
 
-		loading.getChildren().add(progressBar);
+		ImageView logo = ImageViewBuilder.create()
+				.setImage(new Image(Icon.LOGO.getPath(Theme.LIGHT)))
+				.build();
+
+		loading.getChildren().addAll(logo, progressBar);
 
 		borderPane.setCenter(loading);
 

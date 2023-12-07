@@ -146,6 +146,12 @@ public class AnswerDetailView extends HBox {
 
 		ArrayList<File> files = answerController.getMemberFileAnswer(this.task.getId(), member.getUser().getId());
 
+		if(files.isEmpty()) {
+			Label noFile = new Label("No file uploaded");
+			this.memberAnswerContainer.getChildren().addAll(noFile);
+			return;
+		}
+
 		files.forEach(answer -> {
 
 			HBox fileItem = new HBox();

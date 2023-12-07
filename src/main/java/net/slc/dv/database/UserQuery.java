@@ -85,4 +85,20 @@ public class UserQuery {
         }
     }
 
+    public void updateColor(String color) {
+        String query = "UPDATE msuser SET UserColor = ? WHERE UserID = ?";
+
+        try (PreparedStatement ps = connect.prepareStatement(query)) {
+            assert ps != null;
+            ps.setString(1, color);
+            ps.setString(2, LoggedUser.getInstance().getId());
+
+            ps.executeUpdate();
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+    }
+
 }

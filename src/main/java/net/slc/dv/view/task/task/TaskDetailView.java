@@ -105,7 +105,7 @@ public class TaskDetailView extends HBox {
 
 		AnswerHeader answerHeader = this.answerController.fetchAnswerHeader(task.getId(), LoggedUser.getInstance().getId());
 
-		Label score = new Label();
+		Label score = new Label("Score: -");
 
 		if(answerHeader != null) {
 			score = LabelBuilder.create(answerHeader.getScore() == null ? "Score: -" : "Score: " + answerHeader.getScore() )

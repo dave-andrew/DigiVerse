@@ -59,8 +59,9 @@ public class AuthQuery {
             String userPassword = set.getString("UserPassword");
             String userDOB = set.getString("UserDOB");
             Blob userProfile = set.getBlob("UserProfile");
+            String userColor = set.getString("UserColor");
 
-            return new User(userID, userName, userEmail, userPassword, userDOB, userProfile);
+            return new User(userID, userName, userEmail, userPassword, userDOB, userProfile, userColor);
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
@@ -118,7 +119,9 @@ public class AuthQuery {
                 String userPassword = set.getString("UserPassword");
                 String userDOB = set.getString("UserDOB");
                 Blob userProfile = set.getBlob("UserProfile");
-                User user = new User(userID, userName, userEmail, userPassword, userDOB, userProfile);
+                String userColor = set.getString("UserColor");
+
+                User user = new User(userID, userName, userEmail, userPassword, userDOB, userProfile, userColor);
                 LoggedUser.initialize(user);
                 return "true";
             }

@@ -96,6 +96,7 @@ public class Profile extends VBox {
 
         banner.setArcWidth(cornerRadiusTop);
         banner.setArcHeight(cornerRadiusTop);
+        banner.setFill(Color.valueOf(loggedUser.getColor()));
 
         VBox.setMargin(banner, new Insets(20, 0, 0, 0));
 
@@ -106,9 +107,13 @@ public class Profile extends VBox {
         bannerStack.setPadding(new Insets(20, 0, 0, 0));
 
         ColorPicker colorPicker = new ColorPicker();
+        colorPicker.setValue(Color.valueOf(loggedUser.getColor()));
+
         bannerStack.getChildren().add(colorPicker);
 
         colorPicker.valueProperty().addListener((observable, oldValue, newValue) -> {
+            this.userController.updateColor(String.valueOf(newValue));
+            LoggedUser.getInstance().setColor(String.valueOf(newValue));
             banner.setFill(newValue);
         });
 

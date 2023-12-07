@@ -22,13 +22,15 @@ public class User {
     private String dob;
     private Image profile;
     private Blob blobProfile;
+    private String color;
 
-    public User(String id, String username, String email, String password, String dob, Blob profile) {
+    public User(String id, String username, String email, String password, String dob, Blob profile, String color) {
         this.id = id;
         this.username = username;
         this.email = email;
         this.password = password;
         this.dob = dob;
+        this.color = color;
 
         try {
             if (profile != null) {

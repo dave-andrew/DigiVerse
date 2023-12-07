@@ -15,6 +15,7 @@ public class TaskBase extends BorderPane {
     private final TaskDetailView taskDetail;
     private final AnswerDetailView answerDetail;
     private Button taskButton, answer;
+    private ScrollPane taskDetailScrollPane;
 
     public TaskBase(StackPane mainPane, Task task, Classroom classroom, String userRole) {
         this.mainPane = mainPane;
@@ -36,7 +37,7 @@ public class TaskBase extends BorderPane {
             actions();
         }
 
-        ScrollPane taskDetailScrollPane = new ScrollPane();
+        this.taskDetailScrollPane = new ScrollPane();
         taskDetailScrollPane.setContent(taskDetail);
 
         taskDetailScrollPane.setFitToWidth(true);
@@ -65,7 +66,7 @@ public class TaskBase extends BorderPane {
     private void actions() {
 
         taskButton.setOnMouseClicked(e -> {
-            this.setCenter(taskDetail);
+            this.setCenter(taskDetailScrollPane);
             taskButton.getStyleClass().add("active");
             answer.getStyleClass().remove("active");
         });

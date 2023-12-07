@@ -124,7 +124,11 @@ public class CommentItem extends HBox {
                 this.commentTextField.getPostBtn().setOnMouseClicked(e2 -> {
                     TaskComment replyComment = commentController.replyComment(commentTextField.getReplyField().getText(), comment.getId());
 
-                    replyContainer.getChildren().add(new CommentItem(replyComment));
+                    CommentItem commentItem = new CommentItem(replyComment);
+                    commentItem.getStyleClass().add("left-border");
+
+
+                    replyContainer.getChildren().add(commentItem);
 
                     commentTextField.getReplyField().clear();
                 });

@@ -68,7 +68,8 @@ public class CommentQuery {
 							rs.getString("UserEmail"),
 							"",
 							rs.getString("UserDOB"),
-							rs.getBlob("UserProfile"));
+							rs.getBlob("UserProfile"),
+							rs.getString("UserColor"));
 
 					Forum forum = new Forum(
 							rs.getString("ForumID"),
@@ -149,7 +150,8 @@ public class CommentQuery {
 							rs.getString("UserEmail"),
 							"",
 							rs.getString("UserDOB"),
-							rs.getBlob("UserProfile"));
+							rs.getBlob("UserProfile"),
+							rs.getString("UserColor"));
 
 					Task task = new Task(rs, user);
 
@@ -268,7 +270,8 @@ public class CommentQuery {
 							rs.getString("UserEmail"),
 							"",
 							rs.getString("UserDOB"),
-							rs.getBlob("UserProfile"));
+							rs.getBlob("UserProfile"),
+							rs.getString("UserColor"));
 
 					TaskComment replyTaskComment = new TaskComment(
 							rs.getString("CommentID"),
