@@ -239,9 +239,12 @@
     -fx-background-color: #2E2E2E;
 }
 
+.radio-button:selected {
+    -fx-background-color: #282828;
+}
+
 .radio-button {
-    -fx-background-color: #2E2E2E;
-    -fx-text-fill: #FFFFFF;
+    -fx-background-color: #6b6b6b;
     -fx-padding: 5px 10px;
     -fx-background-radius: 5px;
     -fx-pref-width: 300px;
@@ -249,16 +252,17 @@
 }
 
 .radio-button .radio {
-    -fx-background-color: #2E2E2E;
-    -fx-border-color: #fff;
+    -fx-background-color: #545454;
+    -fx-border-color: #525252;
     -fx-border-width: 1px;
     -fx-border-radius: 100px;
     -fx-padding: 0;
 }
 
 .radio-button:hover {
-    -fx-background-color: #333333;
+    -fx-background-color: #3f3f3f;
 }
+
 
 .color-picker {
     -fx-background-color: #2E2E2E;
@@ -645,6 +649,19 @@
 }
 
 .side-nav-item.active {
+    -fx-background-color: #006985;
+}
+
+.test-button {
+    -fx-background-color: #006985;
+    -fx-border-color: #5a5a5a;
+    -fx-border-width: 1px;
+    -fx-border-radius: 5px;
+    -fx-background-radius: 5px;
+    -fx-cursor: hand;
+}
+
+.test-button.submitted {
     -fx-background-color: #006985;
 }
 
