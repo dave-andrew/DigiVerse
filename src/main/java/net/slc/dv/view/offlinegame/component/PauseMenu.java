@@ -16,7 +16,7 @@ public class PauseMenu extends VBox {
         StackPane stackPane = new StackPane();
         Button resumeButton = new Button("Resume");
 
-        Button settingButton = new Button("Setting");
+        Button settingButton = new Button("Settings");
         Button exitButton = new Button("Quit");
 
         Label pauseLabel = new Label("PAUSE MENU");

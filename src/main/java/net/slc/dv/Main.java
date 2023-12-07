@@ -115,6 +115,12 @@ public class Main extends Application {
 	}
 
 	private void redirectConnected(String message) {
+
+		if(OfflineGameView.getMediaPlayer() != null) {
+			OfflineGameView.getMediaPlayer().stop();
+			OfflineGameView.getMediaPlayer().dispose();
+		}
+
 		if (message.equals("true")) {
 			ToastBuilder.buildNormal().setText("Welcome back, " + LoggedUser.getInstance().getUsername() + "!").build();
 			this.currentScene = "home";

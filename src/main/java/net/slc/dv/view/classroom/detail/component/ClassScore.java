@@ -114,8 +114,7 @@ public class ClassScore extends HBox {
         }
 
         if(idx == 1) {
-            Label noMember = new Label("Eh? No member yet lah.");
-            noMember.getStyleClass().add("title");
+            Label noMember = new Label("Eh? No student yet lah.");
             noMember.setPadding(new Insets(20));
             this.memberList.getChildren().add(noMember);
             this.memberList.setAlignment(Pos.CENTER);

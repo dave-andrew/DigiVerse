@@ -12,7 +12,9 @@ import javafx.scene.shape.Rectangle;
 import javafx.stage.FileChooser;
 import javafx.util.StringConverter;
 import net.slc.dv.builder.ButtonBuilder;
+import net.slc.dv.builder.HBoxBuilder;
 import net.slc.dv.builder.ImageViewBuilder;
+import net.slc.dv.builder.VBoxBuilder;
 import net.slc.dv.controller.MemberController;
 import net.slc.dv.controller.TaskController;
 import net.slc.dv.controller.UserController;
@@ -89,7 +91,6 @@ public class Profile extends VBox {
         Rectangle banner = new Rectangle();
         banner.widthProperty().bind(this.widthProperty().subtract(40));
         banner.setHeight(225);
-        banner.setStyle("-fx-fill: red;");
 
         double cornerRadiusTop = 20.0;
 
@@ -98,8 +99,29 @@ public class Profile extends VBox {
 
         VBox.setMargin(banner, new Insets(20, 0, 0, 0));
 
+        StackPane bannerStack = new StackPane();
+        bannerStack.prefWidthProperty().bind(mainPane.widthProperty());
+        bannerStack.getChildren().add(banner);
+        bannerStack.setAlignment(Pos.CENTER);
+        bannerStack.setPadding(new Insets(20, 0, 0, 0));
+
+        ColorPicker colorPicker = new ColorPicker();
+        bannerStack.getChildren().add(colorPicker);
+
+        colorPicker.valueProperty().addListener((observable, oldValue, newValue) -> {
+            banner.setFill(newValue);
+        });
+
+        HBox colorPickerContainer = HBoxBuilder.create()
+                .addChildren(colorPicker)
+                .setAlignment(Pos.BOTTOM_RIGHT)
+                .setPadding(0, 50, 20, 0)
+                .build();
+
+        bannerStack.getChildren().add(colorPickerContainer);
+
         VBox bannerContainer = new VBox();
-        bannerContainer.getChildren().add(banner);
+        bannerContainer.getChildren().add(bannerStack);
 
         bannerContainer.setAlignment(Pos.CENTER);
 

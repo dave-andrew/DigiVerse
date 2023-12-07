@@ -95,7 +95,7 @@ public class RightContent extends VBox {
         dropDownBtn.prefWidthProperty().bind(forumContainer.widthProperty().subtract(75));
 
         Button loadMoreComment = new Button("Load more");
-        loadMoreComment.setStyle("-fx-background-color: transparent;-fx-border-color: none; -fx-cursor: hand;");
+        loadMoreComment.setStyle("-fx-background-color: transparent;-fx-border-color: none; -fx-cursor: hand;-fx-padding: 0;");
 
         loadMoreComment.setOnMouseClicked(e -> {
             fetchForumComment(commentContainer, forum);
@@ -147,8 +147,10 @@ public class RightContent extends VBox {
     }
 
     private void fetchForumComment(VBox commentContainer, Forum forum) {
-        List<ForumComment> forumCommentList = this.commentController.getForumComments(forum.getId(),
-                forum.getCommentCounter());
+        List<ForumComment> forumCommentList = this.commentController.getForumComments(
+                forum.getId(),
+                forum.getCommentCounter()
+        );
 
         VBox commentFetched = new VBox();
 
@@ -272,7 +274,18 @@ public class RightContent extends VBox {
         profileImage.getStyleClass().add("profile");
 
         if (type.equals("post")) {
-            ImageView loggedUserProfile = new ImageView(LoggedUser.getInstance().getProfileImage());
+            LoggedUser loggedUser = LoggedUser.getInstance();
+
+            ImageView loggedUserProfile;
+            if(loggedUser.getProfile() != null){
+                loggedUserProfile = new ImageView(loggedUser.getProfileImage());
+            } else {
+                loggedUserProfile = ImageViewBuilder.create()
+                        .bindImageProperty(IconStorage.getIcon(Icon.USER))
+                        .build();
+            }
+
+
             loggedUserProfile.setFitWidth(30);
             loggedUserProfile.setFitHeight(30);
             loggedUserProfile.getStyleClass().add("profile");

@@ -1,5 +1,7 @@
 package net.slc.dv.view.classroom.detail.component;
 
+import javafx.beans.property.SimpleObjectProperty;
+import net.slc.dv.builder.ImageViewBuilder;
 import net.slc.dv.resources.Icon;
 import net.slc.dv.resources.IconStorage;
 import net.slc.dv.helper.ImageManager;
@@ -14,18 +16,19 @@ import net.slc.dv.model.ClassroomMember;
 import net.slc.dv.model.User;
 
 public class ClassMemberItem extends HBox {
-
-    private final Image profileImg;
-    private final ImageView profile;
+    private ImageView profile;
 
     public ClassMemberItem(ClassroomMember classMember, int idx) {
         User user = classMember.getUser();
 
         if (user.getBlobProfile() != null) {
-            System.out.println("Ada profile");
-            profileImg = user.getProfile();
+            profile = ImageViewBuilder.create()
+                    .setImage(user.getProfile())
+                    .build();
         } else {
-            profileImg = IconStorage.getIcon(Icon.USER).getValue();
+            profile = ImageViewBuilder.create()
+                    .bindImageProperty(IconStorage.getIcon(Icon.USER))
+                    .build();
         }
 
         VBox userBox = new VBox();
@@ -38,7 +41,6 @@ public class ClassMemberItem extends HBox {
 
         userBox.getChildren().addAll(userNameLbl);
 
-        this.profile = new ImageView(profileImg);
         this.profile.setFitWidth(40);
         this.profile.setFitHeight(40);
 

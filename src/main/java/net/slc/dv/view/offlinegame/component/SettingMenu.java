@@ -10,6 +10,7 @@ import javafx.scene.image.ImageView;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
+import javafx.scene.text.Font;
 import net.slc.dv.view.offlinegame.OfflineGameView;
 
 public class SettingMenu extends VBox {
@@ -37,28 +38,36 @@ public class SettingMenu extends VBox {
         Button backButton = new Button("Back");
 
         Label musicLabel = new Label("Music Volume");
-        Label resolutionLabel = new Label("Resolution");
+        Label resolutionLabel = new Label("Refresh Rate");
 
         fps60Label = new Label("60 FPS");
-        fps60Label.getStyleClass().add("fps-card");
+        fps60Label.setStyle("-fx-font-size: 15px;-fx-font-family: 'Minecraft';-fx-text-fill: black;-fx-cursor: hand;");
 
         fps60Label.setOnMouseClicked(e -> {
-            fps60Label.getStyleClass().add("act");
-            fps144Label.getStyleClass().remove("act");
+            fps60Label.getStyleClass().remove("fps-card");
+            fps144Label.getStyleClass().remove("fps-card");
+            fps60Label.getStyleClass().add("fps-card");
+            fps60Label.setStyle("-fx-font-size: 15px;-fx-font-family: 'Minecraft';-fx-text-fill: white;-fx-cursor: hand;");
+            fps144Label.setStyle("-fx-font-size: 13px;-fx-font-family: 'Minecraft';-fx-text-fill: black;-fx-cursor: hand;");
             game.setTargetFPS(60.0);
         });
 
         fps144Label = new Label("144 FPS");
-        fps144Label.getStyleClass().addAll("fps-card", "act");
+        fps144Label.getStyleClass().addAll("fps-card");
+        fps144Label.setStyle("-fx-font-size: 13px;-fx-font-family: 'Minecraft';-fx-text-fill: white;-fx-cursor: hand;");
 
         fps144Label.setOnMouseClicked(e -> {
-            fps144Label.getStyleClass().add("act");
-            fps60Label.getStyleClass().remove("act");
+            fps60Label.getStyleClass().remove("fps-card");
+            fps144Label.getStyleClass().remove("fps-card");
+            fps144Label.getStyleClass().add("fps-card");
+            fps60Label.setStyle("-fx-font-size: 15px;-fx-font-family: 'Minecraft';-fx-text-fill: black;-fx-cursor: hand;");
+            fps144Label.setStyle("-fx-font-size: 13px;-fx-font-family: 'Minecraft';-fx-text-fill: white;-fx-cursor: hand;");
             game.setTargetFPS(144.0);
         });
 
         HBox fpsContainer = new HBox(20);
         fpsContainer.getChildren().addAll(fps60Label, fps144Label);
+        fpsContainer.setAlignment(Pos.CENTER_LEFT);
 
         VBox resolutionContainer = new VBox();
         resolutionContainer.getChildren().addAll(resolutionLabel, fpsContainer);
@@ -76,6 +85,7 @@ public class SettingMenu extends VBox {
 
         musicSlider.valueProperty().addListener((observable, oldValue, newValue) -> {
             double newVolume = newValue.doubleValue() / 100.0;
+
             game.getMediaPlayer().setVolume(newVolume);
         });
 

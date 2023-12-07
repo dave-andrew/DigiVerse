@@ -3,6 +3,7 @@ package net.slc.dv.view.home.component;
 import java.util.Objects;
 import java.util.function.Consumer;
 
+import javafx.beans.property.SimpleObjectProperty;
 import javafx.geometry.Pos;
 import javafx.scene.Node;
 import javafx.scene.control.*;
@@ -155,15 +156,14 @@ public class Navbar extends HBox {
 		if (loggedUser != null) {
 			Image userImage = loggedUser.getProfile();
 			userImageView = ImageViewBuilder.create()
-					.setImage(
-							Objects.requireNonNullElseGet(userImage, () -> new Image("file:resources/icons/light/user.png")))
+					.bindImageProperty(Objects.isNull(userImage) ? IconStorage.getIcon(Icon.USER) : new SimpleObjectProperty<>(userImage))
 					.setFitWidth(40)
 					.setFitHeight(40)
 					.setPreserveRatio(true)
 					.build();
 		} else {
 			userImageView = ImageViewBuilder.create()
-					.setImage(new Image("file:resources/icons/user.png"))
+					.bindImageProperty(IconStorage.getIcon(Icon.USER))
 					.setFitWidth(40)
 					.setFitHeight(40)
 					.setPreserveRatio(true)

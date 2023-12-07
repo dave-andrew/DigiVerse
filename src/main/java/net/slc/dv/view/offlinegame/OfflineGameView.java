@@ -89,7 +89,7 @@ public class OfflineGameView {
 
     private AnimationTimer timer;
     @Getter
-    private MediaPlayer mediaPlayer;
+    private static MediaPlayer mediaPlayer;
 
     private boolean deadPause = false;
     private boolean isPaused = false;

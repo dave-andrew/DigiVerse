@@ -29,4 +29,63 @@
     -fx-border-image-width: 20;
     -fx-border-image-insets: 0;
     -fx-border-image-repeat: stretch;
+    -fx-cursor: hand;
+    -fx-padding: 5px 10px;
+}
+
+.button:pressed {
+    -fx-translate-y: 4;
+}
+
+
+.slider .track {
+    -fx-background-color: linear-gradient(to right, derive(-fx-control-inner-background, -30%), -fx-control-inner-background);
+}
+
+.slider .thumb {
+    -fx-background-color: -fx-accent;
+}
+
+.slider .thumb:horizontal {
+    -fx-padding: 0.0em 0.25em 0.0em 0.25em;
+}
+
+.slider .track:horizontal {
+    -fx-background-color: linear-gradient(to right, derive(-fx-control-inner-background, -30%), -fx-control-inner-background);
+}
+
+.slider .filled-time:horizontal {
+    -fx-background-color: -fx-accent;
+}
+
+.slider:horizontal .thumb {
+    -fx-background-color: green; /* Color for the selected range between 0 and 30 */
+}
+
+/* ================================================================================================= */
+
+.fps-card {
+    -fx-background-radius: 19px;
+    -fx-background-color: #085004;
+    -fx-padding: 5px 10px;
+    -fx-background-image:
+            url('./game/gui/pixel-border.png'),
+            url('./game/gui/pixel-border.png'),
+            url('./game/gui/pixel-border.png'),
+            url('./game/gui/pixel-border.png');
+    -fx-background-position:
+            top left,
+            top right,
+            bottom right,
+            bottom left;
+    -fx-background-repeat: no-repeat;
+    -fx-background-size: 20px 20px;
+}
+
+.fps-card:hover {
+    -fx-cursor: hand;
+}
+
+.fps-card:pressed {
+    -fx-translate-y: 4;
 }
