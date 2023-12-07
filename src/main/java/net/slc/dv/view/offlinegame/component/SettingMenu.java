@@ -37,7 +37,6 @@ public class SettingMenu extends VBox {
         Button backButton = new Button("Back");
 
         Label musicLabel = new Label("Music Volume");
-        Label SFXLabel = new Label("SFX Volume");
         Label resolutionLabel = new Label("Resolution");
 
         fps60Label = new Label("60 FPS");
@@ -46,7 +45,7 @@ public class SettingMenu extends VBox {
         fps60Label.setOnMouseClicked(e -> {
             fps60Label.getStyleClass().add("act");
             fps144Label.getStyleClass().remove("act");
-            game.setTargetFPS(60);
+            game.setTargetFPS(60.0);
         });
 
         fps144Label = new Label("144 FPS");
@@ -55,7 +54,7 @@ public class SettingMenu extends VBox {
         fps144Label.setOnMouseClicked(e -> {
             fps144Label.getStyleClass().add("act");
             fps60Label.getStyleClass().remove("act");
-            game.setTargetFPS(144);
+            game.setTargetFPS(144.0);
         });
 
         HBox fpsContainer = new HBox(20);
@@ -66,9 +65,6 @@ public class SettingMenu extends VBox {
 
         VBox musicContainer = new VBox();
         musicContainer.getChildren().addAll(musicLabel, musicSlider);
-
-        VBox SFXContainer = new VBox();
-        SFXContainer.getChildren().addAll(SFXLabel, SFXSlider);
 
         musicSlider.setMin(0);
         musicSlider.setMax(100);
@@ -116,14 +112,13 @@ public class SettingMenu extends VBox {
         ImageView imageView = new ImageView(image);
 
         imageView.setFitWidth(500);
-        imageView.setFitHeight(400);
+        imageView.setFitHeight(600);
 
         stackPane.getChildren().add(imageView);
 
         VBox settingMenu = new VBox(40);
-        settingMenu.setPrefSize(500, 400);
-        settingMenu.setPadding(new Insets(20));
-        settingMenu.getChildren().addAll(settingsLabel, musicContainer, SFXContainer, resolutionContainer, buttonContainer);
+        settingMenu.setPadding(new Insets(50));
+        settingMenu.getChildren().addAll(settingsLabel, musicContainer, resolutionContainer, buttonContainer);
         settingMenu.setAlignment(Pos.CENTER);
 
         stackPane.getChildren().add(settingMenu);

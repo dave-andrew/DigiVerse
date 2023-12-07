@@ -89,7 +89,7 @@ public class Profile extends VBox {
         Rectangle banner = new Rectangle();
         banner.widthProperty().bind(this.widthProperty().subtract(40));
         banner.setHeight(225);
-        banner.setStyle("-fx-fill: linear-gradient(to top, violet, indigo, blue, green, yellow, orange, red);");
+        banner.setStyle("-fx-fill: red;");
 
         double cornerRadiusTop = 20.0;
 

@@ -2,6 +2,8 @@ package net.slc.dv.game;
 
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import lombok.Getter;
+import lombok.Setter;
 import net.slc.dv.enums.PowerUp;
 import net.slc.dv.game.player.*;
 import net.slc.dv.helper.Collider;
@@ -11,45 +13,68 @@ import net.slc.dv.helper.ScreenManager;
 import java.util.ArrayList;
 import java.util.concurrent.ConcurrentHashMap;
 
+@Getter @Setter
 public class Player extends ImageView {
 
     private static Player instance;
 
+    @Getter
     private int lives;
+    @Getter
     private double speed;
+    @Getter
     private double shootcd;
     private double baseShootcd;
+    @Getter
     private int score;
 
+    @Getter
     private final Collider collider;
 
     //    Player Movement
+    @Getter
     private double velocityX = 0.0;
+    @Getter
     private double velocityY = 0.0;
 
+    @Getter
     private double posX = ScreenManager.SCREEN_WIDTH / 2;
+    @Getter
     private double posY = ScreenManager.SCREEN_HEIGHT / 2;
 
 //    Player Sprites
+    @Getter
     private final ArrayList<Image> leftSprites;
+    @Getter
     private final ArrayList<Image> rightSprites;
+    @Getter
     private final ArrayList<Image> upSprites;
+    @Getter
     private final ArrayList<Image> downSprites;
+    @Getter
     private final ArrayList<Image> diedSprites;
 
 
 //    Player States
     private PlayerBaseState currentState;
 
+    @Getter
     private final PlayerStandState standState;
+    @Getter
     private final PlayerWalkState walkState;
+    @Getter
     private final PlayerShootState shootState;
+    @Getter
     private final PlayerDeadState deadState;
+    @Getter
     private final PlayerRespawnState respawnState;
+    @Getter
     private final PlayerNoLiveState noLiveState;
 
+    @Getter
     private Image sprite;
 
+    @Getter
     private ConcurrentHashMap<PowerUp, Double> powerUpTime = new ConcurrentHashMap<>();
 
     public static Player getInstance() {
@@ -102,96 +127,36 @@ public class Player extends ImageView {
         this.currentState = state;
     }
 
-    public int getLives() {
-        return lives;
-    }
-
     public void setLives(int lives) {
         this.lives = lives;
-    }
-
-    public double getSpeed() {
-        return speed;
     }
 
     public void setSpeed(double speed) {
         this.speed = speed;
     }
 
-    public double getPosX() {
-        return posX;
-    }
-
     public void setPosX(double posX) {
         this.posX = posX;
-    }
-
-    public double getPosY() {
-        return posY;
     }
 
     public void setPosY(double posY) {
         this.posY = posY;
     }
 
-    public double getVelocityX() {
-        return velocityX;
-    }
-
     public void setVelocityX(double velocityX) {
         this.velocityX = velocityX;
-    }
-
-    public double getVelocityY() {
-        return velocityY;
     }
 
     public void setVelocityY(double velocityY) {
         this.velocityY = velocityY;
     }
 
-    public ArrayList<Image> getLeftSprites() {
-        return leftSprites;
-    }
-
-    public ArrayList<Image> getRightSprites() {
-        return rightSprites;
-    }
-
-    public ArrayList<Image> getUpSprites() {
-        return upSprites;
-    }
-
-    public ArrayList<Image> getDownSprites() {
-        return downSprites;
-    }
-
-    public Image getSprite() {
-        return sprite;
-    }
-
     public void setSprite(Image sprite) {
         this.sprite = sprite;
     }
 
-    public ArrayList<Image> getDiedSprites() {
-        return diedSprites;
-    }
-
-    public double getShootcd() {
-        return shootcd;
-    }
-
     public void setShootcd(double shootcd) {
         this.shootcd = shootcd;
-    }
-
-    public Collider getCollider() {
-        return collider;
-    }
-
-    public int getScore() {
-        return score;
     }
 
     public void setScore(int score) {
@@ -204,37 +169,10 @@ public class Player extends ImageView {
         this.baseShootcd = baseShootcd;
     }
 
-    public ConcurrentHashMap<PowerUp, Double> getPowerUpTime() {
-        return powerUpTime;
-    }
-
     public void setPowerUpTime(ConcurrentHashMap<PowerUp, Double> powerUpTime) {
         this.powerUpTime = powerUpTime;
     }
 
 
-    public PlayerStandState getStandState() {
-        return standState;
-    }
-
-    public PlayerWalkState getWalkState() {
-        return walkState;
-    }
-
-    public PlayerShootState getShootState() {
-        return shootState;
-    }
-
-    public PlayerDeadState getDeadState() {
-        return deadState;
-    }
-
-    public PlayerRespawnState getRespawnState() {
-        return respawnState;
-    }
-
-    public PlayerNoLiveState getNoLiveState() {
-        return noLiveState;
-    }
 }
 

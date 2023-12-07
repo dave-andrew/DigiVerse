@@ -1,5 +1,6 @@
 package net.slc.dv.game.gamestate;
 
+import javafx.scene.layout.BorderPane;
 import net.slc.dv.helper.ScreenManager;
 import net.slc.dv.view.offlinegame.OfflineGameView;
 import net.slc.dv.view.offlinegame.component.PauseMenu;
@@ -31,7 +32,6 @@ public class GamePauseState extends GameBaseState {
 
         game.getMediaPlayer().pause();
         game.getRoot().getChildren().add(game.getPauseMenu());
-
     }
 
     @Override

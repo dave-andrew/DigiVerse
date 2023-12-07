@@ -52,6 +52,16 @@ public class StackPaneBuilder {
 		return this;
 	}
 
+	public StackPaneBuilder setLayoutX(double x) {
+		this.stackPane.setLayoutX(x);
+		return this;
+	}
+
+	public StackPaneBuilder setLayoutY(double y) {
+		this.stackPane.setLayoutY(y);
+		return this;
+	}
+
 	public StackPaneBuilder addChildren(Node... children) {
 		this.stackPane.getChildren().addAll(children);
 		return this;

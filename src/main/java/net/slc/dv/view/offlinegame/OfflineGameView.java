@@ -1,5 +1,11 @@
 package net.slc.dv.view.offlinegame;
 
+import javafx.scene.layout.HBox;
+import javafx.scene.layout.StackPane;
+import lombok.Getter;
+import net.slc.dv.builder.HBoxBuilder;
+import net.slc.dv.builder.StackPaneBuilder;
+import net.slc.dv.builder.VBoxBuilder;
 import net.slc.dv.enums.PowerUp;
 import net.slc.dv.game.Bullet;
 import net.slc.dv.game.Enemy;
@@ -8,6 +14,8 @@ import net.slc.dv.game.dropitem.DropItem;
 import net.slc.dv.game.enemy.EnemyDeadState;
 import net.slc.dv.game.enemy.EnemyDespawnState;
 import net.slc.dv.game.gamestate.*;
+import net.slc.dv.game.player.PlayerDeadState;
+import net.slc.dv.game.player.PlayerRespawnState;
 import net.slc.dv.game.player.PlayerStandState;
 import net.slc.dv.helper.*;
 import javafx.animation.AnimationTimer;
@@ -30,6 +38,7 @@ import javafx.util.Duration;
 
 public class OfflineGameView {
 
+    @Getter
     private final Player player;
 
     // Managers
@@ -39,20 +48,31 @@ public class OfflineGameView {
     //  Game State
     private GameBaseState currentState;
 
+    @Getter
     private final GamePlayState playState;
     private final GamePauseState pauseState;
+    @Getter
     private final GameOverState overState;
     private final GameLevelUpState gameLevelUpState;
 
     //    Game Layout
+    @Getter
     private final Pane root;
+    @Getter
     private final Scene scene;
+    @Getter
     private final VBox pauseMenu;
+    @Getter
     private final VBox settingMenu;
+    @Getter
     private final Label fpsLabel;
+    @Getter
     private final Label timerLabel;
+    @Getter
+    private StackPane playerStatPane;
 
     //  Entity Tracker
+    @Getter
     private final ArrayList<Enemy> enemyList = new ArrayList<>();
     private final ArrayList<ArrayList<Image>> groundSprites;
     private final ArrayList<String> enemySprites;
@@ -60,11 +80,14 @@ public class OfflineGameView {
 
     //    Game Attributes
     private int level = 0;
+    @Getter
     private double enemySpawnRate = 0.01;
+    @Getter
     private int baseEnemyHealth = 1;
     private long lastTimeFrame = 0;
 
     private AnimationTimer timer;
+    @Getter
     private MediaPlayer mediaPlayer;
 
     private boolean deadPause = false;
@@ -76,7 +99,7 @@ public class OfflineGameView {
 
         this.pauseMenu = new VBox(40);
         this.pauseMenu.setAlignment(Pos.CENTER);
-        this.pauseMenu.setPrefSize(500, 400);
+        this.pauseMenu.setPrefSize(500, 600);
 
         this.settingMenu = new VBox(40);
         this.settingMenu.setAlignment(Pos.CENTER);
@@ -137,14 +160,6 @@ public class OfflineGameView {
     public void reinitialize() {
         setupBackground();
         setUpGui();
-    }
-
-    public Label getFpsLabel() {
-        return fpsLabel;
-    }
-
-    public Label getTimerLabel() {
-        return timerLabel;
     }
 
     private void setupGameLoop() {
@@ -282,12 +297,12 @@ public class OfflineGameView {
     private Label healthText;
 
     public void setUpGui() {
+
         score = new ImageView(new Image("file:resources/game/items/coin1.png"));
-        score.setScaleX(2);
-        score.setScaleY(2);
+        score.setFitWidth(24);
+        score.setPreserveRatio(true);
         score.setX(10);
         score.setY(10);
-        root.getChildren().add(score);
 
         scoreText = new Label();
         scoreText.setText(Integer.toString(player.getScore()));
@@ -295,14 +310,21 @@ public class OfflineGameView {
         scoreText.setScaleY(2);
         scoreText.setLayoutX(50);
         scoreText.setLayoutY(10);
-        root.getChildren().add(scoreText);
+
+        HBox scoreContainer = HBoxBuilder.create()
+                .addChildren(score, scoreText)
+                .setAlignment(Pos.CENTER_LEFT)
+                .setSpacing(34)
+                .setPadding(10, 10, 10, 14)
+                .setLayoutX(10)
+                .setLayoutY(10)
+                .build();
 
         health = new ImageView(ImageManager.importGUI("health-icon"));
-        health.setScaleX(2);
-        health.setScaleY(2);
+        health.setFitWidth(32);
+        health.setPreserveRatio(true);
         health.setX(10);
         health.setY(50);
-        root.getChildren().add(health);
 
         healthText = new Label();
         if (player.getLives() < 0) {
@@ -315,7 +337,36 @@ public class OfflineGameView {
         healthText.setScaleY(2);
         healthText.setLayoutX(50);
         healthText.setLayoutY(50);
-        root.getChildren().add(healthText);
+
+        HBox healthContainer = HBoxBuilder.create()
+                .addChildren(health, healthText)
+                .setAlignment(Pos.CENTER_LEFT)
+                .setSpacing(30)
+                .setPadding(10)
+                .setLayoutX(10)
+                .setLayoutY(50)
+                .build();
+
+        VBox playerStatContainer = VBoxBuilder.create()
+                .addChildren(healthContainer, scoreContainer)
+                .setAlignment(Pos.CENTER_LEFT)
+                .setPadding(0, 10, 0, 10)
+                .build();
+
+        ImageView playerStatBackground = new ImageView(ImageManager.importGUI("stat-bg"));
+
+        playerStatBackground.setFitWidth(170);
+        playerStatBackground.setFitHeight(130);
+
+        playerStatBackground.setStyle("-fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.8), 10, 0, 0, 0);");
+
+        this.playerStatPane = new StackPane();
+        playerStatPane.getChildren().addAll(playerStatBackground, playerStatContainer);
+        playerStatPane.setLayoutX(5);
+        playerStatPane.setLayoutY(5);
+        playerStatPane.setAlignment(Pos.CENTER_LEFT);
+
+        root.getChildren().add(playerStatPane);
 
         root.getChildren().add(fpsLabel);
         root.getChildren().add(timerLabel);
@@ -331,9 +382,13 @@ public class OfflineGameView {
         root.getChildren().remove(health);
         root.getChildren().remove(healthText);
 
+        root.getChildren().remove(playerStatPane);
         root.getChildren().remove(fpsLabel);
         root.getChildren().remove(timerLabel);
     }
+
+    double respawnTimer = 0;
+    boolean isRespawn = false;
 
     private void playerUpdate(double deltaTime) {
         if (isPaused) {
@@ -343,9 +398,20 @@ public class OfflineGameView {
         player.getState().onUpdate(deltaTime, root);
         player.getCollider().setCollider(player.getPosX(), player.getPosY());
 
-        if (player.getState() instanceof PlayerStandState) {
+        if(isRespawn){
+            respawnTimer += deltaTime;
+        }
+
+        if(respawnTimer >= 25 && isRespawn) {
+            isRespawn = false;
+            respawnTimer = 0;
             deadPause = false;
         }
+
+        if (player.getState() instanceof PlayerRespawnState) {
+            isRespawn = true;
+        }
+
 
         checkPowerUps(deltaTime);
     }
@@ -466,7 +532,7 @@ public class OfflineGameView {
 
         String enemyType = enemySprites.get(random.nextInt(enemySprites.size()));
 
-        if(Math.random() <= 0.5) {
+        if(Math.random() <= 0.01) {
             enemyType = "spider";
         }
 
@@ -518,20 +584,8 @@ public class OfflineGameView {
         this.level = 0;
     }
 
-    public Scene getScene() {
-        return scene;
-    }
-
-    public Pane getRoot() {
-        return root;
-    }
-
     public GameBaseState getState() {
         return currentState;
-    }
-
-    public Player getPlayer() {
-        return this.player;
     }
 
     public void changeState(GameBaseState newState) {
@@ -539,44 +593,12 @@ public class OfflineGameView {
         this.currentState.onEnterState();
     }
 
-    public VBox getPauseMenu() {
-        return pauseMenu;
-    }
-
-    public VBox getSettingMenu() {
-        return settingMenu;
-    }
-
-    public MediaPlayer getMediaPlayer() {
-        return mediaPlayer;
-    }
-
-    public double getEnemySpawnRate() {
-        return this.enemySpawnRate;
-    }
-
     public void setEnemySpawnRate(double enemySpawnRate) {
         this.enemySpawnRate = enemySpawnRate;
     }
 
-    public int getBaseEnemyHealth() {
-        return baseEnemyHealth;
-    }
-
     public void setBaseEnemyHealth(int baseEnemyHealth) {
         this.baseEnemyHealth = baseEnemyHealth;
-    }
-
-    public GameOverState getOverState() {
-        return overState;
-    }
-
-    public GamePlayState getPlayState() {
-        return playState;
-    }
-
-    public ArrayList<Enemy> getEnemyList() {
-        return enemyList;
     }
 
 }

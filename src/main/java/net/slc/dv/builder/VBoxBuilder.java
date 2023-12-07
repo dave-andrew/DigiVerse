@@ -57,6 +57,18 @@ public class VBoxBuilder {
         return this;
     }
 
+    public VBoxBuilder setLayoutX(double x) {
+        this.vBox.setLayoutX(x);
+
+        return this;
+    }
+
+    public VBoxBuilder setLayoutY(double y) {
+        this.vBox.setLayoutY(y);
+
+        return this;
+    }
+
     public VBoxBuilder setMaxWidth(int width) {
         this.vBox.setMaxWidth(width);
 

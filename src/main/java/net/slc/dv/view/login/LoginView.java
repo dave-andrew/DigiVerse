@@ -23,6 +23,9 @@ import net.slc.dv.builder.HBoxBuilder;
 import net.slc.dv.builder.VBoxBuilder;
 import net.slc.dv.controller.AuthController;
 import net.slc.dv.helper.ScreenManager;
+import net.slc.dv.helper.StageManager;
+import net.slc.dv.helper.toast.ToastBuilder;
+import net.slc.dv.model.LoggedUser;
 import net.slc.dv.resources.Icon;
 import net.slc.dv.resources.IconStorage;
 import net.slc.dv.resources.ImageStorage;
@@ -215,6 +218,7 @@ public class LoginView {
         passwordVbox = new VBox();
         loginVbox = new VBox();
         rememberMeVbox = new VBox();
+        rememberMeVbox.setStyle("-fx-cursor: hand;");
 
         emailLbl = new Label("Email:");
         passwordLbl = new Label("Password:");
@@ -223,8 +227,8 @@ public class LoginView {
         passwordTxt = new PasswordField();
 
         rememberMe = new CheckBox("Remember me");
-        rememberMe.setScaleX(0.8);
-        rememberMe.setScaleY(0.8);
+        rememberMe.setScaleX(0.85);
+        rememberMe.setScaleY(0.85);
 
         Image image = new Image(ImageStorage.AUTH_IMAGE_TWO);
 
@@ -317,18 +321,13 @@ public class LoginView {
 
     private void actions(Stage stage) {
         loginBtn.setOnAction(e -> {
-            String email = emailTxt.getText();
-            String password = passwordTxt.getText();
-            boolean remember = rememberMe.isSelected();
+            loginLogic(stage);
+        });
 
-            String message = authController.checkLogin(email, password, remember);
-
-            if (message.equals("Login Success!")) {
-                errorLbl.setStyle("-fx-text-fill: green;");
-                new Home(stage);
+        passwordTxt.setOnKeyPressed(e -> {
+            if (e.getCode().toString().equals("ENTER")) {
+                loginLogic(stage);
             }
-
-            errorLbl.setText(message);
         });
 
         registerLink.setOnAction(e -> {
@@ -340,5 +339,21 @@ public class LoginView {
             borderPane.getChildren().clear();
             borderPane.setCenter(outerContainer);
         });
+    }
+
+    private void loginLogic(Stage stage) {
+        String email = emailTxt.getText();
+        String password = passwordTxt.getText();
+        boolean remember = rememberMe.isSelected();
+
+        String message = authController.checkLogin(email, password, remember);
+
+        if (message.equals("Login Success!")) {
+            errorLbl.setStyle("-fx-text-fill: green;");
+            ToastBuilder.buildNormal().setText("Welcome back, " + LoggedUser.getInstance().getUsername() + "!").build();
+            new Home(stage);
+        }
+
+        errorLbl.setText(message);
     }
 }

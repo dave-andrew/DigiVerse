@@ -5,6 +5,7 @@ import net.slc.dv.helper.ObservableVariable;
 
 import java.sql.SQLException;
 import java.util.concurrent.Executors;
+import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
 
 public class ConnectionChecker {
@@ -18,8 +19,13 @@ public class ConnectionChecker {
         this.isConnected = new ObservableVariable<>(null);
 
         this.checkConnectionChange();
-        Executors.newSingleThreadScheduledExecutor()
-                .scheduleAtFixedRate(this::checkConnection, 0, 1000, TimeUnit.MILLISECONDS);
+        ScheduledExecutorService executorService = Executors.newSingleThreadScheduledExecutor(r -> {
+            Thread thread = new Thread(r);
+            thread.setDaemon(true);
+            return thread;
+        });
+
+        executorService.scheduleAtFixedRate(this::checkConnection, 0, 1000, TimeUnit.MILLISECONDS);
     }
 
     private void checkConnectionChange() {

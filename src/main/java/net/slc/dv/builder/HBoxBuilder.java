@@ -40,6 +40,24 @@ public class HBoxBuilder {
         return this;
     }
 
+    public HBoxBuilder setLayoutX(double x) {
+        this.hBox.setLayoutX(x);
+
+        return this;
+    }
+
+    public HBoxBuilder setLayoutY(double y) {
+        this.hBox.setLayoutY(y);
+
+        return this;
+    }
+
+    public HBoxBuilder setPadding(int padding) {
+        this.hBox.setPadding(new Insets(padding));
+
+        return this;
+    }
+
     public HBoxBuilder setPadding(int padding1, int padding2, int padding3, int padding4) {
         this.hBox.setPadding(new Insets(padding1, padding2, padding3, padding4));
 

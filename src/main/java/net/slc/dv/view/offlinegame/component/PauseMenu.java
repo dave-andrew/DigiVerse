@@ -57,7 +57,7 @@ public class PauseMenu extends VBox {
         ImageView imageView = new ImageView(image);
 
         imageView.setFitWidth(500);
-        imageView.setFitHeight(400);
+        imageView.setFitHeight(600);
 
         stackPane.getChildren().add(imageView);
 
