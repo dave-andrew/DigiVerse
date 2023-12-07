@@ -159,7 +159,9 @@ public class Profile extends VBox {
         changeButtonContainer.setAlignment(Pos.TOP_CENTER);
 
         if (loggedUser.getProfileImage() == null) {
-            profile = new ImageView(new Image("file:resources/icons/user.png"));
+            profile = ImageViewBuilder.create()
+                    .bindImageProperty(IconStorage.getIcon(Icon.USER))
+                    .build();
         } else {
             profile = new ImageView(loggedUser.getProfileImage());
         }
@@ -175,10 +177,11 @@ public class Profile extends VBox {
         HBox emailContainer = new HBox(5);
         emailContainer.setAlignment(Pos.CENTER_LEFT);
 
-        ImageView emailIcon = new ImageView(new Image("file:resources/icons/email.png"));
-
-        emailIcon.setFitWidth(15);
-        emailIcon.setFitHeight(15);
+        ImageView emailIcon = ImageViewBuilder.create()
+                .bindImageProperty(IconStorage.getIcon(Icon.EMAIL))
+                .setFitHeight(15)
+                .setFitWidth(15)
+                .build();
 
         email = new Label(loggedUser.getEmail());
         email.setStyle("-fx-font-size: 14px");
@@ -196,10 +199,11 @@ public class Profile extends VBox {
         HBox birthdayContainer = new HBox(5);
         birthdayContainer.setAlignment(Pos.CENTER_LEFT);
 
-        ImageView cakeIcon = new ImageView(new Image("file:resources/icons/cake.png"));
-
-        cakeIcon.setFitWidth(15);
-        cakeIcon.setFitHeight(15);
+        ImageView cakeIcon = ImageViewBuilder.create()
+                .bindImageProperty(IconStorage.getIcon(Icon.CAKE))
+                .setFitWidth(15)
+                .setFitHeight(15)
+                .build();
 
         birthday = new Label(formattedDate);
         birthday.setStyle("-fx-font-size: 14px");
@@ -341,8 +345,9 @@ public class Profile extends VBox {
     private HBox setEditProfile() {
         HBox editProfileContainer = new HBox(5);
 
-        Image editIcon = new Image("file:resources/icons/light/user.png");
-        ImageView editIconView = new ImageView(editIcon);
+        ImageView editIconView = ImageViewBuilder.create()
+                .bindImageProperty(IconStorage.getIcon(Icon.USER))
+                .build();
 
         editIconView.setFitWidth(25);
         editIconView.setPreserveRatio(true);
@@ -443,6 +448,7 @@ public class Profile extends VBox {
         profileContent.getChildren().add(tab);
 
         taskContainer = new VBox();
+        taskContainer.setAlignment(Pos.TOP_CENTER);
 
         fetchPendingTask();
 
@@ -462,6 +468,17 @@ public class Profile extends VBox {
         this.pendingTask.getStyleClass().add("active");
 
         ArrayList<Task> tasks = this.taskController.fetchUserPendingTask(loggedUser.getId());
+
+        taskLayout(tasks);
+    }
+
+    private void taskLayout(ArrayList<Task> tasks) {
+        if(tasks.isEmpty()) {
+            Label noTask = new Label("Chill dulu gak sih?");
+            noTask.setStyle("-fx-font-size: 20px");
+            this.taskContainer.getChildren().add(noTask);
+            return;
+        }
 
         for (Task task : tasks) {
             TaskItem taskItem = new TaskItem(task);
@@ -486,10 +503,7 @@ public class Profile extends VBox {
 
         ArrayList<Task> tasks = this.taskController.fetchUserFinishedTask(loggedUser.getId());
 
-        for (Task task : tasks) {
-            TaskItem taskItem = new TaskItem(task);
-            this.taskContainer.getChildren().add(taskItem);
-        }
+        taskLayout(tasks);
 
     }
 

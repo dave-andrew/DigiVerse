@@ -25,6 +25,10 @@ public class ThemeManager {
         }
     }
 
+    public Theme getTheme() {
+        return theme;
+    }
+
     public static ThemeManager getInstance() {
         if(instance == null) {
             instance = new ThemeManager();

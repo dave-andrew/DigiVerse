@@ -5,14 +5,14 @@ import net.slc.dv.enums.Theme;
 public enum Icon {
 	HOME("file:resources/icons/light/home.png", "file:resources/icons/dark/home.png"),
 	CALENDAR("file:resources/icons/light/calendar.png", "file:resources/icons/dark/calendar.png"),
-	LOGOUT("file:resources/icons/light/logout.png"),
+	LOGOUT("file:resources/icons/light/logout.png", "file:resources/icons/dark/logout.png"),
 	LEFT_NAV_ARROW("file:resources/icons/light/left-nav.png", "file:resources/icons/dark/left-nav.png"),
 	RIGHT_NAV_ARROW("file:resources/icons/light/right-nav.png", "file:resources/icons/dark/right-nav.png"),
 	LEFT_ARROW("file:resources/icons/light/left-arrow.png", "file:resources/icons/dark/left-arrow.png"),
-	RIGHT_ARROW("file:resources/icons/light/right-arrow.png"),
+	RIGHT_ARROW("file:resources/icons/light/right-arrow.png", "file:resources/icons/dark/right-arrow.png"),
 	PLUS("file:resources/icons/light/plus.png", "file:resources/icons/dark/plus.png"),
-	SUN("file:resources/icons/light/sun.png"),
-	MOON("file:resources/icons/light/moon.png"),
+	SUN("file:resources/icons/light/sun.png", "file:resources/icons/dark/moon.png"),
+	MOON("file:resources/icons/dark/moon.png"),
 	LOGO("file:resources/icons/light/logo.png"),
 	TASK("file:resources/icons/light/task.png"),
 	PDF("file:resources/icons/light/pdf.png"),
@@ -27,6 +27,7 @@ public enum Icon {
 	CHANGE_PASSWORD("file:resources/icons/light/change-password.png", "file:resources/icons/dark/change-password.png"),
 	EMAIL("file:resources/icons/light/email.png", "file:resources/icons/dark/email.png"),
 	SEND("file:resources/icons/send.png"),
+	CAKE("file:resources/icons/light/cake.png", "file:resources/icons/dark/cake.png"),
 	DOWN_ARROW("file:resources/icons/light/down-arrow.png", "file:resources/icons/dark/down-arrow.png");
 
 	private final String pathLight;

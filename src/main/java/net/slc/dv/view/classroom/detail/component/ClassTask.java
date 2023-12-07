@@ -22,7 +22,7 @@ public class ClassTask extends ClassBase {
     private final String userRole;
 
     private TaskController taskController;
-    private HBox container;
+    private HBox container, titleContainer;
     private VBox taskContainer, taskListContainer;
 
     private Button addTaskBtn;
@@ -65,12 +65,10 @@ public class ClassTask extends ClassBase {
     }
 
     private void actions() {
-        if (this.userRole.equals("Teacher")) {
-            this.addTaskBtn.setOnMouseClicked(e -> {
-                new AddTaskView(StageManager.getInstance(), this.classroom);
-                fetchTask();
-            });
-        }
+        this.addTaskBtn.setOnMouseClicked(e -> {
+            new AddTaskView(StageManager.getInstance(), this.classroom);
+            fetch();
+        });
     }
 
     private void fetchTask() {
@@ -81,21 +79,28 @@ public class ClassTask extends ClassBase {
         HBox spacer = new HBox();
         HBox.setHgrow(spacer, Priority.ALWAYS);
 
-        HBox titleContainer = new HBox(title, spacer);
+        this.titleContainer = new HBox(title, spacer);
         titleContainer.setAlignment(Pos.TOP_CENTER);
 
-        if (this.userRole.equals("Teacher")) {
-            this.addTaskBtn = new Button("+ Create Task");
-            this.addTaskBtn.getStyleClass().add("primary-button");
-            this.addTaskBtn.setStyle("-fx-text-fill: white");
+        this.addTaskBtn = new Button("+ Create Task");
+        this.addTaskBtn.getStyleClass().add("primary-button");
+        this.addTaskBtn.setStyle("-fx-text-fill: white");
 
-            titleContainer.getChildren().add(addTaskBtn);
-        }
+        titleContainer.getChildren().add(addTaskBtn);
 
-        this.taskListContainer.getChildren().add(titleContainer);
+        this.addTaskBtn.setVisible(this.userRole.equals("Teacher"));
+
+//        this.taskListContainer.getChildren().add(titleContainer);
         VBox.setMargin(titleContainer, new Insets(40, 0, 20, 0));
 
         title.getStyleClass().add("title");
+
+        fetch();
+    }
+
+    private void fetch() {
+        this.taskListContainer.getChildren().clear();
+        this.taskListContainer.getChildren().add(titleContainer);
 
         ArrayList<Task> tasks = this.taskController.getClassroomTask(this.classroom.getClassId());
 

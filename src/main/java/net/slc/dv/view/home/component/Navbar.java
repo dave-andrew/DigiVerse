@@ -93,9 +93,15 @@ public class Navbar extends HBox {
 		this.themeSwitchButton = new ToggleButton();
 		themeSwitchButton.setPrefWidth(30);
 		themeSwitchButton.setPrefHeight(30);
-		themeSwitchButton.setOnAction(e -> onButtonClick.accept((ToggleButton) e.getSource()));
+		themeSwitchButton.setOnAction(e -> {
+			onButtonClick.accept((ToggleButton) e.getSource());
+		});
 
-		ImageView sun = new ImageView(IconStorage.getIcon(Icon.SUN).getValue());
+		ImageView sun = ImageViewBuilder.create()
+				.bindImageProperty(IconStorage.getIcon(Icon.SUN))
+				.setFitHeight(20)
+				.setFitWidth(20)
+				.build();
 		themeSwitchButton.setGraphic(sun);
 
 		sun.setFitWidth(30);

@@ -610,3 +610,8 @@
 .side-nav-item.active {
     -fx-background-color: #006985;
 }
+
+.logout {
+    -fx-font-size: 16px;
+    -fx-text-fill: #e16e1a;
+}

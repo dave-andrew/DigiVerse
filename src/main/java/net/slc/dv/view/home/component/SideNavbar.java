@@ -21,6 +21,8 @@ import javafx.scene.layout.VBox;
 import javafx.util.Duration;
 import lombok.Getter;
 import net.slc.dv.builder.*;
+import net.slc.dv.enums.Theme;
+import net.slc.dv.helper.ThemeManager;
 import net.slc.dv.resources.Icon;
 import net.slc.dv.resources.IconStorage;
 import net.slc.dv.controller.AuthController;
@@ -92,7 +94,8 @@ public class SideNavbar extends StackPane {
                 .build();
 
         Label label = LabelBuilder.create("Log Out")
-                .setStyle("-fx-font-size: 16px; -fx-text-fill: #d70000;")
+                .setStyleClass("logout")
+                .setStyle((ThemeManager.getInstance().getTheme() == Theme.LIGHT ? "-fx-text-fill: #8B4513;" : "-fx-text-fill: #e16e1a;"))
                 .setHMargin(0, 0, 0, 10)
                 .build();
 
