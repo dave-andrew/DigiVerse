@@ -65,7 +65,8 @@ public class LoginView {
 
         setLayout();
         actions(stage);
-
+        System.out.println(stage.toString());
+        System.out.println(scene.toString());
         stage.setScene(scene);
     }
 
@@ -131,6 +132,7 @@ public class LoginView {
         borderPane.setTranslateX(ScreenManager.SCREEN_WIDTH / 2 + 70);
 
         root.getChildren().add(borderPane);
+
 
         loginForm();
 
@@ -302,15 +304,27 @@ public class LoginView {
         vbox.setMaxWidth(600);
 //        vbox.setPadding(new Insets(0, 0, 0, 100));
 
-        outerContainer = VBoxBuilder.create()
-                .addChildren(vbox)
-                .setAlignment(Pos.CENTER)
-                .setPadding(0, 50, 0, 0)
-                .build();
+//        outerContainer = VBoxBuilder.create()
+//                .addChildren(vbox)
+//                .setAlignment(Pos.CENTER)
+//                .setPadding(0, 50, 0, 0)
+//                .build();
+
+        outerContainer = new VBox();
+        outerContainer.getChildren().addAll(vbox);
+        outerContainer.setAlignment(Pos.CENTER);
+        outerContainer.setPadding(new Insets(0, 50, 0, 0));
+
+
+        System.out.println(vbox.toString());
+        System.out.println(outerContainer.toString());
+
+//        outerContainer = new VBox();
 
 //        outerContainer.setPadding(new Insets(0, 0, 0, 50));
 
         borderPane.getChildren().clear();
+        // #TODO: Fix this
         borderPane.setCenter(outerContainer);
 
         loginImage.setFitHeight(ScreenManager.SCREEN_HEIGHT);
@@ -337,7 +351,8 @@ public class LoginView {
                     .build();
 
             borderPane.getChildren().clear();
-            borderPane.setCenter(outerContainer);
+            // #TODO: Fix this
+//            borderPane.setCenter(outerContainer);
         });
     }
 

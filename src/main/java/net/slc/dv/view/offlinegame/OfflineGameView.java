@@ -264,7 +264,7 @@ public class OfflineGameView {
     }
 
     private void updateTimer() {
-        System.out.println(isPaused + " " + deadPause);
+//        System.out.println(isPaused + " " + deadPause);
         if (!isPaused && !deadPause) {
             long currentTime = System.currentTimeMillis();
             long elapsedTimeMillis = currentTime - lastUpdateTime;
@@ -565,6 +565,7 @@ public class OfflineGameView {
     }
 
     public void cleanUp() {
+        System.gc();
         root.getChildren().clear();
 
 //        this.timer.stop();
