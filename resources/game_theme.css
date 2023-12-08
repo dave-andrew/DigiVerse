@@ -3,6 +3,11 @@
     src: url("./fonts/Minecraft.ttf");
 }
 
+@font-face {
+    font-family: "upheavtt";
+    src: url("./fonts/upheavtt.ttf");
+}
+
 .text {
     -fx-font-family: "Minecraft";
     -fx-font-size: 25;

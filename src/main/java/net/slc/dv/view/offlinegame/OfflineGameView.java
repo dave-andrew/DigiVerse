@@ -166,6 +166,7 @@ public class OfflineGameView {
     }
 
     public void reinitialize() {
+        root.getChildren().clear();
         setupBackground();
         setUpGui();
     }
@@ -576,9 +577,9 @@ public class OfflineGameView {
 
         this.timer.stop();
 
+        setupAudio();
         reinitialize();
         setupGameLoop();
-        setupAudio();
     }
 
     public void addLevel() {
