@@ -32,9 +32,12 @@ import java.io.File;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
+import java.util.Random;
 import java.util.function.Consumer;
 
 public class Profile extends VBox {
+
+    private Random random = new Random();
 
     private final TaskController taskController;
     private final UserController userController;
@@ -96,7 +99,6 @@ public class Profile extends VBox {
 
         banner.setArcWidth(cornerRadiusTop);
         banner.setArcHeight(cornerRadiusTop);
-        banner.setFill(Color.valueOf(loggedUser.getColor()));
 
         VBox.setMargin(banner, new Insets(20, 0, 0, 0));
 
@@ -107,7 +109,14 @@ public class Profile extends VBox {
         bannerStack.setPadding(new Insets(20, 0, 0, 0));
 
         ColorPicker colorPicker = new ColorPicker();
-        colorPicker.setValue(Color.valueOf(loggedUser.getColor()));
+        if(loggedUser.getColor() != null) {
+            banner.setFill(Color.valueOf(loggedUser.getColor()));
+            colorPicker.setValue(Color.valueOf(loggedUser.getColor()));
+        } else {
+            Color color = generateRandomColor();
+            banner.setFill(color);
+            colorPicker.setValue(color);
+        }
 
         bannerStack.getChildren().add(colorPicker);
 
@@ -532,6 +541,14 @@ public class Profile extends VBox {
 
         taskLayout(tasks);
 
+    }
+
+    private Color generateRandomColor() {
+        double red = random.nextDouble();
+        double green = random.nextDouble();
+        double blue = random.nextDouble();
+
+        return new Color(red, green, blue, 1.0);
     }
 
 }
