@@ -304,37 +304,6 @@ public class PlayerShootState extends PlayerBaseState {
             double posY = player.getPosY();
 
             for (Integer direction : directions) {
-                switch (direction) {
-                    case 90:
-                        posX += 16;
-                        break;
-                    case -90:
-                        posX -= 16;
-                        break;
-                    case 0:
-                        posY -= 16;
-                        break;
-                    case 180:
-                        posY += 16;
-                        break;
-                    case 45:
-                        posX += 16;
-                        posY -= 16;
-                        break;
-                    case -45:
-                        posX -= 16;
-                        posY -= 16;
-                        break;
-                    case 135:
-                        posX += 16;
-                        posY += 16;
-                        break;
-                    case -135:
-                        posX -= 16;
-                        posY += 16;
-                        break;
-                }
-
                 Bullet newBullet = new Bullet(root, posX, posY, direction);
                 bulletManager.addBulletList(newBullet);
             }
