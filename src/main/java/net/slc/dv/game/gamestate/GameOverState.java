@@ -27,13 +27,18 @@ public class GameOverState extends GameBaseState {
     @Override
     public void onEnterState() {
 
-        game.getMediaPlayer().stop();
-
         game.resetLevel();
         game.setEnemySpawnRate(0.01);
         game.setBaseEnemyHealth(1);
 
+        game.setBatchTimer(game.getInitialTimer());
+        game.getTimerLabel().setText("Time: " + game.getINITIAL_TIMER_VALUE() + "s");
+
         game.getRoot().getChildren().add(guiView);
+
+        game.setDeadPause(false);
+
+        OfflineGameView.getMediaPlayer().stop();
     }
 
     @Override

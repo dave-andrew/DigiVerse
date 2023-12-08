@@ -4,7 +4,7 @@ import net.slc.dv.game.Player;
 import net.slc.dv.helper.ScreenManager;
 import javafx.scene.layout.Pane;
 
-public class PlayerRespawnState extends PlayerBaseState {
+public class  PlayerRespawnState extends PlayerBaseState {
     public PlayerRespawnState(Player player) {
         super(player);
     }

@@ -4,13 +4,16 @@ import javafx.scene.Scene;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.MouseButton;
 import javafx.scene.input.MouseEvent;
+import lombok.Getter;
 
 import java.util.HashSet;
 import java.util.Set;
 
 public class InputManager {
 
+    @Getter
     private static final Set<KeyCode> pressedKeys = new HashSet<>();
+    @Getter
     private static final Set<MouseButton> mouseClicks = new HashSet<>();
     private static InputManager inputManager;
 
@@ -25,21 +28,15 @@ public class InputManager {
 
     public static synchronized InputManager getInstance(Scene scene) {
         if (inputManager == null) {
+//            System.out.println("First" + scene);
             inputManager = new InputManager(scene);
         }
         return inputManager;
     }
 
-    public static Set<KeyCode> getPressedKeys() {
-        return pressedKeys;
-    }
-
-    public static Set<MouseButton> getMouseClicks() {
-        return mouseClicks;
-    }
-
     private void handlePlayerInput() {
         this.scene.setOnKeyPressed(e -> {
+//            System.out.println(scene);
             KeyCode keyCode = e.getCode();
             switch (keyCode) {
                 case A:

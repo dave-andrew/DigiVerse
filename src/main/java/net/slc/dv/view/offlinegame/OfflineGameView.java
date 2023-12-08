@@ -4,6 +4,7 @@ import javafx.scene.layout.HBox;
 import javafx.scene.layout.StackPane;
 import javafx.scene.text.Font;
 import lombok.Getter;
+import lombok.Setter;
 import net.slc.dv.builder.HBoxBuilder;
 import net.slc.dv.builder.StackPaneBuilder;
 import net.slc.dv.builder.VBoxBuilder;
@@ -87,10 +88,13 @@ public class OfflineGameView {
     private int baseEnemyHealth = 1;
     private long lastTimeFrame = 0;
 
+    @Getter
     private AnimationTimer timer;
     @Getter
     private static MediaPlayer mediaPlayer;
 
+    @Getter
+    @Setter
     private boolean deadPause = false;
     private boolean isPaused = false;
 
@@ -208,6 +212,7 @@ public class OfflineGameView {
         return TARGET_FPS;
     }
 
+    @Getter
     private final int INITIAL_TIMER_VALUE = 90;
 
     public void updateGame(long now) {
@@ -259,6 +264,7 @@ public class OfflineGameView {
     }
 
     private void updateTimer() {
+        System.out.println(isPaused + " " + deadPause);
         if (!isPaused && !deadPause) {
             long currentTime = System.currentTimeMillis();
             long elapsedTimeMillis = currentTime - lastUpdateTime;
@@ -561,12 +567,13 @@ public class OfflineGameView {
     public void cleanUp() {
         root.getChildren().clear();
 
+//        this.timer.stop();
+        mediaPlayer.stop();
+
         player.setLives(3);
         player.setScore(0);
         player.changeState(player.getRespawnState());
 
-        mediaPlayer.stop();
-        mediaPlayer.dispose();
 
         root.getChildren().removeAll(enemyList);
         root.getChildren().removeAll(bulletManager.getBulletList());
@@ -575,7 +582,6 @@ public class OfflineGameView {
         bulletManager.getBulletList().clear();
         itemManager.getItemList().clear();
 
-        this.timer.stop();
 
         setupAudio();
         reinitialize();
