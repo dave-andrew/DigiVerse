@@ -4,14 +4,15 @@ import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
-import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Priority;
 import javafx.stage.Stage;
 import net.slc.dv.builder.ImageViewBuilder;
 import net.slc.dv.resources.Icon;
-import net.slc.dv.resources.IconStorage;
+import net.slc.dv.resources.Text;
+import net.slc.dv.storage.IconStorage;
+import net.slc.dv.storage.TextStorage;
 
 public class CreateClassNav extends HBox {
 
@@ -36,11 +37,11 @@ public class CreateClassNav extends HBox {
         closeBtn.setGraphic(close);
         closeBtn.getStyleClass().add("image-button");
 
-        Label title = new Label("Create Class");
+        Label title = new Label(TextStorage.getText(Text.CREATE_CLASS));
         title.getStyleClass().add("title");
         title.setPadding(new Insets(15, 0, 15, 0));
 
-        Button joinBtn = new Button("Create");
+        Button joinBtn = new Button(TextStorage.getText(Text.CREATE));
         joinBtn.getStyleClass().add("primary-button");
 
         this.setAlignment(Pos.CENTER_LEFT);

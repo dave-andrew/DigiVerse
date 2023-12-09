@@ -3,12 +3,9 @@ package net.slc.dv.helper;
 import javafx.animation.FadeTransition;
 import javafx.scene.Scene;
 import javafx.scene.control.ToggleButton;
-import javafx.scene.image.Image;
-import javafx.scene.image.ImageView;
 import javafx.util.Duration;
-import net.slc.dv.enums.PowerUp;
 import net.slc.dv.enums.Theme;
-import net.slc.dv.resources.IconStorage;
+import net.slc.dv.storage.IconStorage;
 
 public class ThemeManager {
     private static ThemeManager instance;

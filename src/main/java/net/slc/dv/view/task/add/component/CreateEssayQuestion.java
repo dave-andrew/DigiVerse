@@ -9,17 +9,19 @@ import net.slc.dv.builder.TextAreaBuilder;
 import net.slc.dv.builder.VBoxBuilder;
 import net.slc.dv.enums.QuestionType;
 import net.slc.dv.interfaces.CreateQuestionBox;
+import net.slc.dv.resources.Text;
+import net.slc.dv.storage.TextStorage;
 
 @Getter
 public class CreateEssayQuestion extends VBox implements CreateQuestionBox {
 	private final TextArea questionField;
 
 	public CreateEssayQuestion() {
-		Label questionLbl = LabelBuilder.create("Enter Question Here")
+		Label questionLbl = LabelBuilder.create(TextStorage.getText(Text.ENTER_QUESTION_HERE))
 				.build();
 
 		this.questionField = TextAreaBuilder.create()
-				.setPromptText("Enter Question Here")
+				.setPromptText(TextStorage.getText(Text.ENTER_QUESTION_HERE))
 				.build();
 
 		VBox questionContainer = VBoxBuilder.create()

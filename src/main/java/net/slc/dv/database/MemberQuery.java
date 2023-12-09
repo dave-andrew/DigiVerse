@@ -1,6 +1,7 @@
 package net.slc.dv.database;
 
 import net.slc.dv.database.connection.Connect;
+import net.slc.dv.enums.Role;
 import net.slc.dv.model.ClassroomMember;
 import net.slc.dv.model.LoggedUser;
 import net.slc.dv.model.User;
@@ -43,7 +44,7 @@ public class MemberQuery {
         return classroomMembers;
     }
 
-    public String getRole(String classCode) {
+    public Role getRole(String classCode) {
         String role = "";
 
         String query = "SELECT Role FROM class_member WHERE UserID = ? AND ClassID = ?";
@@ -61,7 +62,7 @@ public class MemberQuery {
         } catch (Exception e) {
             throw new RuntimeException(e);
         }
-        return role;
+        return Role.getRole(role);
     }
 
 }

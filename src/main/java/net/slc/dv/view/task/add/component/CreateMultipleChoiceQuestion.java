@@ -12,6 +12,8 @@ import lombok.Getter;
 import net.slc.dv.builder.*;
 import net.slc.dv.enums.QuestionType;
 import net.slc.dv.interfaces.CreateQuestionBox;
+import net.slc.dv.resources.Text;
+import net.slc.dv.storage.TextStorage;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -23,11 +25,11 @@ public class CreateMultipleChoiceQuestion extends VBox implements CreateQuestion
 	private final ComboBox<String> answerKey;
 
 	public CreateMultipleChoiceQuestion() {
-		Label questionLbl = LabelBuilder.create("Enter Question Here")
+		Label questionLbl = LabelBuilder.create(TextStorage.getText(Text.ENTER_QUESTION_HERE))
 			.build();
 
         this.questionField = TextAreaBuilder.create()
-                .setPromptText("Enter Question Here")
+                .setPromptText(TextStorage.getText(Text.ENTER_QUESTION_HERE))
                 .setWrapText(true)
                 .setMaxHeight(200)
                 .build();
@@ -37,16 +39,16 @@ public class CreateMultipleChoiceQuestion extends VBox implements CreateQuestion
                 .setSpacing(10)
                 .build();
 
-		Label answerLbl = LabelBuilder.create("Enter Answers Here")
+		Label answerLbl = LabelBuilder.create(TextStorage.getText(Text.ENTER_ANSWER_HERE))
 			.build();
 
 		this.answerFields = new ArrayList<>();
 
 		List<HBox> answerFields = List.of(
-			createFieldLabelPair("A", "Enter Choice Here"),
-			createFieldLabelPair("B", "Enter Choice Here"),
-			createFieldLabelPair("C", "Enter Choice Here"),
-			createFieldLabelPair("D", "Enter Choice Here"));
+			createFieldLabelPair("A", TextStorage.getText(Text.ENTER_CHOICE_HERE)),
+			createFieldLabelPair("B", TextStorage.getText(Text.ENTER_CHOICE_HERE)),
+			createFieldLabelPair("C", TextStorage.getText(Text.ENTER_CHOICE_HERE)),
+			createFieldLabelPair("D", TextStorage.getText(Text.ENTER_CHOICE_HERE)));
 
 		GridPane answerGrid = GridPaneBuilder.create()
 			.addChildren(answerFields.get(0), 0, 0)
@@ -62,7 +64,7 @@ public class CreateMultipleChoiceQuestion extends VBox implements CreateQuestion
                 .setSpacing(10)
                 .build();
 
-        Label answerKeyLbl = LabelBuilder.create("Answer Key")
+        Label answerKeyLbl = LabelBuilder.create(TextStorage.getText(Text.ANSWER_KEY))
                 .build();
 
         answerKey = ComboBoxBuilder.<String>create()

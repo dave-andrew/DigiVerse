@@ -3,6 +3,8 @@ package net.slc.dv.controller;
 import net.slc.dv.database.AuthQuery;
 import net.slc.dv.model.LoggedUser;
 import net.slc.dv.model.User;
+import net.slc.dv.resources.Text;
+import net.slc.dv.storage.TextStorage;
 
 import java.net.InetAddress;
 import java.time.LocalDate;
@@ -20,19 +22,19 @@ public class AuthController {
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
 
         if (username.isEmpty() || email.isEmpty() || pass.isEmpty() || confirmPass.isEmpty()) {
-            return "Please fill all the fields!";
+            return TextStorage.getText(Text.PLEASE_FILL_ALL_THE_FIELDS);
         }
 
         if (!pass.equals(confirmPass)) {
-            return "Password and confirm password must be the same!";
+            return TextStorage.getText(Text.NEW_PASSWORD_AND_CONFIRM_PASSWORD_MUST_BE_SAME);
         }
 
         if (pass.length() < 8) {
-            return "Password must be greater than 8 characters!";
+            return TextStorage.getText(Text.PASSWORD_MUST_BE_GREATER_THAN_8_CHARACTERS);
         }
 
         if (!email.contains("@") && !email.contains(".")) {
-            return "Invalid email format!";
+            return TextStorage.getText(Text.INVALID_EMAIL_FORMAT);
         }
 
         LocalDate dateOfBirth = LocalDate.parse(dob, formatter);
@@ -40,24 +42,24 @@ public class AuthController {
         int age = LocalDate.now().getYear() - dateOfBirth.getYear();
 
         if (age < 17) {
-            return "Age must be greater than 17!";
+            return TextStorage.getText(Text.AGE_MUST_BE_GREATER_THAN_17);
         }
 
         User user = new User(username, email, pass, dob);
         authQuery.register(user);
-        return "Register Success!";
+        return TextStorage.getText(Text.REGISTER_SUCCESS);
     }
 
     public String checkLogin(String email, String pass, boolean remember) {
         if (email.isEmpty() || pass.isEmpty()) {
-            return "Please fill all the fields!";
+            return TextStorage.getText(Text.PLEASE_FILL_ALL_THE_FIELDS);
         }
 
         User user = authQuery.login(email, pass);
 
 
         if (user == null) {
-            return "Email or password is incorrect!";
+            return TextStorage.getText(Text.EMAIL_OR_PASSWORD_IS_INCORRECT);
         }
 
         if (remember) {
@@ -65,7 +67,7 @@ public class AuthController {
         }
 
         LoggedUser.initialize(user);
-        return "Login Success!";
+        return TextStorage.getText(Text.LOGIN_SUCCESS);
     }
 
     public String checkAuth() {

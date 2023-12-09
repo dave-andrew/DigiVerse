@@ -1,7 +1,6 @@
 package net.slc.dv.view.home.component;
 
 import javafx.beans.property.ObjectProperty;
-import javafx.beans.property.SimpleObjectProperty;
 import javafx.geometry.Pos;
 import javafx.scene.control.Label;
 import javafx.scene.image.Image;
@@ -10,8 +9,6 @@ import javafx.scene.layout.HBox;
 import net.slc.dv.builder.HBoxBuilder;
 import net.slc.dv.builder.ImageViewBuilder;
 import net.slc.dv.builder.LabelBuilder;
-import net.slc.dv.resources.Icon;
-import net.slc.dv.resources.IconStorage;
 
 import java.util.function.Consumer;
 

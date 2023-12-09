@@ -18,9 +18,11 @@ import javafx.stage.Stage;
 import javafx.util.Duration;
 import net.slc.dv.builder.HBoxBuilder;
 import net.slc.dv.builder.VBoxBuilder;
-import net.slc.dv.resources.ImageStorage;
+import net.slc.dv.resources.Text;
+import net.slc.dv.storage.ImageStorage;
 import net.slc.dv.controller.AuthController;
 import net.slc.dv.helper.ScreenManager;
+import net.slc.dv.storage.TextStorage;
 import net.slc.dv.view.login.LoginView;
 
 public class RegisterView extends VBox {
@@ -47,16 +49,16 @@ public class RegisterView extends VBox {
         setLayout();
         actions(stage);
 
-        stage.setTitle("DigiVerse - Register");
+        stage.setTitle("DigiVerse - " + TextStorage.getText(Text.REGISTER));
     }
 
     private void initialize() {
-        subTitle = new Label("Be the change, sign in to make it happen!");
-        nameLbl = new Label("Name:");
-        emailLbl = new Label("Email:");
-        passwordLbl = new Label("Password:");
-        confirmPasswordLbl = new Label("Confirm Password:");
-        agelbl = new Label("Date of Birth:");
+        subTitle = new Label(TextStorage.getText(Text.BE_THE_CHANGE));
+        nameLbl = new Label( TextStorage.getText(Text.NAME) + ":");
+        emailLbl = new Label(TextStorage.getText(Text.EMAIL) + ":");
+        passwordLbl = new Label(TextStorage.getText(Text.PASSWORD) + ":");
+        confirmPasswordLbl = new Label(TextStorage.getText(Text.CONFIRM_PASSWORD) + ":");
+        agelbl = new Label(TextStorage.getText(Text.DATE_OF_BIRTH) + ":");
         errorLbl = new Label();
 
         nameTxt = new TextField();
@@ -80,7 +82,7 @@ public class RegisterView extends VBox {
         confirmPasswordVbox.setPrefWidth(350);
         ageVbox.setPrefWidth(350);
 
-        registerBtn = new Button("Register");
+        registerBtn = new Button(TextStorage.getText(Text.REGISTER));
         registerBtn.getStyleClass().add("primary-button");
         registerBtn.setStyle("-fx-text-fill: white;");
         registerBtn.setPrefWidth(350);
@@ -114,7 +116,7 @@ public class RegisterView extends VBox {
             timeline.play();
         });
 
-        loginLink = new Button("Already have an account? Login here!");
+        loginLink = new Button(TextStorage.getText(Text.ALREADY_HAVE_AN_ACCOUNT));
         loginLink.getStyleClass().add("link-button");
         loginLink.setStyle("-fx-font-size: 14px");
 
@@ -219,7 +221,7 @@ public class RegisterView extends VBox {
 
             String output = authController.checkRegister(username, email, password, confirmPassword, dob);
 
-            if (output.equals("Register Success!")) {
+            if (output.equals(TextStorage.getText(Text.REGISTER_SUCCESS))) {
                 errorLbl.setStyle("-fx-text-fill: green;-fx-font-weight: bold;");
 
                 VBoxBuilder.modify(LoginView.getOuterContainer())

@@ -5,12 +5,11 @@ import net.slc.dv.helper.ImageManager;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.control.Label;
-import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.HBox;
 import net.slc.dv.model.ClassroomMember;
 import net.slc.dv.resources.Icon;
-import net.slc.dv.resources.IconStorage;
+import net.slc.dv.storage.IconStorage;
 
 public class MemberItem extends HBox {
 

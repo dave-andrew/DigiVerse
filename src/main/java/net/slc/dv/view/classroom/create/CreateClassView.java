@@ -11,6 +11,8 @@ import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
+import net.slc.dv.resources.Text;
+import net.slc.dv.storage.TextStorage;
 import net.slc.dv.view.classroom.create.component.CreateClassForm;
 import net.slc.dv.view.classroom.create.component.CreateClassNav;
 import net.slc.dv.view.classroom.join.component.ChangeAccountBox;
@@ -72,7 +74,7 @@ public class CreateClassView {
 
     private void showAndWait() {
         Stage dialogStage = (Stage) borderPane.getScene().getWindow();
-        dialogStage.setTitle("Create Class");
+        dialogStage.setTitle(TextStorage.getText(Text.CREATE_CLASS));
         dialogStage.showAndWait();
     }
 }

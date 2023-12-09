@@ -5,6 +5,8 @@ import net.slc.dv.helper.toast.ToastBuilder;
 import net.slc.dv.model.Classroom;
 import net.slc.dv.model.Forum;
 import net.slc.dv.model.User;
+import net.slc.dv.resources.Text;
+import net.slc.dv.storage.TextStorage;
 
 import java.sql.PreparedStatement;
 import java.util.ArrayList;
@@ -79,7 +81,7 @@ public class ForumQuery {
                 }
             }
 
-            ToastBuilder.buildNormal().setText("Forum Posted!").build();
+            ToastBuilder.buildNormal().setText(TextStorage.getText(Text.FORUM_POSTED)).build();
 
             return forum;
         } catch (Exception e) {

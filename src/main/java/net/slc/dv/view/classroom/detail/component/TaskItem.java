@@ -5,14 +5,13 @@ import net.slc.dv.helper.DateManager;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.control.Label;
-import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Priority;
 import javafx.scene.layout.StackPane;
 import net.slc.dv.model.Task;
 import net.slc.dv.resources.Icon;
-import net.slc.dv.resources.IconStorage;
+import net.slc.dv.storage.IconStorage;
 
 public class TaskItem extends HBox {
 

@@ -13,6 +13,8 @@ import net.slc.dv.helper.DecimalTextFormatter;
 import net.slc.dv.interfaces.QuestionBox;
 import net.slc.dv.model.AnswerDetail;
 import net.slc.dv.model.Question;
+import net.slc.dv.resources.Text;
+import net.slc.dv.storage.TextStorage;
 
 public class QuestionTrueFalse extends VBox implements QuestionBox {
 	private final Question question;
@@ -43,7 +45,7 @@ public class QuestionTrueFalse extends VBox implements QuestionBox {
 		this.answerButtons = new RadioButton[4];
 		this.answerGroup = new ToggleGroup();
 
-		String[] letters = { "True", "False"};
+		String[] letters = { TextStorage.getText(Text.TRUE), TextStorage.getText(Text.FALSE) };
 		for (int i = 0; i < letters.length; i++) {
 			answerButtons[i] = new RadioButton(letters[i]);
 			answerButtons[i].setDisable(isChecking);
@@ -83,7 +85,7 @@ public class QuestionTrueFalse extends VBox implements QuestionBox {
 	}
 
 	private HBox createFieldLabelPair() {
-		Label fieldLabel = LabelBuilder.create("Score: ")
+		Label fieldLabel = LabelBuilder.create(TextStorage.getText(Text.SCORE) + ": ")
 				.build();
 
 		this.scoreField = TextFieldBuilder.create()
@@ -105,15 +107,14 @@ public class QuestionTrueFalse extends VBox implements QuestionBox {
 
 		String answer = answerDetail.getAnswerText();
 
-		System.out.println(answer);
-		if(answer.equals("True")) {
+		if(answer.equals(TextStorage.getText(Text.TRUE))){
 			this.answerGroup.selectToggle(this.answerButtons[0]);
 			answerButtons[0].setSelected(true);
-			this.answer = "True";
+			this.answer = TextStorage.getText(Text.TRUE);
 		} else {
 			this.answerGroup.selectToggle(this.answerButtons[0]);
 			answerButtons[1].setSelected(true);
-			this.answer = "False";
+			this.answer = TextStorage.getText(Text.TRUE);
 		}
 	}
 

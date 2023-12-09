@@ -2,20 +2,21 @@ package net.slc.dv.view.classroom.join.component;
 
 import net.slc.dv.builder.ImageViewBuilder;
 import net.slc.dv.resources.Icon;
-import net.slc.dv.resources.IconStorage;
+import net.slc.dv.resources.Text;
+import net.slc.dv.storage.IconStorage;
 import net.slc.dv.controller.AuthController;
 import net.slc.dv.helper.ImageManager;
 import net.slc.dv.helper.StageManager;
 import javafx.geometry.Pos;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
-import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Priority;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 import net.slc.dv.model.LoggedUser;
+import net.slc.dv.storage.TextStorage;
 import net.slc.dv.view.login.LoginView;
 
 public class ChangeAccountBox extends VBox {
@@ -43,7 +44,7 @@ public class ChangeAccountBox extends VBox {
         VBox userBox = new VBox();
         HBox userHbox = new HBox(10);
 
-        Label userInfoLbl = new Label("Logged As:");
+        Label userInfoLbl = new Label(TextStorage.getText(Text.LOGGED_AS) + ":");
         userInfoLbl.setStyle("-fx-font-size: 20px;");
 
         ImageView userImg = new ImageView();
@@ -69,7 +70,7 @@ public class ChangeAccountBox extends VBox {
 
         ImageManager.makeCircular(userImg, 20);
 
-        changeAccountBtn = new Button("Change Account");
+        changeAccountBtn = new Button(TextStorage.getText(Text.CHANGE_ACCOUNT));
         changeAccountBtn.getStyleClass().add("secondary-button");
 
         HBox spacer = new HBox();

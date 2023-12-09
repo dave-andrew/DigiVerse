@@ -3,6 +3,8 @@ package net.slc.dv.database;
 import net.slc.dv.database.connection.Connect;
 import net.slc.dv.helper.toast.ToastBuilder;
 import net.slc.dv.model.AnswerFile;
+import net.slc.dv.resources.Text;
+import net.slc.dv.storage.TextStorage;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -99,7 +101,7 @@ public class FileQuery {
             }
 
             connection.commit();
-            ToastBuilder.buildNormal().setText("Answer uploaded successfully!").build();
+            ToastBuilder.buildNormal().setText(TextStorage.getText(Text.ANSWER_UPLOADED_SUCCESSFULLY)).build();
         } catch (Exception e) {
             try {
                 if (connection != null) {

@@ -10,16 +10,19 @@ import javafx.scene.layout.Priority;
 import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
 import net.slc.dv.controller.TaskController;
+import net.slc.dv.enums.Role;
 import net.slc.dv.helper.StageManager;
 import net.slc.dv.model.Classroom;
 import net.slc.dv.model.Task;
+import net.slc.dv.resources.Text;
+import net.slc.dv.storage.TextStorage;
 import net.slc.dv.view.task.add.AddTaskView;
 import net.slc.dv.view.task.task.TaskBase;
 
 public class ClassTask extends ClassBase {
 
     private final StackPane mainPane;
-    private final String userRole;
+    private final Role userRole;
 
     private TaskController taskController;
     private HBox container, titleContainer;
@@ -27,7 +30,7 @@ public class ClassTask extends ClassBase {
 
     private Button addTaskBtn;
 
-    public ClassTask(Classroom classroom, StackPane mainPane, String userRole) {
+    public ClassTask(Classroom classroom, StackPane mainPane, Role userRole) {
         super(classroom);
         this.mainPane = mainPane;
         this.userRole = userRole;
@@ -74,7 +77,7 @@ public class ClassTask extends ClassBase {
     private void fetchTask() {
         this.taskListContainer.getChildren().clear();
 
-        Label title = new Label("Task List:");
+        Label title = new Label(TextStorage.getText(Text.TASK_LIST) + ":");
 
         HBox spacer = new HBox();
         HBox.setHgrow(spacer, Priority.ALWAYS);
@@ -82,13 +85,13 @@ public class ClassTask extends ClassBase {
         this.titleContainer = new HBox(title, spacer);
         titleContainer.setAlignment(Pos.TOP_CENTER);
 
-        this.addTaskBtn = new Button("+ Create Task");
+        this.addTaskBtn = new Button("+ " + TextStorage.getText(Text.CREATE_TASK));
         this.addTaskBtn.getStyleClass().add("primary-button");
         this.addTaskBtn.setStyle("-fx-text-fill: white");
 
         titleContainer.getChildren().add(addTaskBtn);
 
-        this.addTaskBtn.setVisible(this.userRole.equals("Teacher"));
+        this.addTaskBtn.setVisible(this.userRole.equals(Role.TEACHER));
 
 //        this.taskListContainer.getChildren().add(titleContainer);
         VBox.setMargin(titleContainer, new Insets(40, 0, 20, 0));
@@ -105,7 +108,8 @@ public class ClassTask extends ClassBase {
         ArrayList<Task> tasks = this.taskController.getClassroomTask(this.classroom.getClassId());
 
         if (tasks.isEmpty()) {
-            Label empty = new Label("No task yet! Chill dulu gak sih?");
+            //TODO: NO TASK YET
+            Label empty = new Label(TextStorage.getText(Text.LETS_CHILL));
             empty.getStyleClass().add("empty");
 
             HBox centerBox = new HBox(empty);

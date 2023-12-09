@@ -7,8 +7,11 @@ import net.slc.dv.builder.LabelBuilder;
 import net.slc.dv.controller.ClassController;
 import net.slc.dv.controller.MemberController;
 import javafx.geometry.Insets;
+import net.slc.dv.enums.Role;
 import net.slc.dv.model.Classroom;
 import net.slc.dv.model.LoggedUser;
+import net.slc.dv.resources.Text;
+import net.slc.dv.storage.TextStorage;
 import net.slc.dv.view.classroom.detail.ClassroomDetailView;
 import net.slc.dv.view.classroom.list.component.ClassCard;
 import net.slc.dv.view.home.Home;
@@ -43,12 +46,12 @@ public class ClassroomListView extends GridPane {
             StackPane sp = new ClassCard(classroom);
 
             sp.setOnMouseClicked(e -> {
-                String userRole = new MemberController().getRole(classroom.getClassId());
+                Role userRole = new MemberController().getRole(classroom.getClassId());
                 new ClassroomDetailView(mainPane, classroom, userRole);
 
                 this.setNavigation.accept(classroom);
 
-                if (userRole.equals("Teacher")) {
+                if (userRole.equals(Role.TEACHER)) {
                     Home.teacherClassList.add(classroom);
                 } else {
                     Home.studentClassList.add(classroom);
@@ -86,25 +89,25 @@ public class ClassroomListView extends GridPane {
 
 
 
-        Label dear = LabelBuilder.create("Dear " + LoggedUser.getInstance().getUsername() + ",")
+        Label dear = LabelBuilder.create(TextStorage.getText(Text.EMPTY_CLASSROOM_DEAR) + " " + LoggedUser.getInstance().getUsername() + ",")
                 .setStyleClass("title")
                 .build();
 
-        Label p1 = new Label("Welcome to an exciting journey of learning and discovery with DigiVerse! I am thrilled to have each and every one of you in our class. This promises to be a rewarding and enriching experience, filled with opportunities for growth, collaboration, and success.");
+        Label p1 = new Label(TextStorage.getText(Text.EMPTY_CLASSROOM_DESCRIPTION_ONE));
         p1.setWrapText(true);
 
-        Label p2 = new Label("In this application, we value curiosity, creativity, and the pursuit of knowledge. Together, we will explore new concepts, engage in meaningful discussions, and support one another on our academic endeavors.");
+        Label p2 = new Label(TextStorage.getText(Text.EMPTY_CLASSROOM_DESCRIPTION_TWO));
         p2.setWrapText(true);
 
-        Label p3 = new Label("We look forward to getting to know each of you and learning with you this year.");
+        Label p3 = new Label(TextStorage.getText(Text.EMPTY_CLASSROOM_DESCRIPTION_THREE));
         p3.setWrapText(true);
 
-        Label p4 = new Label("Let's make this a fantastic academic journey together!");
+        Label p4 = new Label(TextStorage.getText(Text.EMPTY_CLASSROOM_DESCRIPTION_FOUR));
         p4.setWrapText(true);
 
         VBox pContainer = new VBox();
 
-        Label p5 = new Label("Sincerely,");
+        Label p5 = new Label(TextStorage.getText(Text.EMPTY_CLASSROOM_SINCERELY) + ",");
         Label p6 = new Label("DigiVerse Team");
         p6.setStyle("-fx-font-size: 16px");
 

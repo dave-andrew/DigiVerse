@@ -7,20 +7,23 @@ import javafx.scene.input.ClipboardContent;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Priority;
 import javafx.scene.layout.VBox;
+import net.slc.dv.enums.Role;
 import net.slc.dv.helper.toast.Toast;
 import net.slc.dv.helper.toast.ToastBuilder;
 import net.slc.dv.model.Classroom;
+import net.slc.dv.resources.Text;
+import net.slc.dv.storage.TextStorage;
 
 public class LeftContent extends HBox {
 
     private final Label classCode;
 
-    public LeftContent(String role, Classroom classroom) {
+    public LeftContent(Role role, Classroom classroom) {
         VBox container = new VBox();
 
         Label classCodeTitle;
-        if (role.equals("Teacher")) {
-            classCodeTitle = new Label("Class Code:");
+        if (role.equals(Role.TEACHER)) {
+            classCodeTitle = new Label(TextStorage.getText(Text.CLASS_CODE) + ":");
             classCode = new Label(classroom.getClassCode());
             classCode.getStyleClass().add("title");
 
@@ -38,14 +41,14 @@ public class LeftContent extends HBox {
                 content.putString(classCode.getText());
                 clipboard.setContent(content);
                 ToastBuilder.buildNormal()
-                        .setText("Class code copied to clipboard")
+                        .setText(TextStorage.getText(Text.CLASS_CODE_COPIED))
                         .build();
             });
 
             container.getChildren().addAll(classCodeTitle, classCode);
         } else {
-            classCodeTitle = new Label("Ask the teacher");
-            classCode = new Label("for the class code!");
+            classCodeTitle = new Label(TextStorage.getText(Text.ASK_THE_TEACHER));
+            classCode = new Label(TextStorage.getText(Text.FOR_THE_CLASS_CODE));
             classCodeTitle.setStyle("-fx-font-size: 14px");
             classCode.setStyle("-fx-font-size: 14px");
 

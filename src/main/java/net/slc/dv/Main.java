@@ -4,7 +4,7 @@ import javafx.scene.image.ImageView;
 import net.slc.dv.builder.ImageViewBuilder;
 import net.slc.dv.enums.Theme;
 import net.slc.dv.resources.Icon;
-import net.slc.dv.resources.IconStorage;
+import net.slc.dv.storage.IconStorage;
 import net.slc.dv.controller.AuthController;
 import net.slc.dv.database.connection.ConnectionChecker;
 import net.slc.dv.helper.ScreenManager;
@@ -23,6 +23,7 @@ import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
 import net.slc.dv.model.LoggedUser;
+import net.slc.dv.storage.TextStorage;
 import net.slc.dv.view.home.Home;
 import net.slc.dv.view.login.LoginView;
 import net.slc.dv.view.offlinegame.OfflineGameView;
@@ -144,6 +145,7 @@ public class Main extends Application {
 	@Override
 	public void start(Stage stage) {
 		IconStorage.init();
+		TextStorage.init();
 		Stage primaryStage = StageManager.getInstance();
 		scene = initialize();
 		primaryStage.setScene(scene);

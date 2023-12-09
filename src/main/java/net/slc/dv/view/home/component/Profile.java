@@ -14,17 +14,19 @@ import javafx.util.StringConverter;
 import net.slc.dv.builder.ButtonBuilder;
 import net.slc.dv.builder.HBoxBuilder;
 import net.slc.dv.builder.ImageViewBuilder;
-import net.slc.dv.builder.VBoxBuilder;
 import net.slc.dv.controller.MemberController;
 import net.slc.dv.controller.TaskController;
 import net.slc.dv.controller.UserController;
+import net.slc.dv.enums.Role;
 import net.slc.dv.helper.ImageManager;
 import net.slc.dv.helper.StageManager;
 import net.slc.dv.model.Classroom;
 import net.slc.dv.model.LoggedUser;
 import net.slc.dv.model.Task;
 import net.slc.dv.resources.Icon;
-import net.slc.dv.resources.IconStorage;
+import net.slc.dv.resources.Text;
+import net.slc.dv.storage.IconStorage;
+import net.slc.dv.storage.TextStorage;
 import net.slc.dv.view.classroom.detail.component.TaskItem;
 import net.slc.dv.view.task.task.TaskBase;
 
@@ -159,11 +161,11 @@ public class Profile extends VBox {
         this.errorLbl2 = new Label();
         this.errorLbl2.setStyle("-fx-text-fill: red;");
 
-        this.updateProfileBtn = new Button("Update Profile");
+        this.updateProfileBtn = new Button(TextStorage.getText(Text.UPDATE_PROFILE));
         this.updateProfileBtn.getStyleClass().add("primary-button");
         this.updateProfileBtn.setStyle("-fx-text-fill: white;");
 
-        this.cancelBtn = new Button("Cancel");
+        this.cancelBtn = new Button(TextStorage.getText(Text.CANCEL));
         this.cancelBtn.getStyleClass().add("secondary-button");
 
         HBox buttonContainer = new HBox(20);
@@ -174,9 +176,9 @@ public class Profile extends VBox {
         this.newPasswordField = new PasswordField();
         this.confirmPasswordField = new PasswordField();
 
-        this.oldPasswordField.setPromptText("Old Password");
-        this.newPasswordField.setPromptText("New Password");
-        this.confirmPasswordField.setPromptText("Confirm Password");
+        this.oldPasswordField.setPromptText(TextStorage.getText(Text.OLD_PASSWORD));
+        this.newPasswordField.setPromptText(TextStorage.getText(Text.NEW_PASSWORD));
+        this.confirmPasswordField.setPromptText(TextStorage.getText(Text.CONFIRM_PASSWORD));
 
         this.oldPasswordField.setMaxWidth(500);
         this.newPasswordField.setMaxWidth(500);
@@ -184,11 +186,11 @@ public class Profile extends VBox {
 
         HBox changeButtonContainer = new HBox(20);
 
-        this.updatePasswordBtn = new Button("Update Password");
+        this.updatePasswordBtn = new Button(TextStorage.getText(Text.UPDATE_PASSWORD));
         this.updatePasswordBtn.getStyleClass().add("primary-button");
         this.updatePasswordBtn.setStyle("-fx-text-fill: white;");
 
-        this.cancelPasswordBtn = new Button("Cancel");
+        this.cancelPasswordBtn = new Button(TextStorage.getText(Text.CANCEL));
         this.cancelPasswordBtn.getStyleClass().add("secondary-button");
 
         changeButtonContainer.getChildren().addAll(cancelPasswordBtn, updatePasswordBtn);
@@ -311,9 +313,9 @@ public class Profile extends VBox {
     private void actions() {
         this.profile.setOnMouseClicked(e -> {
             FileChooser fileChooser = new FileChooser();
-            fileChooser.setTitle("Select Profile Picture");
+            fileChooser.setTitle(TextStorage.getText(Text.SELECT_PROFILE_PICTURE));
             fileChooser.getExtensionFilters().addAll(
-                    new FileChooser.ExtensionFilter("Image Files", "*.png", "*.jpg", "*.jpeg")
+                    new FileChooser.ExtensionFilter(TextStorage.getText(Text.IMAGE_FILES), "*.png", "*.jpg", "*.jpeg")
             );
 
             File selectedFile = fileChooser.showOpenDialog(StageManager.getInstance());
@@ -333,7 +335,7 @@ public class Profile extends VBox {
 
             String message = this.userController.updateProfile(nameField.getText(), emailField.getText(), String.valueOf(birthdayField.getValue()));
 
-            if (message.equals("Success")) {
+            if (message.equals(TextStorage.getText(Text.SUCCESS))) {
                 this.name.setText(nameField.getText());
                 this.email.setText(emailField.getText());
 
@@ -363,7 +365,7 @@ public class Profile extends VBox {
         this.updatePasswordBtn.setOnMouseClicked(e -> {
             String message = this.userController.updatePassword(oldPasswordField.getText(), newPasswordField.getText(), confirmPasswordField.getText());
 
-            if (message.equals("Success")) {
+            if (message.equals(TextStorage.getText(Text.SUCCESS))) {
                 profileContainer.getChildren().removeAll(updatePasswordContainer);
                 profileContainer.getChildren().add(profileContent);
                 return;
@@ -389,7 +391,7 @@ public class Profile extends VBox {
         editIconView.setPreserveRatio(true);
         HBox.setMargin(editIconView, new Insets(0, 0, 0, 20));
 
-        Button editBtn = ButtonBuilder.create("Edit Profile")
+        Button editBtn = ButtonBuilder.create(TextStorage.getText(Text.EDIT_PROFILE))
                 .setStyle("-fx-font-size: 14px")
                 .setGraphic(editIconView)
                 .build();
@@ -438,7 +440,7 @@ public class Profile extends VBox {
 
         HBox.setMargin(passwordIconView, new Insets(0, 0, 0, 20));
 
-        Button passwordBtn = ButtonBuilder.create("Change Password")
+        Button passwordBtn = ButtonBuilder.create(TextStorage.getText(Text.CHANGE_PASSWORD))
                 .setGraphic(passwordIconView)
                 .setStyle("-fx-font-size: 14px")
                 .build();
@@ -473,10 +475,10 @@ public class Profile extends VBox {
         HBox tab = new HBox();
         tab.setAlignment(Pos.CENTER);
 
-        this.pendingTask = new Button("Pending Task");
+        this.pendingTask = new Button(TextStorage.getText(Text.PENDING_TASK));
         pendingTask.getStyleClass().addAll("nav-button", "active");
 
-        this.finishedTask = new Button("Finished Task");
+        this.finishedTask = new Button(TextStorage.getText(Text.FINISHED_TASK));
         finishedTask.getStyleClass().add("nav-button");
 
         tab.getChildren().addAll(pendingTask, finishedTask);
@@ -510,7 +512,7 @@ public class Profile extends VBox {
 
     private void taskLayout(ArrayList<Task> tasks) {
         if(tasks.isEmpty()) {
-            Label noTask = new Label("Chill dulu gak sih?");
+            Label noTask = new Label(TextStorage.getText(Text.LETS_CHILL));
             noTask.setStyle("-fx-font-size: 20px");
             this.taskContainer.getChildren().add(noTask);
             return;
@@ -521,7 +523,7 @@ public class Profile extends VBox {
             this.taskContainer.getChildren().add(taskItem);
 
             taskItem.setOnMouseClicked(e -> {
-                String userRole = new MemberController().getRole(task.getClassroom().getClassId());
+                Role userRole = new MemberController().getRole(task.getClassroom().getClassId());
                 new TaskBase(mainPane, task, task.getClassroom(), userRole);
 
                 this.setNavigation.accept(task.getClassroom());

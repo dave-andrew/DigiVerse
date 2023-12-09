@@ -16,11 +16,13 @@ import javafx.stage.Stage;
 import lombok.Getter;
 import net.slc.dv.builder.*;
 import net.slc.dv.resources.Icon;
-import net.slc.dv.resources.IconStorage;
+import net.slc.dv.resources.Text;
+import net.slc.dv.storage.IconStorage;
 import net.slc.dv.controller.MemberController;
 import net.slc.dv.helper.ImageManager;
 import net.slc.dv.model.Classroom;
 import net.slc.dv.model.LoggedUser;
+import net.slc.dv.storage.TextStorage;
 import net.slc.dv.view.classroom.create.CreateClassView;
 import net.slc.dv.view.classroom.detail.ClassroomDetailView;
 import net.slc.dv.view.classroom.join.JoinClassView;
@@ -133,14 +135,14 @@ public class Navbar extends HBox {
 
 	private ContextMenu createPlusMenu() {
 		this.createClass = MenuItemBuilder.create()
-				.setText("Create Class")
+				.setText(TextStorage.getText(Text.CREATE_CLASS))
 				.setStyleClass("item")
 				.setOnAction(e -> {
 					new CreateClassView(stage);
 				})
 				.build();
 		this.joinClass = MenuItemBuilder.create()
-				.setText("Join Class")
+				.setText(TextStorage.getText(Text.JOIN_CLASS))
 				.setStyleClass("item")
 				.setOnAction(e -> new JoinClassView(stage))
 				.build();

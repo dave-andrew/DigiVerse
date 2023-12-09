@@ -1,6 +1,7 @@
 package net.slc.dv.controller;
 
 import net.slc.dv.database.MemberQuery;
+import net.slc.dv.enums.Role;
 import net.slc.dv.model.ClassroomMember;
 
 import java.util.ArrayList;
@@ -16,7 +17,7 @@ public class MemberController {
         return memberQuery.getClassMember(classCode);
     }
 
-    public String getRole(String classCode) {
+    public Role getRole(String classCode) {
         return memberQuery.getRole(classCode);
     }
 

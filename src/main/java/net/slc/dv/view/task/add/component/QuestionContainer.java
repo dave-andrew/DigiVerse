@@ -4,7 +4,6 @@ import javafx.geometry.Pos;
 import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
-import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Priority;
@@ -12,9 +11,11 @@ import javafx.scene.layout.VBox;
 import lombok.Getter;
 import net.slc.dv.builder.*;
 import net.slc.dv.resources.Icon;
-import net.slc.dv.resources.IconStorage;
+import net.slc.dv.resources.Text;
+import net.slc.dv.storage.IconStorage;
 import net.slc.dv.enums.QuestionType;
 import net.slc.dv.interfaces.CreateQuestionBox;
+import net.slc.dv.storage.TextStorage;
 
 import java.util.function.Consumer;
 
@@ -46,7 +47,7 @@ public class QuestionContainer {
                 .build();
 
         Label questionLbl = LabelBuilder
-                .create("Question Type")
+                .create(TextStorage.getText(Text.QUESTION_TYPE))
                 .setStyle("-fx-font-size: 18px;")
                 .build();
 

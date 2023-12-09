@@ -9,14 +9,14 @@ import javafx.geometry.Pos;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.ScrollPane;
-import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
 import net.slc.dv.builder.*;
+import net.slc.dv.enums.Role;
 import net.slc.dv.resources.Icon;
-import net.slc.dv.resources.IconStorage;
+import net.slc.dv.storage.IconStorage;
 import net.slc.dv.controller.MemberController;
 import net.slc.dv.controller.TaskController;
 import net.slc.dv.enums.Days;
@@ -208,7 +208,7 @@ public class Calendar extends ScrollPane {
                     .setOnMouseEntered(e -> taskTitle.setTextFill(Color.web("#FFFFFF")))
                     .setOnMouseExited(e -> taskTitle.setTextFill(Color.web("#36454F")))
                     .setOnMouseClicked(e -> {
-                        String userRole = new MemberController()
+                        Role userRole = new MemberController()
                                 .getRole(task.getClassroom().getClassId());
                         new TaskBase(mainPane, task, task.getClassroom(), userRole);
 

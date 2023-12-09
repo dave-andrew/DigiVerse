@@ -8,9 +8,9 @@ import net.slc.dv.builder.ButtonBuilder;
 import net.slc.dv.builder.ImageViewBuilder;
 import net.slc.dv.builder.VBoxBuilder;
 import net.slc.dv.enums.Theme;
-import net.slc.dv.builder.ImageViewBuilder;
 import net.slc.dv.resources.Icon;
-import net.slc.dv.resources.IconStorage;
+import net.slc.dv.resources.Text;
+import net.slc.dv.storage.IconStorage;
 import net.slc.dv.helper.ImageManager;
 import javafx.scene.control.TextField;
 import javafx.scene.image.Image;
@@ -18,6 +18,7 @@ import javafx.scene.image.ImageView;
 import javafx.scene.layout.HBox;
 import net.slc.dv.model.Comment;
 import net.slc.dv.model.LoggedUser;
+import net.slc.dv.storage.TextStorage;
 
 @Getter
 public class CommentTextField extends HBox {
@@ -46,7 +47,7 @@ public class CommentTextField extends HBox {
         this.replyField = new TextField();
         replyField.prefWidthProperty().bind(this.widthProperty().subtract(50));
 
-        replyField.setPromptText("Reply to " + comment.getUser().getUsername() + "...");
+        replyField.setPromptText(TextStorage.getText(Text.REPLY_TO) + " " + comment.getUser().getUsername() + "...");
 
         this.postBtn = ButtonBuilder.create()
                 .setStyle("-fx-background-color: transparent; -fx-border-color: transparent; -fx-cursor: hand;")

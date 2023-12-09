@@ -9,6 +9,8 @@ import lombok.Getter;
 import net.slc.dv.builder.*;
 import net.slc.dv.enums.QuestionType;
 import net.slc.dv.interfaces.CreateQuestionBox;
+import net.slc.dv.resources.Text;
+import net.slc.dv.storage.TextStorage;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.ArrayList;
@@ -21,11 +23,11 @@ public class CreateTrueFalseQuestion extends VBox implements CreateQuestionBox {
 	private final ComboBox<String> answerKey;
 
 	public CreateTrueFalseQuestion() {
-		Label questionLbl = LabelBuilder.create("Enter Question Here")
+		Label questionLbl = LabelBuilder.create(TextStorage.getText(Text.ENTER_QUESTION_HERE))
 			.build();
 
         this.questionField = TextAreaBuilder.create()
-                .setPromptText("Enter Question Here")
+                .setPromptText(TextStorage.getText(Text.ENTER_QUESTION_HERE))
                 .setWrapText(true)
                 .setMaxHeight(200)
                 .build();
@@ -38,12 +40,12 @@ public class CreateTrueFalseQuestion extends VBox implements CreateQuestionBox {
 		this.answerFields = new ArrayList<>();
 
 
-        Label answerKeyLbl = LabelBuilder.create("Answer Key")
+        Label answerKeyLbl = LabelBuilder.create(TextStorage.getText(Text.ANSWER_KEY))
                 .build();
 
 		answerKey = ComboBoxBuilder.<String>create()
-			.setItems("True", "False")
-			.setValue("True")
+			.setItems(TextStorage.getText(Text.TRUE), TextStorage.getText(Text.FALSE))
+			.setValue(TextStorage.getText(Text.TASK))
 			.build();
 
         HBox answerKey = HBoxBuilder.create()
@@ -75,6 +77,11 @@ public class CreateTrueFalseQuestion extends VBox implements CreateQuestionBox {
 
 	@Override
 	public String getQuestionKey() {
-		return this.answerKey.getValue();
+		if(this.answerKey.getValue().equals(TextStorage.getText(Text.TRUE)))
+			return "true";
+		else if(this.answerKey.getValue().equals(TextStorage.getText(Text.FALSE)))
+			return "false";
+		else
+			return null;
 	}
 }

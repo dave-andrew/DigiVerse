@@ -6,6 +6,8 @@ import javafx.scene.control.Label;
 import javafx.scene.control.SplitPane;
 import javafx.scene.layout.VBox;
 import net.slc.dv.model.Classroom;
+import net.slc.dv.resources.Text;
+import net.slc.dv.storage.TextStorage;
 
 import java.util.concurrent.atomic.AtomicBoolean;
 
@@ -44,10 +46,10 @@ public class ClassMember extends ClassBase {
         teacherContainer.setPadding(new Insets(7, 20, 20, 20));
         studentContainer.setPadding(new Insets(7, 20, 20, 20));
 
-        Label teacherTitle = new Label("Teacher");
+        Label teacherTitle = new Label(TextStorage.getText(Text.TEACHER));
         teacherTitle.getStyleClass().add("title");
 
-        Label studentTitle = new Label("Student");
+        Label studentTitle = new Label(TextStorage.getText(Text.STUDENT));
         studentTitle.getStyleClass().add("title");
 
         VBox teacherTitleBox = new VBox();
@@ -98,7 +100,7 @@ public class ClassMember extends ClassBase {
         });
 
         if (!hasStudents.get()) {
-            Label noStudentsLabel = new Label("No students yet to teach!");
+            Label noStudentsLabel = new Label(TextStorage.getText(Text.NO_STUDENT_TO_TEACH));
             studentContainer.getChildren().add(noStudentsLabel);
         }
     }

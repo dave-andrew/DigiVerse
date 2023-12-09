@@ -1,7 +1,6 @@
 package net.slc.dv.view.test.question;
 
 import javafx.scene.control.*;
-import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import net.slc.dv.builder.*;
@@ -10,8 +9,9 @@ import net.slc.dv.helper.DecimalTextFormatter;
 import net.slc.dv.interfaces.QuestionBox;
 import net.slc.dv.model.AnswerDetail;
 import net.slc.dv.model.Question;
+import net.slc.dv.resources.Text;
+import net.slc.dv.storage.TextStorage;
 import org.jetbrains.annotations.Nullable;
-import org.w3c.dom.Text;
 
 public class QuestionEssay extends VBox implements QuestionBox {
 	private final Question question;
@@ -40,7 +40,7 @@ public class QuestionEssay extends VBox implements QuestionBox {
 				.build();
 
 		this.answerField = TextAreaBuilder.create()
-				.setPromptText("Enter Answer Here")
+				.setPromptText(TextStorage.getText(Text.ENTER_ANSWER_HERE))
 				.setWrapText(true)
 				.setText(answerDetail == null ? "" : answerDetail.getAnswerText())
 				.setDisable(isChecking)
@@ -64,7 +64,7 @@ public class QuestionEssay extends VBox implements QuestionBox {
 	}
 
 	private HBox createFieldLabelPair() {
-		Label fieldLabel = LabelBuilder.create("Score: ")
+		Label fieldLabel = LabelBuilder.create(TextStorage.getText(Text.SCORE) + ": ")
 				.build();
 
 		this.scoreField = TextFieldBuilder.create()

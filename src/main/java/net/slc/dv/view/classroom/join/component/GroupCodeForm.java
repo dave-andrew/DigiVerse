@@ -5,6 +5,8 @@ import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
+import net.slc.dv.resources.Text;
+import net.slc.dv.storage.TextStorage;
 
 public class GroupCodeForm extends VBox {
 
@@ -14,17 +16,17 @@ public class GroupCodeForm extends VBox {
         this.setSpacing(20);
         this.setPadding(new Insets(20));
 
-        Label groupCodeLbl = new Label("Group Code");
+        Label groupCodeLbl = new Label(TextStorage.getText(Text.GROUP_CODE));
         groupCodeLbl.setStyle("-fx-font-size: 20px;");
 
         HBox titleBox = new HBox();
         titleBox.getChildren().add(groupCodeLbl);
         titleBox.getStyleClass().add("bottom-border");
 
-        Label groupCodeDesc = new Label("Enter the group code given by your teacher");
+        Label groupCodeDesc = new Label(TextStorage.getText(Text.ENTER_THE_GROUP_CODE));
 
         groupCodeField = new TextField();
-        groupCodeField.setPromptText("Group Code");
+        groupCodeField.setPromptText(TextStorage.getText(Text.GROUP_CODE));
 
         this.getChildren().addAll(titleBox, groupCodeDesc, groupCodeField, errorLbl);
 

@@ -1,6 +1,7 @@
 package net.slc.dv.view.classroom.detail.component;
 
 import net.slc.dv.controller.MemberController;
+import net.slc.dv.enums.Role;
 import net.slc.dv.helper.ImageManager;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
@@ -13,6 +14,8 @@ import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
 import javafx.scene.shape.Rectangle;
 import net.slc.dv.model.Classroom;
+import net.slc.dv.resources.Text;
+import net.slc.dv.storage.TextStorage;
 
 public class ClassForum extends ClassBase {
 
@@ -73,7 +76,7 @@ public class ClassForum extends ClassBase {
 
         Label className;
         if (classroom == null) {
-            className = new Label("Something Unexpected Happened");
+            className = new Label(TextStorage.getText(Text.SOMETHING_UNEXPECTED_HAPPENED));
 
             VBox labelsVBox = new VBox(className);
             labelsVBox.setAlignment(Pos.TOP_CENTER);
@@ -93,7 +96,7 @@ public class ClassForum extends ClassBase {
 
 
             HBox leftContentContainer = new HBox();
-            String userRole = new MemberController().getRole(classroom.getClassId());
+            Role userRole = new MemberController().getRole(classroom.getClassId());
             LeftContent leftContent = new LeftContent(userRole, this.classroom);
             leftContentContainer.getChildren().add(leftContent);
 

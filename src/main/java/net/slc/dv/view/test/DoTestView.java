@@ -13,8 +13,11 @@ import net.slc.dv.builder.*;
 import net.slc.dv.controller.AnswerController;
 import net.slc.dv.controller.TaskController;
 import net.slc.dv.enums.QuestionType;
+import net.slc.dv.enums.Role;
 import net.slc.dv.interfaces.QuestionBox;
 import net.slc.dv.model.*;
+import net.slc.dv.resources.Text;
+import net.slc.dv.storage.TextStorage;
 import net.slc.dv.view.task.task.TaskBase;
 import net.slc.dv.view.test.question.QuestionEssay;
 import net.slc.dv.view.test.question.QuestionMultipleChoice;
@@ -28,7 +31,7 @@ public class DoTestView extends BorderPane {
 	private Button submitButton;
 	private final Task task;
 	private final Classroom classroom;
-	private final String userRole;
+	private final Role userRole;
 	private final AnswerController answerController;
 	private final TaskController taskController;
 	private List<Question> questions;
@@ -37,7 +40,7 @@ public class DoTestView extends BorderPane {
 	private final List<AnswerDetail> answerDetails;
 	private GridPane questionNumbers;
 
-	public DoTestView(StackPane mainPane, Task task, Classroom classroom, String userRole) {
+	public DoTestView(StackPane mainPane, Task task, Classroom classroom, Role userRole) {
 		this.mainPane = mainPane;
 		this.task = task;
 		this.classroom = classroom;
@@ -109,10 +112,10 @@ public class DoTestView extends BorderPane {
 
 	private void initRight() {
 		Label submitTitle =
-				LabelBuilder.create("Submit Task").setStyleClass("title").build();
+				LabelBuilder.create(TextStorage.getText(Text.SUBMIT_TASK)).setStyleClass("title").build();
 
 		Label submitStatus =
-				LabelBuilder.create("Not Submitted").setStyleClass("title").build();
+				LabelBuilder.create(TextStorage.getText(Text.NOT_SUBMITTED)).setStyleClass("title").build();
 
 		HBox spacer = HBoxBuilder.create().setHgrow(Priority.ALWAYS).build();
 
@@ -124,7 +127,7 @@ public class DoTestView extends BorderPane {
 		this.questionNumbers = this.getQuestionNumbers();
 		this.questionNumbers.setPadding(new Insets(20, 0, 0, 0));
 
-		this.saveButton = ButtonBuilder.create("Save")
+		this.saveButton = ButtonBuilder.create(TextStorage.getText(Text.SAVE))
 				.setStyleClass("primary-button")
 				.setStyle("-fx-text-fill: #fff;")
 				.setPrefSize(300, 40)
@@ -170,7 +173,6 @@ public class DoTestView extends BorderPane {
 		AtomicInteger colIndex = new AtomicInteger();
 
 		for (int i = 0; i < questions.size(); i++) {
-			Question question = questions.get(i);
 
 			int finalI = i;
 			Button questionNumber = ButtonBuilder.create(String.valueOf(i + 1))

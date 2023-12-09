@@ -12,7 +12,6 @@ import javafx.geometry.Pos;
 import javafx.scene.Node;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
-import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Priority;
@@ -24,10 +23,12 @@ import net.slc.dv.builder.*;
 import net.slc.dv.enums.Theme;
 import net.slc.dv.helper.ThemeManager;
 import net.slc.dv.resources.Icon;
-import net.slc.dv.resources.IconStorage;
+import net.slc.dv.resources.Text;
+import net.slc.dv.storage.IconStorage;
 import net.slc.dv.controller.AuthController;
 import net.slc.dv.helper.StageManager;
 import net.slc.dv.model.LoggedUser;
+import net.slc.dv.storage.TextStorage;
 import net.slc.dv.view.login.LoginView;
 
 @Getter
@@ -47,8 +48,8 @@ public class SideNavbar extends StackPane {
         this.onButtonClick = onButtonClick;
         this.sideButtons = new ArrayList<>();
         this.authController = new AuthController();
-        this.homeButton = new SideNavbarButton(IconStorage.getIcon(Icon.HOME), "Home", onButtonClick);
-        this.calendarButton = new SideNavbarButton(IconStorage.getIcon(Icon.CALENDAR), "Calendar", onButtonClick);
+        this.homeButton = new SideNavbarButton(IconStorage.getIcon(Icon.HOME), TextStorage.getText(Text.HOME), onButtonClick);
+        this.calendarButton = new SideNavbarButton(IconStorage.getIcon(Icon.CALENDAR), TextStorage.getText(Text.CALENDAR), onButtonClick);
         this.sidebarOpen = true;
 
         this.sideButtons.add(this.homeButton);
@@ -93,7 +94,7 @@ public class SideNavbar extends StackPane {
                 .setPreserveRatio(true)
                 .build();
 
-        Label label = LabelBuilder.create("Log Out")
+        Label label = LabelBuilder.create(TextStorage.getText(Text.LOGOUT))
                 .setStyleClass("logout")
                 .setStyle((ThemeManager.getInstance().getTheme() == Theme.LIGHT ? "-fx-text-fill: #8B4513;" : "-fx-text-fill: #e16e1a;"))
                 .setHMargin(0, 0, 0, 10)

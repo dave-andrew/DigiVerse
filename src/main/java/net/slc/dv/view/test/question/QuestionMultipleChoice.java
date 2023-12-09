@@ -11,6 +11,8 @@ import net.slc.dv.helper.DecimalTextFormatter;
 import net.slc.dv.interfaces.QuestionBox;
 import net.slc.dv.model.AnswerDetail;
 import net.slc.dv.model.Question;
+import net.slc.dv.resources.Text;
+import net.slc.dv.storage.TextStorage;
 import org.jetbrains.annotations.Nullable;
 
 @Getter
@@ -84,7 +86,7 @@ public class QuestionMultipleChoice extends VBox implements QuestionBox {
 	}
 
 	private void createFieldLabelPair() {
-		Label fieldLabel = LabelBuilder.create("Score: ")
+		Label fieldLabel = LabelBuilder.create(TextStorage.getText(Text.SCORE) + ": ")
 				.build();
 
 		this.scoreField = TextFieldBuilder.create()

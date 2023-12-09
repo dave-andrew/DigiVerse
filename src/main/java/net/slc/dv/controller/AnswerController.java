@@ -4,6 +4,8 @@ import net.slc.dv.database.AnswerQuery;
 import net.slc.dv.helper.toast.ToastBuilder;
 import net.slc.dv.model.AnswerDetail;
 import net.slc.dv.model.AnswerHeader;
+import net.slc.dv.resources.Text;
+import net.slc.dv.storage.TextStorage;
 import org.jetbrains.annotations.Nullable;
 
 import java.io.File;
@@ -69,7 +71,7 @@ public class AnswerController {
                 Files.copy(file.toPath(), targetFilePath, StandardCopyOption.REPLACE_EXISTING);
             }
 
-            ToastBuilder.buildNormal().setText("Files Downloaded!").build();
+            ToastBuilder.buildNormal().setText(TextStorage.getText(Text.FILES_DOWNLOADED_SUCCESSFULLY)).build();
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -85,17 +87,17 @@ public class AnswerController {
 
     public boolean scoreQuestionAnswer(String taskid, String userid, String score) {
         if(score.isEmpty()) {
-            ToastBuilder.buildNormal().setText("Score cannot be empty!").build();
+            ToastBuilder.buildNormal().setText(TextStorage.getText(Text.SCORE_CANNOT_BE_EMPTY)).build();
             return false;
         }
 
         if(!score.matches("[0-9]+")) {
-            ToastBuilder.buildNormal().setText("Score must be a number!").build();
+            ToastBuilder.buildNormal().setText(TextStorage.getText(Text.SCORE_MUST_BE_A_NUMBER)).build();
             return false;
         }
 
         if(Integer.parseInt(score) < 0 || Integer.parseInt(score) > 100) {
-            ToastBuilder.buildNormal().setText("Score must be between 0 and 100!").build();
+            ToastBuilder.buildNormal().setText(TextStorage.getText(Text.SCORE_MUST_BE_BETWEEN_0_AND_100)).build();
             return false;
         }
 

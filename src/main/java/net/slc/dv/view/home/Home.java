@@ -56,10 +56,10 @@ public class Home {
         scrollPane = new ScrollPane();
         mainPane.getChildren().add(scrollPane);
 
-        this.navbar = new Navbar(mainPane, stage, this::onNavbarButtonClick);
+        navbar = new Navbar(mainPane, stage, this::onNavbarButtonClick);
         this.sideNavbar = new SideNavbar(this::onSidebarButtonClick);
 
-        classGrid = new ClassroomListView(mainPane, this.navbar::setLeftNavigation);
+        classGrid = new ClassroomListView(mainPane, navbar::setLeftNavigation);
         scrollPane.setContent(classGrid);
     }
 
@@ -80,7 +80,7 @@ public class Home {
     }
 
     private void onSidebarButtonClick(Node button) {
-        this.navbar.setLeftNavigation(null);
+        navbar.setLeftNavigation(null);
         if (button == this.sideNavbar.getHomeButton()) {
             this.sideNavbar.setActive((SideNavbarButton) button);
             mainPane.getChildren().clear();
@@ -90,34 +90,34 @@ public class Home {
         if (button == this.sideNavbar.getCalendarButton()) {
             this.sideNavbar.setActive((SideNavbarButton) button);
 
-            new Calendar(mainPane, this.navbar::setLeftNavigation);
+            new Calendar(mainPane, navbar::setLeftNavigation);
         }
     }
 
     private void onNavbarButtonClick(Node button) {
 
-        if (button == this.navbar.getIconButton()) {
+        if (button == navbar.getIconButton()) {
             mainPane.getChildren().clear();
-            this.navbar.setLeftNavigation(null);
+            navbar.setLeftNavigation(null);
             this.sideNavbar.setActive(this.sideNavbar.getHomeButton());
             fetchClass();
             return;
         }
-        if (button == this.navbar.getUserButton()) {
+        if (button == navbar.getUserButton()) {
             mainPane.getChildren().clear();
-            this.navbar.setLeftNavigation(null);
+            navbar.setLeftNavigation(null);
             this.sideNavbar.setActive(null);
-            profilePage((ImageView) this.navbar.getUserButton().getGraphic());
+            profilePage((ImageView) navbar.getUserButton().getGraphic());
             return;
         }
-        if (button == this.navbar.getThemeSwitchButton()) {
+        if (button == navbar.getThemeSwitchButton()) {
             ThemeManager.getInstance().toggleTheme(scene, (ToggleButton) button);
         }
     }
 
 
     public void profilePage(ImageView userImg) {
-        VBox profile = new Profile(userImg, mainPane, this.navbar::setLeftNavigation);
+        VBox profile = new Profile(userImg, mainPane, navbar::setLeftNavigation);
 
         ScrollPane scrollPane = new ScrollPane();
         scrollPane.setContent(profile);

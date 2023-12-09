@@ -6,7 +6,6 @@ import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.ScrollPane;
-import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.DragEvent;
 import javafx.scene.input.Dragboard;
@@ -21,12 +20,14 @@ import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
 import net.slc.dv.resources.Icon;
-import net.slc.dv.resources.IconStorage;
+import net.slc.dv.resources.Text;
+import net.slc.dv.storage.IconStorage;
 import net.slc.dv.controller.AnswerController;
 import net.slc.dv.controller.FileController;
 import net.slc.dv.helper.StageManager;
 import net.slc.dv.helper.ThemeManager;
 import net.slc.dv.model.LoggedUser;
+import net.slc.dv.storage.TextStorage;
 import net.slc.dv.view.task.upload.component.FileItem;
 
 import java.io.File;
@@ -34,7 +35,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class UploadFileModal {
-    private final String taskid;
+    private final String taskId;
     private final FileController fileController;
     private final AnswerController answerController;
     private final VBox fileContainer;
@@ -45,7 +46,7 @@ public class UploadFileModal {
     private GridPane fileGrid;
 
     public UploadFileModal(String taskid, VBox fileContainer, VBox sideContent, Button downloadBtn) {
-        this.taskid = taskid;
+        this.taskId = taskid;
         this.fileController = new FileController();
         this.answerController = new AnswerController();
         this.fileContainer = fileContainer;
@@ -81,7 +82,7 @@ public class UploadFileModal {
         HBox closeBox = new HBox();
         closeBox.setAlignment(Pos.CENTER);
 
-        Label uploadLabel = new Label("Upload File");
+        Label uploadLabel = new Label(TextStorage.getText(Text.UPLOAD_FILE));
         uploadLabel.getStyleClass().add("title");
 
         HBox spacer = new HBox();
@@ -106,7 +107,7 @@ public class UploadFileModal {
         uploadBox.setAlignment(Pos.CENTER);
         uploadBox.setPadding(new Insets(120, 0, 120, 0));
 
-        Label dropLabel = new Label("Drop your file here");
+        Label dropLabel = new Label(TextStorage.getText(Text.DROP_YOUR_FILE_HERE));
         uploadBox.setOnDragOver(this::handleDragOver);
         uploadBox.setOnDragDropped(this::handleDragDropped);
 
@@ -117,13 +118,13 @@ public class UploadFileModal {
             chooseFile();
         });
 
-        Button uploadBtn = new Button("+ Upload");
+        Button uploadBtn = new Button("+ " + TextStorage.getText(Text.UPLOAD));
         uploadBtn.setStyle("-fx-text-fill: white");
         uploadBtn.prefWidthProperty().bind(mainVbox.widthProperty());
         VBox.setMargin(mainVbox, new Insets(0, 0, 20, 0));
 
         uploadBtn.setOnMouseClicked(e -> {
-            this.fileController.uploadTaskAnswer(uploadedFiles, taskid);
+            this.fileController.uploadTaskAnswer(uploadedFiles, taskId);
 
             fetchAnswer();
 
@@ -138,7 +139,7 @@ public class UploadFileModal {
 
         ScrollPane files = new ScrollPane();
         files.setPrefHeight(200);
-        Label fileLabel = new Label("Files:");
+        Label fileLabel = new Label(TextStorage.getText(Text.FILES) + ":");
 
         fileContainer.getChildren().addAll(fileLabel, files);
 
@@ -174,7 +175,7 @@ public class UploadFileModal {
                 if (!uploadedFiles.contains(file) && isFileSizeValid(file, 100)) {
                     uploadedFiles.add(file);
                 } else {
-                    System.out.println("File already exists or exceeds 100 kilobytes: " + file.getName());
+                    System.out.println(TextStorage.getText(Text.ENTER_ANSWER_HERE) + ": " + file.getName());
                 }
             }
 
@@ -187,7 +188,7 @@ public class UploadFileModal {
 
     private void chooseFile() {
         FileChooser fileChooser = new FileChooser();
-        fileChooser.setTitle("Choose Files");
+        fileChooser.setTitle(TextStorage.getText(Text.CHOOSE_FILE));
         List<File> selectedFiles = fileChooser.showOpenMultipleDialog(mainVbox.getScene().getWindow());
 
         if (selectedFiles != null) {
@@ -195,13 +196,13 @@ public class UploadFileModal {
                 if (!uploadedFiles.contains(file) && isFileSizeValid(file, 100)) {
                     uploadedFiles.add(file);
                 } else {
-                    System.out.println("File already exists or exceeds 100 kilobytes: " + file.getName());
+                    System.out.println(TextStorage.getText(Text.ENTER_ANSWER_HERE) + ": " + file.getName());
                 }
             }
 
             updateFileGrid();
         } else {
-            System.out.println("No files selected.");
+            System.out.println(TextStorage.getText(Text.NO_FILES_SELECTED));
         }
     }
 
@@ -211,7 +212,7 @@ public class UploadFileModal {
 
     private void showAndWait() {
         Stage dialogStage = (Stage) mainVbox.getScene().getWindow();
-        dialogStage.setTitle("Upload File");
+        dialogStage.setTitle(TextStorage.getText(Text.UPLOAD_FILE));
         dialogStage.showAndWait();
     }
 
@@ -242,7 +243,7 @@ public class UploadFileModal {
     }
 
     private void fetchAnswer() {
-        ArrayList<File> fileList = this.answerController.getMemberFileAnswer(taskid, LoggedUser.getInstance().getId());
+        ArrayList<File> fileList = this.answerController.getMemberFileAnswer(taskId, LoggedUser.getInstance().getId());
 
         sideContent.getChildren().add(fileContainer);
 

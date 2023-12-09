@@ -11,6 +11,8 @@ import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 import net.slc.dv.controller.ClassController;
+import net.slc.dv.resources.Text;
+import net.slc.dv.storage.TextStorage;
 import net.slc.dv.view.home.Home;
 
 import java.util.ArrayList;
@@ -67,10 +69,10 @@ public class CreateClassForm extends VBox {
         this.setSpacing(20);
         this.setPadding(new Insets(20));
 
-        classNameLbl = new Label("Class Name");
-        classDescLbl = new Label("Class Description");
-        classCodeLbl = new Label("Class Code");
-        classSubjectLbl = new Label("Class Subject");
+        classNameLbl = new Label(TextStorage.getText(Text.CLASS_NAME));
+        classDescLbl = new Label(TextStorage.getText(Text.CLASS_DESCRIPTION));
+        classCodeLbl = new Label(TextStorage.getText(Text.CLASS_CODE));
+        classSubjectLbl = new Label(TextStorage.getText(Text.CLASS_SUBJECT));
 
         classNameField = new TextField();
         classDescField = new TextField();
@@ -82,8 +84,8 @@ public class CreateClassForm extends VBox {
         classCodeBox = new VBox(5);
         classSubjectBox = new VBox(5);
 
-        createBtn = new Button("Create");
-        cancelBtn = new Button("Cancel");
+        createBtn = new Button(TextStorage.getText(Text.CREATE));
+        cancelBtn = new Button(TextStorage.getText(Text.CANCEL));
 
         btnBox = new HBox(10);
 
@@ -104,7 +106,7 @@ public class CreateClassForm extends VBox {
 
             String message = classController.checkCreateClass(className, classDesc, classCode, classSubject);
 
-            if (message.equals("Create Class Success!")) {
+            if (message.equals(TextStorage.getText(Text.CREATE_CLASS_SUCCESS))) {
                 Home.fetchClass();
                 dialogStage.close();
             }

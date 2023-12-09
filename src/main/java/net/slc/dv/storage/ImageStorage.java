@@ -1,4 +1,4 @@
-package net.slc.dv.resources;
+package net.slc.dv.storage;
 
 public class ImageStorage {
 	public static final String AUTH_IMAGE = "file:resources/image/auth_image.png";

@@ -4,15 +4,16 @@ import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
-import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Priority;
 import javafx.stage.Stage;
 import net.slc.dv.builder.ImageViewBuilder;
 import net.slc.dv.resources.Icon;
-import net.slc.dv.resources.IconStorage;
+import net.slc.dv.resources.Text;
+import net.slc.dv.storage.IconStorage;
 import lombok.Getter;
+import net.slc.dv.storage.TextStorage;
 
 public class JoinClassNav extends HBox {
 
@@ -39,11 +40,11 @@ public class JoinClassNav extends HBox {
         closeBtn.setGraphic(close);
         closeBtn.getStyleClass().add("image-button");
 
-        Label title = new Label("Join Class");
+        Label title = new Label(TextStorage.getText(Text.JOIN_CLASS));
         title.getStyleClass().add("title");
         title.setPadding(new Insets(15, 0, 15, 0));
 
-        joinBtn = new Button("Join");
+        joinBtn = new Button(TextStorage.getText(Text.JOIN));
         joinBtn.getStyleClass().add("primary-button");
         joinBtn.setPrefWidth(120);
         joinBtn.setStyle("-fx-text-fill: white;-fx-background-radius: 5px");

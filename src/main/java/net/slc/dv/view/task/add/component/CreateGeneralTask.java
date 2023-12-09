@@ -10,6 +10,8 @@ import lombok.Getter;
 import net.slc.dv.builder.HBoxBuilder;
 import net.slc.dv.builder.LabelBuilder;
 import net.slc.dv.builder.VBoxBuilder;
+import net.slc.dv.resources.Text;
+import net.slc.dv.storage.TextStorage;
 
 @Getter
 public class CreateGeneralTask extends VBox {
@@ -25,9 +27,9 @@ public class CreateGeneralTask extends VBox {
                 .setStyle("-fx-text-fill: red;")
                 .build();
 
-        Label title = LabelBuilder.create("Task Title").build();
+        Label title = LabelBuilder.create(TextStorage.getText(Text.TASK_TITLE)).build();
 
-        Label description = LabelBuilder.create("Task Description")
+        Label description = LabelBuilder.create(TextStorage.getText(Text.TASK_DESCRIPTION))
                 .setMargin(30, 0, 0, 0)
                 .build();
 

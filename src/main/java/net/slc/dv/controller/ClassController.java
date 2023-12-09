@@ -4,6 +4,8 @@ import net.slc.dv.database.ClassQuery;
 import net.slc.dv.model.Classroom;
 import net.slc.dv.model.ClassroomMember;
 import net.slc.dv.model.User;
+import net.slc.dv.resources.Text;
+import net.slc.dv.storage.TextStorage;
 
 import java.util.ArrayList;
 
@@ -17,35 +19,35 @@ public class ClassController {
 
     public String checkCreateClass(String className, String classDesc, String classCode, String classSubject) {
         if (className.isEmpty() || classDesc.isEmpty() || classCode.isEmpty() || classSubject.isEmpty()) {
-            return "Please fill all the fields!";
+            return TextStorage.getText(Text.PLEASE_FILL_ALL_THE_FIELDS);
         }
 
         if (classCode.length() > 8) {
-            return "Class code must be less than 8 characters!";
+            return TextStorage.getText(Text.CLASS_CODE_MUST_BE_LESS_THAN_8_CHARACTERS);
         }
 
         Classroom classroom = new Classroom(className, classDesc, classCode, classSubject);
 
         classQuery.createClass(classroom);
 
-        return "Create Class Success!";
+        return TextStorage.getText(Text.CLASS_CREATED_SUCCESSFULLY);
     }
 
     public String checkJoinClass(String groupCode) {
         if (groupCode.isEmpty()) {
-            return "Please fill the group code!";
+            return TextStorage.getText(Text.PLEASE_FILL_THE_GROUP_CODE);
         }
         String classroom = classQuery.joinClass(groupCode);
 
         if (classroom.equals("no data")) {
-            return "Group code not found!";
+            return TextStorage.getText(Text.GROUP_CODE_NOT_FOUND);
         }
 
         if (classroom.equals("ingroup")) {
-            return "You are already in the group!";
+            return TextStorage.getText(Text.YOU_ARE_ALREADY_IN_THE_GROUP);
         }
 
-        return "Class Joined!";
+        return TextStorage.getText(Text.CLASS_JOINED_SUCCESSFULLY);
     }
 
     public ArrayList<Classroom> getUserClassroom() {

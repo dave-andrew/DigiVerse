@@ -6,7 +6,6 @@ import javafx.geometry.Pos;
 import javafx.scene.Node;
 import javafx.scene.control.Button;
 import javafx.scene.control.ScrollPane;
-import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.VBox;
 import lombok.Getter;
@@ -15,7 +14,7 @@ import net.slc.dv.builder.ImageViewBuilder;
 import net.slc.dv.builder.ScrollPaneBuilder;
 import net.slc.dv.builder.VBoxBuilder;
 import net.slc.dv.resources.Icon;
-import net.slc.dv.resources.IconStorage;
+import net.slc.dv.storage.IconStorage;
 import net.slc.dv.interfaces.CreateQuestionBox;
 import net.slc.dv.model.Question;
 
@@ -24,7 +23,7 @@ public class CreateQuestionTask extends ScrollPane {
 	private final List<QuestionContainer> questionContainers;
 	private final Button addQuestionBtn;
 	private final VBox container;
-	private CreateGeneralTask generalTask;
+	private final CreateGeneralTask generalTask;
 
 	public CreateQuestionTask() {
 		this.generalTask = new CreateGeneralTask();

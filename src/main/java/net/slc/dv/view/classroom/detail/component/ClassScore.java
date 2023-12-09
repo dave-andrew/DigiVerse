@@ -2,7 +2,8 @@ package net.slc.dv.view.classroom.detail.component;
 
 import net.slc.dv.builder.ImageViewBuilder;
 import net.slc.dv.resources.Icon;
-import net.slc.dv.resources.IconStorage;
+import net.slc.dv.resources.Text;
+import net.slc.dv.storage.IconStorage;
 import net.slc.dv.controller.AnswerController;
 import net.slc.dv.controller.MemberController;
 import net.slc.dv.controller.TaskController;
@@ -13,7 +14,6 @@ import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.control.TextField;
-import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Priority;
@@ -21,6 +21,7 @@ import javafx.scene.layout.VBox;
 import net.slc.dv.model.Classroom;
 import net.slc.dv.model.ClassroomMember;
 import net.slc.dv.model.Task;
+import net.slc.dv.storage.TextStorage;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -114,7 +115,7 @@ public class ClassScore extends HBox {
         }
 
         if(idx == 1) {
-            Label noMember = new Label("Eh? No student yet lah.");
+            Label noMember = new Label(TextStorage.getText(Text.NO_STUDENT_YET));
             noMember.setPadding(new Insets(20));
             this.memberList.getChildren().add(noMember);
             this.memberList.setAlignment(Pos.CENTER);
@@ -172,7 +173,7 @@ public class ClassScore extends HBox {
 
         this.scoreContainer.getChildren().add(scrollPane);
 
-        Label scoreTitle = new Label("Student Average Score : ");
+        Label scoreTitle = new Label(TextStorage.getText(Text.AVERAGE_STUDENT_SCORE) + ": ");
         Label scoreValue = new Label(String.format("%.2f", averageScore));
 
         VBox scoreInnerContainer = new VBox();
@@ -204,7 +205,7 @@ public class ClassScore extends HBox {
             HBox container = new HBox();
             container.setAlignment(Pos.CENTER_LEFT);
 
-            Label taskScoreLbl = new Label("Score: ");
+            Label taskScoreLbl = new Label(TextStorage.getText(Text.SCORE) + ": ");
             container.getChildren().add(taskScoreLbl);
 
             if (taskHash.get(taskTitle) != null) {

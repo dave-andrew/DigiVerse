@@ -23,14 +23,15 @@ import net.slc.dv.builder.HBoxBuilder;
 import net.slc.dv.builder.VBoxBuilder;
 import net.slc.dv.controller.AuthController;
 import net.slc.dv.helper.ScreenManager;
-import net.slc.dv.helper.StageManager;
 import net.slc.dv.helper.toast.ToastBuilder;
 import net.slc.dv.model.LoggedUser;
 import net.slc.dv.resources.Icon;
-import net.slc.dv.resources.IconStorage;
-import net.slc.dv.resources.ImageStorage;
-import net.slc.dv.view.register.RegisterView;
+import net.slc.dv.resources.Text;
+import net.slc.dv.storage.IconStorage;
+import net.slc.dv.storage.ImageStorage;
+import net.slc.dv.storage.TextStorage;
 import net.slc.dv.view.home.Home;
+import net.slc.dv.view.register.RegisterView;
 
 public class LoginView {
 
@@ -88,9 +89,21 @@ public class LoginView {
         Circle backerPuff12 = createBackerPuffs(ScreenManager.SCREEN_WIDTH / 2 + 20, 780, 60);
         Circle backerPuff13 = createBackerPuffs(ScreenManager.SCREEN_WIDTH / 2 + 30, 850, 90);
 
-        root.getChildren().addAll(backerPuff1, backerPuff2, backerPuff3, backerPuff4, backerPuff5, backerPuff6,
-                backerPuff7,
-                backerPuff8, backerPuff9, backerPuff10, backerPuff11, backerPuff12, backerPuff13);
+        root.getChildren()
+                .addAll(
+                        backerPuff1,
+                        backerPuff2,
+                        backerPuff3,
+                        backerPuff4,
+                        backerPuff5,
+                        backerPuff6,
+                        backerPuff7,
+                        backerPuff8,
+                        backerPuff9,
+                        backerPuff10,
+                        backerPuff11,
+                        backerPuff12,
+                        backerPuff13);
 
         Circle backPuff1 = createBackPuffs(ScreenManager.SCREEN_WIDTH / 2 - 40, 0, 100);
         Circle backPuff2 = createBackPuffs(ScreenManager.SCREEN_WIDTH / 2 + 25, 100, 70);
@@ -106,8 +119,21 @@ public class LoginView {
         Circle backPuff12 = createBackPuffs(ScreenManager.SCREEN_WIDTH / 2 + 50, 780, 60);
         Circle backPuff13 = createBackPuffs(ScreenManager.SCREEN_WIDTH / 2 + 40, 850, 90);
 
-        root.getChildren().addAll(backPuff1, backPuff2, backPuff3, backPuff4, backPuff5, backPuff6, backPuff7,
-                backPuff8, backPuff9, backPuff10, backPuff11, backPuff12, backPuff13);
+        root.getChildren()
+                .addAll(
+                        backPuff1,
+                        backPuff2,
+                        backPuff3,
+                        backPuff4,
+                        backPuff5,
+                        backPuff6,
+                        backPuff7,
+                        backPuff8,
+                        backPuff9,
+                        backPuff10,
+                        backPuff11,
+                        backPuff12,
+                        backPuff13);
 
         Circle puff1 = createPuffs(ScreenManager.SCREEN_WIDTH / 2, 0, 100);
         Circle puff2 = createPuffs(ScreenManager.SCREEN_WIDTH / 2 + 50, 100, 70);
@@ -123,8 +149,8 @@ public class LoginView {
         Circle puff12 = createPuffs(ScreenManager.SCREEN_WIDTH / 2 + 80, 780, 60);
         Circle puff13 = createPuffs(ScreenManager.SCREEN_WIDTH / 2 + 70, 850, 90);
 
-        root.getChildren().addAll(puff1, puff2, puff3, puff4, puff5, puff6, puff7, puff8, puff9, puff10, puff11,
-                puff12, puff13);
+        root.getChildren()
+                .addAll(puff1, puff2, puff3, puff4, puff5, puff6, puff7, puff8, puff9, puff10, puff11, puff12, puff13);
 
         borderPane = new BorderPane();
         borderPane.setPrefSize(ScreenManager.SCREEN_WIDTH / 2, ScreenManager.SCREEN_HEIGHT);
@@ -132,7 +158,6 @@ public class LoginView {
         borderPane.setTranslateX(ScreenManager.SCREEN_WIDTH / 2 + 70);
 
         root.getChildren().add(borderPane);
-
 
         loginForm();
 
@@ -147,9 +172,9 @@ public class LoginView {
         loginBannerContainer.setPrefWidth(ScreenManager.SCREEN_WIDTH / 2);
         loginBannerContainer.prefHeightProperty().bind(borderPane.heightProperty());
 
-//        Label welcomeToLabel = new Label("Welcome to");
-//        welcomeToLabel.setStyle("-fx-text-fill: white;-fx-font-size: 25px;");
-//        welcomeToLabel.setPadding(new Insets(0, 0, 100, 0));
+        //        Label welcomeToLabel = new Label("Welcome to");
+        //        welcomeToLabel.setStyle("-fx-text-fill: white;-fx-font-size: 25px;");
+        //        welcomeToLabel.setPadding(new Insets(0, 0, 100, 0));
 
         ImageView appIconView = new ImageView(IconStorage.getIcon(Icon.LOGO).getValue());
         appIconView.setStyle("-fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.3), 10, 0, 0, 0);");
@@ -157,7 +182,7 @@ public class LoginView {
         appIconView.setFitHeight(100);
         appIconView.setPreserveRatio(true);
 
-        Label appDescription = new Label("Candles shine when burnt");
+        Label appDescription = new Label(TextStorage.getText(Text.CANDLE_SHINE_WHEN_BURNED));
         appDescription.setMaxWidth(400);
         appDescription.setWrapText(true);
         appDescription.setAlignment(Pos.CENTER);
@@ -171,9 +196,9 @@ public class LoginView {
     }
 
     private void loginForm() {
-        subTitle = new Label("Hop in and let's initiate greatness!");
+        subTitle = new Label(TextStorage.getText(Text.HOP_IN_AND_LETS_INITIATE_GREATNESS));
 
-        registerLink = new Button("Don't have an account? Register here!");
+        registerLink = new Button(TextStorage.getText(Text.DONT_HAVE_AN_ACCOUNT));
         registerLink.getStyleClass().add("link-button");
         registerLink.setStyle("-fx-font-size: 14px");
 
@@ -181,15 +206,15 @@ public class LoginView {
 
         registerLink.setOnMouseExited(e -> registerLink.setStyle("-fx-font-size: 14px; -fx-text-fill: black;"));
 
-        loginBtn = new Button("Start Journey");
+        loginBtn = new Button(TextStorage.getText(Text.START_JOURNEY));
         loginBtn.getStyleClass().add("primary-button");
         loginBtn.setStyle("-fx-text-fill: white;");
         loginBtn.setPrefWidth(350);
         loginBtn.setPrefHeight(40);
 
         loginBtn.setOnMouseEntered(e -> {
-            loginBtn.setStyle("-fx-effect: dropshadow(three-pass-box, rgba(0, 0, 0, 0.5), 5, 0, 0, 0);-fx-text-fill: " +
-                    "white;");
+            loginBtn.setStyle("-fx-effect: dropshadow(three-pass-box, rgba(0, 0, 0, 0.5), 5, 0, 0, 0);-fx-text-fill: "
+                    + "white;");
 
             Timeline timeline = new Timeline();
 
@@ -222,13 +247,13 @@ public class LoginView {
         rememberMeVbox = new VBox();
         rememberMeVbox.setStyle("-fx-cursor: hand;");
 
-        emailLbl = new Label("Email:");
-        passwordLbl = new Label("Password:");
+        emailLbl = new Label(TextStorage.getText(Text.EMAIL) + ":");
+        passwordLbl = new Label(TextStorage.getText(Text.PASSWORD) + ":");
 
         emailTxt = new TextField();
         passwordTxt = new PasswordField();
 
-        rememberMe = new CheckBox("Remember me");
+        rememberMe = new CheckBox(TextStorage.getText(Text.REMEMBER_ME));
         rememberMe.setScaleX(0.85);
         rememberMe.setScaleY(0.85);
 
@@ -302,13 +327,13 @@ public class LoginView {
         vbox.getStyleClass().add("card");
 
         vbox.setMaxWidth(600);
-//        vbox.setPadding(new Insets(0, 0, 0, 100));
+        //        vbox.setPadding(new Insets(0, 0, 0, 100));
 
-//        outerContainer = VBoxBuilder.create()
-//                .addChildren(vbox)
-//                .setAlignment(Pos.CENTER)
-//                .setPadding(0, 50, 0, 0)
-//                .build();
+        //        outerContainer = VBoxBuilder.create()
+        //                .addChildren(vbox)
+        //                .setAlignment(Pos.CENTER)
+        //                .setPadding(0, 50, 0, 0)
+        //                .build();
 
         outerContainer = new VBox();
         outerContainer.getChildren().addAll(vbox);
@@ -316,12 +341,9 @@ public class LoginView {
         outerContainer.setPadding(new Insets(0, 50, 0, 0));
 
 
-        System.out.println(vbox.toString());
-        System.out.println(outerContainer.toString());
+        //        outerContainer = new VBox();
 
-//        outerContainer = new VBox();
-
-//        outerContainer.setPadding(new Insets(0, 0, 0, 50));
+        //        outerContainer.setPadding(new Insets(0, 0, 0, 50));
 
         borderPane.getChildren().clear();
         // #TODO: Fix this
@@ -330,7 +352,7 @@ public class LoginView {
         loginImage.setFitHeight(ScreenManager.SCREEN_HEIGHT);
 
         scene.getStylesheets().add("file:resources/light_theme.css");
-//        ThemeManager.getTheme(scene);
+        //        ThemeManager.getTheme(scene);
     }
 
     private void actions(Stage stage) {
@@ -352,7 +374,7 @@ public class LoginView {
 
             borderPane.getChildren().clear();
             // #TODO: Fix this
-//            borderPane.setCenter(outerContainer);
+            //            borderPane.setCenter(outerContainer);
         });
     }
 
@@ -363,9 +385,12 @@ public class LoginView {
 
         String message = authController.checkLogin(email, password, remember);
 
-        if (message.equals("Login Success!")) {
+        if (message.equals(TextStorage.getText(Text.LOGIN_SUCCESS))) {
             errorLbl.setStyle("-fx-text-fill: green;");
-            ToastBuilder.buildNormal().setText("Welcome back, " + LoggedUser.getInstance().getUsername() + "!").build();
+            ToastBuilder.buildNormal()
+                    .setText(TextStorage.getText(Text.WELCOME_BACK) + ", "
+                            + LoggedUser.getInstance().getUsername() + "!")
+                    .build();
             new Home(stage);
         }
 

@@ -2,11 +2,11 @@ package net.slc.dv.view.classroom.detail.component;
 
 import net.slc.dv.builder.ImageViewBuilder;
 import net.slc.dv.builder.ButtonBuilder;
-import net.slc.dv.builder.ImageViewBuilder;
 import net.slc.dv.builder.VBoxBuilder;
 import net.slc.dv.enums.Theme;
 import net.slc.dv.resources.Icon;
-import net.slc.dv.resources.IconStorage;
+import net.slc.dv.resources.Text;
+import net.slc.dv.storage.IconStorage;
 import net.slc.dv.controller.CommentController;
 import net.slc.dv.controller.ForumController;
 import net.slc.dv.helper.ImageManager;
@@ -28,6 +28,7 @@ import javafx.scene.layout.VBox;
 import net.slc.dv.model.*;
 
 import javafx.util.Duration;
+import net.slc.dv.storage.TextStorage;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.List;
@@ -231,7 +232,7 @@ public class RightContent extends VBox {
     @NotNull
     private TextField getTextField(Forum forum, VBox commentContainer) {
         TextField commentInput = new TextField();
-        commentInput.setPromptText("Write a comment...");
+        commentInput.setPromptText(TextStorage.getText(Text.WRITE_A_COMMENT) + "...");
         commentInput.setStyle("-fx-font-size: 14px");
         commentInput.setOnKeyPressed(event -> {
             if (event.getCode() == KeyCode.ENTER) {
@@ -295,7 +296,7 @@ public class RightContent extends VBox {
             container.getChildren().add(loggedUserProfile);
 
             postInput = new TextField();
-            postInput.setPromptText("What's on your mind, " + LoggedUser.getInstance().getUsername() + "?");
+            postInput.setPromptText(TextStorage.getText(Text.WHATS_ON_YOUR_MIND) + ", " + LoggedUser.getInstance().getUsername() + "?");
 
             Button postBtn = ButtonBuilder.create()
                     .setStyle("-fx-background-color: transparent; -fx-border-color: transparent; -fx-cursor: hand;")

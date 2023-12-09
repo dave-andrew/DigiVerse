@@ -2,17 +2,18 @@ package net.slc.dv.view.classroom.detail.component;
 
 import net.slc.dv.builder.ImageViewBuilder;
 import net.slc.dv.resources.Icon;
-import net.slc.dv.resources.IconStorage;
+import net.slc.dv.resources.Text;
+import net.slc.dv.storage.IconStorage;
 import net.slc.dv.controller.CommentController;
 import net.slc.dv.helper.ImageManager;
 import javafx.geometry.Insets;
 import javafx.scene.control.Label;
-import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import net.slc.dv.model.Comment;
 import net.slc.dv.model.TaskComment;
+import net.slc.dv.storage.TextStorage;
 
 import java.util.ArrayList;
 
@@ -72,11 +73,11 @@ public class CommentItem extends HBox {
 
         HBox btnContainer = new HBox(10);
 
-        this.replyBtn = new Label("Reply");
+        this.replyBtn = new Label(TextStorage.getText(Text.REPLY));
         replyBtn.getStyleClass().add("reply-button");
         replyBtn.setOpacity(0.5);
 
-        this.loadReplyBtn = new Label("View Reply");
+        this.loadReplyBtn = new Label(TextStorage.getText(Text.VIEW_REPLIES));
         loadReplyBtn.getStyleClass().add("reply-button");
         loadReplyBtn.setOpacity(0.5);
 

@@ -3,10 +3,13 @@ package net.slc.dv.view.classroom.detail.component;
 import javafx.scene.control.Button;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
+import net.slc.dv.enums.Role;
+import net.slc.dv.resources.Text;
+import net.slc.dv.storage.TextStorage;
 import net.slc.dv.view.classroom.detail.ClassroomDetailView;
 
 public class ClassDetailNav extends HBox {
-    private final String userRole;
+    private final Role userRole;
     private final ClassroomDetailView parent;
 
     private Button forum, task, member, score;
@@ -15,7 +18,7 @@ public class ClassDetailNav extends HBox {
     private ClassScore classScore;
     private ClassTask classTask;
 
-    public ClassDetailNav(String role, ClassroomDetailView parent) {
+    public ClassDetailNav(Role role, ClassroomDetailView parent) {
         this.parent = parent;
         this.userRole = role;
 
@@ -24,23 +27,23 @@ public class ClassDetailNav extends HBox {
 
         this.getChildren().addAll(forum, task, member, score);
 
-        if (role.equals("Student")) {
+        if (role.equals(Role.STUDENT)) {
             this.score.setVisible(false);
         }
     }
 
     void init() {
-        forum = new Button("Forum");
+        forum = new Button(TextStorage.getText(Text.FORUM));
         forum.getStyleClass().add("nav-button");
         forum.getStyleClass().add("active");
 
-        task = new Button("Task");
+        task = new Button(TextStorage.getText(Text.TASK));
         task.getStyleClass().add("nav-button");
 
-        member = new Button("Member");
+        member = new Button(TextStorage.getText(Text.MEMBER));
         member.getStyleClass().add("nav-button");
 
-        score = new Button("Score");
+        score = new Button(TextStorage.getText(Text.SCORE));
         score.getStyleClass().add("nav-button");
 
         this.classForum = new ClassForum(parent.getClassroom());

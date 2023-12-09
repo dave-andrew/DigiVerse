@@ -11,6 +11,8 @@ import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.VBox;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
+import net.slc.dv.resources.Text;
+import net.slc.dv.storage.TextStorage;
 import net.slc.dv.view.classroom.join.component.GroupCodeForm;
 import net.slc.dv.view.classroom.join.component.JoinClassNav;
 import net.slc.dv.view.classroom.join.component.ChangeAccountBox;
@@ -42,7 +44,7 @@ public class JoinClassView {
 
         dialogStage.setScene(scene);
 
-        dialogStage.setTitle("Join Class");
+        dialogStage.setTitle(TextStorage.getText(Text.JOIN_CLASS));
         dialogStage.showAndWait();
     }
 
@@ -68,12 +70,12 @@ public class JoinClassView {
         joinInfo = new VBox(5);
         joinInfo.setPadding(new Insets(20));
 
-        Label joinInfoSub = new Label("To join using group class code:");
+        Label joinInfoSub = new Label(TextStorage.getText(Text.TO_JOIN_CLASS));
 
         VBox joinInfoList = new VBox(2);
 
-        Label lbl1 = new Label("• Use an authorized account");
-        Label lbl2 = new Label("• Use a maximum of 10 letters of group code.");
+        Label lbl1 = new Label(TextStorage.getText(Text.JOIN_CLASS_REQUIREMENT_ONE));
+        Label lbl2 = new Label(TextStorage.getText(Text.JOIN_CLASS_REQUIREMENT_TWO));
 
         joinInfoSub.setStyle("-fx-font-size: 17px;");
         lbl1.setStyle("-fx-font-size: 14px; -fx-font-family: 'Nunito Light'");
@@ -103,7 +105,7 @@ public class JoinClassView {
         topBar.getJoinBtn().setOnMouseClicked(e -> {
             String message = classController.checkJoinClass(classFormBox.getGroupCode());
 
-            if (message.equals("Class Joined!")) {
+            if (message.equals(TextStorage.getText(Text.CLASS_JOINED) + "!")) {
                 Home.fetchClass();
                 dialogStage.close();
             }
