@@ -287,6 +287,9 @@ public class LoginView {
     private void setLayout() {
         Font font = Font.loadFont("file:resources/fonts/VT323-Regular.ttf", 36);
         subTitle.setFont(font);
+        subTitle.setStyle("-fx-text-fill: black;");
+        subTitle.setWrapText(true);
+        subTitle.setTextAlignment(TextAlignment.CENTER);
 
         errorLbl.setStyle("-fx-text-fill: red;");
 
@@ -327,26 +330,15 @@ public class LoginView {
         vbox.getStyleClass().add("card");
 
         vbox.setMaxWidth(600);
-        //        vbox.setPadding(new Insets(0, 0, 0, 100));
-
-        //        outerContainer = VBoxBuilder.create()
-        //                .addChildren(vbox)
-        //                .setAlignment(Pos.CENTER)
-        //                .setPadding(0, 50, 0, 0)
-        //                .build();
+        vbox.setPadding(new Insets(0, 0, 0, 100));
 
         outerContainer = new VBox();
         outerContainer.getChildren().addAll(vbox);
         outerContainer.setAlignment(Pos.CENTER);
         outerContainer.setPadding(new Insets(0, 50, 0, 0));
 
-
-        //        outerContainer = new VBox();
-
-        //        outerContainer.setPadding(new Insets(0, 0, 0, 50));
-
         borderPane.getChildren().clear();
-        // #TODO: Fix this
+
         borderPane.setCenter(outerContainer);
 
         loginImage.setFitHeight(ScreenManager.SCREEN_HEIGHT);
@@ -373,8 +365,7 @@ public class LoginView {
                     .build();
 
             borderPane.getChildren().clear();
-            // #TODO: Fix this
-            //            borderPane.setCenter(outerContainer);
+            borderPane.setCenter(outerContainer);
         });
     }
 

@@ -59,6 +59,7 @@ public class Toast {
         root.setOpacity(0);
 
         Scene scene = new Scene(root);
+        ThemeManager.getInstance().getTheme(scene);
         scene.setFill(Color.TRANSPARENT);
         errorStage.setScene(scene);
         errorStage.show();

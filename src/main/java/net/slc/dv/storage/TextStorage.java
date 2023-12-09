@@ -11,7 +11,7 @@ public class TextStorage {
 
 	public static void init(){
 		for(Text text : Text.values()){
-			textMap.put(text, text.getText(Language.KOREAN));
+			textMap.put(text, text.getText(Language.INDONESIAN));
 		}
 	}
 
