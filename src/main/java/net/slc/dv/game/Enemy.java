@@ -43,7 +43,7 @@ public class Enemy extends ImageView {
         this.game = game;
         this.player = player;
         this.type = type;
-        this.speed = (type.equals("spider")) ? 5 : 3;
+        this.speed = (type.equals("spider")) ? 10 : 3;
 
         this.root = root;
         this.health = health;

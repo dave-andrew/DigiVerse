@@ -55,6 +55,9 @@ public class LoginView {
     private VBox emailVbox, passwordVbox, loginVbox, rememberMeVbox;
     private CheckBox rememberMe;
     private Label errorLbl;
+    private int bannerCounter = 0;
+
+    private ImageView forbidden;
 
     public LoginView(Stage stage) {
         this.authController = new AuthController();
@@ -182,6 +185,10 @@ public class LoginView {
         appIconView.setFitHeight(100);
         appIconView.setPreserveRatio(true);
 
+        Button appIconButton = new Button();
+        appIconButton.setGraphic(appIconView);
+        appIconButton.setStyle("-fx-background-color: transparent;");
+
         Label appDescription = new Label(TextStorage.getText(Text.CANDLE_SHINE_WHEN_BURNED));
         appDescription.setMaxWidth(400);
         appDescription.setWrapText(true);
@@ -190,7 +197,7 @@ public class LoginView {
         appDescription.setStyle("-fx-text-fill: white;-fx-font-size: 24px");
         appDescription.setPadding(new Insets(150, 0, 0, 0));
 
-        loginBannerContainer.getChildren().addAll(appIconView, appDescription);
+        loginBannerContainer.getChildren().addAll(appIconButton, appDescription);
 
         root.getChildren().add(loginBannerContainer);
     }

@@ -296,10 +296,10 @@ public class PlayerShootState extends PlayerBaseState {
             return;
         }
 
-        try {
-            gunshotMediaPlayer.stop();
-            gunshotMediaPlayer.play();
+        gunshotMediaPlayer.stop();
+        gunshotMediaPlayer.play();
 
+        try {
             double posX = player.getPosX();
             double posY = player.getPosY();
 

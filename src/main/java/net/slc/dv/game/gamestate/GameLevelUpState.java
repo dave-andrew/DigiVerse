@@ -27,7 +27,6 @@ public class GameLevelUpState extends GameBaseState {
         game.addLevel();
         game.getRoot().getChildren().add(guiView);
 
-        game.setEnemySpawnRate(game.getEnemySpawnRate() + 0.05);
         game.setBaseEnemyHealth(game.getBaseEnemyHealth() + 1);
     }
 

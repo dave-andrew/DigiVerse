@@ -29,6 +29,12 @@ public class ImageViewBuilder {
         return this;
     }
 
+    public ImageViewBuilder setX(double x) {
+        this.imageView.setX(x);
+
+        return this;
+    }
+
     public ImageViewBuilder setFitWidth(double width) {
         this.imageView.setFitWidth(width);
 
