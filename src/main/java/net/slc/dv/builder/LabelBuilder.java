@@ -7,6 +7,7 @@ import javafx.scene.layout.HBox;
 import javafx.scene.layout.Priority;
 import javafx.scene.layout.VBox;
 import javafx.scene.text.Font;
+import javafx.scene.text.TextAlignment;
 
 import java.util.function.Consumer;
 
@@ -101,6 +102,12 @@ public class LabelBuilder {
 
     public LabelBuilder setMaxWidth(int width) {
         this.label.setMaxWidth(width);
+
+        return this;
+    }
+
+    public LabelBuilder setTextAlignment(TextAlignment textAlignment) {
+        this.label.setTextAlignment(textAlignment);
 
         return this;
     }

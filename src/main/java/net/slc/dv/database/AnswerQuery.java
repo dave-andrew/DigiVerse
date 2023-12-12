@@ -36,10 +36,10 @@ public class AnswerQuery {
 
 		String query = "SELECT\n" + "\tmsfile.FileID, FileName, FileBlob, FileType\n"
 				+ "FROM answer_header\n"
-				+ "JOIN answer_detail\n"
-				+ "ON answer_detail.AnswerID = answer_header.AnswerID\n"
+				+ "JOIN answer_file\n"
+				+ "ON answer_file.AnswerID = answer_header.AnswerID\n"
 				+ "JOIN msfile\n"
-				+ "ON msfile.FileID = answer_detail.FileID\n"
+				+ "ON msfile.FileID = answer_file.FileID\n"
 				+ "WHERE TaskID = ? AND UserID = ?";
 
 		try (PreparedStatement ps = connect.prepareStatement(query)) {
@@ -171,7 +171,7 @@ public class AnswerQuery {
 	}
 
 	public Double getAnswerScore(String taskid, String userid) {
-		String query = "SELECT SCORE FROM answer_header WHERE TaskID = ? AND UserID = ?";
+		String query = "SELECT Score FROM answer_header WHERE TaskID = ? AND UserID = ?";
 
 		try (PreparedStatement ps = connect.prepareStatement(query)) {
 
@@ -198,21 +198,24 @@ public class AnswerQuery {
 		return null;
 	}
 
-	public boolean scoreAnswer(String taskid, String userid, int score) {
-		String query = "UPDATE answer_header " + "JOIN mstask ON answer_header.TaskID = mstask.TaskID "
+	public boolean scoreAnswer(String taskid, String userid, double score) {
+		String query = "UPDATE answer_header "
+				+ "JOIN mstask ON answer_header.TaskID = mstask.TaskID "
 				+ "SET answer_header.Score = ? "
 				+ "WHERE mstask.TaskTitle = ? AND answer_header.UserID = ?";
 
+//		TODO: Delete this
+		System.out.println("TaskID: " + taskid);
+		System.out.println("UserID: " + userid);
+
 		try (PreparedStatement ps = connect.prepareStatement(query)) {
 			assert ps != null;
-			ps.setInt(1, score);
+			ps.setDouble(1, (score / 100));
 			ps.setString(2, taskid);
 			ps.setString(3, userid);
 
-			ps.executeUpdate();
-
-			return true;
-		} catch (SQLException e) {
+            return ps.executeUpdate() > 0;
+        } catch (SQLException e) {
 			e.printStackTrace();
 			return false;
 		}

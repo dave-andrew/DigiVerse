@@ -229,8 +229,15 @@ public class RegisterView extends VBox {
                         .addChildren(loginVBox)
                         .build();
 
+                nameTxt.setText("");
+                emailTxt.setText("");
+                passwordTxt.setText("");
+                confirmPasswordTxt.setText("");
+                dobPicker.setValue(null);
+
                 root.getChildren().clear();
                 root.setCenter(LoginView.getOuterContainer());
+                return;
             }
             errorLbl.setText(output);
         });

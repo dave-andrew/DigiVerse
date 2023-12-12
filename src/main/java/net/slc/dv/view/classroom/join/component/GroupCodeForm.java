@@ -1,6 +1,7 @@
 package net.slc.dv.view.classroom.join.component;
 
 import javafx.geometry.Insets;
+import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.HBox;
@@ -12,7 +13,7 @@ public class GroupCodeForm extends VBox {
 
     private final TextField groupCodeField;
 
-    public GroupCodeForm(Label errorLbl) {
+    public GroupCodeForm(Label errorLbl, HBox joinbtn) {
         this.setSpacing(20);
         this.setPadding(new Insets(20));
 
@@ -28,7 +29,7 @@ public class GroupCodeForm extends VBox {
         groupCodeField = new TextField();
         groupCodeField.setPromptText(TextStorage.getText(Text.GROUP_CODE));
 
-        this.getChildren().addAll(titleBox, groupCodeDesc, groupCodeField, errorLbl);
+        this.getChildren().addAll(titleBox, groupCodeDesc, groupCodeField, joinbtn, errorLbl);
 
     }
 

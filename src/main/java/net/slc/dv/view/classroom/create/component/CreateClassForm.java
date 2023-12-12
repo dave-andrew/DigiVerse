@@ -106,7 +106,7 @@ public class CreateClassForm extends VBox {
 
             String message = classController.checkCreateClass(className, classDesc, classCode, classSubject);
 
-            if (message.equals(TextStorage.getText(Text.CREATE_CLASS_SUCCESS))) {
+            if (message.equals(TextStorage.getText(Text.CLASS_CREATED_SUCCESSFULLY))) {
                 Home.fetchClass();
                 dialogStage.close();
             }

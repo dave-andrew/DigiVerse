@@ -1,5 +1,8 @@
 package net.slc.dv.view.classroom.join;
 
+import javafx.scene.control.Button;
+import javafx.scene.layout.HBox;
+import javafx.scene.layout.Priority;
 import net.slc.dv.controller.ClassController;
 import net.slc.dv.helper.ScreenManager;
 import net.slc.dv.helper.ThemeManager;
@@ -31,6 +34,8 @@ public class JoinClassView {
     private GroupCodeForm classFormBox;
     private VBox joinInfo;
     private Label errorLbl;
+    private HBox buttonBox;
+    private Button joinBtn;
 
     public JoinClassView(Stage ownerStage) {
         this.dialogStage = new Stage();
@@ -55,6 +60,9 @@ public class JoinClassView {
         mainVbox = new VBox(20);
         topBar = new JoinClassNav();
 
+        buttonBox = new HBox();
+        buttonBox.setAlignment(Pos.CENTER_RIGHT);
+
         errorLbl = new Label();
         errorLbl.setStyle("-fx-text-fill: red;");
 
@@ -63,7 +71,15 @@ public class JoinClassView {
         userInfoBox.getStyleClass().add("card");
         userInfoBox.setMaxWidth(800);
 
-        classFormBox = new GroupCodeForm(errorLbl);
+        joinBtn = new Button(TextStorage.getText(Text.JOIN));
+        joinBtn.getStyleClass().add("primary-button");
+        joinBtn.setPrefWidth(120);
+        joinBtn.setStyle("-fx-text-fill: white;-fx-background-radius: 5px");
+        HBox.setHgrow(joinBtn, Priority.NEVER);
+
+        buttonBox.getChildren().add(joinBtn);
+
+        classFormBox = new GroupCodeForm(errorLbl, buttonBox);
         classFormBox.getStyleClass().add("card");
         classFormBox.setMaxWidth(800);
 
@@ -102,10 +118,10 @@ public class JoinClassView {
     }
 
     private void setActions() {
-        topBar.getJoinBtn().setOnMouseClicked(e -> {
+        joinBtn.setOnMouseClicked(e -> {
             String message = classController.checkJoinClass(classFormBox.getGroupCode());
 
-            if (message.equals(TextStorage.getText(Text.CLASS_JOINED) + "!")) {
+            if (message.equals(TextStorage.getText(Text.CLASS_JOINED_SUCCESSFULLY))) {
                 Home.fetchClass();
                 dialogStage.close();
             }

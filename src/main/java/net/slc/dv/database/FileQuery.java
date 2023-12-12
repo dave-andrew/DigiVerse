@@ -26,12 +26,12 @@ public class FileQuery {
     }
 
     public void uploadTaskAnswer(AnswerFile answer) {
-        String query = "SELECT FileID FROM answer_header JOIN answer_detail ON answer_header.AnswerID = answer_detail.AnswerID WHERE TaskID = ? AND UserID = ? ";
+        String query = "SELECT FileID FROM answer_header JOIN answer_file ON answer_header.AnswerID = answer_file.AnswerID WHERE TaskID = ? AND UserID = ? ";
         String deleteFile = "DELETE FROM msfile WHERE FileID = ?";
         String deleteAnswerQuery = "DELETE FROM answer_header WHERE TaskID = ? AND UserID = ?";
-        String query2 = "INSERT INTO answer_header VALUES (?, ?, ?, NULL, ?)";
-        String query3 = "INSERT INTO answer_detail VALUES (?, ?)";
+        String query2 = "INSERT INTO answer_header VALUES (?, ?, ?, ?, NULL, ?, NULL)";
         String insertFileQuery = "INSERT INTO msfile VALUES (?, ?, ?, ?)";
+        String query3 = "INSERT INTO answer_file VALUES (?, ?)";
 
         try {
             connection.setAutoCommit(false); // Disable auto-commit
@@ -72,7 +72,8 @@ public class FileQuery {
                 insertHeaderStatement.setString(1, answer.getId());
                 insertHeaderStatement.setString(2, answer.getTaskid());
                 insertHeaderStatement.setString(3, answer.getUserid());
-                insertHeaderStatement.setString(4, answer.getCreatedAt());
+                insertHeaderStatement.setBoolean(4, answer.getFinished());
+                insertHeaderStatement.setString(5, answer.getCreatedAt());
                 insertHeaderStatement.executeUpdate();
             }
 

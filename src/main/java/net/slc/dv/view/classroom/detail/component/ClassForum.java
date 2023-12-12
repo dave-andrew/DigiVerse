@@ -31,6 +31,7 @@ public class ClassForum extends ClassBase {
         setLayout();
 
         this.setContent(forumContainer);
+        this.setHbarPolicy(ScrollBarPolicy.NEVER);
         this.setPannable(false);
     }
 

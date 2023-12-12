@@ -16,9 +16,6 @@ import lombok.Getter;
 import net.slc.dv.storage.TextStorage;
 
 public class JoinClassNav extends HBox {
-
-    @Getter
-    private Button joinBtn;
     private Button closeBtn;
 
     public JoinClassNav() {
@@ -44,20 +41,14 @@ public class JoinClassNav extends HBox {
         title.getStyleClass().add("title");
         title.setPadding(new Insets(15, 0, 15, 0));
 
-        joinBtn = new Button(TextStorage.getText(Text.JOIN));
-        joinBtn.getStyleClass().add("primary-button");
-        joinBtn.setPrefWidth(120);
-        joinBtn.setStyle("-fx-text-fill: white;-fx-background-radius: 5px");
-
         this.setAlignment(Pos.CENTER_LEFT);
         HBox.setHgrow(title, Priority.ALWAYS);
-        HBox.setHgrow(joinBtn, Priority.NEVER);
 
         leftNav.getChildren().addAll(closeBtn, title);
         leftNav.setAlignment(Pos.CENTER_LEFT);
         HBox.setHgrow(leftNav, Priority.ALWAYS);
 
-        this.getChildren().addAll(leftNav, joinBtn);
+        this.getChildren().addAll(leftNav);
     }
 
     public void actions() {

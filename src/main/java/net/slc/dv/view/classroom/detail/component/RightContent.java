@@ -189,7 +189,7 @@ public class RightContent extends VBox {
 				.setFitHeight(30)
 				.build();
 
-        if (user.getProfile() != null) {
+        if (LoggedUser.getInstance().getProfileImage() != null) {
             profileImage = new ImageView(LoggedUser.getInstance().getProfileImage());
         }
 
@@ -278,7 +278,7 @@ public class RightContent extends VBox {
             LoggedUser loggedUser = LoggedUser.getInstance();
 
             ImageView loggedUserProfile;
-            if(loggedUser.getProfile() != null){
+            if(loggedUser.getProfileImage() != null){
                 loggedUserProfile = new ImageView(loggedUser.getProfileImage());
             } else {
                 loggedUserProfile = ImageViewBuilder.create()

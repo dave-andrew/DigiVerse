@@ -101,7 +101,7 @@ public class AnswerController {
             return false;
         }
 
-        return answerQuery.scoreAnswer(taskid, userid, Integer.parseInt(score));
+        return answerQuery.scoreAnswer(taskid, userid, Double.parseDouble(score));
     }
 
     public AnswerHeader saveAnswer(@Nullable AnswerHeader answerHeader, String taskid, String userid, List<AnswerDetail> answerList) {

@@ -147,8 +147,8 @@ public enum Text {
             "مهمة منتهية",
             "Nhiệm vụ đã hoàn thành"),
     LETS_CHILL(
-            "Let's chill!",
-            "Ayo Santai!",
+            "Chill Yeah??",
+            "Santai dulu gak sih?",
             "リラックスしましょう！",
             "Relajémonos",
             "Laten we ontspannen",

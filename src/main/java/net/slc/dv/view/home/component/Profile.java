@@ -1,5 +1,6 @@
 package net.slc.dv.view.home.component;
 
+import javafx.beans.binding.Bindings;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.control.*;
@@ -322,8 +323,11 @@ public class Profile extends VBox {
 
             if (selectedFile != null) {
                 Image image = new Image("file:" + selectedFile.getAbsolutePath());
-                profile.setImage(image);
-                this.profileNav.setImage(image);
+                profile.imageProperty().unbind();
+                profile.imageProperty().bind(Bindings.createObjectBinding(() -> image));
+
+                profileNav.imageProperty().unbind();
+                profileNav.imageProperty().bind(Bindings.createObjectBinding(() -> image));
 
                 this.userController.updateProfileImage(selectedFile);
 

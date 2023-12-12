@@ -45,7 +45,7 @@ public class CreateTrueFalseQuestion extends VBox implements CreateQuestionBox {
 
 		answerKey = ComboBoxBuilder.<String>create()
 			.setItems(TextStorage.getText(Text.TRUE), TextStorage.getText(Text.FALSE))
-			.setValue(TextStorage.getText(Text.TASK))
+			.setValue(TextStorage.getText(Text.TRUE))
 			.build();
 
         HBox answerKey = HBoxBuilder.create()

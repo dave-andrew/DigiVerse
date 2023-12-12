@@ -196,6 +196,8 @@ public class ClassScore extends HBox {
 
         for (String taskTitle : taskHash.keySet()) {
             Label taskTitleLbl = new Label(taskTitle);
+            taskTitleLbl.setPrefWidth(200);
+            taskTitleLbl.setWrapText(true);
 
             HBox taskScoreContainer = new HBox();
             taskScoreContainer.setAlignment(Pos.CENTER_LEFT);
@@ -266,6 +268,8 @@ public class ClassScore extends HBox {
                         container.getChildren().add(scoreInput);
 
                         fetchAnswer(selectedMember, memberItem, scoreContainer, scoreValue);
+                    } else {
+                        ToastBuilder.buildNormal().setText("Student have no answer!").build();
                     }
                 });
             }

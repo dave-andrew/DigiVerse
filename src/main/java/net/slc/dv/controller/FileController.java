@@ -17,7 +17,7 @@ public class FileController {
 
     public void uploadTaskAnswer(List<File> fileList, String taskid) {
 
-        AnswerFile answer = new AnswerFile(taskid, LoggedUser.getInstance().getId(), fileList, 0);
+        AnswerFile answer = new AnswerFile(taskid, LoggedUser.getInstance().getId(), false, fileList, null);
 
         this.fileQuery.uploadTaskAnswer(answer);
     }

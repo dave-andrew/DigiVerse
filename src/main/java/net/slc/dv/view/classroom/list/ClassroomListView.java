@@ -3,6 +3,7 @@ package net.slc.dv.view.classroom.list;
 import javafx.geometry.Pos;
 import javafx.scene.control.Label;
 import javafx.scene.layout.*;
+import javafx.scene.text.TextAlignment;
 import net.slc.dv.builder.LabelBuilder;
 import net.slc.dv.controller.ClassController;
 import net.slc.dv.controller.MemberController;
@@ -95,19 +96,23 @@ public class ClassroomListView extends GridPane {
 
         Label p1 = new Label(TextStorage.getText(Text.EMPTY_CLASSROOM_DESCRIPTION_ONE));
         p1.setWrapText(true);
+        p1.setTextAlignment(TextAlignment.JUSTIFY);
 
         Label p2 = new Label(TextStorage.getText(Text.EMPTY_CLASSROOM_DESCRIPTION_TWO));
         p2.setWrapText(true);
+        p2.setTextAlignment(TextAlignment.JUSTIFY);
 
         Label p3 = new Label(TextStorage.getText(Text.EMPTY_CLASSROOM_DESCRIPTION_THREE));
         p3.setWrapText(true);
+        p3.setTextAlignment(TextAlignment.JUSTIFY);
 
         Label p4 = new Label(TextStorage.getText(Text.EMPTY_CLASSROOM_DESCRIPTION_FOUR));
         p4.setWrapText(true);
+        p4.setTextAlignment(TextAlignment.JUSTIFY);
 
         VBox pContainer = new VBox();
 
-        Label p5 = new Label(TextStorage.getText(Text.EMPTY_CLASSROOM_SINCERELY) + ",");
+        Label p5 = new Label(TextStorage.getText(Text.EMPTY_CLASSROOM_SINCERELY));
         Label p6 = new Label("DigiVerse Team");
         p6.setStyle("-fx-font-size: 16px");
 

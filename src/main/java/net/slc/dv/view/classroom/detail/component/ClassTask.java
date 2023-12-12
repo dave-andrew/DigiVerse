@@ -108,9 +108,8 @@ public class ClassTask extends ClassBase {
         ArrayList<Task> tasks = this.taskController.getClassroomTask(this.classroom.getClassId());
 
         if (tasks.isEmpty()) {
-            //TODO: NO TASK YET
             Label empty = new Label(TextStorage.getText(Text.LETS_CHILL));
-            empty.getStyleClass().add("empty");
+            empty.getStyleClass().add("title");
 
             HBox centerBox = new HBox(empty);
             centerBox.setAlignment(Pos.CENTER);
