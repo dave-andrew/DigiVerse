@@ -112,7 +112,7 @@ public class Profile extends VBox {
         bannerStack.setPadding(new Insets(20, 0, 0, 0));
 
         ColorPicker colorPicker = new ColorPicker();
-        if(loggedUser.getColor() != null) {
+        if (loggedUser.getColor() != null) {
             banner.setFill(Color.valueOf(loggedUser.getColor()));
             colorPicker.setValue(Color.valueOf(loggedUser.getColor()));
         } else {
@@ -303,8 +303,10 @@ public class Profile extends VBox {
 
         profileContainer.getChildren().add(line);
 
-        this.updateProfileContainer.getChildren().addAll(nameField, emailField, birthdayField, errorLbl, buttonContainer);
-        this.updatePasswordContainer.getChildren().addAll(oldPasswordField, newPasswordField, confirmPasswordField, errorLbl2, changeButtonContainer);
+        this.updateProfileContainer.getChildren().addAll(nameField, emailField, birthdayField, errorLbl,
+                buttonContainer);
+        this.updatePasswordContainer.getChildren().addAll(oldPasswordField, newPasswordField, confirmPasswordField,
+                errorLbl2, changeButtonContainer);
 
         this.prefWidthProperty().bind(this.widthProperty());
         this.setAlignment(Pos.TOP_LEFT);
@@ -337,7 +339,8 @@ public class Profile extends VBox {
 
         this.updateProfileBtn.setOnMouseClicked(e -> {
 
-            String message = this.userController.updateProfile(nameField.getText(), emailField.getText(), String.valueOf(birthdayField.getValue()));
+            String message = this.userController.updateProfile(nameField.getText(), emailField.getText(),
+                    String.valueOf(birthdayField.getValue()));
 
             if (message.equals(TextStorage.getText(Text.SUCCESS))) {
                 this.name.setText(nameField.getText());
@@ -354,6 +357,11 @@ public class Profile extends VBox {
 
                 profileContainer.getChildren().removeAll(updateProfileContainer);
 
+                nameField.setText("");
+                emailField.setText("");
+                birthdayField.setValue(null);
+                errorLbl.setText("");
+
                 profileContainer.getChildren().add(profileContent);
                 return;
             }
@@ -363,14 +371,22 @@ public class Profile extends VBox {
 
         this.cancelBtn.setOnMouseClicked(e -> {
             profileContainer.getChildren().removeAll(updateProfileContainer);
+            nameField.setText("");
+            emailField.setText("");
+            birthdayField.setValue(null);
+            errorLbl.setText("");
             profileContainer.getChildren().add(profileContent);
         });
 
         this.updatePasswordBtn.setOnMouseClicked(e -> {
-            String message = this.userController.updatePassword(oldPasswordField.getText(), newPasswordField.getText(), confirmPasswordField.getText());
+            String message = this.userController.updatePassword(oldPasswordField.getText(),
+                    newPasswordField.getText(), confirmPasswordField.getText());
 
             if (message.equals(TextStorage.getText(Text.SUCCESS))) {
                 profileContainer.getChildren().removeAll(updatePasswordContainer);
+                oldPasswordField.setText("");
+                newPasswordField.setText("");
+                confirmPasswordField.setText("");
                 profileContainer.getChildren().add(profileContent);
                 return;
             }
@@ -380,6 +396,9 @@ public class Profile extends VBox {
 
         this.cancelPasswordBtn.setOnMouseClicked(e -> {
             profileContainer.getChildren().removeAll(updatePasswordContainer);
+            oldPasswordField.setText("");
+            newPasswordField.setText("");
+            confirmPasswordField.setText("");
             profileContainer.getChildren().add(profileContent);
         });
     }
@@ -423,6 +442,13 @@ public class Profile extends VBox {
             this.errorLbl.setText("");
             profileContainer.getChildren().remove(profileContent);
             profileContainer.getChildren().removeAll(updateProfileContainer, updatePasswordContainer);
+            nameField.setText("");
+            emailField.setText("");
+            birthdayField.setValue(null);
+            errorLbl.setText("");
+            oldPasswordField.setText("");
+            newPasswordField.setText("");
+            confirmPasswordField.setText("");
             profileContainer.getChildren().addAll(updateProfileContainer);
         });
 
@@ -454,6 +480,13 @@ public class Profile extends VBox {
             this.errorLbl2.setText("");
             profileContainer.getChildren().remove(profileContent);
             profileContainer.getChildren().removeAll(updateProfileContainer, updatePasswordContainer);
+            nameField.setText("");
+            emailField.setText("");
+            birthdayField.setValue(null);
+            errorLbl.setText("");
+            oldPasswordField.setText("");
+            newPasswordField.setText("");
+            confirmPasswordField.setText("");
             profileContainer.getChildren().addAll(updatePasswordContainer);
         });
 
@@ -515,7 +548,7 @@ public class Profile extends VBox {
     }
 
     private void taskLayout(ArrayList<Task> tasks) {
-        if(tasks.isEmpty()) {
+        if (tasks.isEmpty()) {
             Label noTask = new Label(TextStorage.getText(Text.LETS_CHILL));
             noTask.setStyle("-fx-font-size: 20px");
             this.taskContainer.getChildren().add(noTask);
