@@ -821,8 +821,8 @@ public enum Text {
             "قيود",
             "Ràng buộc"),
     CONSTRAINT_RULE_ONE(
-            "1. The answer must be a number",
-            "1. Jawaban harus berupa angka",
+            "1. The answer must be a file.",
+            "1. Jawaban harus berupa file.",
             "1. 回答は数字でなければなりません",
             "1. La respuesta debe ser un número",
             "1. Het antwoord moet een getal zijn",
@@ -832,8 +832,8 @@ public enum Text {
             "1. يجب أن يكون الجواب رقمًا",
             "1. Câu trả lời phải là một số"),
     CONSTRAINT_RULE_TWO(
-            "2. The answer must be a number between 0 and 100",
-            "2. Jawaban harus angka antara 0 dan 100",
+            "2. File size must be less than 100kb.",
+            "2. Jawaban tidak boleh lebih dari 100kb",
             "2. 答えは0から100の間の数字でなければなりません",
             "2. La respuesta debe ser un número entre 0 y 100",
             "2. Het antwoord moet een getal zijn tussen 0 en 100",

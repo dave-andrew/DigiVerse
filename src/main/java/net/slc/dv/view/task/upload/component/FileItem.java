@@ -58,7 +58,7 @@ public class FileItem extends HBox {
 
         HBox.setMargin(fileName, new Insets(0, 0, 0, 10));
 
-        this.getStyleClass().add("card");
+//        this.getStyleClass().add("card");
         this.setPadding(new Insets(3, 5, 3, 5));
         this.setPrefWidth(225);
         this.setAlignment(Pos.CENTER_LEFT);
