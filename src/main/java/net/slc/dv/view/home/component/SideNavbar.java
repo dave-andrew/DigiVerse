@@ -74,7 +74,7 @@ public class SideNavbar extends StackPane {
 
         this.buttonToggle = ButtonBuilder.create()
                 .setGraphic(leftArrow)
-                .setStyle("-fx-background-color: transparent; -fx-border-color: transparent; -fx-border-width: 0;")
+                .setStyle("-fx-background-color: transparent; -fx-border-color: transparent; -fx-border-width: 0; -fx-cursor: hand")
                 .setOnAction(e -> toggleSidebar())
                 .build();
 
