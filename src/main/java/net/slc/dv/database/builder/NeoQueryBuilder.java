@@ -291,7 +291,6 @@ public class NeoQueryBuilder {
     }
 
     private Results executeQuery(PreparedStatement statement) throws SQLException {
-        System.out.println(statement);
         if (queryType == QueryType.SELECT) {
             return new Results(statement, statement.executeQuery());
         } else {
