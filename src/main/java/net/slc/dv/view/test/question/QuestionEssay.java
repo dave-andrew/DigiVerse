@@ -111,6 +111,7 @@ public class QuestionEssay extends VBox implements QuestionBox {
 	@Override
 	@Nullable
 	public Double getAnswerScore() {
+//		System.out.println("JAWABAB" + this.answer);
 		return this.scoreField == null ? null : this.scoreField.getText().isEmpty() ? null : Double.valueOf(this.scoreField.getText());
 	}
 

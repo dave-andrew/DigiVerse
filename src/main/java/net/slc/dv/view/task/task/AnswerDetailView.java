@@ -25,6 +25,7 @@ import net.slc.dv.controller.MemberController;
 import net.slc.dv.controller.TaskController;
 import net.slc.dv.enums.QuestionType;
 import net.slc.dv.enums.TaskType;
+import net.slc.dv.helper.toast.ToastBuilder;
 import net.slc.dv.interfaces.QuestionBox;
 import net.slc.dv.model.*;
 import net.slc.dv.resources.Icon;
@@ -229,6 +230,8 @@ public class AnswerDetailView extends HBox {
                 task.getId(), member.getUser().getId());
 
         // TODO DEP PRETTIFY PLZ
+
+        System.out.println("DISINI DI DEATIL HAHAHAH" + answerHeader.getScore());
         Button saveButton = ButtonBuilder.create(TextStorage.getText(Text.SAVE))
                 .setPrefWidth(100)
                 .setStyleClass("primary-button")
@@ -291,6 +294,8 @@ public class AnswerDetailView extends HBox {
                     questionBox.isAnswered() ? questionBox.getAnswerScore() : 0.0);
             answerDetails.add(answerDetail);
         });
+
+        ToastBuilder.buildNormal().setText(TextStorage.getText(Text.ANSWER_SAVED)).build();
 
         answerController.scoreQuestionAnswer(answerDetails);
 

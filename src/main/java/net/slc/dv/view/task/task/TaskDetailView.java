@@ -317,6 +317,7 @@ public class TaskDetailView extends HBox {
             Label constraintLabel = LabelBuilder.create(constraint)
                     .setStyle("-fx-font-size: 14px;")
                     .setMargin(5, 0, 0, 0)
+                    .setWrapText(true)
                     .build();
 
             constraintBox.getChildren().add(constraintLabel);

@@ -140,6 +140,7 @@ public class QuestionMultipleChoice extends VBox implements QuestionBox {
 	@Nullable
 	@Override
 	public Double getAnswerScore() {
+		System.out.println("JAWABAB" + this.answer);
 		if (this.answer == null) {
 			return 0.0;
 		}
