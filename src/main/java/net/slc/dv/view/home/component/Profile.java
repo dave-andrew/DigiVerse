@@ -357,11 +357,6 @@ public class Profile extends VBox {
 
                 profileContainer.getChildren().removeAll(updateProfileContainer);
 
-                nameField.setText("");
-                emailField.setText("");
-                birthdayField.setValue(null);
-                errorLbl.setText("");
-
                 profileContainer.getChildren().add(profileContent);
                 return;
             }
@@ -371,10 +366,6 @@ public class Profile extends VBox {
 
         this.cancelBtn.setOnMouseClicked(e -> {
             profileContainer.getChildren().removeAll(updateProfileContainer);
-            nameField.setText("");
-            emailField.setText("");
-            birthdayField.setValue(null);
-            errorLbl.setText("");
             profileContainer.getChildren().add(profileContent);
         });
 
@@ -442,10 +433,6 @@ public class Profile extends VBox {
             this.errorLbl.setText("");
             profileContainer.getChildren().remove(profileContent);
             profileContainer.getChildren().removeAll(updateProfileContainer, updatePasswordContainer);
-            nameField.setText("");
-            emailField.setText("");
-            birthdayField.setValue(null);
-            errorLbl.setText("");
             oldPasswordField.setText("");
             newPasswordField.setText("");
             confirmPasswordField.setText("");
@@ -480,10 +467,6 @@ public class Profile extends VBox {
             this.errorLbl2.setText("");
             profileContainer.getChildren().remove(profileContent);
             profileContainer.getChildren().removeAll(updateProfileContainer, updatePasswordContainer);
-            nameField.setText("");
-            emailField.setText("");
-            birthdayField.setValue(null);
-            errorLbl.setText("");
             oldPasswordField.setText("");
             newPasswordField.setText("");
             confirmPasswordField.setText("");

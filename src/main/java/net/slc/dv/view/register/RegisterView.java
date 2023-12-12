@@ -234,7 +234,7 @@ public class RegisterView extends VBox {
                 passwordTxt.setText("");
                 confirmPasswordTxt.setText("");
                 dobPicker.setValue(null);
-
+                errorLbl.setText("");
                 root.getChildren().clear();
                 root.setCenter(LoginView.getOuterContainer());
                 return;
