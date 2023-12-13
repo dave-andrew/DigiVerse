@@ -84,8 +84,8 @@ public class Main extends Application {
         loading.getChildren().addAll(button, progressBar);
 
         button.setOnMouseEntered(e -> {
-            this.mediaPlayer.play();
-            borderPane.setCenter(forbidden);
+//            this.mediaPlayer.play();
+//            borderPane.setCenter(forbidden);
         });
 
         borderPane.setCenter(loading);

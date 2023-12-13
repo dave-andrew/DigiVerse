@@ -115,7 +115,7 @@ public class TaskDetailView extends HBox {
             score = LabelBuilder.create(
                             answerHeader.getScore() == null
                                     ? TextStorage.getText(Text.SCORE) + ": -"
-                                    : TextStorage.getText(Text.SCORE) + ": " + answerHeader.getScore())
+                                    : TextStorage.getText(Text.SCORE) + ": " + answerHeader.getScore() * 100)
                     .setHgrow(Priority.ALWAYS)
                     .setAlignment(Pos.CENTER_LEFT)
                     .build();
@@ -299,31 +299,34 @@ public class TaskDetailView extends HBox {
                 .setAlignment(Pos.TOP_CENTER)
                 .build();
 
-        Label constraintTitle =
-                LabelBuilder.create(TextStorage.getText(Text.CONSTRAINTS)).build();
+        if(this.task.getTaskType().equals(TaskType.FILE)) {
+            Label constraintTitle =
+                    LabelBuilder.create(TextStorage.getText(Text.CONSTRAINTS)).build();
 
-        VBox constraintBox = VBoxBuilder.create()
-                .addChildren(constraintTitle)
-                .setAlignment(Pos.CENTER_LEFT)
-                .setVMargin(30, 0, 0, 0)
-                .setStyleClass("card")
-                .build();
-
-        String[] constraints = new String[] {
-            TextStorage.getText(Text.CONSTRAINT_RULE_ONE), TextStorage.getText(Text.CONSTRAINT_RULE_TWO)
-        };
-
-        for (String constraint : constraints) {
-            Label constraintLabel = LabelBuilder.create(constraint)
-                    .setStyle("-fx-font-size: 14px;")
-                    .setMargin(5, 0, 0, 0)
-                    .setWrapText(true)
+            VBox constraintBox = VBoxBuilder.create()
+                    .addChildren(constraintTitle)
+                    .setAlignment(Pos.CENTER_LEFT)
+                    .setVMargin(30, 0, 0, 0)
+                    .setStyleClass("card")
                     .build();
 
-            constraintBox.getChildren().add(constraintLabel);
+            String[] constraints = new String[] {
+                    TextStorage.getText(Text.CONSTRAINT_RULE_ONE), TextStorage.getText(Text.CONSTRAINT_RULE_TWO)
+            };
+
+            for (String constraint : constraints) {
+                Label constraintLabel = LabelBuilder.create(constraint)
+                        .setStyle("-fx-font-size: 14px;")
+                        .setMargin(5, 0, 0, 0)
+                        .setWrapText(true)
+                        .build();
+
+                constraintBox.getChildren().add(constraintLabel);
+            }
+
+            sideContent.getChildren().add(constraintBox);
         }
 
-        sideContent.getChildren().add(constraintBox);
         sideContent.setPrefWidth(330);
         this.fileContainer = new VBox();
         fileContainer.setAlignment(Pos.CENTER_LEFT);

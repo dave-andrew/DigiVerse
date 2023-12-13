@@ -149,12 +149,12 @@ public class ClassScore extends HBox {
 
         scoreContainer.getChildren().remove(scoreContainer.getChildren().size() - 1);
 
-        Label scoreValue = new Label(String.format("%.2f", score));
+        Label scoreValue = new Label(String.format("%.2f", score * 100));
         scoreValue.setPrefWidth(60);
         scoreValue.setAlignment(Pos.CENTER_RIGHT);
 
         scoreContainer.getChildren().add(scoreValue);
-        scoreSideValue.setText(String.format("%.2f", score));
+        scoreSideValue.setText(String.format("%.2f", score * 100));
 
         double averageScore = score;
         memberItem.setOnMouseClicked(e -> {
@@ -174,7 +174,7 @@ public class ClassScore extends HBox {
         this.scoreContainer.getChildren().add(scrollPane);
 
         Label scoreTitle = new Label(TextStorage.getText(Text.AVERAGE_STUDENT_SCORE) + ": ");
-        Label scoreValue = new Label(String.format("%.2f", averageScore));
+        Label scoreValue = new Label(String.format("%.2f", averageScore * 100));
 
         VBox scoreInnerContainer = new VBox();
         scoreInnerContainer.setAlignment(Pos.CENTER_LEFT);
@@ -211,7 +211,7 @@ public class ClassScore extends HBox {
             container.getChildren().add(taskScoreLbl);
 
             if (taskHash.get(taskTitle) != null) {
-                Label scoreLbl = new Label(String.valueOf(taskHash.get(taskTitle)));
+                Label scoreLbl = new Label(String.valueOf(taskHash.get(taskTitle) * 100));
                 scoreLbl.setPrefWidth(60);
                 scoreLbl.setAlignment(Pos.CENTER_RIGHT);
                 container.getChildren().add(scoreLbl);
@@ -221,7 +221,8 @@ public class ClassScore extends HBox {
 
                 container.getChildren().add(spacer);
 
-            } else {
+            }
+            else {
                 TextField taskScoreInput = new TextField();
                 taskScoreInput.setText(Integer.toString(0));
                 taskScoreInput.setAlignment(Pos.CENTER_RIGHT);
