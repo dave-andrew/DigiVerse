@@ -31,11 +31,8 @@ public class ConnectionChecker {
     private void checkConnectionChange() {
         this.isConnected.addListener(value -> {
             if (value.equals(true)) {
-                System.out.println("connected..");
                 return;
             }
-
-            System.out.println("disconnected");
         });
     }
 

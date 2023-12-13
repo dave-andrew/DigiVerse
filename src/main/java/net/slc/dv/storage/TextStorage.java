@@ -15,8 +15,6 @@ public class TextStorage {
 		Locale locale = Locale.getDefault();
 		String localLanguage = locale.getLanguage();
 
-		System.out.println(localLanguage);
-
         switch (localLanguage) {
             case "id":
                 language = Language.INDONESIAN;

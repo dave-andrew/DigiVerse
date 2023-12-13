@@ -60,7 +60,7 @@ public class EnemyDeadState extends EnemyBaseState {
     }
 
     public void createDropItems() {
-        double[] dropItemWeights = {0.1, 0.1, 0.1, 0.1, 0.1, 0.1, 0.1};
+        double[] dropItemWeights = {0.05, 0.05, 0.05, 0.05, 0.05, 0.05, 0.05};
 
         double randomNumber = random.nextDouble();
         double cumulativeWeight = 0;

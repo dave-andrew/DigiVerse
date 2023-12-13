@@ -19,6 +19,8 @@ import javafx.stage.FileChooser;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
+import net.slc.dv.helper.toast.Toast;
+import net.slc.dv.helper.toast.ToastBuilder;
 import net.slc.dv.resources.Icon;
 import net.slc.dv.resources.Text;
 import net.slc.dv.storage.IconStorage;
@@ -172,10 +174,12 @@ public class UploadFileModal {
             List<File> droppedFiles = db.getFiles();
 
             for (File file : droppedFiles) {
-                if (!uploadedFiles.contains(file) && isFileSizeValid(file, 100)) {
+                if (!uploadedFiles.contains(file)) {
+                    if(!isFileSizeValid(file, 100)) {
+                        Toast.makeError(StageManager.getInstance(), TextStorage.getText(Text.FILE_TOO_BIG), 2000, 500, 500);
+                        continue;
+                    }
                     uploadedFiles.add(file);
-                } else {
-                    System.out.println(TextStorage.getText(Text.ENTER_ANSWER_HERE) + ": " + file.getName());
                 }
             }
 
@@ -193,16 +197,16 @@ public class UploadFileModal {
 
         if (selectedFiles != null) {
             for (File file : selectedFiles) {
-                if (!uploadedFiles.contains(file) && isFileSizeValid(file, 100)) {
+                if (!uploadedFiles.contains(file)) {
+                    if(!isFileSizeValid(file, 100)) {
+                        Toast.makeError(StageManager.getInstance(), TextStorage.getText(Text.FILE_TOO_BIG), 2000, 500, 500);
+                        continue;
+                    }
                     uploadedFiles.add(file);
-                } else {
-                    System.out.println(TextStorage.getText(Text.ENTER_ANSWER_HERE) + ": " + file.getName());
                 }
             }
 
             updateFileGrid();
-        } else {
-            System.out.println(TextStorage.getText(Text.NO_FILES_SELECTED));
         }
     }
 

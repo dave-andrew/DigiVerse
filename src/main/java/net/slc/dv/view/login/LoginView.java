@@ -69,8 +69,6 @@ public class LoginView {
 
         setLayout();
         actions(stage);
-        System.out.println(stage.toString());
-        System.out.println(scene.toString());
         stage.setScene(scene);
     }
 

@@ -173,8 +173,6 @@ public class CommentQuery {
 			throw new RuntimeException(e);
 		}
 
-		System.out.println(taskList);
-
 		return taskList;
 	}
 

@@ -204,10 +204,6 @@ public class AnswerQuery {
 				+ "SET answer_header.Score = ? "
 				+ "WHERE mstask.TaskTitle = ? AND answer_header.UserID = ?";
 
-//		TODO: Delete this
-		System.out.println("TaskID: " + taskid);
-		System.out.println("UserID: " + userid);
-
 		try (PreparedStatement ps = connect.prepareStatement(query)) {
 			assert ps != null;
 			ps.setDouble(1, (score / 100));
@@ -356,7 +352,6 @@ public class AnswerQuery {
 						.condition("QuestionID", ConditionCompareType.EQUAL, answerDetail.getQuestionId());
 
 				closer.add(queryBuilder.getResults());
-				System.out.println(answerDetail.getAnswerId());
 			}
 		} catch (SQLException e) {
 			e.printStackTrace();

@@ -218,7 +218,6 @@ public class DoTestView extends BorderPane {
 				continue;
 			}
 
-			System.out.println("DISINII SCORENYA ADALAHHHH" + questionBox.getAnswerScore() + "   " + questionBox);
 			AnswerDetail answerDetail = new AnswerDetail(
 					questionBox.getQuestionId(), questionBox.getQuestionAnswer(), questionBox.getAnswerScore());
 

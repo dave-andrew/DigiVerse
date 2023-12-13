@@ -41,9 +41,9 @@ public final class Connect {
             connection = DriverManager.getConnection(CONNECTION, USERNAME, PASSWORD);
 
             connection.createStatement();
-            System.out.println("Connected to the database!");
+            
         } catch (Exception e) {
-            System.out.println("Failed to connect the database!");
+
         }
     }
 
@@ -67,7 +67,7 @@ public final class Connect {
             connection = DriverManager.getConnection(CONNECTION, USERNAME, PASSWORD);
             connection.createStatement();
         } catch (Exception e) {
-            System.out.println("Failed to connect the database, the system is terminated!");
+            
         }
     }
 

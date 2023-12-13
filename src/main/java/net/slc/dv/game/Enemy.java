@@ -1,5 +1,6 @@
 package net.slc.dv.game;
 
+import lombok.Getter;
 import net.slc.dv.game.enemy.EnemyBaseState;
 import net.slc.dv.game.enemy.EnemyDeadState;
 import net.slc.dv.game.enemy.EnemyDespawnState;

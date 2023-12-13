@@ -33,6 +33,18 @@ public enum Text {
             "लॉग आउट",
             "تسجيل خروج",
             "Đăng xuất"),
+    FILE_TOO_BIG(
+            "File size exceeded 100kb",
+            "Ukuran file melebihi 100kb",
+            "ファイルサイズが100kbを超えています",
+            "El tamaño del archivo supera los 100 kb",
+            "Bestandsgrootte overschrijdt 100 kb",
+            "文件大小超过100kb",
+            "파일 크기가 100kb를 초과합니다",
+            "फ़ाइल का आकार 100kb से अधिक है",
+            "حجم الملف تجاوز 100 كيلوبايت",
+            "Kích thước tệp vượt quá 100kb"
+    ),
     UPDATE_PROFILE(
             "Update Profile",
             "Perbarui Profil",

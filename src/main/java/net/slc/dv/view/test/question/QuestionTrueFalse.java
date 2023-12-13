@@ -135,7 +135,6 @@ public class QuestionTrueFalse extends VBox implements QuestionBox {
 
 	@Override
 	public Double getAnswerScore() {
-		System.out.println("JAWABAB" + this.answer + "hahaha" + this.question.getQuestionAnswer());
 		if(this.answer == null) {
 			return 0.0;
 		}

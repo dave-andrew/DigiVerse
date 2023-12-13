@@ -229,9 +229,6 @@ public class AnswerDetailView extends HBox {
         List<AnswerDetail> answerDetails = answerController.getMemberQuestionAnswer(
                 task.getId(), member.getUser().getId());
 
-        // TODO DEP PRETTIFY PLZ
-
-        System.out.println("DISINI DI DEATIL HAHAHAH" + answerHeader.getScore());
         Button saveButton = ButtonBuilder.create(TextStorage.getText(Text.SAVE))
                 .setPrefWidth(100)
                 .setStyleClass("primary-button")
@@ -324,10 +321,8 @@ public class AnswerDetailView extends HBox {
             score.updateAndGet(v -> v + questionBox.getAnswerScore());
         });
 
-        System.out.println(TextStorage.getText(Text.HELLO) + ":" + score.get());
         score.updateAndGet(v -> v / this.questionBoxes.size());
 
-        System.out.println(score.get());
         return score.get();
     }
 }

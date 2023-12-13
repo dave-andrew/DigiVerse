@@ -28,7 +28,6 @@ public class InputManager {
 
     public static synchronized InputManager getInstance(Scene scene) {
         if (inputManager == null) {
-//            System.out.println("First" + scene);
             inputManager = new InputManager(scene);
         }
         return inputManager;
@@ -36,7 +35,6 @@ public class InputManager {
 
     private void handlePlayerInput() {
         this.scene.setOnKeyPressed(e -> {
-//            System.out.println(scene);
             KeyCode keyCode = e.getCode();
             switch (keyCode) {
                 case A:
@@ -76,11 +74,9 @@ public class InputManager {
 
     public void checkCheats() {
         if (godCheat()) {
-            System.out.println("GOD MODE ACTIVATED");
         }
 
         if (dropRateCheat()) {
-            System.out.println("DROP RATE CHEAT ACTIVATED");
         }
     }
 

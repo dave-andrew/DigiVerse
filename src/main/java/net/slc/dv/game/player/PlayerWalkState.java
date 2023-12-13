@@ -16,7 +16,6 @@ public class PlayerWalkState extends PlayerBaseState {
 
     @Override
     public void onEnterState() {
-//        System.out.println("Walk State");
     }
 
     @Override

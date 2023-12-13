@@ -204,7 +204,11 @@ public class Navbar extends HBox {
 				.setOnMouseExited(e -> e.setStyle("-fx-underline: false;"))
 				.setOnMouseClicked(e -> {
 					mainPane.getChildren().clear();
-					mainPane.getChildren().add(new ClassroomDetailView(mainPane, classroom, new MemberController().getRole(classroom.getClassId())));
+					try {
+						mainPane.getChildren().add(new ClassroomDetailView(mainPane, classroom, new MemberController().getRole(classroom.getClassId())));
+					}catch (Exception ex){
+
+					}
 				})
 				.build();
 

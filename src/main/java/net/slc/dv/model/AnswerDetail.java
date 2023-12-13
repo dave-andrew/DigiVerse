@@ -29,7 +29,6 @@ public class AnswerDetail {
 			this.questionId = set.getString("QuestionID");
 			this.answerText = set.getString("AnswerText");
 			this.answerScore = set.getDouble("Score");
-			System.out.println("DISINI SCORE:" + this.answerScore);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}

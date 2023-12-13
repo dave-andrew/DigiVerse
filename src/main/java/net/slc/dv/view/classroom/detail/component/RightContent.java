@@ -319,7 +319,6 @@ public class RightContent extends VBox {
             postInput.setOnKeyPressed(event -> {
                 if (event.getCode() == KeyCode.ENTER) {
                     Forum forum = forumController.createForum(postInput.getText(), classroom.getClassId());
-                    System.out.println(forum.getUser().getUsername());
                     VBox forumContainer = forumContainer(forum);
                     forumContainer.setPadding(new Insets(15, 30, 15, 40));
                     this.getChildren().add(1, forumContainer);
