@@ -48,7 +48,6 @@ public class UserQuery {
 			ps.executeUpdate();
 			return TextStorage.getText(Text.SUCCESS);
 		} catch (Exception e) {
-			e.printStackTrace();
 			return TextStorage.getText(Text.UNEXPECTED_ERROR);
 		}
 

@@ -418,8 +418,8 @@ public class Profile extends VBox {
 
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
         String dobString = loggedUser.getDob();
+        LocalDate dateOfBirth = LocalDate.parse(dobString, formatter);;
 
-        LocalDate dateOfBirth = LocalDate.parse(dobString, formatter);
         birthdayField = new DatePicker(dateOfBirth);
 
         DateFormatter(birthdayField);

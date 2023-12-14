@@ -23,7 +23,7 @@ public class AuthQuery {
         this.connect = Connect.getConnection();
     }
 
-    public void register(User user) {
+    public void register(User user) throws SQLException{
         try (Closer closer = new Closer()) {
             NeoQueryBuilder queryBuilder = new NeoQueryBuilder(QueryType.INSERT)
                     .table("msuser")
@@ -34,8 +34,6 @@ public class AuthQuery {
                     .values("UserDOB", user.getDob());
 
             closer.add(queryBuilder.getResults());
-        } catch (SQLException e) {
-            throw new RuntimeException(e);
         }
     }
 

@@ -16,7 +16,7 @@ public class TextStorage {
 		String localLanguage = locale.getLanguage();
 
         switch (localLanguage) {
-            case "id":
+            case "in":
                 language = Language.INDONESIAN;
                 break;
             case "ko":
@@ -40,7 +40,7 @@ public class TextStorage {
             case "ar":
                 language = Language.ARABIC;
                 break;
-            case "in":
+            case "id":
                 language = Language.INDIAN;
                 break;
             default:

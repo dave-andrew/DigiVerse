@@ -45,6 +45,30 @@ public enum Text {
             "حجم الملف تجاوز 100 كيلوبايت",
             "Kích thước tệp vượt quá 100kb"
     ),
+    EMAIL_ALREADY_EXISTS (
+            "Email already exists",
+            "Email sudah dipakai",
+            "メールアドレスは既に存在します",
+            "El correo electrónico ya existe",
+            "E-mail bestaat al",
+            "电子邮件已存在",
+            "이메일이 이미 있습니다",
+            "ईमेल पहले से मौजूद है",
+            "البريد الإلكتروني موجود بالفعل",
+            "Email đã tồn tại"
+    ),
+    INVALID_DATE_FORMAT(
+            "Invalid date format",
+            "Format tanggal tidak valid",
+            "無効な日付形式",
+            "Formato de fecha no válido",
+            "Ongeldige datumnotatie",
+            "无效的日期格式",
+            "잘못된 날짜 형식",
+            "अमान्य तारीख प्रारूप",
+            "تنسيق التاريخ غير صالح",
+            "Định dạng ngày không hợp lệ"
+    ),
     UPDATE_PROFILE(
             "Update Profile",
             "Perbarui Profil",

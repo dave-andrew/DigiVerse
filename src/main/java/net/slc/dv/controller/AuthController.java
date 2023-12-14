@@ -7,6 +7,7 @@ import net.slc.dv.resources.Text;
 import net.slc.dv.storage.TextStorage;
 
 import java.net.InetAddress;
+import java.sql.SQLException;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 
@@ -37,7 +38,13 @@ public class AuthController {
             return TextStorage.getText(Text.INVALID_EMAIL_FORMAT);
         }
 
-        LocalDate dateOfBirth = LocalDate.parse(dob, formatter);
+        LocalDate dateOfBirth;
+
+        try {
+            dateOfBirth = LocalDate.parse(dob, formatter);
+        } catch (Exception e) {
+            return TextStorage.getText(Text.INVALID_DATE_FORMAT);
+        }
 
         int age = LocalDate.now().getYear() - dateOfBirth.getYear();
 
@@ -46,7 +53,11 @@ public class AuthController {
         }
 
         User user = new User(username, email, pass, dob);
-        authQuery.register(user);
+        try {
+            authQuery.register(user);
+        } catch (SQLException e) {
+            return TextStorage.getText(Text.EMAIL_ALREADY_EXISTS);
+        }
         return TextStorage.getText(Text.REGISTER_SUCCESS);
     }
 
