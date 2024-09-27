@@ -32,18 +32,21 @@ Build the project and resolve all dependencies using Gradle:
 
 ```bash
 ./gradlew build
-This will automatically download and install all necessary dependencies required to run DigiVerse.
 ```
+This will automatically download and install all necessary dependencies required to run DigiVerse.
+
 3. Run the application
 After building the project, you can execute the application using the Main.java file.
 
 ```bash
 ./gradlew run
-Alternatively, you can manually run the application using the following command:
 ```
+
+Alternatively, you can manually run the application using the following command:
 ```bash
 java -cp build/classes/java/main Main
 ```
+
 4. Directory Structure
 ```bash
 src/main/java - Contains the source code of the application.
