@@ -14,7 +14,6 @@ Java 11: Ensure that Java 11 is installed and set as your default Java version. 
 ### Verify your Java version using the command:
 
 ```bash
-Copy code
 java -version
 Gradle: This project uses Gradle for dependency management. You don't need to install Gradle manually as it comes with a wrapper included in the project.
 ```
@@ -24,7 +23,6 @@ Gradle: This project uses Gradle for dependency management. You don't need to in
 Clone this repository to your local machine using Git:
 
 ```bash
-Copy code
 git clone https://github.com/your-username/DigiVerse.git
 cd DigiVerse
 ```
@@ -33,7 +31,6 @@ cd DigiVerse
 Build the project and resolve all dependencies using Gradle:
 
 ```bash
-Copy code
 ./gradlew build
 This will automatically download and install all necessary dependencies required to run DigiVerse.
 ```
@@ -41,23 +38,14 @@ This will automatically download and install all necessary dependencies required
 After building the project, you can execute the application using the Main.java file.
 
 ```bash
-Copy code
 ./gradlew run
 Alternatively, you can manually run the application using the following command:
 ```
 ```bash
-Copy code
 java -cp build/classes/java/main Main
 ```
 4. Directory Structure
+```bash
 src/main/java - Contains the source code of the application.
 src/main/resources - Holds the resources such as FXML files, icons, and stylesheets.
-5. Contributing
-We welcome contributions to improve DigiVerse! If you'd like to contribute:
-
-Fork the repository.
-Create a new branch (git checkout -b feature-branch).
-Make your changes.
-Commit your changes (git commit -m 'Add new feature').
-Push to the branch (git push origin feature-branch).
-Create a pull request.
+```
